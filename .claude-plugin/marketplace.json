@@ -4,99 +4,125 @@
     "name": "EVtivity"
   },
   "metadata": {
-    "description": "Agent Skills for the EVtivity CSMS: set up, configure, deploy, operate, test, integrate, troubleshoot and report issues"
+    "description": "Agent Skills for the EVtivity CSMS (OCPP 1.6 and 2.1): set up, configure, deploy, operate, test, integrate, troubleshoot and report issues."
   },
   "plugins": [
     {
-      "name": "evtivity-getting-started",
-      "description": "Stand up a local EVtivity stack end to end with Docker, check health and sign in. Intro, quick start, installation and project structure.",
+      "name": "evtivity-api",
+      "description": "Use the EVtivity CSMS REST API. Covers operator sign-in tokens and API keys (create, scope permissions, revoke), driver portal authentication, base URLs (/v1/ and /v1/portal/), pagination, the error format and code catalog, RBAC permissions per route group, sending OCPP commands to charging stations and reading the result, and curl examples for stations, sessions, tariffs and reports. Use when someone wants to script, automate or integrate with EVtivity, call an endpoint, create an API key, start or stop a charging session remotely, or understand an API error code.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/evtivity-getting-started"]
+      "skills": [
+        "./skills/evtivity-api"
+      ]
     },
     {
       "name": "evtivity-configuration",
-      "description": "Configure EVtivity: environment variables, authentication, API keys, roles, MFA, reCAPTCHA, database setup and OCPP server settings.",
+      "description": "Configure an EVtivity CSMS install. Covers authentication (operator and driver auth realms, JWT cookies, API keys, RBAC permissions and roles, MFA by email, TOTP or SMS, reCAPTCHA, CSRF, session and refresh token lifetimes), database setup (PostgreSQL 17, Drizzle migrations, seeding, connection pools, Redis with one ACL user per service), environment variables for every service (API, OCPP, OCPI, worker, simulator, frontends, payments, seed credentials) and OCPP settings (ports, station connection URLs, security profiles 0 to 3, TLS certificates, connection limits, heartbeat, horizontal scaling). Use when someone asks which environment variable or dashboard setting changes a behavior, sets secrets such as JWT_SECRET or SETTINGS_ENCRYPTION_KEY, enables MFA or reCAPTCHA, runs migrations or the seed, sizes database pools, or sets up OCPP TLS and security profiles.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/evtivity-configuration"]
-    },
-    {
-      "name": "evtivity-deployment",
-      "description": "Deploy EVtivity: Docker images, Docker Compose, Helm chart on Kubernetes, AWS CDK, minikube, upgrades and production checks.",
-      "source": "./",
-      "strict": false,
-      "skills": ["./skills/evtivity-deployment"]
-    },
-    {
-      "name": "evtivity-csms",
-      "description": "Operate the EVtivity dashboard: sites, stations, sessions, drivers, tokens, fleets, pricing, reservations, smart charging, roaming, reports, users and settings.",
-      "source": "./",
-      "strict": false,
-      "skills": ["./skills/evtivity-csms"]
-    },
-    {
-      "name": "evtivity-portal",
-      "description": "Use and support the EVtivity driver portal: registration, charging, guest charging, payment methods, RFID cards, sessions, vehicles and support.",
-      "source": "./",
-      "strict": false,
-      "skills": ["./skills/evtivity-portal"]
-    },
-    {
-      "name": "evtivity-mobile-app",
-      "description": "Set up, white-label, build and release the EVtivity driver app, and support drivers using it.",
-      "source": "./",
-      "strict": false,
-      "skills": ["./skills/evtivity-mobile-app"]
-    },
-    {
-      "name": "evtivity-integrations",
-      "description": "Set up payments and integrations: Stripe, Stripe Connect payouts, Adyen, the test payment provider, webhooks and energy management.",
-      "source": "./",
-      "strict": false,
-      "skills": ["./skills/evtivity-integrations"]
-    },
-    {
-      "name": "evtivity-simulator",
-      "description": "Drive the EVtivity charging station simulator: modes, simulated OCPP 1.6 and 2.1 stations, actions and full test sessions.",
-      "source": "./",
-      "strict": false,
-      "skills": ["./skills/evtivity-simulator"]
+      "skills": [
+        "./skills/evtivity-configuration"
+      ]
     },
     {
       "name": "evtivity-conformance",
-      "description": "Test OCPP behavior: send commands and read results, message logs, the OCTT conformance runner and published results.",
+      "description": "Test OCPP behavior on the EVtivity CSMS. Covers sending OCPP 1.6 and 2.1 commands to a station from the API (/v1/ocpp/commands/v21 and v16) or the station OCPP Commands tab and reading the result (200, 202 queued, 400, 404, 502, 504), the OCPP message log and security event log, the built-in OCTT conformance runner (dashboard, API and command line, run statuses), the published OCTT results per suite and version (CSMS 2.1 and 1.6, charging station 2.1 and 1.6, PICS, not applicable cases), connecting a real station for testing (URL, security profile, Basic Auth, TLS, approval), and OCPP 1.6 vs 2.1 differences (transaction ids, StatusNotification vs TransactionEvent chargingState, RemoteStart vs RequestStartTransaction, configuration keys vs variables, TriggerMessage choices). Use when someone tests a charger or the CSMS against OCPP, sends a raw OCPP command, reads OCPP logs, runs or reads conformance tests, or asks which OCTT tests pass.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/evtivity-conformance"]
+      "skills": [
+        "./skills/evtivity-conformance"
+      ]
+    },
+    {
+      "name": "evtivity-csms",
+      "description": "Operate the EVtivity CSMS operator dashboard. Covers every CSMS docs page - dashboard, sites, stations (approval, connectors, availability, security profiles), station images, station configurations (OCPP 1.6 keys, OCPP 2.1 variables, templates), firmware updates, smart charging, load management, free vend, local auth list, display messages, maintenance mode, sessions, drivers, tokens (RFID, authorize log), fleets, pricing (tariffs, tax, split billing), reservations, roaming (OCPI), certificates (Plug and Charge, Mutual TLS), notifications, reports, NEVI compliance, support cases, users (roles, permissions, site access), settings and API keys, access logs, conformance testing and the AI assistant. Use when someone wants to run a charging network in EVtivity, find the dashboard page or permission a task needs, or do an operator task through the dashboard or the API.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/evtivity-csms"
+      ]
+    },
+    {
+      "name": "evtivity-deployment",
+      "description": "Deploy and upgrade the EVtivity CSMS. Covers AWS (the CDK app on ECS Fargate with Aurora PostgreSQL, ElastiCache Valkey, ALB and WAF, per-environment sizing, credential rotation, cost), Docker Compose (core services, tools, monitoring and OCPI profiles, volumes, overrides), Docker images (registry, tags, build context, frontend runtime config, resource sizing), the Helm chart (install script, Gateway API with Istio or Envoy Gateway, OCPP TLS, secrets, Redis ACL users and TLS, migration job, autoscaling, monitoring, values and appSettings) and minikube (local Kubernetes install, upgrade, rollback, teardown). Use when someone chooses where to run EVtivity, installs it on Kubernetes or AWS, picks image tags, upgrades or rolls back a release, or prepares a production install (secrets, encryption key, Redis users, test payment provider off).",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/evtivity-deployment"
+      ]
+    },
+    {
+      "name": "evtivity-getting-started",
+      "description": "Get started with the EVtivity CSMS (OCPP 1.6 and 2.1 charging station management system). Stands up a complete local Docker Compose environment end to end with one script (prerequisites, release checkout, npm ci, .env, build, seed, health wait, sign-in), checks stack health, and explains the docs pages of the getting-started section, the introduction (what EVtivity is, features, architecture, tech stack, license), quick start (Docker in minutes, demo accounts, ports, profiles, demo data, simulator), installation (native development with hot reload, npm run dev scripts, dev tools) and project structure (packages, worker responsibilities). Use when someone wants to install, run, start, try, evaluate or demo EVtivity, asks for a local Docker environment, asks which ports, URLs or sign-in to use, or wants to understand how the codebase is organized.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/evtivity-getting-started"
+      ]
     },
     {
       "name": "evtivity-guides",
-      "description": "Follow the EVtivity how-to guides: station onboarding and lifecycle, sessions, RFID, reservations, smart charging, messages, users, white-labeling and field troubleshooting.",
+      "description": "Operator workflows from the EVtivity CSMS Guides docs. Covers onboarding a charging station (registration, security profile, password, approval), station management and the connector status model, the charging session lifecycle on OCPP 1.6 and 2.1, session monitoring (idle detection, cost, split billing, live updates), RFID tokens and the local auth list, reservations (scheduled and immediate, fees, cancellation), smart charging profiles (batch push, clear, composite schedule), notifications (OCPP, driver and system events, channels, templates), station display messages (OCPP 2.1 SetDisplayMessage, 1.6 DataTransfer), users, roles, permissions and site access, audit logs, driver portal setup and QR charging, white labeling (branding, domains, SMTP, Twilio, legal pages), field troubleshooting (stuck sessions, stale connector status, SuspendedEV), EV-specific charging behaviors, and OCPP testing. Use when an operator asks how to run, configure or debug daily EVtivity operations.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/evtivity-guides"]
+      "skills": [
+        "./skills/evtivity-guides"
+      ]
     },
     {
-      "name": "evtivity-api",
-      "description": "Use the EVtivity REST API: API keys, permissions, pagination, errors, OCPP commands and curl examples.",
+      "name": "evtivity-integrations",
+      "description": "Set up, test and troubleshoot the EVtivity CSMS integrations. Covers the payment providers (Stripe, Adyen and the simulated test payment provider), choosing the active provider and provider pinning, payment settings (pre-auth amount, platform fee), Stripe and Adyen webhooks and signing secrets, Stripe Connect payout accounts and site host onboarding, holds (pre-authorization), capture, top-ups, refunds, retry capture, reconciliation, guest and QR code payments, prepaid tokens, reservation fees, test cards, the company currency and net or gross price display, outgoing webhooks, SSE event streams, and energy management (load management, smart charging profiles, carbon footprint tracking). Use when someone wants to accept card payments, connect Stripe or Adyen, onboard a site host, refund a session, test payments without real money, receive webhooks, limit site power, or find out why a hold, capture, refund, webhook or guest checkout failed.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/evtivity-api"]
+      "skills": [
+        "./skills/evtivity-integrations"
+      ]
     },
     {
-      "name": "evtivity-troubleshoot",
-      "description": "Diagnose a broken EVtivity stack: migrations, station connections, reCAPTCHA, Redis, payments, ports and upgrades, with a redacted diagnostics script.",
+      "name": "evtivity-mobile-app",
+      "description": "Build, white-label, ship and support the open-source EVtivity driver mobile app (Expo, React Native, iOS and Android). Covers the app overview, setup and first run, configuring Expo (app.config.ts, brands, env vars, identifiers, plugins), making changes (project structure, conventions, adding a screen), testing (typecheck, lint, on-device checks), running on a real device (Android over USB or Wi-Fi, iOS Simulator, physical iPhone), EAS and local builds, push notifications (EAS project id, APNs, FCM), App Store and Google Play submission, white-labeling and licensing (Adyen return settings mobile.app.urlSchemes and mobile.app.androidPackageNames), and the /v1/portal/ APIs the app uses. Also covers the end user guide (getting started, find a charger, start and stop a charge, payments, reservations, activity and statements, vehicles, RFID cards, favorites, station watch, support, and account and settings). Use when an operator builds or brands the app, or when someone helps a driver use it.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/evtivity-troubleshoot"]
+      "skills": [
+        "./skills/evtivity-mobile-app"
+      ]
+    },
+    {
+      "name": "evtivity-portal",
+      "description": "Use the EVtivity driver portal (web app for EV drivers) and its /v1/portal/ API. Covers registration, operator invitations, email verification, sign-in, password reset and MFA, account settings (personal info, show prices gross or net, security, notification preferences, notification bell, sign out), finding a station by search or QR code, the station detail page, location detail (hours, images, map, popular times), starting and stopping a charge, guest charging by QR with card checkout and 3D Secure, payment methods (Stripe, Adyen, test provider), RFID cards, activity and the monthly dashboard, sessions, session receipts and monthly statements, vehicles and mileage estimates, favorites, station watches, and support cases. Use when someone asks how a driver does something in the portal, needs to script driver actions against the portal API, or is debugging what a driver sees.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/evtivity-portal"
+      ]
     },
     {
       "name": "evtivity-report-issue",
-      "description": "Draft a redacted issue for the EVtivity maintainers and open it after the user confirms.",
+      "description": "Report a bug or problem in the EVtivity CSMS to the maintainers as a GitHub issue on EVtivity/evtivity-csms. Gathers the version, deployment type, steps to reproduce, expected and actual behavior and redacted diagnostics, searches for an existing issue, drafts the issue from a template, and opens it only after the user confirms the text. Use when someone wants to report a bug, file an issue, ask the maintainers for help, or a problem remains after troubleshooting.",
       "source": "./",
       "strict": false,
-      "skills": ["./skills/evtivity-report-issue"]
+      "skills": [
+        "./skills/evtivity-report-issue"
+      ]
+    },
+    {
+      "name": "evtivity-simulator",
+      "description": "Drive the EVtivity charging station simulator (CSS) to test the CSMS without hardware. Covers standby and chaos modes (CSS_MODE, CSS_STATION_LIMIT, CSS_ACTION_INTERVAL_MS and the other simulator environment variables), meter value generation, reconnect behavior, TLS and Mutual TLS for simulated stations, creating, enabling, disabling and deleting simulated OCPP 1.6 and 2.1 stations (dashboard toggle, /v1/stations, /v1/css/stations), real stations on a simulator row, the dashboard Simulate tab and the /v1/css/actions API (plug in, authorize, start and stop charging, unplug, inject and clear faults, go offline, come online, OCPP 1.6 and 2.1 station messages), and running a full test session end to end through to the session, energy and cost in the dashboard and API. Use when someone wants simulated or virtual charging stations, a test or demo charging session, load testing, chaos traffic, or asks why a simulated station does not connect or an action fails.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/evtivity-simulator"
+      ]
+    },
+    {
+      "name": "evtivity-troubleshoot",
+      "description": "Diagnose and fix a broken or misbehaving EVtivity CSMS deployment. Covers the migrate container failing and blocking the API and OCPP server, charging stations that cannot connect (URL, security profile, Basic Auth password, TLS certificate), reCAPTCHA blocking sign-in, Redis connection or ACL errors, payment provider not configured, ports already in use, and stale images or volumes after an upgrade. Use when EVtivity does not start, a container is unhealthy or restarting, sign-in fails, a station stays offline, or logs show errors. Includes a redacted diagnostics script.",
+      "source": "./",
+      "strict": false,
+      "skills": [
+        "./skills/evtivity-troubleshoot"
+      ]
     }
   ]
 }
