@@ -161,7 +161,7 @@ echo "CSMS release: $tag"
 # ---------------------------------------------------------------- checkout
 if [ -z "$dir" ]; then
   skills_root=$(git -C "$SKILL_DIR" rev-parse --show-toplevel 2>/dev/null || true)
-  if [ -n "$skills_root" ] && [ -d "$skills_root/skills/evtivity-setup" ]; then
+  if [ -n "$skills_root" ] && [ -d "$skills_root/skills/evtivity-getting-started" ]; then
     dir="$(dirname "$skills_root")/evtivity-csms"
   else
     dir="$PWD/evtivity-csms"
