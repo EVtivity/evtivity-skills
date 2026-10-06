@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
-"""Generate the evtivity-api skill references from public EVtivity sources.
+"""Generate the evtivity-api skill references from an EVtivity CSMS release.
 
 Writes:
-  skills/evtivity-api/references/routes.md       route catalog, one table per tag
-  skills/evtivity-api/references/error-codes.md  error code catalog (English)
+  skills/evtivity-api/references/routes.md          index: one line per API tag
+  skills/evtivity-api/references/routes-<tag>.md    the routes of one tag, with permissions
+  skills/evtivity-api/references/error-codes.md     error code catalog (English)
 
-Sources:
-  --openapi   OpenAPI spec (path or URL). Default: https://www.evtivity.com/openapi.json
-  --errors    English CSMS locale file with the `errors` messages (path or URL).
-              Default: packages/csms/src/i18n/locales/en.json of the public CSMS repo
-  --csms      optional checkout of github.com/EVtivity/evtivity-csms. When given, the
-              permission each operator route requires is read from packages/api/src/routes.
+Source: a checkout of the public CSMS repository (github.com/EVtivity/evtivity-csms)
+at the release tag the skills record (metadata evtivity-release and evtivity-commit),
+prepared by scripts/fetch-csms.sh, which also generates the OpenAPI spec:
+  packages/api/openapi.json               the OpenAPI spec of that release
+  packages/api/src/routes/                the permission each operator route requires
+  packages/csms/src/i18n/locales/en.json  the English error messages
 
-Run from the repo root: python3 scripts/generate-api-reference.py --csms ../evtivity-csms
+Run from the repo root:
+  python3 scripts/generate-api-reference.py --csms <checkout> --release <tag> --commit <sha>
 """
 
 from __future__ import annotations
@@ -21,25 +23,22 @@ import argparse
 import html
 import json
 import re
+import subprocess
 import sys
-import urllib.request
 from collections import OrderedDict
 from pathlib import Path
 
-DEFAULT_OPENAPI = "https://www.evtivity.com/openapi.json"
-DEFAULT_ERRORS = (
-    "https://raw.githubusercontent.com/EVtivity/evtivity-csms/main/"
-    "packages/csms/src/i18n/locales/en.json"
-)
 OUT_DIR = Path("skills/evtivity-api/references")
 METHODS = ("get", "post", "put", "patch", "delete")
+CSMS_REPO = "https://github.com/EVtivity/evtivity-csms"
 
 
-def load_json(source: str) -> object:
-    if source.startswith(("http://", "https://")):
-        with urllib.request.urlopen(source, timeout=60) as resp:  # noqa: S310 (fixed public URLs)
-            return json.loads(resp.read().decode("utf-8"))
-    return json.loads(Path(source).read_text(encoding="utf-8"))
+def load_json(path: Path) -> object:
+    return json.loads(path.read_text(encoding="utf-8"))
+
+
+def tag_slug(tag: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "-", tag.lower()).strip("-")
 
 
 def normalize(path: str) -> str:
@@ -90,7 +89,7 @@ def permission_for(method: str, path: str, tag: str, perms: dict[tuple[str, str]
     return perms.get((method, normalize(path)), "")
 
 
-def write_routes(spec: dict, perms: dict[tuple[str, str], str]) -> int:
+def write_routes(spec: dict, perms: dict[tuple[str, str], str], source: str) -> int:
     groups: "OrderedDict[str, list[tuple[str, str, str, str]]]" = OrderedDict()
     for path, ops in spec["paths"].items():
         for method in METHODS:
@@ -103,31 +102,47 @@ def write_routes(spec: dict, perms: dict[tuple[str, str], str]) -> int:
             summary = html.unescape(op.get("summary") or "").replace("|", "/").strip()
             groups.setdefault(tag, []).append((method.upper(), path, perm, summary))
 
-    version = spec.get("info", {}).get("version", "")
-    lines = [
-        "# EVtivity API route catalog",
-        "",
-        f"Generated from the public OpenAPI spec ({DEFAULT_OPENAPI}, spec version {version}) by",
-        "`scripts/generate-api-reference.py`. Do not edit by hand.",
-        "",
+    for old in OUT_DIR.glob("routes-*.md"):
+        old.unlink()
+    legend = [
         "Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no",
         "token. `driver` needs a driver portal token. Empty means the route needs a signed-in",
         "operator and no single permission was found; check Swagger at `<api>/docs`.",
         "A `write` permission includes `read` for the same resource.",
-        "",
-        "## Tags",
-        "",
     ]
-    for tag in groups:
-        anchor = re.sub(r"[^a-z0-9 -]", "", tag.lower()).replace(" ", "-")
-        lines.append(f"- [{tag}](#{anchor}) ({len(groups[tag])})")
+    index = [
+        "# EVtivity API route catalog",
+        "",
+        f"Generated from {source} by `scripts/generate-api-reference.py`. Do not edit by hand.",
+        "",
+        "One file per API tag. Find a route without reading every file:",
+        "`grep -n '<path or word>' references/routes-*.md`.",
+        "",
+        *legend,
+        "",
+        "| Tag | Routes | File |",
+        "|---|---|---|",
+    ]
     count = 0
     for tag, rows in groups.items():
-        lines += ["", f"## {tag}", "", "| Method | Path | Permission | Summary |", "|---|---|---|---|"]
+        name = f"routes-{tag_slug(tag)}.md"
+        index.append(f"| {tag} | {len(rows)} | `references/{name}` |")
+        lines = [
+            f"# EVtivity API routes: {tag}",
+            "",
+            f"Generated from {source} by `scripts/generate-api-reference.py`. Do not edit by hand.",
+            "Index of all tags: `references/routes.md`.",
+            "",
+            *legend,
+            "",
+            "| Method | Path | Permission | Summary |",
+            "|---|---|---|---|",
+        ]
         for method, path, perm, summary in rows:
             lines.append(f"| {method} | `{path}` | {perm} | {summary} |")
             count += 1
-    (OUT_DIR / "routes.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+        (OUT_DIR / name).write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (OUT_DIR / "routes.md").write_text("\n".join(index) + "\n", encoding="utf-8")
     return count
 
 
@@ -148,13 +163,13 @@ def error_statuses(spec: dict) -> dict[str, set[int]]:
     return found
 
 
-def write_errors(messages: dict[str, str], spec: dict) -> int:
+def write_errors(messages: dict[str, str], spec: dict, source: str) -> int:
     statuses = error_statuses(spec)
     lines = [
         "# EVtivity API error codes",
         "",
-        "Generated by `scripts/generate-api-reference.py` from the English messages of the",
-        "public CSMS and the statuses in the OpenAPI spec. Do not edit by hand.",
+        f"Generated from {source} by `scripts/generate-api-reference.py`: the English",
+        "messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.",
         "Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes",
         "",
         "Every error response is JSON: `{ \"error\": \"<message>\", \"code\": \"<CODE>\" }`.",
@@ -173,23 +188,34 @@ def write_errors(messages: dict[str, str], spec: dict) -> int:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--openapi", default=DEFAULT_OPENAPI)
-    parser.add_argument("--errors", default=DEFAULT_ERRORS)
-    parser.add_argument("--csms", type=Path)
+    parser.add_argument("--csms", type=Path, required=True, help="CSMS checkout at the release")
+    parser.add_argument("--release", required=True, help="CSMS release tag, e.g. v0.1.39")
+    parser.add_argument("--commit", required=True, help="commit of the release tag (40 hex)")
     args = parser.parse_args()
 
-    spec = load_json(args.openapi)
-    errors = load_json(args.errors)
+    if not re.fullmatch(r"[0-9a-f]{40}", args.commit):
+        sys.exit(f"--commit must be 40 hex characters: {args.commit}")
+    head = subprocess.run(
+        ["git", "-C", str(args.csms), "rev-parse", "HEAD"], capture_output=True, text=True, check=False
+    ).stdout.strip()
+    if head != args.commit:
+        sys.exit(f"{args.csms} is at {head or 'no commit'}, not {args.commit} ({args.release})")
+    spec_path = args.csms / "packages" / "api" / "openapi.json"
+    if not spec_path.is_file():
+        sys.exit(f"{spec_path} not found. Run scripts/fetch-csms.sh first, it generates the spec.")
+    spec = load_json(spec_path)
+    errors = load_json(args.csms / "packages" / "csms" / "src" / "i18n" / "locales" / "en.json")
     if not isinstance(spec, dict) or "paths" not in spec:
-        sys.exit("The OpenAPI source has no paths")
+        sys.exit("The OpenAPI spec has no paths")
     if not isinstance(errors, dict) or not isinstance(errors.get("errors"), dict):
-        sys.exit("The locale source has no errors object")
-    perms = read_permissions(args.csms) if args.csms else {}
+        sys.exit("The locale file has no errors object")
+    perms = read_permissions(args.csms)
+    source = f"EVtivity CSMS {args.release} ({CSMS_REPO}, commit {args.commit[:12]})"
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    routes = write_routes(spec, perms)
-    codes = write_errors(errors["errors"], spec)
-    print(f"routes.md: {routes} routes, error-codes.md: {codes} codes")
+    routes = write_routes(spec, perms, source)
+    codes = write_errors(errors["errors"], spec, source)
+    print(f"routes: {routes} routes, error-codes.md: {codes} codes")
 
 
 if __name__ == "__main__":

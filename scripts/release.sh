@@ -10,8 +10,11 @@
 #   --website-ref  website ref the references are generated from (default: origin/main)
 #
 # Steps: validate the tag, require a clean main that matches origin/main,
-# regenerate the references from the website docs at the ref, set
-# `evtivity-version` in every SKILL.md to X.Y.Z, validate the skills, commit
+# resolve the commit of the CSMS release tag, regenerate the references from
+# the website docs at the ref, set `evtivity-version` (X.Y.Z),
+# `evtivity-release` (the tag) and `evtivity-commit` (the CSMS commit) in every
+# SKILL.md, regenerate the API references from the CSMS at that commit, copy
+# the descriptions into the manifests, validate the skills, commit
 # (`release: version X.Y.Z` for stable, `release: prepare X.Y.Z` for a
 # prerelease) when anything changed, and create the tag.
 set -euo pipefail
@@ -29,7 +32,7 @@ while [ $# -gt 0 ]; do
     --push) push="y"; shift ;;
     --website) website="${2:?--website needs a path}"; shift 2 ;;
     --website-ref) website_ref="${2:?--website-ref needs a ref}"; shift 2 ;;
-    -h | --help) sed -n '2,17p' "$0"; exit 0 ;;
+    -h | --help) sed -n '2,19p' "$0"; exit 0 ;;
     -*) echo "Unknown option: $1" >&2; exit 2 ;;
     *)
       if [ -n "$tag" ]; then echo "Only one tag, got $tag and $1" >&2; exit 2; fi
@@ -77,6 +80,13 @@ if [ -n "$latest" ] && ! release_is_newer "$tag" "$latest"; then
 fi
 
 version=$(release_base_version "$tag")
+# The skills record the exact CSMS release they target: its tag and commit.
+# The CSMS release must exist before the skills release.
+if ! csms_commit=$(release_csms_tag_commit "$tag"); then
+  echo "The CSMS release $tag does not exist in $RELEASE_CSMS_REPO. Release the CSMS first." >&2
+  exit 1
+fi
+echo "CSMS $tag is commit $csms_commit."
 if ! git -C "$website" rev-parse --git-dir >/dev/null 2>&1; then
   echo "Website checkout not found at $website. Pass --website <dir>." >&2
   exit 1
@@ -84,10 +94,11 @@ fi
 git -C "$website" fetch --quiet origin
 website_commit=$(git -C "$website" rev-parse --verify "$website_ref^{commit}")
 export_dir=$(mktemp -d)
+csms_dir="$(mktemp -d)/csms"
 restore() {
-  git checkout --quiet -- skills scripts
+  git checkout --quiet -- .
   git clean --quiet -fd -- skills
-  rm -rf "$export_dir"
+  rm -rf "$export_dir" "$(dirname "$csms_dir")"
 }
 trap restore ERR
 
@@ -100,6 +111,18 @@ rm -rf "$export_dir"
 
 release_set_version "$tag"
 release_check_version "$tag"
+release_set_source "$tag" "$csms_commit"
+release_check_source "$tag"
+
+# Regenerate the API references from the CSMS release itself: its OpenAPI spec,
+# route sources and error messages at the tag's commit.
+bash scripts/fetch-csms.sh "$csms_dir" "$tag" "$csms_commit"
+python3 scripts/generate-api-reference.py --csms "$csms_dir" --release "$tag" --commit "$csms_commit"
+python3 scripts/check-api-paths.py --openapi "$csms_dir/packages/api/openapi.json"
+rm -rf "$(dirname "$csms_dir")"
+
+# Copy the SKILL.md descriptions into the manifests, README.md and AGENTS.md.
+python3 scripts/sync-descriptions.py
 python3 scripts/check-skills.py
 
 if [ -n "$(git status --porcelain)" ]; then
@@ -108,7 +131,7 @@ if [ -n "$(git status --porcelain)" ]; then
   else
     message="release: version $version"
   fi
-  git add skills scripts/coverage.json scripts/references-source.json
+  git add -A
   git commit --quiet -m "$message"
   echo "Committed: $message"
 else
