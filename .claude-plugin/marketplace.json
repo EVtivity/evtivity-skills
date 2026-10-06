@@ -1,0 +1,102 @@
+{
+  "name": "evtivity-skills",
+  "owner": {
+    "name": "EVtivity"
+  },
+  "metadata": {
+    "description": "Agent Skills for the EVtivity CSMS: set up, configure, deploy, operate, test, integrate, troubleshoot and report issues"
+  },
+  "plugins": [
+    {
+      "name": "evtivity-getting-started",
+      "description": "Stand up a local EVtivity stack end to end with Docker, check health and sign in. Intro, quick start, installation and project structure.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/evtivity-getting-started"]
+    },
+    {
+      "name": "evtivity-configuration",
+      "description": "Configure EVtivity: environment variables, authentication, API keys, roles, MFA, reCAPTCHA, database setup and OCPP server settings.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/evtivity-configuration"]
+    },
+    {
+      "name": "evtivity-deployment",
+      "description": "Deploy EVtivity: Docker images, Docker Compose, Helm chart on Kubernetes, AWS CDK, minikube, upgrades and production checks.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/evtivity-deployment"]
+    },
+    {
+      "name": "evtivity-csms",
+      "description": "Operate the EVtivity dashboard: sites, stations, sessions, drivers, tokens, fleets, pricing, reservations, smart charging, roaming, reports, users and settings.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/evtivity-csms"]
+    },
+    {
+      "name": "evtivity-portal",
+      "description": "Use and support the EVtivity driver portal: registration, charging, guest charging, payment methods, RFID cards, sessions, vehicles and support.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/evtivity-portal"]
+    },
+    {
+      "name": "evtivity-mobile-app",
+      "description": "Set up, white-label, build and release the EVtivity driver app, and support drivers using it.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/evtivity-mobile-app"]
+    },
+    {
+      "name": "evtivity-integrations",
+      "description": "Set up payments and integrations: Stripe, Stripe Connect payouts, Adyen, the test payment provider, webhooks and energy management.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/evtivity-integrations"]
+    },
+    {
+      "name": "evtivity-simulator",
+      "description": "Drive the EVtivity charging station simulator: modes, simulated OCPP 1.6 and 2.1 stations, actions and full test sessions.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/evtivity-simulator"]
+    },
+    {
+      "name": "evtivity-conformance",
+      "description": "Test OCPP behavior: send commands and read results, message logs, the OCTT conformance runner and published results.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/evtivity-conformance"]
+    },
+    {
+      "name": "evtivity-guides",
+      "description": "Follow the EVtivity how-to guides: station onboarding and lifecycle, sessions, RFID, reservations, smart charging, messages, users, white-labeling and field troubleshooting.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/evtivity-guides"]
+    },
+    {
+      "name": "evtivity-api",
+      "description": "Use the EVtivity REST API: API keys, permissions, pagination, errors, OCPP commands and curl examples.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/evtivity-api"]
+    },
+    {
+      "name": "evtivity-troubleshoot",
+      "description": "Diagnose a broken EVtivity stack: migrations, station connections, reCAPTCHA, Redis, payments, ports and upgrades, with a redacted diagnostics script.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/evtivity-troubleshoot"]
+    },
+    {
+      "name": "evtivity-report-issue",
+      "description": "Draft a redacted issue for the EVtivity maintainers and open it after the user confirms.",
+      "source": "./",
+      "strict": false,
+      "skills": ["./skills/evtivity-report-issue"]
+    }
+  ]
+}
