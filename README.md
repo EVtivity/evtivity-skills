@@ -1,4 +1,24 @@
-# EVtivity Agent Skills
+<p align="center">
+  <img src="assets/evtivity-logo.svg" alt="EVtivity" width="80" height="80" />
+</p>
+
+<h1 align="center">EVtivity Agent Skills</h1>
+
+<p align="center">
+  <a href="https://github.com/EVtivity/evtivity-skills/releases"><img src="https://img.shields.io/github/v/release/EVtivity/evtivity-skills?include_prereleases&sort=semver&label=Release&color=4ade80" alt="Release" /></a>
+  <a href="https://github.com/EVtivity/evtivity-skills/actions/workflows/validate.yml"><img src="https://github.com/EVtivity/evtivity-skills/actions/workflows/validate.yml/badge.svg" alt="Validate" /></a>
+  <a href="https://github.com/EVtivity/evtivity-skills/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" /></a>
+  <a href="https://agentskills.io"><img src="https://img.shields.io/badge/Agent%20Skills-open%20standard-4ade80.svg" alt="Agent Skills" /></a>
+  <img src="https://img.shields.io/badge/Skills-13-4ade80.svg" alt="Skills: 13" />
+  <img src="https://img.shields.io/badge/Agents-Claude%20Code%20%7C%20Codex%20%7C%20Copilot%20%7C%20Gemini%20%7C%20Cursor-lightgrey.svg" alt="Agents" />
+</p>
+
+<p align="center">
+  <a href="https://github.com/EVtivity/evtivity-csms">EVtivity CSMS</a> ·
+  <a href="https://www.evtivity.com/docs">Documentation</a> ·
+  <a href="https://github.com/EVtivity/evtivity-csms-helm">Helm chart</a> ·
+  <a href="https://github.com/EVtivity/evtivity-mobile-app">Mobile app</a>
+</p>
 
 Agent Skills for the [EVtivity CSMS](https://github.com/EVtivity/evtivity-csms), the OCPP 1.6 and 2.1 charging station management system. They teach a coding agent to stand up EVtivity, configure, deploy, operate and test it, call its API, troubleshoot it and report issues.
 
