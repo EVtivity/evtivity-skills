@@ -1,0 +1,11 @@
+# Changes to skills, generated references, scripts and workflows need a review
+# from the repository admin. Branch protection on main enforces it when
+# "Require review from Code Owners" is on.
+/skills/ @evtivity-admin
+/scripts/ @evtivity-admin
+/.github/ @evtivity-admin
+/.claude-plugin/ @evtivity-admin
+/.codex-plugin/ @evtivity-admin
+/.cursor-plugin/ @evtivity-admin
+/.agents/ @evtivity-admin
+/plugin.json @evtivity-admin

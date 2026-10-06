@@ -16,6 +16,9 @@ jobs:
       - uses: actions/setup-python@v7
         with:
           python-version: '3.12'
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
       - name: Install the skills-ref validator
         # Reference validator of the Agent Skills specification, pinned to a commit.
         run: pip install --quiet "git+https://github.com/agentskills/agentskills.git@69ef37e9424c0a7ea9dd2293b559e43ec8176379#subdirectory=skills-ref"
@@ -26,23 +29,48 @@ jobs:
             skills-ref validate "$dir" || status=1
           done
           exit $status
-      - name: Repository checks
+      - name: Repository checks (format, size, descriptions, no doc corrections)
         run: python3 scripts/check-skills.py
+      - name: Description copies are generated
+        run: python3 scripts/sync-descriptions.py --check
+      - name: Trigger evals (keyword heuristic)
+        run: python3 scripts/check-triggers.py
+      - name: API paths in SKILL.md exist in the release's route catalog
+        run: python3 scripts/check-api-paths.py
+      - name: Discovery index builds
+        run: python3 scripts/build-discovery.py --tag "v0.0.0" --out "$RUNNER_TEMP/discovery"
+      - name: Claude Code plugin manifest
+        run: |
+          npm install --global --silent @anthropic-ai/claude-code
+          claude plugin validate .
 
   references:
     name: Generated references
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v7
         with:
           node-version: '24'
       - name: Converter tests
         run: node --test scripts/*.test.mjs
+      - name: Does the pull request change generated references or their sources?
+        id: changes
+        if: github.event_name == 'pull_request'
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          pattern='^(skills/[^/]+/references/|scripts/(references-source|sections|coverage)\.json$|scripts/generate-references\.mjs$)'
+          if git diff --name-only "$BASE"...HEAD | grep -Eq "$pattern"; then
+            echo "generated=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Fetch the website at the recorded commit
         id: website
         env:
           WEBSITE_TOKEN: ${{ secrets.WEBSITE_READ_TOKEN }}
+          GENERATED_CHANGED: ${{ steps.changes.outputs.generated }}
         run: |
           commit=$(node -p "require('./scripts/references-source.json').commit")
           url="https://github.com/EVtivity/evtivity.com.git"
@@ -55,6 +83,11 @@ jobs:
             echo "fetched=true" >> "$GITHUB_OUTPUT"
           elif [ -n "$WEBSITE_TOKEN" ]; then
             echo "::error::Cannot fetch the website docs at $commit with WEBSITE_READ_TOKEN."
+            exit 1
+          elif [ "$GENERATED_CHANGED" = "true" ]; then
+            # Fork pull requests get no secrets. A change to generated references
+            # that cannot be regenerated here must not pass unchecked.
+            echo "::error::This pull request changes generated references or their sources, and the regeneration check cannot run without WEBSITE_READ_TOKEN. Fix doc content on the website; a maintainer regenerates the references."
             exit 1
           else
             echo "::warning::The website docs are not readable without the WEBSITE_READ_TOKEN secret. Skipped the generated references check."
@@ -71,6 +104,32 @@ jobs:
             exit 1
           fi
 
+  api:
+    name: API reference
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: CSMS at the recorded release (tag and commit), with its OpenAPI spec
+        run: bash scripts/fetch-csms.sh "$RUNNER_TEMP/csms"
+      - name: Regenerate the API references and compare
+        run: |
+          release=$(bash scripts/release-version.sh release_skill_metadata evtivity-release)
+          commit=$(bash scripts/release-version.sh release_skill_metadata evtivity-commit)
+          python3 scripts/generate-api-reference.py --csms "$RUNNER_TEMP/csms" --release "$release" --commit "$commit"
+          if [ -n "$(git status --porcelain -- skills/evtivity-api)" ]; then
+            git status --short -- skills/evtivity-api
+            echo "::error::The API references differ from CSMS $release. Run scripts/generate-api-reference.py and commit the result."
+            exit 1
+          fi
+      - name: Every /v1 path in a SKILL.md exists in the release's OpenAPI spec
+        run: python3 scripts/check-api-paths.py --openapi "$RUNNER_TEMP/csms/packages/api/openapi.json"
+
   scripts:
     name: Scripts
     runs-on: ubuntu-latest
@@ -80,3 +139,7 @@ jobs:
         run: shellcheck --version && shellcheck scripts/*.sh skills/*/scripts/*.sh
       - name: Release tag tests
         run: bash scripts/release-version.test.sh
+      - name: setup.sh release selection tests
+        run: bash scripts/setup-release.test.sh
+      - name: diagnose.sh redaction tests
+        run: bash scripts/diagnose-redaction.test.sh
