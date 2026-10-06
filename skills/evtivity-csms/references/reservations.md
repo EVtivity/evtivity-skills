@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/reservations (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/reservations (website commit 900fb20). Do not edit.
 
 # Reservations
 
@@ -93,6 +93,8 @@ Cancel reasons:
 | `station_rejected_occupied` | Station replied `Occupied` to ReserveNow |
 | `station_rejected_other` | Station replied with another non-Accepted status, or the request timed out |
 | `station_offline_at_activation` | The worker tried to dispatch ReserveNow at `startsAt` but the station was offline |
+| `evse_in_use_at_activation` | At `startsAt` the reserved EVSE was busy (another session or a plugged-in cable) |
+| `station_faulted_at_activation` | At `startsAt` every connector of the reserved EVSE was faulted or unavailable |
 | `system_cleanup` | Station-side `ReservationStatusUpdate(Removed)` arrived (operator pressed cancel on the station, fault, etc.) |
 
 Existing rows cancelled before this metadata was introduced have `NULL` actor and reason fields.
@@ -108,11 +110,11 @@ Existing rows cancelled before this metadata was introduced have `NULL` actor an
 | Status | Description |
 |--------|-------------|
 | scheduled | Future reservation, not yet sent to the station |
-| active | ReserveNow accepted by the station |
-| used | Driver started a session using this reservation |
+| active | Sent to the station with ReserveNow. The EVSE is held until `expiresAt` |
+| in_use | The reserved driver's charging session is running |
+| used | The session that used this reservation has ended |
 | expired | Reservation expired without being used |
-| cancelled | Cancelled by operator, driver, or system (see metadata above) |
-| rejected | Station rejected the ReserveNow command |
+| cancelled | Cancelled by operator, driver, or system, including a station that rejected ReserveNow (see metadata above) |
 
 ## OCPP Flow
 

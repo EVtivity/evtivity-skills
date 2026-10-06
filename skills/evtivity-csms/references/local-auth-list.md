@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/local-auth-list (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/local-auth-list (website commit 900fb20). Do not edit.
 
 # Local Auth List
 

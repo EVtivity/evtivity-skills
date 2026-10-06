@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/getting-started/quick-start (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/getting-started/quick-start (website commit 900fb20). Do not edit.
 
 # Quick Start
 
@@ -98,7 +98,7 @@ docker compose --profile tools --profile ocpi --profile monitoring up -d
 
 ## Access from other devices
 
-By default, services bind to `0.0.0.0` (all network interfaces). Other devices on your network can access the dashboard at `http://YOUR_IP:7100`.
+By default, the user-facing services (dashboard, portal, API, OCPP, OCPI) bind to `0.0.0.0` (all network interfaces). Other devices on your network can access the dashboard at `http://YOUR_IP:7100`. Infrastructure and tool ports (PostgreSQL, pgAdmin, Mailpit, FTP, Prometheus, Grafana, Loki) bind to `127.0.0.1` unless you set `INFRA_BIND_IP` in `.env`. See [Docker Compose](https://www.evtivity.com/docs/deployment/docker-compose#port-binding).
 
 To bind to your current LAN IP automatically:
 

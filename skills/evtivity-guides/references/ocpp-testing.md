@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/guides/ocpp-testing (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/guides/ocpp-testing (website commit 900fb20). Do not edit.
 
 # OCPP Testing
 
@@ -118,6 +118,17 @@ Commands vary by OCPP version. Common commands available for both 1.6 and 2.1:
 The send button stays enabled when the station is offline. The CSMS queues the command, shows it as queued, and delivers it when the station reconnects.
 
 The command response appears below the form showing the station's response status and any returned data.
+
+### Command Results
+
+The same commands are available through the API at `/v1/ocpp/commands/v21/<Action>` and `/v1/ocpp/commands/v16/<Action>`. The HTTP status tells you whether the station answered:
+
+| HTTP | Code | Meaning |
+|------|------|---------|
+| 200 | - | The station answered. Its reply is in `response`. A `Rejected` answer also returns 200, so read `response.status`. |
+| 202 | `COMMAND_QUEUED` | The station is offline. The command is queued and delivered when the station reconnects. |
+| 502 | `COMMAND_ERROR` | The station answered with an OCPP error (CALLERROR), did not answer within 30 seconds, or the command could not be delivered. `error` holds the reason. |
+| 504 | `COMMAND_TIMEOUT` | No result reached the API within 35 seconds. |
 
 ## Station Configurations
 

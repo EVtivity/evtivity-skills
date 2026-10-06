@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/integrations/test-payment-provider (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/integrations/test-payment-provider (website commit 900fb20). Do not edit.
 
 # Test Payment Provider
 

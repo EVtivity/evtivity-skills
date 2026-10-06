@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/guides/reservations (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/guides/reservations (website commit 900fb20). Do not edit.
 
 # Charging Reservations
 
@@ -86,10 +86,10 @@ A `scheduled` reservation can't just live in the database hoping the API process
 EVtivity uses BullMQ on the existing Redis instance. When the API creates a reservation with a future `startsAt`, it publishes to the `reservation_schedule` channel. A worker subscribes, creates a delayed BullMQ job, and at `startsAt` the job fires `handleReservationActivate()` which:
 
 1. Re-reads the reservation row to make sure it's still `scheduled` (it may have been cancelled in the meantime).
-2. Sends `ReserveNow` to the station via the standard `ocpp_commands` pubsub bridge with version-specific command translation.
-3. Updates the row to `active` and stamps a `reservation_id` integer that matches what the station now holds.
+2. Checks the station and the EVSE. An offline station cancels the reservation (`station_offline_at_activation`). A busy or faulted EVSE cancels it (`evse_in_use_at_activation` or `station_faulted_at_activation`), unless the reserved driver is already charging there, which moves it to `in_use`.
+3. Updates the row to `active`, then sends `ReserveNow` to the station via the standard `ocpp_commands` pubsub bridge with version-specific command translation. The worker does not wait for the station's answer.
 
-If the station rejects `ReserveNow` (offline, faulted, occupied), the row stays `scheduled` and the worker retries on the next BullMQ attempt. After all retries fail, the reservation transitions to `failed` and the driver gets notified.
+If the station answers `ReserveNow` with anything other than `Accepted`, the OCPP server cancels the reservation (`station_rejected_occupied` or `station_rejected_other`, no fee) and the driver gets a `reservation.Cancelled` notification.
 
 ### Cancellation and expiry
 
@@ -97,7 +97,7 @@ Three different paths can take a reservation out of `active`:
 
 - **Driver or operator cancel.** API receives `DELETE`. If the row is `active`, dispatches `CancelReservation` to the station, then sets `cancelled`. Scheduled rows skip the OCPP step.
 - **Session start during the window.** When `TransactionEvent.Started` arrives with the matching `reservationId`, the projection updates the reservation to `in_use` and links the resulting `session_id`. When the session ends, the reservation moves to `used`.
-- **No-show.** The OCPP server runs a periodic check (only on the primary pod) that looks for `active` reservations whose `expires_at` has passed without a session. It marks them `expired` and lets the station release the connector on its own timer. A `reservation.Expired` notification is dispatched if the reservation had a driver attached and email/SMS was enabled.
+- **No-show.** The worker's `reservation-expiry-check` job runs every minute. It marks `active` and `scheduled` reservations whose `expires_at` has passed as `expired`, and sends `CancelReservation` to the station for the ones that were `active`. A `reservation.Expired` notification is dispatched if the reservation had a driver attached and email/SMS was enabled.
 
 #### Cancel actor and reason
 
@@ -113,9 +113,11 @@ The reason enum is the source of truth for "why did this row die":
 | `station_rejected_occupied` | Station replied `Occupied` to ReserveNow |
 | `station_rejected_other` | Station replied with another non-Accepted status, or the request timed out |
 | `station_offline_at_activation` | Worker tried to dispatch ReserveNow at `startsAt` but the station was offline |
+| `evse_in_use_at_activation` | At `startsAt` the reserved EVSE was busy (another session or a plugged-in cable) |
+| `station_faulted_at_activation` | At `startsAt` every connector of the reserved EVSE was faulted or unavailable |
 | `system_cleanup` | Station-initiated `ReservationStatusUpdate(Removed)` |
 
-All cancel paths route through a single helper (`packages/api/src/lib/reservation-cancel.ts`) so the metadata is consistent and concurrency-safe. The helper performs a conditional UPDATE filtered on `status IN ('active','scheduled')`, so two concurrent cancels are safe: only one wins; the loser sees `cancelled: false` and skips the fee dispatch. The Stripe charge runs only after a successful UPDATE.
+All cancel paths route through a single helper (`packages/services/src/reservation-cancel.ts`) so the metadata is consistent and concurrency-safe. The helper performs a conditional UPDATE filtered on `status IN ('active','scheduled')`, so two concurrent cancels are safe: only one wins; the loser sees `cancelled: false` and skips the fee dispatch. The Stripe charge runs only after a successful UPDATE.
 
 System paths (the bottom three reasons above) hard-block the fee: even if a caller passes `chargeFee: true`, the helper short-circuits to `wantsFee = chargeFee && actor !== 'system'`. Operator-initiated cancels are opt-in (the dashboard cancel dialog has a checkbox), so a typical operator action does not bill the driver.
 

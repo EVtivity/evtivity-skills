@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/station-configurations-ocpp16 (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/station-configurations-ocpp16 (website commit 900fb20). Do not edit.
 
 # OCPP 1.6 Configuration Keys
 

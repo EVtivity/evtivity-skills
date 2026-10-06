@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/deployment/docker-compose (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/deployment/docker-compose (website commit 900fb20). Do not edit.
 
 # Docker Compose
 
@@ -26,6 +26,16 @@ All services include health checks. The `migrate` service runs first, and depend
 docker compose up
 ```
 
+## Port Binding
+
+User-facing ports (csms, portal, api, ocpp including 8443, ocpi) bind to `BIND_IP` (default `0.0.0.0`). Infrastructure and tool ports (postgres 5433, pgadmin 7109, mailpit 7108 and SMTP 1025, ftp 21 and 30000-30009, prometheus 9090, grafana 7107, loki 3100) bind to `INFRA_BIND_IP` (default `127.0.0.1`), because these services use default logins. Redis (6379) and the OCPP server's Node inspector (9229) always bind to `127.0.0.1`.
+
+To expose the infrastructure ports, set `INFRA_BIND_IP=0.0.0.0` (or a LAN IP) in `.env`. Do this only on a trusted network. Otherwise reach them from another machine through an SSH tunnel, for example for Grafana:
+
+```bash
+ssh -N -L 7107:localhost:7107 user@your-host
+```
+
 ## Profiles
 
 Optional services are grouped into profiles. Add the `--profile` flag to include them.
@@ -39,8 +49,8 @@ docker compose --profile tools up
 | Service  | Host Port | Description                    |
 |----------|-----------|--------------------------------|
 | pgadmin  | 7109      | PostgreSQL admin UI            |
-| mailpit  | 7108      | Local email testing (SMTP)     |
-| ftp      | 21        | FTP server for firmware files  |
+| mailpit  | 7108, 1025 | Local email testing (SMTP)     |
+| ftp      | 21, 30000-30009 | FTP server for firmware files  |
 
 ### Monitoring
 

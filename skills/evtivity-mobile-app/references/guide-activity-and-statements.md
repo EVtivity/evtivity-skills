@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/guide/activity-and-statements (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/guide/activity-and-statements (website commit 900fb20). Do not edit.
 
 # Activity and Statements
 

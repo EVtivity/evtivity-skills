@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/guide/start-and-stop-a-charge (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/guide/start-and-stop-a-charge (website commit 900fb20). Do not edit.
 
 # Start and Stop a Charge
 

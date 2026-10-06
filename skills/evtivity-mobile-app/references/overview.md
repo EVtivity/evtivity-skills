@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/overview (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/overview (website commit 900fb20). Do not edit.
 
 # Mobile App
 
@@ -12,7 +12,7 @@ This section has two parts. The [End User Guide](https://www.evtivity.com/docs/m
 
 ## What it is
 
-- Expo SDK 52, React Native 0.76 on the New Architecture (Fabric and Bridgeless).
+- Expo SDK 57, React Native 0.86 on the New Architecture (Fabric and Bridgeless).
 - File-based routing with `expo-router`.
 - Styling with NativeWind (Tailwind classes in React Native).
 - Server state with TanStack Query, talking to the CSMS REST API.

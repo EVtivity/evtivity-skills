@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/configuration/environment-variables (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/configuration/environment-variables (website commit 900fb20). Do not edit.
 
 # Environment Variables
 
@@ -12,7 +12,8 @@ When adding a new environment variable, update all 5 locations: Zod config schem
 
 | Variable | Default | Description |
 |---|---|---|
-| `BIND_IP` | `0.0.0.0` | IP address to bind Docker ports to. Use `0.0.0.0` for all interfaces (accessible from other machines) or `127.0.0.1` for localhost only. |
+| `BIND_IP` | `0.0.0.0` | IP address to bind the user-facing Docker ports to (CSMS, portal, API, OCPP, OCPP TLS, OCPI). Use `0.0.0.0` for all interfaces (accessible from other machines) or `127.0.0.1` for localhost only. |
+| `INFRA_BIND_IP` | `127.0.0.1` | IP address to bind the Docker Compose infrastructure and tool ports to (postgres, pgadmin, mailpit, ftp, prometheus, grafana, loki). They use default logins, so they stay on localhost unless you set `0.0.0.0` or a LAN IP on a trusted network. Redis and the Node inspector (9229) always stay on `127.0.0.1`. |
 
 ## Database and Redis
 

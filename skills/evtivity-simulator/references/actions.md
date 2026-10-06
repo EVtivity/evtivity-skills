@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/simulator/actions (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/simulator/actions (website commit 900fb20). Do not edit.
 
 # Simulator Actions
 
@@ -155,7 +155,7 @@ Brings an offline station back online.
 Re-issues BootNotification and re-reports connector status. Lighter than `Reset` (does not stop active transactions or pass through Unavailable).
 
 - **Action**: `rebootStation`
-- **Body**: `{ "stationId": "CS-001" }`
+- **Trigger**: no `/v1/css/actions` route. The CSMS sends it to the simulator when an operator approves a pending simulated station.
 
 | OCPP | Messages emitted | Connector status |
 |---|---|---|
@@ -210,7 +210,7 @@ The simulator responds to all 51 CSMS-initiated commands. When the CSMS sends a 
 
 ## Notes
 
-- Actions are fire-and-forget from the API perspective. The command is published to Redis and the API returns immediately.
+- Action routes wait up to 5 seconds for the simulator's result on `css_command_results`. They answer 200 with the `commandId` when the action ran, 400 `CSS_ACTION_REJECTED` when the simulator refused it, and 504 `CSS_ACTION_TIMEOUT` when no result came in time.
 - The SimulatorManager routes each command to the correct StationSimulator by station ID.
 - In chaos mode, the ChaosOrchestrator triggers actions randomly without manual API calls.
 - Clock-aligned meter values use a global scheduler with jitter to prevent all stations from reporting at the same millisecond.

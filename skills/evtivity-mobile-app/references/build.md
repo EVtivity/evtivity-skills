@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/build (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/build (website commit 900fb20). Do not edit.
 
 # Build
 
@@ -12,7 +12,7 @@ There are two ways to build: EAS (Expo's cloud build service) and local builds o
 
 - `development` - a development client with the dev menu, for daily work.
 - `preview` - an internal-distribution build (an installable APK or an ad-hoc iOS build) for testers.
-- `production` - the store build, with auto-incrementing version codes.
+- `production` - the store build. The build number is not auto-incremented: it comes from `app.config.ts`, which `scripts/release.sh` sets from the release version.
 
 ## EAS builds
 

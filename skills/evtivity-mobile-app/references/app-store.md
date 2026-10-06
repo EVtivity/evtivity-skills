@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/app-store (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/app-store (website commit 900fb20). Do not edit.
 
 # Submit to the App Stores
 
@@ -36,7 +36,7 @@ EAS uploads the latest build (or one you point it at) to App Store Connect and G
 
 ## Versioning
 
-`eas.json` auto-increments the build number for production builds. Bump the app version in the config when shipping user-facing releases, and keep store metadata in sync with the release.
+Production builds do not auto-increment the build number. `scripts/release.sh <version>` sets the app version and the build number (iOS `buildNumber`, Android `versionCode`) in `app.config.ts` from the release version, so each release has a higher build number. Keep store metadata in sync with the release.
 
 > **Note:**
 >

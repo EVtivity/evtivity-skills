@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/guides/troubleshooting (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/guides/troubleshooting (website commit 900fb20). Do not edit.
 
 # Troubleshooting
 
@@ -49,7 +49,7 @@ The button is enabled only when the CSMS has an active session recorded for that
 ### If it doesn't work
 
 - **Station offline.** `RequestStopTransaction` only reaches connected stations. The session stays active until the station comes back. Bring it online first; in most cases it catches up and emits the missing end event on reconnect.
-- **Station rejected the stop.** Some firmware refuses `RequestStopTransaction` if it has already cleared its own transaction state. The dashboard shows an error toast in that case. Power-cycle the station; on reconnect it usually emits a fresh `StatusNotification` and the missing end event.
+- **Station rejected the stop.** Some firmware refuses `RequestStopTransaction` if it has already cleared its own transaction state. When the station answers `Rejected` with reason `TxNotFound`, the CSMS ends the session the normal way (completed at its last metered energy, with final cost and receipt). Any other rejection leaves the session active, and the dashboard still shows **Stop request sent**: check the station's OCPP message log for the reply. Power-cycle the station; on reconnect it usually emits a fresh `StatusNotification` and the missing end event.
 - **No active session on this EVSE.** The button reports `No active session on this EVSE`. The session you're seeing might belong to a different EVSE on the same station -- check the Sessions tab and locate the EVSE the session was started on.
 
 ## Connector status is stuck or stale
@@ -90,7 +90,7 @@ The CSMS enforces a server-side guard: starting a session is refused with `409 E
 ### If it doesn't work
 
 - **Station offline.** The button is disabled when the station isn't connected. Get the station back online first; the badge will refresh automatically once it sends its first status report after reconnect.
-- **Station rejected the trigger** (rare). Some firmware advertises `NotImplemented` for `TriggerMessage`. The dashboard shows an error toast in that case and falls back to the cached value. Power-cycle the station or wait for the next spontaneous report.
+- **Station rejected the trigger** (rare). Some firmware advertises `NotImplemented` for `TriggerMessage`. The badge then keeps the cached value. Power-cycle the station or wait for the next spontaneous report.
 - **Status truly hasn't changed yet** -- the station's actual state is what the badge says. Check the OCPP message log on the station detail page for recent inbound `StatusNotification` and `TransactionEvent` entries.
 
 ## Session starts but no power is delivered (SuspendedEV)

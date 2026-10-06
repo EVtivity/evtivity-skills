@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/simulator/overview (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/simulator/overview (website commit 900fb20). Do not edit.
 
 # Simulator Overview
 
@@ -233,9 +233,9 @@ Mutual TLS stations require three certificate files:
 - **Client certificate** (`client.pem`) - The station's identity certificate
 - **Client key** (`client-key.pem`) - The private key for the client certificate
 
-The simulator loads test certificates from `packages/css/test-certs/` for Mutual TLS stations. When connecting, it passes these as TLS options to the WebSocket connection and skips the Basic Auth header.
+The simulator takes a Mutual TLS station's certificates from its simulator record (`clientCert`, `clientKey`, `caCert`). When those are empty, it falls back to the `CSS_CLIENT_CERT_PEM`, `CSS_CLIENT_KEY_PEM`, and `CSS_CA_PEM` environment variables (inline PEM) or `CSS_CLIENT_CERT`, `CSS_CLIENT_KEY`, and `CSS_CA_CERT` (file paths). The Docker images generate test certificates in `packages/css/test-certs/`: Docker Compose uses them for the OCPP server's TLS listener, and the demo seed uses them for its Mutual TLS stations. When connecting, it passes these as TLS options to the WebSocket connection and skips the Basic Auth header.
 
-Mutual TLS stations connect to the TLS endpoint (`OCPP_TLS_SERVER_URL`) while No Auth through TLS + Basic Auth stations connect to the plain endpoint (`OCPP_SERVER_URL`).
+Each station connects to the target URL on its simulator record. The demo seed points TLS + Basic Auth and Mutual TLS stations at the TLS endpoint (`wss://ocpp:8443`) and No Auth and Basic Auth stations at the plain endpoint (`ws://ocpp:7103`).
 
 ## Password and Security Profile Changes
 

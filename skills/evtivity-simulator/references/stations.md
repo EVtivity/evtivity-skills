@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/simulator/stations (website commit 257c8b8). Do not edit.
+Generated from https://www.evtivity.com/docs/simulator/stations (website commit 900fb20). Do not edit.
 
 # Managing Simulated Stations
 
@@ -34,7 +34,7 @@ Use `POST /v1/css/stations` to create both rows in a single request. If the stat
 - **ocppProtocol** - `ocpp1.6` or `ocpp2.1`
 - **securityProfile** - 0, 1, 2, or 3
 - **targetUrl** - WebSocket endpoint the simulator connects to
-- **password** - For Basic Auth and TLS + Basic Auth stations
+- **password** - For Basic Auth and TLS + Basic Auth stations. Without a password on security profile 1 or 2, the API generates a 20-character password, stores its hash for the CSMS, and gives the same password to the simulator, so the station connects at once. A given password must have 16 to 20 characters for OCPP 1.6 and 16 to 40 for OCPP 2.1, otherwise the API answers 400 `VALIDATION_ERROR`. When the station already exists, the password goes through the normal credential change: an online station must accept it, otherwise the API answers 502.
 - **clientCert / clientKey / caCert** - For Mutual TLS stations
 - **model**, **serialNumber**, **firmwareVersion** - Identity fields stored on `charging_stations`
 - **evses** - Array of EVSE definitions for `css_evses`
@@ -141,11 +141,16 @@ The SimulatorManager joins `charging_stations` and `vendors` when it loads stati
 | Method | Path | Purpose |
 |--------|------|---------|
 | GET | `/v1/css/stations` | List all CSS station records |
+| GET | `/v1/css/stations/:stationId` | Get one CSS station record |
 | POST | `/v1/css/stations` | Create both rows. Auto-creates the `charging_stations` row when missing or flips `is_simulator` on an existing row. |
-| PATCH | `/v1/css/stations/:stationId` | Update simulator runtime fields. Identity changes (model, ocppProtocol, securityProfile, serialNumber, firmwareVersion) route to `charging_stations`. |
+| PATCH | `/v1/css/stations/:stationId` | Update simulator runtime fields. Identity changes (model, ocppProtocol, securityProfile, serialNumber, firmwareVersion) route to `charging_stations`. `password` and `securityProfile` behave as on `PATCH /v1/stations/:id`: no downgrade while the station is online (400 `SECURITY_PROFILE_DOWNGRADE`), and an online upgrade stays pending until the station reconnects with the new profile. |
 | DELETE | `/v1/css/stations/:stationId` | Remove the simulator row. The paired `charging_stations` row is preserved. |
+| POST | `/v1/css/stations/:stationId/enable` | Enable the simulator row |
+| POST | `/v1/css/stations/:stationId/disable` | Disable the simulator row |
 | PATCH | `/v1/stations/:id` | Toggling `isSimulator` true/false syncs the `css_stations` row (create + enable, or disable). |
 | POST | `/v1/stations/:id/confirm-real-station` | Confirm a real station: clears the simulator flag and the conflict, and disables the paired simulator. Requires `stations:write`. |
+
+The simulator station endpoints never return `password` or `clientKey`. Their responses carry `hasPassword` and `hasClientKey` instead.
 
 ## Notes
 
