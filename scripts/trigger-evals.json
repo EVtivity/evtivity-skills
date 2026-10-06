@@ -1,0 +1,30 @@
+{
+  "about": "Prompts and the skill that should handle each. scripts/check-triggers.py checks them with a keyword heuristic: the expected skill's description must contain every listed term and must score higher than every other skill on the prompt's words. It does not run an agent.",
+  "evals": [
+    { "prompt": "Stand up EVtivity locally", "expect": "evtivity-getting-started", "terms": ["stand up", "locally"] },
+    { "prompt": "Try a demo of EVtivity with Docker on my laptop", "expect": "evtivity-getting-started", "terms": ["demo", "docker"] },
+    { "prompt": "Why can't my station connect?", "expect": "evtivity-troubleshoot", "terms": ["station", "connect"] },
+    { "prompt": "The api container keeps restarting", "expect": "evtivity-troubleshoot", "terms": ["container", "restarting"] },
+    { "prompt": "Sign-in is blocked by reCAPTCHA", "expect": "evtivity-troubleshoot", "terms": ["sign-in", "blocked"] },
+    { "prompt": "Refund a payment for a session", "expect": "evtivity-integrations", "terms": ["refund", "payment"] },
+    { "prompt": "Set up Stripe payments", "expect": "evtivity-integrations", "terms": ["stripe"] },
+    { "prompt": "Add a tariff to a pricing group", "expect": "evtivity-csms", "terms": ["tariff", "pricing"] },
+    { "prompt": "Set up load management for a site", "expect": "evtivity-csms", "terms": ["load management", "site"] },
+    { "prompt": "Run OCPP conformance tests", "expect": "evtivity-conformance", "terms": ["conformance", "ocpp"] },
+    { "prompt": "Send a TriggerMessage command to a station", "expect": "evtivity-conformance", "terms": ["triggermessage", "command"] },
+    { "prompt": "Deploy EVtivity on Kubernetes", "expect": "evtivity-deployment", "terms": ["deploy", "kubernetes"] },
+    { "prompt": "Upgrade my install with Helm", "expect": "evtivity-deployment", "terms": ["upgrade", "helm"] },
+    { "prompt": "Build the mobile app with my brand", "expect": "evtivity-mobile-app", "terms": ["build", "mobile app", "brand"] },
+    { "prompt": "List sessions via the API", "expect": "evtivity-api", "terms": ["sessions", "api"] },
+    { "prompt": "Create an API key for a script", "expect": "evtivity-api", "terms": ["api key", "script"] },
+    { "prompt": "Create a simulated charging station", "expect": "evtivity-simulator", "terms": ["simulated", "station"] },
+    { "prompt": "Run a test charging session without hardware", "expect": "evtivity-simulator", "terms": ["session", "hardware"] },
+    { "prompt": "Which environment variable sets the JWT secret?", "expect": "evtivity-configuration", "terms": ["environment variable", "jwt"] },
+    { "prompt": "Enable MFA for operators", "expect": "evtivity-configuration", "terms": ["mfa"] },
+    { "prompt": "How does a driver add a card in the portal?", "expect": "evtivity-portal", "terms": ["driver", "portal", "card"] },
+    { "prompt": "Guest charging by QR code", "expect": "evtivity-portal", "terms": ["guest", "qr"] },
+    { "prompt": "Walk me through onboarding a new station", "expect": "evtivity-guides", "terms": ["onboard", "station"] },
+    { "prompt": "Fix a stuck session that stays active after unplug", "expect": "evtivity-guides", "terms": ["stuck"] },
+    { "prompt": "File a bug report for the maintainers", "expect": "evtivity-report-issue", "terms": ["bug", "maintainers"] }
+  ]
+}

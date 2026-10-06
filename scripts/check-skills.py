@@ -3,7 +3,9 @@
 
 Complements the skills-ref validator (run in CI) with checks that need no install:
 - name: 1 to 64 characters, lowercase letters, digits and single hyphens, equal to the directory
-- description: 1 to 1024 characters
+- description: 1 to 350 characters, with a "Not for" clause
+- SKILL.md at most 20000 characters (about 5000 tokens), with no correction of the
+  website docs ("Page says", "Code does", "the docs say")
 - license: MIT
 - metadata.evtivity-version: present, X.Y.Z, the same in every skill
 - metadata.evtivity-release and evtivity-commit: the CSMS release tag of that version
@@ -28,6 +30,11 @@ VERSION_RE = re.compile(r"^\d+\.\d+\.\d+$")
 NUM = r"(0|[1-9][0-9]*)"
 RELEASE_RE = re.compile(rf"^v{NUM}\.{NUM}\.{NUM}(-(alpha|beta|nightly)(\.{NUM})?)?$")
 COMMIT_RE = re.compile(r"^[0-9a-f]{40}$")
+DESCRIPTION_MAX = 350  # characters: every description is loaded into the agent's context
+SKILL_MAX = 20000  # characters, about 5000 tokens: the body loads when the skill triggers
+# The website docs are the single source of truth. A skill never corrects them: a wrong
+# page is fixed on the website, and the references are regenerated.
+CORRECTION_RE = re.compile(r"page says|code does|the docs say|docs and the code differ", re.I)
 REF_RE = re.compile(r"`((?:scripts|references|assets)/[A-Za-z0-9._/-]+)`")
 
 
@@ -79,8 +86,15 @@ def main() -> int:
         if name != skill.name:
             errors.append(f"{path}: name {name!r} differs from directory {skill.name!r}")
         description = str(meta.get("description", ""))
-        if not 1 <= len(description) <= 1024:
-            errors.append(f"{path}: description has {len(description)} characters (1 to 1024)")
+        if not 1 <= len(description) <= DESCRIPTION_MAX:
+            errors.append(f"{path}: description has {len(description)} characters (1 to {DESCRIPTION_MAX})")
+        if "Not for" not in description:
+            errors.append(f"{path}: description has no 'Not for' clause naming the other skill")
+        text = path.read_text(encoding="utf-8")
+        if len(text) > SKILL_MAX:
+            errors.append(f"{path}: {len(text)} characters (at most {SKILL_MAX}, about 5000 tokens)")
+        for match in CORRECTION_RE.finditer(text):
+            errors.append(f"{path}: correction text {match.group(0)!r}. Fix the website page instead")
         if meta.get("license") != "MIT":
             errors.append(f"{path}: license must be MIT")
         compatibility = meta.get("compatibility")
