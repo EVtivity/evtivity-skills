@@ -25,6 +25,7 @@ jobs:
             exit 1
           fi
           release_check_version "$tag"
+          release_check_source "$tag"
           if release_tag_is_prerelease "$tag"; then prerelease=true; else prerelease=false; fi
           {
             echo "tag=$tag"
@@ -48,11 +49,14 @@ jobs:
         run: |
           version="${TAG#v}"
           {
+            commit=$(bash scripts/release-version.sh release_skill_metadata evtivity-commit)
             if [ "$CHANNEL" != stable ]; then
-              echo "Prerelease ($CHANNEL) for EVtivity CSMS $version. Use it with CSMS $version deployments."
+              echo "Prerelease ($CHANNEL) for EVtivity CSMS $version. Use it with CSMS $TAG deployments."
             else
               echo "Skills for EVtivity CSMS $version."
             fi
+            echo
+            echo "Made for CSMS release $TAG, commit $commit. \`setup.sh\` installs exactly that release."
             echo
             echo "## Changes"
             echo
@@ -65,8 +69,10 @@ jobs:
             echo "## Install"
             echo
             echo '```bash'
-            echo "gh skill install EVtivity/evtivity-skills evtivity-setup@$TAG"
             echo "npx skills add EVtivity/evtivity-skills"
+            for dir in skills/*/; do
+              echo "gh skill install EVtivity/evtivity-skills $(basename "$dir")@$TAG"
+            done
             echo '```'
             if [ -n "$PREVIOUS" ]; then
               echo

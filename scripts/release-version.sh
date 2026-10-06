@@ -136,6 +136,73 @@ release_check_version() {
   return $status
 }
 
+# The public CSMS repository. EVTIVITY_CSMS_REPO overrides it (tests use a local repo).
+RELEASE_CSMS_REPO="${EVTIVITY_CSMS_REPO:-https://github.com/EVtivity/evtivity-csms.git}"
+
+# release_csms_tag_commit <tag>: print the commit the CSMS release tag points to
+# (the peeled commit for an annotated tag). Exit 1 when the tag does not exist.
+release_csms_tag_commit() {
+  local tag="${1:?release_csms_tag_commit needs a tag}" refs commit
+  refs=$(git ls-remote --tags "$RELEASE_CSMS_REPO" "refs/tags/$tag" "refs/tags/$tag^{}") || return 1
+  commit=$(printf '%s\n' "$refs" | awk -v ref="refs/tags/$tag^{}" '$2 == ref { print $1 }')
+  if [ -z "$commit" ]; then
+    commit=$(printf '%s\n' "$refs" | awk -v ref="refs/tags/$tag" '$2 == ref { print $1 }')
+  fi
+  [ -n "$commit" ] || return 1
+  echo "$commit"
+}
+
+# release_set_source <tag> <commit>: record the CSMS release tag and its commit
+# in the `evtivity-release` and `evtivity-commit` metadata of every SKILL.md.
+release_set_source() {
+  local tag="${1:?release_set_source needs a tag}" commit="${2:?release_set_source needs a commit}" file
+  release_tag_is_valid "$tag" || return 1
+  if ! [[ "$commit" =~ ^[0-9a-f]{40}$ ]]; then
+    echo "commit must be 40 lowercase hex characters: $commit" >&2
+    return 1
+  fi
+  while IFS= read -r file; do
+    if ! grep -qE '^  evtivity-release: ' "$file" || ! grep -qE '^  evtivity-commit: ' "$file"; then
+      echo "$file has no metadata evtivity-release or evtivity-commit line" >&2
+      return 1
+    fi
+    sed -E -e "s/^(  evtivity-release: ).*/\\1\"$tag\"/" -e "s/^(  evtivity-commit: ).*/\\1\"$commit\"/" \
+      "$file" >"$file.tmp" && mv "$file.tmp" "$file"
+  done < <(release_skill_files)
+}
+
+# release_skill_metadata <key>: print a metadata value of the first SKILL.md
+# (check-skills.py checks that every skill carries the same value).
+release_skill_metadata() {
+  local key="${1:?release_skill_metadata needs a key}" file
+  file=$(release_skill_files | sed -n '1p')
+  sed -nE "s/^  $key: \"?([^\"]*)\"?\$/\\1/p" "$file"
+}
+
+# release_check_source <tag>: exit 0 when every SKILL.md records <tag> as
+# `evtivity-release` and the same 40-hex `evtivity-commit`. Prints each mismatch.
+release_check_source() {
+  local tag="${1:?release_check_source needs a tag}" file release commit first="" status=0
+  while IFS= read -r file; do
+    release=$(sed -nE 's/^  evtivity-release: "?([^"]*)"?$/\1/p' "$file")
+    commit=$(sed -nE 's/^  evtivity-commit: "?([^"]*)"?$/\1/p' "$file")
+    if [ "$release" != "$tag" ]; then
+      echo "$file: evtivity-release is \"$release\", expected \"$tag\"" >&2
+      status=1
+    fi
+    if ! [[ "$commit" =~ ^[0-9a-f]{40}$ ]]; then
+      echo "$file: evtivity-commit \"$commit\" is not a 40-hex commit" >&2
+      status=1
+    elif [ -z "$first" ]; then
+      first="$commit"
+    elif [ "$commit" != "$first" ]; then
+      echo "$file: evtivity-commit differs from the other skills" >&2
+      status=1
+    fi
+  done < <(release_skill_files)
+  return $status
+}
+
 if [ "${BASH_SOURCE[0]}" = "$0" ]; then
   set -euo pipefail
   fn="${1:?Usage: release-version.sh <function> [args...]}"
@@ -143,7 +210,8 @@ if [ "${BASH_SOURCE[0]}" = "$0" ]; then
   case "$fn" in
     release_tag_is_valid | release_tag_is_prerelease | release_tag_channel | \
       release_base_version | release_latest_stable_tag | release_is_newer | release_sort | \
-      release_previous_tag | release_skill_files | release_check_version) "$fn" "$@" ;;
+      release_previous_tag | release_skill_files | release_check_version | \
+      release_csms_tag_commit | release_skill_metadata | release_check_source) "$fn" "$@" ;;
     *)
       echo "Unknown function: $fn" >&2
       exit 1

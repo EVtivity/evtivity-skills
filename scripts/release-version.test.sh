@@ -56,6 +56,26 @@ check "previous of stable" v0.1.37 "$(prev v0.1.38)"
 check "previous of alpha after stable" v0.1.38 "$(prev v0.1.39-alpha.1)"
 check "previous of beta after alpha" v0.1.39-alpha.1 "$(prev v0.1.39-beta.1)"
 
+# release_csms_tag_commit against the scratch repository: lightweight and annotated tags.
+head_commit=$(git -C "$scratch" rev-parse HEAD)
+git -C "$scratch" -c user.name=test -c user.email=test@example.com tag -a v0.1.40 -m stable
+check "csms tag commit" "$head_commit" "$(EVTIVITY_CSMS_REPO="$scratch" bash scripts/release-version.sh release_csms_tag_commit v0.1.39-beta.1)"
+check "csms annotated tag commit" "$head_commit" "$(EVTIVITY_CSMS_REPO="$scratch" bash scripts/release-version.sh release_csms_tag_commit v0.1.40)"
+check "csms missing tag" no "$(ok env EVTIVITY_CSMS_REPO="$scratch" bash scripts/release-version.sh release_csms_tag_commit v9.9.9)"
+
+# release_set_source and release_check_source on a copy of the skills.
+repo_root=$(pwd)
+copy="$scratch/copy"
+mkdir -p "$copy"
+cp -R skills "$copy/"
+cd "$copy"
+release_set_source v0.1.40 "$head_commit"
+check "source recorded" yes "$(ok release_check_source v0.1.40)"
+check "source other tag" no "$(ok release_check_source v0.1.41 2>/dev/null)"
+check "source metadata" "$head_commit" "$(release_skill_metadata evtivity-commit)"
+check "short commit refused" no "$(ok release_set_source v0.1.40 abc123 2>/dev/null)"
+cd "$repo_root"
+
 if [ "$failures" -gt 0 ]; then
   echo "$failures failure(s)"
   exit 1

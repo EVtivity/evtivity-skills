@@ -8,9 +8,10 @@
 # Usage: setup.sh [options]
 #   --dir <path>     CSMS checkout (default: evtivity-csms next to the skills clone,
 #                    else ./evtivity-csms)
-#   --tag <tag>      CSMS release tag (default: the tag matching this skill's
-#                    evtivity-version, else the newest release of that line,
-#                    else the latest stable release)
+#   --tag <tag>      CSMS release tag, prereleases included (default: the
+#                    evtivity-release tag in SKILL.md, checked against its
+#                    evtivity-commit, else the latest stable release; never a
+#                    prerelease unless passed here)
 #   --lan            bind to this machine's LAN IP (default: 127.0.0.1 only)
 #   --tools          start pgAdmin, Mailpit and FTP
 #   --ocpi           start the OCPI roaming server and simulators
@@ -20,11 +21,13 @@
 #   --keep-data      existing install: keep its data
 #   --timeout <sec>  how long to wait for healthy services (default: 600)
 #   --check          only check the prerequisites
-# Env: EVTIVITY_COMPOSE_PROJECT (default: evtivity, the name in docker-compose.yml)
+#   --print-release  only print the CSMS release tag and commit it would install
+# Env: EVTIVITY_COMPOSE_PROJECT (default: evtivity, the name in docker-compose.yml),
+#      EVTIVITY_CSMS_REPO (default: https://github.com/EVtivity/evtivity-csms.git)
 # Exit: 0 running and healthy, 1 failed, 2 bad arguments, 4 a decision is needed
 set -euo pipefail
 
-REPO_URL="https://github.com/EVtivity/evtivity-csms.git"
+REPO_URL="${EVTIVITY_CSMS_REPO:-https://github.com/EVtivity/evtivity-csms.git}"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd -P)"
 SKILL_DIR="$(dirname "$SCRIPT_DIR")"
 project="${EVTIVITY_COMPOSE_PROJECT:-evtivity}"
@@ -39,6 +42,7 @@ demo="n"
 data=""
 timeout=600
 check_only="n"
+print_release="n"
 while [ $# -gt 0 ]; do
   case "$1" in
     --dir) dir="${2:?--dir needs a path}"; shift 2 ;;
@@ -52,6 +56,7 @@ while [ $# -gt 0 ]; do
     --keep-data) data="keep"; shift ;;
     --timeout) timeout="${2:?--timeout needs seconds}"; shift 2 ;;
     --check) check_only="y"; shift ;;
+    --print-release) print_release="y"; shift ;;
     -h | --help) sed -n '2,27p' "$0"; exit 0 ;;
     *) echo "Unknown argument: $1" >&2; exit 2 ;;
   esac
@@ -60,6 +65,67 @@ case "$timeout" in '' | *[!0-9]*) echo "--timeout needs seconds" >&2; exit 2 ;; 
 
 step() { printf '\n== %s\n' "$*"; }
 fail() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
+
+# ---------------------------------------------------------------- release tag
+# Tag grammar of EVtivity releases: vX.Y.Z or vX.Y.Z-(alpha|beta|nightly)[.N].
+TAG_RE='^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-(alpha|beta|nightly)(\.(0|[1-9][0-9]*))?)?$'
+STABLE_RE='^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'
+
+# commit_of <tag>: the commit of a tag in $remote_refs (peeled for annotated tags).
+commit_of() {
+  local peeled
+  peeled=$(printf '%s\n' "$remote_refs" | awk -v ref="refs/tags/$1^{}" '$2 == ref { print $1 }')
+  if [ -n "$peeled" ]; then
+    echo "$peeled"
+  else
+    printf '%s\n' "$remote_refs" | awk -v ref="refs/tags/$1" '$2 == ref { print $1 }'
+  fi
+}
+
+# skill_meta <key>: a metadata value from this skill's SKILL.md.
+skill_meta() {
+  sed -nE "s/^  $1: \"?([^\"]*)\"?\$/\\1/p" "$SKILL_DIR/SKILL.md" | head -n 1
+}
+
+# resolve_release: set $tag and $commit to the CSMS release to install.
+resolve_release() {
+  step "Release"
+  remote_refs=$(git ls-remote --tags "$REPO_URL" 'v*' 2>/dev/null || true)
+  remote_tags=$(printf '%s\n' "$remote_refs" | awk '{ print $2 }' | grep -v '\^{}$' | sed 's#^refs/tags/##' | grep -E "$TAG_RE" || true)
+  [ -n "$remote_tags" ] || fail "cannot list the release tags of $REPO_URL (network?)"
+  if [ -n "$tag" ]; then
+    # An explicit --tag may be any release, prereleases included.
+    printf '%s\n' "$remote_tags" | grep -qx "$tag" || fail "tag $tag does not exist in $REPO_URL"
+    commit=$(commit_of "$tag")
+  else
+    # The release these skills were made for, checked against the commit they recorded.
+    want=$(skill_meta evtivity-release)
+    want_commit=$(skill_meta evtivity-commit)
+    if [ -n "$want" ] && printf '%s\n' "$remote_tags" | grep -qx "$want"; then
+      commit=$(commit_of "$want")
+      if [ -n "$want_commit" ] && [ "$commit" != "$want_commit" ]; then
+        fail "tag $want now points to $commit, not $want_commit, the commit these skills were made for. Pass --tag <release> to choose a release."
+      fi
+      tag="$want"
+    else
+      # Never a prerelease by default: the latest stable release only.
+      tag=$(printf '%s\n' "$remote_tags" | grep -E "$STABLE_RE" | sed 's/^v//' |
+        sort -t. -k1,1n -k2,2n -k3,3n | tail -n 1 | sed 's/^/v/' || true)
+      [ "$tag" != "v" ] && [ -n "$tag" ] || fail "no stable release found in $REPO_URL. Pass --tag <release>."
+      commit=$(commit_of "$tag")
+      echo "Release ${want:-of these skills} not found. Using the latest stable release."
+    fi
+  fi
+  [ -n "$commit" ] || fail "cannot resolve the commit of $tag"
+  echo "CSMS release: $tag ($commit)"
+}
+
+
+if [ "$print_release" = "y" ]; then
+  resolve_release >&2
+  echo "$tag $commit"
+  exit 0
+fi
 
 # ---------------------------------------------------------------- prerequisites
 step "Prerequisites"
@@ -115,48 +181,8 @@ fi
 echo "ports $PORTS free"
 if [ "$check_only" = "y" ]; then exit 0; fi
 
-# ---------------------------------------------------------------- release tag
-# Tag grammar of EVtivity releases: vX.Y.Z or vX.Y.Z-(alpha|beta|nightly)[.N].
-TAG_RE='^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-(alpha|beta|nightly)(\.(0|[1-9][0-9]*))?)?$'
 
-# sort_key <tag>: a key that sorts tags in semver order with `sort -t. -k... -n`.
-sort_key() {
-  local t="${1#v}" base pre channel num rank
-  base="${t%%-*}"
-  if [ "$base" = "$t" ]; then
-    rank=3
-    num=0
-  else
-    pre="${t#*-}"
-    channel="${pre%%.*}"
-    num="${pre#"$channel"}"
-    num="${num#.}"
-    num="${num:-0}"
-    case "$channel" in alpha) rank=0 ;; beta) rank=1 ;; nightly) rank=2 ;; esac
-  fi
-  echo "$base.$rank.$num $1"
-}
-
-step "Release"
-remote_tags=$(git ls-remote --tags --refs "$REPO_URL" 'v*' 2>/dev/null | sed 's#.*refs/tags/##' | grep -E "$TAG_RE" || true)
-[ -n "$remote_tags" ] || fail "cannot list the release tags of $REPO_URL (network?)"
-if [ -n "$tag" ]; then
-  printf '%s\n' "$remote_tags" | grep -qx "$tag" || fail "tag $tag does not exist in $REPO_URL"
-else
-  want=$(sed -n 's/^ *evtivity-version: *"\{0,1\}\([0-9.]*\)"\{0,1\} *$/\1/p' "$SKILL_DIR/SKILL.md" | head -n 1)
-  sorted=$(printf '%s\n' "$remote_tags" | while read -r t; do sort_key "$t"; done |
-    sort -t. -k1,1n -k2,2n -k3,3n -k4,4n -k5,5n | awk '{ print $2 }')
-  if [ -n "$want" ] && printf '%s\n' "$sorted" | grep -qx "v$want"; then
-    tag="v$want"
-  elif [ -n "$want" ] && printf '%s\n' "$sorted" | grep -q "^v$want-"; then
-    tag=$(printf '%s\n' "$sorted" | grep "^v$want-" | tail -n 1)
-    echo "v$want is not released yet. Using the newest release of that line."
-  else
-    tag=$(printf '%s\n' "$sorted" | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' | tail -n 1)
-    echo "No release of ${want:-the skill version} found. Using the latest stable release."
-  fi
-fi
-echo "CSMS release: $tag"
+resolve_release
 
 # ---------------------------------------------------------------- checkout
 if [ -z "$dir" ]; then
@@ -177,19 +203,21 @@ else
   if [ ! -f "$dir/docker-compose.yml" ] || ! git -C "$dir" rev-parse --git-dir >/dev/null 2>&1; then
     fail "$dir exists and is not an EVtivity CSMS checkout. Pass --dir with another path."
   fi
-  current=$(git -C "$dir" describe --tags --exact-match 2>/dev/null || true)
-  if [ "$current" = "$tag" ]; then
+  current=$(git -C "$dir" rev-parse HEAD 2>/dev/null || true)
+  if [ "$current" = "$commit" ]; then
     echo "already at $tag"
   else
     if [ -n "$(git -C "$dir" status --porcelain --untracked-files=no)" ]; then
-      fail "$dir has local changes and is at ${current:-a commit without a tag}, not $tag. Commit or discard them, or pass --dir."
+      fail "$dir has local changes and is not at $tag. Commit or discard them, or pass --dir."
     fi
-    git -C "$dir" fetch --quiet --depth 1 origin "refs/tags/$tag:refs/tags/$tag" ||
+    git -C "$dir" fetch --quiet --depth 1 origin "+refs/tags/$tag:refs/tags/$tag" ||
       fail "git fetch of $tag failed"
     git -C "$dir" -c advice.detachedHead=false checkout --quiet "$tag" || fail "git checkout of $tag failed"
-    echo "switched from ${current:-another commit} to $tag"
+    echo "switched to $tag"
   fi
 fi
+head_commit=$(git -C "$dir" rev-parse HEAD)
+[ "$head_commit" = "$commit" ] || fail "$dir is at $head_commit, not $commit ($tag). The checkout does not match the release."
 cd "$dir"
 
 # ---------------------------------------------------------------- npm ci

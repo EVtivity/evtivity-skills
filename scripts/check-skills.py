@@ -6,6 +6,8 @@ Complements the skills-ref validator (run in CI) with checks that need no instal
 - description: 1 to 1024 characters
 - license: MIT
 - metadata.evtivity-version: present, X.Y.Z, the same in every skill
+- metadata.evtivity-release and evtivity-commit: the CSMS release tag of that version
+  and its 40-hex commit, the same in every skill
 - body under 500 lines, files referenced from SKILL.md exist
 - every skill is listed in .claude-plugin/marketplace.json and README.md
 - scripts/coverage.json matches the generated references, and each SKILL.md
@@ -23,6 +25,9 @@ from pathlib import Path
 
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 VERSION_RE = re.compile(r"^\d+\.\d+\.\d+$")
+NUM = r"(0|[1-9][0-9]*)"
+RELEASE_RE = re.compile(rf"^v{NUM}\.{NUM}\.{NUM}(-(alpha|beta|nightly)(\.{NUM})?)?$")
+COMMIT_RE = re.compile(r"^[0-9a-f]{40}$")
 REF_RE = re.compile(r"`((?:scripts|references|assets)/[A-Za-z0-9._/-]+)`")
 
 
@@ -57,6 +62,7 @@ def main() -> int:
     if not skills:
         errors.append("no skills found")
     versions: set[str] = set()
+    sources: set[tuple[str, str]] = set()
     for skill in skills:
         path = skill / "SKILL.md"
         if not path.is_file():
@@ -85,6 +91,15 @@ def main() -> int:
         if not VERSION_RE.match(version):
             errors.append(f"{path}: metadata evtivity-version {version!r} is not X.Y.Z")
         versions.add(version)
+        release = metadata.get("evtivity-release", "") if isinstance(metadata, dict) else ""
+        commit = metadata.get("evtivity-commit", "") if isinstance(metadata, dict) else ""
+        if not RELEASE_RE.match(release):
+            errors.append(f"{path}: metadata evtivity-release {release!r} is not a CSMS release tag")
+        elif release[1:].split("-")[0] != version:
+            errors.append(f"{path}: evtivity-release {release} is not of evtivity-version {version}")
+        if not COMMIT_RE.match(commit):
+            errors.append(f"{path}: metadata evtivity-commit {commit!r} is not a 40-hex commit")
+        sources.add((release, commit))
         lines = body.count("\n")
         if lines >= 500:
             errors.append(f"{path}: body has {lines} lines (under 500)")
@@ -100,6 +115,8 @@ def main() -> int:
                         errors.append(f"{nested}: keep files one level deep")
     if len(versions) > 1:
         errors.append(f"skills target different versions: {sorted(versions)}")
+    if len(sources) > 1:
+        errors.append(f"skills record different CSMS releases: {sorted(sources)}")
 
     marketplace = json.loads(Path(".claude-plugin/marketplace.json").read_text(encoding="utf-8"))
     listed = {
