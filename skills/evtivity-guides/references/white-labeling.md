@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/guides/white-labeling (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/guides/white-labeling (website commit 257c8b8). Do not edit.
 
 # White Labeling
 
@@ -126,7 +126,7 @@ Click any variable pill to copy. The live preview updates as you type. Save comm
 
 ### Per-event Templates
 
-The Notifications page (separate from Settings &rarr; Notification) has per-event template editors for driver events (session.Started, session.Completed, etc.) and system events (welcome emails, password resets, MFA codes, support cases). Each template supports email and SMS body variants in 7 languages.
+The Notifications page (separate from Settings &rarr; Notification) has per-event template editors for driver events (session.Started, session.Completed, etc.) and system events (welcome emails, password resets, MFA codes, support cases). Each template supports email and SMS body variants in 6 languages.
 
 The dashboard's WYSIWYG editor produces HTML that renders inside the wrapper from above. **Reset Template** reverts to the file-based template.
 
@@ -149,7 +149,7 @@ Two pages drivers can reach from the portal:
 - Privacy Policy
 - Terms of Service
 
-Each is a WYSIWYG-edited rich-text page per language. The portal automatically serves the page matching the driver's selected locale, falling back to English when a translation is empty. Supported locales: English (US), English (UK), Spanish, Simplified Chinese, Traditional Chinese, Korean.
+Each is a WYSIWYG-edited rich-text page per language. The portal automatically serves the page matching the driver's selected locale, and serves the built-in default text for that language when none is saved. Supported languages: English, German, Spanish, Korean, Simplified Chinese, Traditional Chinese.
 
 Have your legal team draft these before launch. The portal's footer links to them, and most regulators require both for paid charging.
 

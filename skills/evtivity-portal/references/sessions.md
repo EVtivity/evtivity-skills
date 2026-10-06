@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/portal/sessions (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/portal/sessions (website commit 257c8b8). Do not edit.
 
 # Activity and Sessions
 
@@ -27,7 +27,7 @@ The top of the page displays a donut chart with your selected metric for the cur
 | Energy   | kWh   | Sum of energy delivered across all sessions |
 | Distance | miles | Estimated from energy and your vehicle's efficiency rating |
 
-Distance estimation uses the efficiency value from your first registered vehicle. If no vehicle is registered, a default of 3.5 mi/kWh is used. You can add vehicles in the **Account** page.
+Distance estimation uses the efficiency value from your most recently added vehicle. If no vehicle is registered, a default of 3.5 mi/kWh is used. You can add vehicles in the **Account** page.
 
 ### Carbon Impact
 

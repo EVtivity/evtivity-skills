@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/guides/ocpp-testing (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/guides/ocpp-testing (website commit 257c8b8). Do not edit.
 
 # OCPP Testing
 
@@ -115,7 +115,7 @@ Commands vary by OCPP version. Common commands available for both 1.6 and 2.1:
 4. Fill in the required parameters (connector ID, transaction ID, etc.).
 5. Click **Send**.
 
-The station must be online to receive commands. The send button is disabled when the station is offline.
+The send button stays enabled when the station is offline. The CSMS queues the command, shows it as queued, and delivers it when the station reconnects.
 
 The command response appears below the form showing the station's response status and any returned data.
 

@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/getting-started/installation (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/getting-started/installation (website commit 257c8b8). Do not edit.
 
 # Installation
 
@@ -44,7 +44,7 @@ npm run db:seed
 
 > **Warning:**
 >
-> Re-running `db:seed` destroys existing configuration. It overwrites every system setting with seed defaults, resets the admin password to `INITIAL_ADMIN_PASSWORD`, and restores role permissions to defaults. Any changes made in the dashboard are lost. Stations, sessions, and drivers are not deleted.
+> Re-running `db:seed` adds only missing settings, roles, and users. It keeps existing settings, the admin password, and role permissions. Stations, sessions, and drivers are not deleted. `npm run db:seed -- --apply-config` writes the values from `packages/database/seed.config.json` over existing settings, and dashboard changes to those settings are lost.
 
 ## 4. Start services
 
@@ -104,7 +104,7 @@ Started automatically by `npm run dev:infra`:
 
 ```bash
 npm run db:migrate       # Apply pending migrations
-npm run db:seed          # Re-seed data (overwrites settings, respects SEED_DEMO env var)
+npm run db:seed          # Add missing seed data (keeps existing settings, respects SEED_DEMO env var)
 npm run db:generate      # Generate migration from schema changes
 ```
 

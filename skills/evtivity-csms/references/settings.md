@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/settings (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/settings (website commit 257c8b8). Do not edit.
 
 # Settings
 
@@ -469,13 +469,13 @@ API keys inherit the creating user's site access at request time. Revoking a key
 
 **Permission:** `settings.firmware:read` / `settings.firmware:write`
 
-Embeds the Firmware Campaigns page. Create and manage firmware update campaigns that push firmware to stations matching target filters (site, vendor, model). See [Firmware Campaigns](https://www.evtivity.com/docs/csms/firmware-campaigns) for details.
+Embeds the Firmware Campaigns page. Create and manage firmware update campaigns that push firmware to stations matching target filters (site, vendor, model). See [Firmware Campaigns](https://www.evtivity.com/docs/csms/firmware-updates) for details.
 
 ## Station Configurations
 
 **Permission:** `settings.stationConfig:read` / `settings.stationConfig:write`
 
-Embeds the Configuration Templates page. Create templates of OCPP configuration variables and push them to groups of stations. See [Configuration Templates](https://www.evtivity.com/docs/csms/configuration-templates) for details.
+Embeds the Configuration Templates page. Create templates of OCPP configuration variables and push them to groups of stations. See [Configuration Templates](https://www.evtivity.com/docs/csms/station-configurations) for details.
 
 ## Smart Charging
 

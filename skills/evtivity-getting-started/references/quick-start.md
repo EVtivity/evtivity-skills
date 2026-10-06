@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/getting-started/quick-start (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/getting-started/quick-start (website commit 257c8b8). Do not edit.
 
 # Quick Start
 
@@ -61,7 +61,7 @@ This honors `SEED_DEMO` in your `.env` file. Set `SEED_DEMO=false` (default) to 
 
 > **Warning:**
 >
-> Re-running `db:seed` overwrites every system setting with seed defaults and resets the admin password. Any changes made in the dashboard are lost.
+> Re-running `db:seed` adds only what is missing and keeps existing settings, the admin password, and roles. `npm run db:seed -- --apply-config` writes the values from `packages/database/seed.config.json` over existing settings, and dashboard changes to those settings are lost.
 
 ## Enable the charging station simulator
 

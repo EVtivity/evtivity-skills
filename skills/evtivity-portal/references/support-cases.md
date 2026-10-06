@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/portal/support-cases (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/portal/support-cases (website commit 257c8b8). Do not edit.
 
 # Support Cases
 
@@ -81,7 +81,7 @@ If a session was attached to the case, it appears in the case info section with 
 |--------|---------|
 | Open | Case submitted, awaiting operator review |
 | In Progress | Operator is working on the case |
-| Waiting on Driver | Operator needs more information from you |
+| Awaiting Your Reply | Operator needs more information from you |
 | Resolved | Operator has resolved the issue |
 | Closed | Case is closed |
 

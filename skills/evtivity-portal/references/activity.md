@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/portal/activity (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/portal/activity (website commit 257c8b8). Do not edit.
 
 # Activity
 
@@ -58,7 +58,7 @@ The colored dot on each session row indicates its status:
 | Green  | Active    |
 | Gray   | Completed |
 | Red    | Failed    |
-| Yellow | Pending   |
+| Amber  | Pending   |
 
 ## Monthly Statement
 

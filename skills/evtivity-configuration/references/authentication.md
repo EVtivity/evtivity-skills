@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/configuration/authentication (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/configuration/authentication (website commit 257c8b8). Do not edit.
 
 # Authentication
 
@@ -36,7 +36,7 @@ API keys provide programmatic access to the REST API.
 
 ## Role-Based Access Control
 
-EVtivity uses 58 granular permissions in `resource:action` format (e.g., `stations:write`, `sessions:read`).
+EVtivity uses 66 granular permissions in `resource:action` format (e.g., `stations:write`, `sessions:read`): 44 page permissions and 22 settings permissions.
 
 Route middleware enforces permissions:
 
@@ -46,7 +46,7 @@ authorize('stations:write')
 
 Write permission implies read. A user with `stations:write` can also read station data.
 
-Custom roles can combine any subset of the 58 permissions. The system ships with default roles (Admin, Operator, Viewer) that you can customize.
+Each user holds any subset of the 66 permissions. The system ships with three roles (Admin, Operator, Viewer). A user's role sets their default permissions, and you can then customize the permissions of each user.
 
 ## Multi-Factor Authentication
 
@@ -84,7 +84,7 @@ EVtivity uses Google reCAPTCHA v3 for bot protection.
 - Invisible to users (no checkbox or challenge).
 - Score-based with a configurable threshold (default 0.5).
 - Enable and configure in Settings > Security.
-- Requires `RECAPTCHA_SECRET_KEY` and `RECAPTCHA_SITE_KEY` environment variables.
+- The site key, secret key, and threshold are dashboard settings, not environment variables. The secret key is stored encrypted.
 
 ## CSRF Protection
 

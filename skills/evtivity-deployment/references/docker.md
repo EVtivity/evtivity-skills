@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/deployment/docker (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/deployment/docker (website commit 257c8b8). Do not edit.
 
 # Docker
 
@@ -6,25 +6,25 @@ Docker images for each EVtivity service, registry details, and resource recommen
 
 ## Image Registry
 
-All images are published to `ghcr.io/evtivity`. Each service has its own image built from a multi-stage Dockerfile.
+All images are published to `ghcr.io/evtivity/evtivity-csms`. Each service has its own image built from a multi-stage Dockerfile.
 
 | Service   | Image                          | Ports         |
 |-----------|--------------------------------|---------------|
-| API       | `ghcr.io/evtivity/api`        | 7102          |
-| OCPP      | `ghcr.io/evtivity/ocpp`       | 7103, 8443    |
-| CSMS      | `ghcr.io/evtivity/csms`       | 80            |
-| Portal    | `ghcr.io/evtivity/portal`     | 80            |
-| Worker    | `ghcr.io/evtivity/worker`     | -             |
-| CSS       | `ghcr.io/evtivity/css`        | -             |
-| OCPI      | `ghcr.io/evtivity/ocpi`       | 7104          |
-| Migrate   | `ghcr.io/evtivity/migrate`    | -             |
+| API       | `ghcr.io/evtivity/evtivity-csms/api` | 7102          |
+| OCPP      | `ghcr.io/evtivity/evtivity-csms/ocpp` | 7103, 8443    |
+| CSMS      | `ghcr.io/evtivity/evtivity-csms/csms` | 8080          |
+| Portal    | `ghcr.io/evtivity/evtivity-csms/portal` | 8080          |
+| Worker    | `ghcr.io/evtivity/evtivity-csms/worker` | -             |
+| CSS       | `ghcr.io/evtivity/evtivity-csms/css` | -             |
+| OCPI      | `ghcr.io/evtivity/evtivity-csms/ocpi` | 7104          |
+| Migrate   | `ghcr.io/evtivity/evtivity-csms/migrate` | -             |
 
 ## Build Context
 
 Each image uses a multi-stage Dockerfile. The first stage installs dependencies and builds. The final stage copies only the production output, keeping images small.
 
 ```bash
-docker build -f packages/api/Dockerfile -t ghcr.io/evtivity/api .
+docker build -f packages/api/Dockerfile -t ghcr.io/evtivity/evtivity-csms/api .
 ```
 
 Run builds from the monorepo root so the build context includes shared packages.

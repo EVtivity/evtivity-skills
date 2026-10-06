@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/deployment/helm-chart (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/deployment/helm-chart (website commit 257c8b8). Do not edit.
 
 # Helm Chart
 
@@ -52,12 +52,12 @@ The chart deploys six microservices, each with an independent enable toggle:
 
 | Service | Port | Image | Health Probe | Description |
 |---------|------|-------|-------------|-------------|
-| API | 7102 | evtivity-api | HTTP /health | Fastify REST API |
-| OCPP | 7103, 8443 | evtivity-ocpp | HTTP / on 8081 | OCPP WebSocket server |
-| OCPI | 7104 | evtivity-ocpi | TCP 7104 | OCPI roaming server |
-| CSMS | 80 | evtivity-csms | HTTP /health (nginx) | Operator dashboard |
-| Portal | 80 | evtivity-portal | HTTP /health (nginx) | Driver portal |
-| CSS | - | evtivity-css | HTTP / on 8082 | Charging station simulator |
+| API | 7102 | api | HTTP /health | Fastify REST API |
+| OCPP | 7103, 8443 | ocpp | HTTP / on 8081 | OCPP WebSocket server |
+| OCPI | 7104 | ocpi | TCP 7104 | OCPI roaming server |
+| CSMS | 7100 | csms | HTTP /health (nginx) | Operator dashboard |
+| Portal | 7101 | portal | HTTP /health (nginx) | Driver portal |
+| CSS | - | css | HTTP / on 8082 | Charging station simulator |
 
 Two OCPI simulator services are also available for testing:
 
@@ -311,7 +311,7 @@ Images are resolved from three levels:
 
 ```yaml
 image:
-  registry: ghcr.io/evtivity   # Base registry for all services
+  registry: ghcr.io/evtivity/evtivity-csms   # Base registry for all services
   tag: ""                       # Defaults to Chart.appVersion
   pullPolicy: IfNotPresent
 
@@ -321,7 +321,7 @@ api:
     tag: ""                     # Per-service tag override
 ```
 
-Full image reference: `{registry}/{component}:{tag}`. Example: `ghcr.io/evtivity/evtivity-api:0.1.18`.
+Full image reference: `{registry}/{component}:{tag}`. Example: `ghcr.io/evtivity/evtivity-csms/api:0.1.18`.
 
 ## Values Reference
 

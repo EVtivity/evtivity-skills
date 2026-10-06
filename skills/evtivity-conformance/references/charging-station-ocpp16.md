@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/conformance/charging-station-ocpp16 (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/conformance/charging-station-ocpp16 (website commit 257c8b8). Do not edit.
 
 # OCPP 1.6 Charging Station Results
 

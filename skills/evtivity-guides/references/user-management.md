@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/guides/user-management (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/guides/user-management (website commit 257c8b8). Do not edit.
 
 # User Management
 
@@ -6,10 +6,11 @@ Roles, permissions, site access control, and API keys in EVtivity CSMS.
 
 ## Roles
 
-EVtivity has two built-in roles:
+EVtivity has three built-in roles:
 
-- **Admin** - Full access to all 58 permissions. Can manage users, settings, and billing.
+- **Admin** - Full access to all 66 permissions. Can manage users, settings, and billing.
 - **Operator** - A subset of permissions scoped to day-to-day operations. Cannot modify system settings or manage other admins.
+- **Viewer** - Read-only access.
 
 ## Permission Model
 
@@ -22,10 +23,10 @@ sessions:read     - View session data
 sessions:write    - Stop sessions, export data
 ```
 
-The system has 58 total permissions across two categories:
+The system has 66 total permissions across two categories:
 
-- **19 page resources** - Stations, sessions, dashboard, tariffs, sites, drivers, reservations, support cases, reports, and more.
-- **11 settings tab resources** - Organization, billing, notifications, templates, API keys, security, integrations, and more.
+- **22 page resources** - Stations, sessions, dashboard, tariffs, sites, drivers, reservations, support cases, reports, and more.
+- **11 settings tab resources** - System, notifications, payments, integrations, security, API keys, firmware, station configurations, and more.
 
 ## Per-User Permission Customization
 

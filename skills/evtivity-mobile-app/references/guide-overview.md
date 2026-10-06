@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/guide/overview (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/guide/overview (website commit 257c8b8). Do not edit.
 
 # End User Guide
 

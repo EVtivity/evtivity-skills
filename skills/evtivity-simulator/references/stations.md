@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/simulator/stations (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/simulator/stations (website commit 257c8b8). Do not edit.
 
 # Managing Simulated Stations
 
@@ -152,5 +152,5 @@ The SimulatorManager joins `charging_stations` and `vendors` when it loads stati
 - CSS stations do not require physical hardware. They exist entirely in software.
 - The SimulatorManager subscribes to Redis pub/sub for action commands and polls the database every 5 seconds to detect new, removed, or disabled stations.
 - A TLS reachability check runs each cycle. If the OCPP TLS server is unreachable, the SimulatorManager retries on the next cycle so a server coming online is picked up without restarting CSS.
-- In chaos mode, the ChaosOrchestrator reads `charging_stations WHERE is_simulator = true` at startup and provisions any missing `css_stations` rows. It serves as a backstop for seeded data; the dashboard toggle and the simulator API are the primary pairing paths in normal operation.
+- In chaos mode, the ChaosOrchestrator reads the stations with `is_simulator = true` that have an enabled `css_stations` row. It creates no rows. The seed, the dashboard toggle, and the simulator API pair stations.
 - Security Profile 3 stations connect to the TLS OCPP endpoint with client certificates.

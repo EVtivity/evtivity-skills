@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/simulator/overview (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/simulator/overview (website commit 257c8b8). Do not edit.
 
 # Simulator Overview
 
@@ -25,7 +25,7 @@ The simulator has four layers:
 
 3. **SimulatorManager** - Manages the fleet of StationSimulator instances. Subscribes to Redis commands from the API. Creates, destroys, and dispatches actions to individual simulators.
 
-4. **ChaosOrchestrator** - Drives autonomous behavior. Reads stations from the CSMS via the API, creates corresponding CSS station records, and triggers random actions at configurable intervals. Only active in `chaos` mode.
+4. **ChaosOrchestrator** - Drives autonomous behavior. Reads the enabled simulated stations from the database and triggers random actions at configurable intervals. Only active in `chaos` mode.
 
 ## Communication Flow
 
@@ -42,16 +42,14 @@ The CSMS API exposes endpoints for managing simulated stations and triggering ac
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `CSS_MODE` | `standby` | Operating mode: `standby` or `chaos` |
-| `CSS_ACTION_INTERVAL_MS` | `1000` | Interval between chaos mode actions (ms) |
+| `CSS_ACTION_INTERVAL_MS` | `1000` | Interval between chaos mode actions (ms). Docker Compose sets `3000` when `.env` does not set it. |
 | `CSS_STATION_LIMIT` | `0` | Max stations in chaos mode (0 = all) |
 | `OCPP_SERVER_URL` | `ws://localhost:7103` | Plain WebSocket OCPP endpoint |
 | `OCPP_TLS_SERVER_URL` | `wss://localhost:8443` | TLS WebSocket OCPP endpoint |
 | `DATABASE_URL` | (PostgreSQL connection) | Database for reading CSS station config |
 | `REDIS_URL` | `redis://localhost:6379` | Redis for pub/sub command channel |
-| `CSS_API_URL` | `http://localhost:7102` | API server URL (chaos mode only) |
-| `CSS_API_TOKEN` | (empty) | API auth token (chaos mode only) |
 | `CSS_HEALTH_PORT` | `8082` | Health endpoint port for probes |
-| `CSS_STATION_PASSWORD` | `password` | Default password for Basic Auth and TLS + Basic Auth stations |
+| `CSS_STATION_PASSWORD` | `password` | Not used. Each station uses the password stored on its simulator record. |
 
 ## Operating Modes
 
@@ -63,7 +61,7 @@ Use standby mode for manual testing and development.
 
 ### Chaos Mode
 
-The ChaosOrchestrator reads real stations from the CSMS and creates corresponding simulator records, then runs autonomously: every `CSS_ACTION_INTERVAL_MS` (default 1 s) it picks **one** random action that's valid for the current station and connector state. There is no scripted sequence — no fixed plug-in → start → stop → unplug recipe. Realistic traffic emerges over many ticks because the state-aware filter keeps each pick consistent with the wire.
+The ChaosOrchestrator reads the enabled simulated stations from the database, then runs autonomously: every `CSS_ACTION_INTERVAL_MS` (default 1 s) it picks **one** random action that's valid for the current station and connector state. There is no scripted sequence — no fixed plug-in → start → stop → unplug recipe. Realistic traffic emerges over many ticks because the state-aware filter keeps each pick consistent with the wire.
 
 Action pool (defined in `packages/css/src/chaos-orchestrator.ts`):
 

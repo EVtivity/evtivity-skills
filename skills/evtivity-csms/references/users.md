@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/users (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/users (website commit 257c8b8). Do not edit.
 
 # Users
 
@@ -6,7 +6,7 @@ Manage operator users with role-based access control, granular permissions, and 
 
 ## Overview
 
-The Users page manages operator accounts that access the CSMS dashboard. Each user has a role (admin or operator), a set of granular permissions, and optional site-level access restrictions.
+The Users page manages operator accounts that access the CSMS dashboard. Each user has a role (admin, operator, or viewer), a set of granular permissions, and optional site-level access restrictions.
 
 ![Users list](https://www.evtivity.com/screenshots/csms/users-list.png)
 
@@ -14,8 +14,9 @@ The Users page manages operator accounts that access the CSMS dashboard. Each us
 
 | Role | Default Access |
 |------|----------------|
-| Admin | All 58 permissions. Full access to every page and setting. |
+| Admin | All 66 permissions. Full access to every page and setting. |
 | Operator | Operational subset. No settings access, no user write permissions. |
+| Viewer | Read-only access. |
 
 Roles provide default permission sets. After creating a user, you can customize their individual permissions.
 
@@ -27,50 +28,53 @@ Roles provide default permission sets. After creating a user, you can customize 
 
 | Field | Description |
 |-------|-------------|
-| Name | Full name |
+| First Name | Required |
+| Last Name | Required |
 | Email | Login email address (must be unique) |
 | Mobile | Phone number for SMS notifications (optional) |
-| Password | Initial password (user can change it later) |
-| Role | Admin or Operator |
+| Role | Admin, Operator, or Viewer |
 
 ![Create user](https://www.evtivity.com/screenshots/csms/users-create.png)
 
 4. Configure **Site Access** (see below).
-5. Click **Create**. The role's default permissions are copied to the new user.
+5. Click **Create**. The role's default permissions are copied to the new user. EVtivity emails the user an invitation with a link to set a password. The link expires after 24 hours.
 
 ## Permissions
 
-EVtivity uses 58 granular permissions in `resource:action` format. Actions are either `read` or `write`. Write permission implies read for the same resource.
+EVtivity uses 66 granular permissions in `resource:action` format. Actions are either `read` or `write`. Write permission implies read for the same resource.
 
-### Page Permissions (38)
+### Page Permissions (44)
 
-19 resources with read and write:
+22 resources with read and write:
 
 | Resource | Controls Access To |
 |----------|--------------------|
 | dashboard | Dashboard page and stats |
-| sites | Site list and detail |
 | stations | Station list, detail, and commands |
+| sites | Site list and detail |
 | sessions | Session list and detail |
-| drivers | Driver list and detail |
-| tokens | Driver token management |
+| drivers | Driver list, detail, and driver tokens |
 | fleets | Fleet management |
-| pricing | Pricing groups and tariffs |
 | reservations | Reservation management |
-| support-cases | Support case management |
-| notifications | Notification settings, history, and preferences |
-| firmware-campaigns | Firmware update campaigns |
-| config-templates | Station configuration templates |
-| users | User management |
-| reports | Reports and sustainability |
+| support | Support case management |
+| payments | Payments and invoices |
+| pricing | Pricing groups and tariffs |
 | roaming | OCPI roaming management |
+| smartCharging | Smart charging profiles |
+| loadManagement | Load management |
 | certificates | PnC certificate management |
 | conformance | Conformance test runner |
-| access-logs | Access log viewing |
+| reports | Reports |
+| sustainability | Sustainability and carbon data |
+| notifications | Notification settings, history, and preferences |
+| logs | Access and worker logs |
+| users | User management |
+| audit | Audit log |
+| maintenance | Maintenance windows |
 
-### Settings Permissions (20)
+### Settings Permissions (22)
 
-11 settings tabs with read and write, controlling access to individual Settings page tabs (e.g., `settings.general:read`, `settings.smtp:write`).
+11 settings tabs with read and write, controlling access to individual Settings page tabs (e.g., `settings.system:read`, `settings.notification:write`).
 
 ## Customize Permissions
 

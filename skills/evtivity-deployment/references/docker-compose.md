@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/deployment/docker-compose (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/deployment/docker-compose (website commit 257c8b8). Do not edit.
 
 # Docker Compose
 
@@ -15,8 +15,8 @@ The default `docker compose up` starts the core services needed to run EVtivity:
 | migrate   | -         | -              | Runs Drizzle migrations, then exits  |
 | api       | 7102      | 7102           | Fastify REST API                     |
 | ocpp      | 7103      | 7103, 8443     | OCPP WebSocket server                |
-| csms      | 7100      | 80             | Management dashboard (nginx)         |
-| portal    | 7101      | 80             | Driver portal (nginx)                |
+| csms      | 7100      | 8080           | Management dashboard (nginx)         |
+| portal    | 7101      | 8080           | Driver portal (nginx)                |
 | worker    | -         | -              | BullMQ job processors: cron jobs, load management, guest session linking, reservation activation, OCTT runs |
 | simulator | -         | -              | Charging station simulator           |
 
@@ -64,7 +64,7 @@ docker compose --profile ocpi up
 | Service      | Host Port | Description                   |
 |--------------|-----------|-------------------------------|
 | ocpi         | 7104      | OCPI roaming server           |
-| ocpi-sim     | -         | OCPI eMSP simulator           |
+| ocpi-simulator | -         | OCPI eMSP simulator           |
 | ocpi-cpo-sim | -         | OCPI CPO simulator            |
 
 ## Development Infrastructure Only

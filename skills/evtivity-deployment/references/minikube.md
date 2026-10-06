@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/deployment/minikube (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/deployment/minikube (website commit 257c8b8). Do not edit.
 
 # Minikube
 
@@ -146,7 +146,7 @@ The latest CSMS release is published in three places:
 - `https://evtivity.com/csms-version.txt` - a plain-text mirror used by the dashboard
 - The CSMS dashboard itself shows an "Update available" toast to admin users when a newer version exists
 
-Prereleases (tags such as `v0.1.38-beta.1`, `v0.1.38-nightly.1`, or `v0.1.38-rc.1`) are marked **Pre-release** on the GitHub releases page and publish images under their exact version only. They are not announced: `csms-version.txt` and the dashboard toast only name stable releases, and the chart's `appVersion` does not move to a prerelease. A dashboard running a prerelease is told when the stable release of that version ships.
+Prereleases (tags such as `v0.1.38-beta.1`, `v0.1.38-nightly.1`, or `v0.1.38-alpha.1`) are marked **Pre-release** on the GitHub releases page and publish images under their exact version only. They are not announced: `csms-version.txt` and the dashboard toast only name stable releases, and the chart's `appVersion` does not move to a prerelease. A dashboard running a prerelease is told when the stable release of that version ships.
 
 ### Pull the latest chart
 

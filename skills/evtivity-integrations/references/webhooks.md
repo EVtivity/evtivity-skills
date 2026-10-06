@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/integrations/webhooks (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/integrations/webhooks (website commit 257c8b8). Do not edit.
 
 # Webhooks and Events
 
@@ -53,7 +53,7 @@ EVtivity provides real-time event streams over SSE for both operators and driver
 ### Operator Stream
 
 ```bash
-GET /v1/events
+GET /v1/events/stream
 ```
 
 Event types:

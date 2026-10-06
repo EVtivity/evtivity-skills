@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/configuration/database-setup (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/configuration/database-setup (website commit 257c8b8). Do not edit.
 
 # Database Setup
 
@@ -47,15 +47,15 @@ Schema files live in `packages/database/src/schema/` with 33 files organized by 
 
 ### Migration Commands
 
-Run these from `packages/database/`:
+Run these from the repository root:
 
 | Command | Description |
 |---|---|
-| `npm run generate` | Create a new SQL migration and snapshot from schema changes |
+| `npm run check:migrations` | Check the migrations journal: every SQL file has an entry, indexes are sequential, and timestamps increase |
 | `npm run db:migrate` | Apply pending migrations to the database |
-| `npm run db:seed` | Seed the database with initial data. Re-running overwrites all settings and resets the admin password. |
+| `npm run db:seed` | Seed the database with initial data. Re-running adds only missing settings, roles, and users and keeps existing values, including the admin password. `npm run db:seed -- --apply-config` writes the values from `packages/database/seed.config.json` over existing settings. |
 
-Never write migration SQL manually. Always modify the schema files and run `npm run generate` to produce the migration.
+Write each migration by hand. A schema change in `packages/database/src/schema/` needs a migration in the same change: the next numbered, idempotent SQL file in `packages/database/src/migrations/` (guarded statements such as `CREATE TABLE IF NOT EXISTS` and `ADD COLUMN IF NOT EXISTS`) and its entry in `packages/database/src/migrations/meta/_journal.json`. Do not use `npm run generate`: the Drizzle snapshot baseline is frozen, so it cannot diff the schema correctly. Run `npm run check:migrations`, then `npm run db:migrate`.
 
 ### Rules
 

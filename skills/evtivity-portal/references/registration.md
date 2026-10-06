@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/portal/registration (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/portal/registration (website commit 257c8b8). Do not edit.
 
 # Registration and Authentication
 

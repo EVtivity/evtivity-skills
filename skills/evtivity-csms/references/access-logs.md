@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/access-logs (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/access-logs (website commit 257c8b8). Do not edit.
 
 # Access Logs
 
@@ -56,4 +56,4 @@ The audit log family (per-entity History tabs and the global Audit page) is gove
 
 ## API Access
 
-`GET /v1/access-logs` returns the same data the CSMS, Portal, and API tabs render. `GET /v1/worker-logs` powers the Workers tab. Both require the `access-logs:read` permission. See the [API reference](https://www.evtivity.com/api-reference/access-logs) for query parameters.
+`GET /v1/access-logs` returns the same data the CSMS, Portal, and API tabs render. `GET /v1/worker-logs` powers the Workers tab. Both require the `logs:read` permission. See the [API reference](https://www.evtivity.com/api-reference/access-logs) for query parameters.

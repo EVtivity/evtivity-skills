@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/configuration/environment-variables (website commit 0f3462e). Do not edit.
+Generated from https://www.evtivity.com/docs/configuration/environment-variables (website commit 257c8b8). Do not edit.
 
 # Environment Variables
 
@@ -46,11 +46,11 @@ Created by the migrate container's seed steps on first `docker compose up -d`. I
 |---|---|---|
 | `API_PORT` | `7102` | HTTP port for the REST API |
 | `API_HOST` | `0.0.0.0` | Bind address |
-| `JWT_SECRET` | - | Secret for signing JWTs. Required in production. |
-| `CORS_ORIGIN` | - | Allowed CORS origins. Comma-separated for multiple. |
-| `SETTINGS_ENCRYPTION_KEY` | - | Exactly 32 characters. Used for AES-256-GCM encryption of sensitive settings. Required; the API refuses to start without it. |
+| `JWT_SECRET` | `dev-secret-change-in-production` | Secret for signing JWTs. Always set it in production: the default is a known development value. |
+| `CORS_ORIGIN` | `*` | Allowed CORS origins. Comma-separated for multiple. |
+| `SETTINGS_ENCRYPTION_KEY` | - | Any non-empty value. The AES-256-GCM key for sensitive settings is derived from it with scrypt. Use a long random value (32 characters or more). Required; the API refuses to start without it. |
 | `LOG_LEVEL` | `info` | Log verbosity: `trace`, `debug`, `info`, `warn`, `error`, `fatal` |
-| `NODE_ENV` | - | `development` or `production` |
+| `NODE_ENV` | `development` | `development`, `production`, or `test`. Set `production` in production. |
 | `RATE_LIMIT_MAX` | `3000` | Max requests per window for general endpoints |
 | `RATE_LIMIT_WINDOW` | `1 minute` | Time window for rate limiting |
 | `AUTH_RATE_LIMIT_MAX` | `30` | Max requests per window for auth endpoints |
@@ -66,6 +66,8 @@ Created by the migrate container's seed steps on first `docker compose up -d`. I
 | Variable | Default | Description |
 |---|---|---|
 | `API_BASE_URL` | `http://localhost:7102` | Base URL the worker uses to call the API (conformance test runs) |
+| `OCPP_SERVER_URL` | `ws://localhost:7103` | OCPP server URL the worker connects to (conformance test runs) |
+| `OCTT_OCSP_RESPONDER_URL` | - | URL at which the OCPP server reaches the test OCSP responder the worker starts for a conformance run. Unset: the OCSP tests are skipped. |
 
 ## OCPP Server
 
@@ -139,9 +141,9 @@ Integrations (Stripe, S3, SMTP, Twilio, reCAPTCHA, Google Maps, Plug and Charge)
 |---|---|---|
 | `CSS_MODE` | `standby` | Simulator mode on startup: `standby` or `chaos` |
 | `CSS_HEALTH_PORT` | `8082` | Health check endpoint port |
-| `CSS_ACTION_INTERVAL_MS` | `1000` | Milliseconds between simulated actions |
+| `CSS_ACTION_INTERVAL_MS` | `1000` | Milliseconds between simulated actions. Docker Compose sets `3000` when `.env` does not set it. |
 | `CSS_STATION_LIMIT` | `0` | Max stations to simulate. 0 for unlimited. |
-| `CSS_STATION_PASSWORD` | `password` | Basic Auth password the simulated stations present |
+| `CSS_STATION_PASSWORD` | `password` | Not used. Each simulated station presents the password stored on its simulator record. |
 | `OCPP_SERVER_URL` | `ws://localhost:7103` | OCPP server URL the simulator connects to |
 | `OCPP_TLS_SERVER_URL` | `wss://localhost:8443` | TLS OCPP server URL for TLS + Basic Auth and Mutual TLS stations |
 | `TLS_REJECT_UNAUTHORIZED` | `false` | Enable TLS certificate validation. Set to `true` for CA-signed certificates. |
