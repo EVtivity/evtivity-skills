@@ -5,7 +5,7 @@
 <h1 align="center">EVtivity Agent Skills</h1>
 
 <p align="center">
-  <a href="https://github.com/EVtivity/evtivity-skills/releases"><img src="https://img.shields.io/github/v/release/EVtivity/evtivity-skills?include_prereleases&sort=semver&label=Release&color=4ade80" alt="Release" /></a>
+  <a href="https://github.com/EVtivity/evtivity-skills/releases/latest"><img src="https://img.shields.io/github/v/release/EVtivity/evtivity-skills?label=Release&color=4ade80" alt="Release" /></a>
   <a href="https://github.com/EVtivity/evtivity-skills/actions/workflows/validate.yml"><img src="https://github.com/EVtivity/evtivity-skills/actions/workflows/validate.yml/badge.svg" alt="Validate" /></a>
   <a href="https://github.com/EVtivity/evtivity-skills/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" /></a>
   <a href="https://agentskills.io"><img src="https://img.shields.io/badge/Agent%20Skills-open%20standard-4ade80.svg" alt="Agent Skills" /></a>
