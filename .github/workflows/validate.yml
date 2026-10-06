@@ -28,8 +28,48 @@ jobs:
           exit $status
       - name: Repository checks
         run: python3 scripts/check-skills.py
-      - name: Plugin marketplace JSON
-        run: python3 -m json.tool .claude-plugin/marketplace.json >/dev/null
+
+  references:
+    name: Generated references
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Converter tests
+        run: node --test scripts/*.test.mjs
+      - name: Fetch the website at the recorded commit
+        id: website
+        env:
+          WEBSITE_TOKEN: ${{ secrets.WEBSITE_READ_TOKEN }}
+        run: |
+          commit=$(node -p "require('./scripts/references-source.json').commit")
+          url="https://github.com/EVtivity/evtivity.com.git"
+          if [ -n "$WEBSITE_TOKEN" ]; then
+            url="https://x-access-token:${WEBSITE_TOKEN}@github.com/EVtivity/evtivity.com.git"
+          fi
+          git init --quiet website
+          if git -C website fetch --quiet --depth 1 "$url" "$commit" 2>/dev/null; then
+            git -C website checkout --quiet FETCH_HEAD
+            echo "fetched=true" >> "$GITHUB_OUTPUT"
+          elif [ -n "$WEBSITE_TOKEN" ]; then
+            echo "::error::Cannot fetch the website docs at $commit with WEBSITE_READ_TOKEN."
+            exit 1
+          else
+            echo "::warning::The website docs are not readable without the WEBSITE_READ_TOKEN secret. Skipped the generated references check."
+            echo "fetched=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Regenerate and compare
+        if: steps.website.outputs.fetched == 'true'
+        run: |
+          commit=$(node -p "require('./scripts/references-source.json').commit")
+          node scripts/generate-references.mjs --website website --commit "$commit"
+          if [ -n "$(git status --porcelain -- skills scripts)" ]; then
+            git status --short -- skills scripts
+            echo "::error::References are generated. Run scripts/generate-references.mjs and commit the result."
+            exit 1
+          fi
 
   scripts:
     name: Scripts

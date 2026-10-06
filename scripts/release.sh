@@ -2,15 +2,18 @@
 # Cut a release of the EVtivity skills. The tag matches the EVtivity CSMS
 # release the skills target.
 #
-# Usage: scripts/release.sh <tag> [--push]
-#   <tag>   vX.Y.Z (stable) or vX.Y.Z-alpha[.N], -beta[.N], -nightly[.N]
-#   --push  push main and the tag to origin (the Release workflow then creates
-#           the GitHub release). Without it, nothing leaves this machine.
+# Usage: scripts/release.sh <tag> [--push] [--website <dir>] [--website-ref <ref>]
+#   <tag>          vX.Y.Z (stable) or vX.Y.Z-alpha[.N], -beta[.N], -nightly[.N]
+#   --push         push main and the tag to origin (the Release workflow then
+#                  creates the GitHub release). Without it, nothing leaves this machine.
+#   --website      checkout of the website repository (default: ../evtivity.com)
+#   --website-ref  website ref the references are generated from (default: origin/main)
 #
-# Steps: validate the tag, require a clean main that matches origin/main, set
+# Steps: validate the tag, require a clean main that matches origin/main,
+# regenerate the references from the website docs at the ref, set
 # `evtivity-version` in every SKILL.md to X.Y.Z, validate the skills, commit
 # (`release: version X.Y.Z` for stable, `release: prepare X.Y.Z` for a
-# prerelease) when the version changed, and create the tag.
+# prerelease) when anything changed, and create the tag.
 set -euo pipefail
 
 cd "$(dirname "$0")/.."
@@ -19,19 +22,24 @@ cd "$(dirname "$0")/.."
 
 tag=""
 push="n"
-for arg in "$@"; do
-  case "$arg" in
-    --push) push="y" ;;
-    -h | --help) sed -n '2,13p' "$0"; exit 0 ;;
-    -*) echo "Unknown option: $arg" >&2; exit 2 ;;
+website="../evtivity.com"
+website_ref="origin/main"
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --push) push="y"; shift ;;
+    --website) website="${2:?--website needs a path}"; shift 2 ;;
+    --website-ref) website_ref="${2:?--website-ref needs a ref}"; shift 2 ;;
+    -h | --help) sed -n '2,17p' "$0"; exit 0 ;;
+    -*) echo "Unknown option: $1" >&2; exit 2 ;;
     *)
-      if [ -n "$tag" ]; then echo "Only one tag, got $tag and $arg" >&2; exit 2; fi
-      tag="$arg"
+      if [ -n "$tag" ]; then echo "Only one tag, got $tag and $1" >&2; exit 2; fi
+      tag="$1"
+      shift
       ;;
   esac
 done
 if [ -z "$tag" ]; then
-  sed -n '5,9p' "$0" >&2
+  sed -n '5,10p' "$0" >&2
   exit 2
 fi
 if ! release_tag_is_valid "$tag"; then
@@ -69,10 +77,26 @@ if [ -n "$latest" ] && ! release_is_newer "$tag" "$latest"; then
 fi
 
 version=$(release_base_version "$tag")
+if ! git -C "$website" rev-parse --git-dir >/dev/null 2>&1; then
+  echo "Website checkout not found at $website. Pass --website <dir>." >&2
+  exit 1
+fi
+git -C "$website" fetch --quiet origin
+website_commit=$(git -C "$website" rev-parse --verify "$website_ref^{commit}")
+export_dir=$(mktemp -d)
 restore() {
-  git checkout --quiet -- skills
+  git checkout --quiet -- skills scripts
+  git clean --quiet -fd -- skills
+  rm -rf "$export_dir"
 }
 trap restore ERR
+
+# Regenerate the references from the website docs at the ref, without touching
+# the website checkout's working tree.
+git -C "$website" archive "$website_commit" app/content/docs/en app/data/octt-results.json app/i18n/en.json |
+  tar -x -C "$export_dir"
+node scripts/generate-references.mjs --website "$export_dir" --commit "$website_commit"
+rm -rf "$export_dir"
 
 release_set_version "$tag"
 release_check_version "$tag"
@@ -84,11 +108,11 @@ if [ -n "$(git status --porcelain)" ]; then
   else
     message="release: version $version"
   fi
-  git add skills
+  git add skills scripts/coverage.json scripts/references-source.json
   git commit --quiet -m "$message"
   echo "Committed: $message"
 else
-  echo "Every SKILL.md already targets $version. No commit needed."
+  echo "References and versions are current. No commit needed."
 fi
 trap - ERR
 
