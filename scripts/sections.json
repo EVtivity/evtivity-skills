@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "getting-started": "evtivity-getting-started",
+    "configuration": "evtivity-configuration",
+    "deployment": "evtivity-deployment",
+    "csms": "evtivity-csms",
+    "portal": "evtivity-portal",
+    "mobile-app": "evtivity-mobile-app",
+    "integrations": "evtivity-integrations",
+    "simulator": "evtivity-simulator",
+    "conformance": "evtivity-conformance",
+    "guides": "evtivity-guides"
+  },
+  "extraPages": {
+    "evtivity-conformance": ["csms/conformance-testing", "guides/ocpp-testing"],
+    "evtivity-troubleshoot": ["guides/troubleshooting"]
+  }
+}

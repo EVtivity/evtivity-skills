@@ -8,6 +8,8 @@ Complements the skills-ref validator (run in CI) with checks that need no instal
 - metadata.evtivity-version: present, X.Y.Z, the same in every skill
 - body under 500 lines, files referenced from SKILL.md exist
 - every skill is listed in .claude-plugin/marketplace.json and README.md
+- scripts/coverage.json matches the generated references, and each SKILL.md
+  links every reference file of its skill
 
 Run from the repo root: python3 scripts/check-skills.py
 """
@@ -105,6 +107,31 @@ def main() -> int:
         for plugin in marketplace.get("plugins", [])
         for s in plugin.get("skills", [])
     }
+    for name in sorted(listed):
+        if not (Path("skills") / name / "SKILL.md").is_file():
+            errors.append(f".claude-plugin/marketplace.json: lists missing skill {name}")
+
+    coverage = json.loads(Path("scripts/coverage.json").read_text(encoding="utf-8"))
+    marker = "Generated from https://www.evtivity.com/docs/"
+    for skill in skills:
+        refs = skill / "references"
+        generated = set()
+        if refs.is_dir():
+            for f in refs.glob("*.md"):
+                if f.read_text(encoding="utf-8").startswith(marker):
+                    generated.add(f.name)
+        expected = {"-".join(p.split("/")[1:]) + ".md" for p in coverage.get(skill.name, [])}
+        for name in sorted(expected - generated):
+            errors.append(f"{skill}: references/{name} missing (run scripts/generate-references.mjs)")
+        for name in sorted(generated - expected):
+            errors.append(f"{skill}: references/{name} is not in scripts/coverage.json")
+        body = (skill / "SKILL.md").read_text(encoding="utf-8")
+        for name in sorted(expected):
+            if f"references/{name}" not in body:
+                errors.append(f"{skill}/SKILL.md: does not link references/{name}")
+    for name in coverage:
+        if not (Path("skills") / name).is_dir():
+            errors.append(f"scripts/coverage.json: unknown skill {name}")
     readme = Path("README.md").read_text(encoding="utf-8")
     for skill in skills:
         if skill.name not in listed:

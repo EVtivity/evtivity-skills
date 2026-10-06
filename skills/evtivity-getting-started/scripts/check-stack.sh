@@ -72,11 +72,18 @@ else
   if [ "$starting" -gt 0 ]; then echo "  $starting container(s) still starting"; fi
 fi
 
-# http_status <url>: the HTTP status, or "down" when nothing answers.
+# http_status <url>: the HTTP status; "open" when the port accepts connections
+# but sends no HTTP answer (the OCPP TLS port); "down" when nothing listens.
 http_status() {
-  local code
-  code=$(curl -sk -o /dev/null --max-time 5 -w '%{http_code}' "$1" 2>/dev/null || true)
-  if [ -z "$code" ] || [ "$code" = "000" ]; then echo "down"; else echo "$code"; fi
+  local code rc=0
+  code=$(curl -sk -o /dev/null --max-time 5 -w '%{http_code}' "$1" 2>/dev/null) || rc=$?
+  if [ -n "$code" ] && [ "$code" != "000" ]; then
+    echo "$code"
+  elif [ "$rc" -eq 6 ] || [ "$rc" -eq 7 ]; then
+    echo "down"
+  else
+    echo "open"
+  fi
 }
 
 api_port=$(env_value API_PORT 7102)
@@ -85,8 +92,8 @@ printf '  %-10s %-6s %s\n' \
   csms "$(http_status "http://$host:$(env_value CSMS_PORT 7100)/")" "http://$host:$(env_value CSMS_PORT 7100)" \
   portal "$(http_status "http://$host:$(env_value PORTAL_PORT 7101)/")" "http://$host:$(env_value PORTAL_PORT 7101)" \
   api "$(http_status "http://$host:$api_port/v1/health")" "http://$host:$api_port/v1/health" \
-  ocpp "$(http_status "http://$host:$(env_value OCPP_PORT 7103)/")" "ws://$host:$(env_value OCPP_PORT 7103) (any HTTP status means listening)" \
-  ocpp-tls "$(http_status "https://$host:8443/")" "wss://$host:8443 (any HTTP status means listening)"
+  ocpp "$(http_status "http://$host:$(env_value OCPP_PORT 7103)/")" "ws://$host:$(env_value OCPP_PORT 7103) (426 means listening)" \
+  ocpp-tls "$(http_status "https://$host:8443/")" "wss://$host:8443 (open means listening)"
 if printf '%s\n' "$ps_out" | grep -q '^ocpi|running'; then
   printf '  %-10s %-6s %s\n' ocpi "$(http_status "http://$host:$(env_value OCPI_PORT 7104)/")" "http://$host:$(env_value OCPI_PORT 7104)"
 fi

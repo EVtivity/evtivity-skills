@@ -105,3 +105,14 @@ docker compose down --volumes    # stop and DELETE all data
 ```
 
 Confirm with the user before `--volumes`.
+
+## Reference pages
+
+Every docs page this skill covers is in `references/`, generated from the website docs. Never edit those files. Read the reference for details, and link the live page when you answer.
+
+| Page id | Reference | Live page |
+|---|---|---|
+| `getting-started/installation` | `references/installation.md` | https://www.evtivity.com/docs/getting-started/installation |
+| `getting-started/introduction` | `references/introduction.md` | https://www.evtivity.com/docs/getting-started/introduction |
+| `getting-started/project-structure` | `references/project-structure.md` | https://www.evtivity.com/docs/getting-started/project-structure |
+| `getting-started/quick-start` | `references/quick-start.md` | https://www.evtivity.com/docs/getting-started/quick-start |

@@ -111,11 +111,13 @@ Responses:
 
 | Status | Body | Meaning |
 |---|---|---|
-| 200 | `{ status, stationId, action, response }` | The station answered. `response` is its raw OCPP payload. Check `response.status` (`Accepted`, `Rejected`, ...). |
-| 202 | `{ status: "queued", code: "COMMAND_QUEUED", ... }` | The station is offline. The command is queued for its reconnect. |
-| 502 | `{ status, code, error, ... }` | The station rejected the command. |
-| 504 | `{ status, code: "COMMAND_TIMEOUT", ... }` | No answer within the timeout. |
+| 200 | `{ status: "accepted", stationId, action, response }` | The station answered. `status` only says an answer arrived. Read `response.status` (`Accepted`, `Rejected`, `Scheduled`, ...): a station that refuses still gives 200. |
+| 202 | `{ status: "queued", code: "COMMAND_QUEUED", ... }` | The station is offline. The command is queued and sent when it reconnects. |
+| 502 | `{ status: "error", code: "COMMAND_ERROR", error, ... }` | No usable answer: the station returned an OCPP CALLERROR, did not answer in time, closed the connection, or does not support the command. `error` says which. |
+| 504 | `{ status: "timeout", code: "COMMAND_TIMEOUT", ... }` | No result reached the API within 35 seconds. |
 | 400, 404 | `{ error, code }` | Bad payload, unknown station, or wrong OCPP version for the station. |
+
+The route descriptions in Swagger say 502 means "the station rejects". The code returns a rejection as 200 with `response.status: "Rejected"`. Always check `response.status`.
 
 Trigger a status report (OCPP 2.1):
 
@@ -203,5 +205,5 @@ Report filters: `dateFrom`, `dateTo` and `siteId` (most types), `stationId` and 
 
 1. Read `code` and look it up in `references/error-codes.md`.
 2. 401: token missing, expired (sign-in tokens last one hour) or revoked. 403: the key lacks the permission in `references/routes.md`.
-3. OCPP command 502 or 504: the station rejected it or did not answer. Check that the station is online and its protocol matches `v21` or `v16`. The station's OCPP log is at `GET /v1/stations/{id}/ocpp-logs`.
+3. OCPP command 200 with `response.status: "Rejected"`: the station refused it. 502 or 504: the station sent an error or did not answer. Check that the station is online and its protocol matches `v21` or `v16`. The station's OCPP log is at `GET /v1/stations/{id}/ocpp-logs`.
 4. Connection refused or 5xx on every route: the stack is down. Use the `evtivity-troubleshoot` skill.

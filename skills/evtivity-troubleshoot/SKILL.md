@@ -172,3 +172,11 @@ For data you must keep, back up first: `docker compose exec postgres pg_dump -U 
 Run `scripts/diagnose.sh` again and confirm every service is healthy and the symptom is gone. If the problem stays, use the `evtivity-report-issue` skill with the diagnostics output.
 
 Endpoint checks with an API token (for example the station list or an OCPP command result) are in the `evtivity-api` skill. Setup from scratch: the `evtivity-getting-started` skill. Deployment-specific settings (Helm, AWS): the `evtivity-deployment` skill.
+
+## Reference pages
+
+Every docs page this skill covers is in `references/`, generated from the website docs. Never edit those files. Read the reference for details, and link the live page when you answer.
+
+| Page id | Reference | Live page |
+|---|---|---|
+| `guides/troubleshooting` | `references/troubleshooting.md` | https://www.evtivity.com/docs/guides/troubleshooting |

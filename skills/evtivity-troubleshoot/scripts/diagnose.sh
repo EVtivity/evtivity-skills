@@ -51,10 +51,17 @@ env_value() {
   echo "${value:-$2}"
 }
 
+# http_status <url>: the HTTP status, "open" (accepts connections, no HTTP answer) or "down".
 http_status() {
-  local code
-  code=$(curl -sk -o /dev/null --max-time 5 -w '%{http_code}' "$1" 2>/dev/null || true)
-  if [ -z "$code" ] || [ "$code" = "000" ]; then echo "down"; else echo "$code"; fi
+  local code rc=0
+  code=$(curl -sk -o /dev/null --max-time 5 -w '%{http_code}' "$1" 2>/dev/null) || rc=$?
+  if [ -n "$code" ] && [ "$code" != "000" ]; then
+    echo "$code"
+  elif [ "$rc" -eq 6 ] || [ "$rc" -eq 7 ]; then
+    echo "down"
+  else
+    echo "open"
+  fi
 }
 
 echo "# EVtivity diagnostics ($(date -u '+%Y-%m-%dT%H:%M:%SZ'))"
@@ -119,8 +126,8 @@ echo "== Endpoints (host $host)"
 echo "  csms $(http_status "http://$host:$(env_value CSMS_PORT 7100)/")"
 echo "  portal $(http_status "http://$host:$(env_value PORTAL_PORT 7101)/")"
 echo "  api /v1/health $(http_status "http://$host:$api_port/v1/health"): $(curl -s --max-time 5 "http://$host:$api_port/v1/health" 2>/dev/null || true)"
-echo "  ocpp ws $(http_status "http://$host:$(env_value OCPP_PORT 7103)/") (any status means listening)"
-echo "  ocpp wss $(http_status "https://$host:8443/") (any status means listening)"
+echo "  ocpp ws $(http_status "http://$host:$(env_value OCPP_PORT 7103)/") (426 means listening)"
+echo "  ocpp wss $(http_status "https://$host:8443/") (open means listening)"
 
 if command -v lsof >/dev/null 2>&1; then
   held=""

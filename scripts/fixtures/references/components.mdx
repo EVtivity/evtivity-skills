@@ -1,0 +1,70 @@
+---
+title: Sample Page
+description: A page that uses every component the website docs use.
+---
+
+import { Something } from "~/components/something";
+
+## Intro
+
+Station&#39;s status is on the [Stations](/docs/csms/stations) page and the [API reference](/api-reference/error-codes).
+
+![Station list](/screenshots/csms/stations.png)
+
+{/* An editor comment */}
+
+<a id="anchor-one"></a>
+
+<Callout type="warning">
+Re-running `db:seed` overwrites settings.
+
+- First point
+- Second point
+</Callout>
+
+<Callout type="tip" title="Good to know">One-line callout.</Callout>
+
+<Callout>
+A note without a type.
+</Callout>
+
+<Steps>
+<Step>
+### Enable the toggle
+
+Open the **Free Vend** tab.
+</Step>
+<Step title="Push templates">
+Templates go to online stations.
+
+```bash
+curl -s http://localhost:7102/v1/health
+```
+</Step>
+</Steps>
+
+<CodeBlock>
+uptime = (total - excluded) / total * 100
+</CodeBlock>
+
+<Tabs>
+<Tab title="Docker">
+Run `docker compose up -d`.
+</Tab>
+<Tab title="Helm">
+Run `helm install`.
+</Tab>
+</Tabs>
+
+```bash
+export JAVA_HOME="$(/usr/libexec/java_home -v 17)"
+<NotAComponent>
+```
+
+Inline `ws@Company.<YourCompany>` stays as written, and so does `&#39;` in code.
+
+<OcttResultsDate version="ocpp2.1" sut="csms" />
+
+<OcttModuleSummary version="ocpp2.1" sut="csms" />
+
+<OcttNotApplicable version="ocpp1.6" sut="cs" />
