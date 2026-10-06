@@ -29,7 +29,7 @@ git -C "$repo" tag v0.1.38
 c39b=$(commit two)
 git -C "$repo" tag v0.1.39-beta.1
 c39n=$(commit three)
-git -C "$repo" tag v0.1.39-nightly.1
+git -C "$repo" tag v0.1.39-beta.2
 c310=$(commit four)
 git -C "$repo" -c user.name=test -c user.email=test@example.com tag -a v0.1.310 -m stable
 commit five >/dev/null
@@ -51,7 +51,7 @@ check "recorded release" "v0.1.39-beta.1 $c39b" "$(run "$(skill v0.1.39-beta.1 "
 check "recorded stable, annotated tag" "v0.1.310 $c310" "$(run "$(skill v0.1.310 "$c310")")"
 check "moved tag is refused" "exit 1" "$(run "$(skill v0.1.39-beta.1 "$c38")")"
 check "missing release falls back to latest stable" "v0.1.310 $c310" "$(run "$(skill v0.1.99 "$c38")")"
-check "explicit prerelease" "v0.1.39-nightly.1 $c39n" "$(run "$(skill v0.1.99 "$c38")" --tag v0.1.39-nightly.1)"
+check "explicit prerelease" "v0.1.39-beta.2 $c39n" "$(run "$(skill v0.1.99 "$c38")" --tag v0.1.39-beta.2)"
 check "unknown explicit tag" "exit 1" "$(run "$(skill v0.1.39-beta.1 "$c39b")" --tag v9.9.9)"
 
 if [ "$failures" -gt 0 ]; then

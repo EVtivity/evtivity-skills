@@ -33,7 +33,7 @@ The Compose file builds every service from source with development Dockerfiles. 
 ## Images and tags (`references/docker.md`)
 
 - Images for `linux/amd64` and `linux/arm64` under `ghcr.io/evtivity/evtivity-csms/<service>`: `api`, `ocpp`, `ocpi`, `csms`, `portal`, `worker`, `css`, `migrate`, `ocpi-simulator`.
-- Every release has an exact, immutable tag without a `v` prefix: release `v0.1.38` publishes `0.1.38`. Stable releases also move `0.1`, `0`, `latest` and `stable`. Prereleases (`-alpha.N`, `-beta.N`, `-nightly.N`) move only their channel alias.
+- Every release has an exact, immutable tag without a `v` prefix: release `v0.1.38` publishes `0.1.38`. Stable releases also move `0.1`, `0`, `latest` and `stable`. Prereleases (`-alpha.N`, `-beta.N`) move only their channel alias (`alpha` or `beta`).
 - Pin an exact stable tag in production. Aliases change only when a deployment pulls again.
 - Build from the repo root so the context includes shared packages: `docker build -f packages/api/Dockerfile -t <your-registry>/api .`
 - CSMS and portal images read the API URL at runtime: set `API_URL` on the container. Their nginx listens on port 8080.

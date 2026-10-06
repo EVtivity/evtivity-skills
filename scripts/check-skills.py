@@ -28,7 +28,7 @@ from pathlib import Path
 NAME_RE = re.compile(r"^[a-z0-9]+(-[a-z0-9]+)*$")
 VERSION_RE = re.compile(r"^\d+\.\d+\.\d+$")
 NUM = r"(0|[1-9][0-9]*)"
-RELEASE_RE = re.compile(rf"^v{NUM}\.{NUM}\.{NUM}(-(alpha|beta|nightly)(\.{NUM})?)?$")
+RELEASE_RE = re.compile(rf"^v{NUM}\.{NUM}\.{NUM}(-(alpha|beta)(\.{NUM})?)?$")
 COMMIT_RE = re.compile(r"^[0-9a-f]{40}$")
 DESCRIPTION_MAX = 350  # characters: every description is loaded into the agent's context
 SKILL_MAX = 20000  # characters, about 5000 tokens: the body loads when the skill triggers

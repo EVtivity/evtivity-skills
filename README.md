@@ -104,7 +104,7 @@ The repository is also a plugin for Codex (`.codex-plugin/plugin.json`, with the
 
 ### Pin a version
 
-Release tags match EVtivity CSMS releases: `v0.1.39` for stable, `v0.1.39-alpha.N`, `v0.1.39-beta.N` and `v0.1.39-nightly.N` for prereleases. Install the tag that matches your deployment. Find your version with `curl -s http://<api-host>:7102/v1/version` or the image tag of your deployment.
+Release tags match EVtivity CSMS releases: `v0.1.39` for stable, `v0.1.39-alpha.N` and `v0.1.39-beta.N` for prereleases. Install the tag that matches your deployment. Find your version with `curl -s http://<api-host>:7102/v1/version` or the image tag of your deployment.
 
 Each release records the exact CSMS release it was made for in every `SKILL.md`: `metadata.evtivity-release` (the tag) and `metadata.evtivity-commit` (that tag's commit). `setup.sh` installs exactly that tag after it checks the commit. When the tag does not exist it installs the latest stable CSMS release, never a nightly or other prerelease, unless you pass `--tag`.
 

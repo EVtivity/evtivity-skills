@@ -21,7 +21,7 @@ jobs:
           . scripts/release-version.sh
           tag="${GITHUB_REF_NAME}"
           if ! release_tag_is_valid "$tag"; then
-            echo "::error::$tag is not vX.Y.Z or vX.Y.Z-(alpha|beta|nightly)[.N]"
+            echo "::error::$tag is not vX.Y.Z or vX.Y.Z-(alpha|beta)[.N] (no nightly, rc or preview)"
             exit 1
           fi
           release_check_version "$tag"

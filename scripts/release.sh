@@ -3,7 +3,7 @@
 # release the skills target.
 #
 # Usage: scripts/release.sh <tag> [--push] [--website <dir>] [--website-ref <ref>]
-#   <tag>          vX.Y.Z (stable) or vX.Y.Z-alpha[.N], -beta[.N], -nightly[.N]
+#   <tag>          vX.Y.Z (stable) or vX.Y.Z-alpha[.N], -beta[.N]
 #   --push         push main and the tag to origin (the Release workflow then
 #                  creates the GitHub release). Without it, nothing leaves this machine.
 #   --website      checkout of the website repository (default: ../evtivity.com)
@@ -46,7 +46,7 @@ if [ -z "$tag" ]; then
   exit 2
 fi
 if ! release_tag_is_valid "$tag"; then
-  echo "Invalid tag: $tag. Use vX.Y.Z or vX.Y.Z-(alpha|beta|nightly)[.N]. rc, preview and build metadata are not used." >&2
+  echo "Invalid tag: $tag. Use vX.Y.Z or vX.Y.Z-(alpha|beta)[.N]. The only prerelease channels are alpha and beta: nightly, rc, preview and build metadata are not used." >&2
   exit 2
 fi
 

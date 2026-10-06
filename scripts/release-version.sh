@@ -3,18 +3,19 @@
 #
 # Source this file; it defines functions only. The skills are released with the
 # EVtivity CSMS and use the same tag grammar: `v` plus a semver 2.0.0 version
-# (https://semver.org) in one of four channels: stable `v0.1.39`, alpha
-# `v0.1.39-alpha.1`, beta `v0.1.39-beta.2` and nightly `v0.1.39-nightly.7` (the
-# number is optional). No other prerelease label (rc, preview) is used, so this
-# grammar rejects them. Build metadata (`+...`) is rejected too.
+# (https://semver.org) in one of three channels: stable `v0.1.39`, alpha
+# `v0.1.39-alpha.1` and beta `v0.1.39-beta.2` (the number is optional). No other
+# prerelease label (nightly, rc, preview) is used, so this grammar rejects them,
+# and tags outside it are never a changelog base. Build metadata (`+...`) is
+# rejected too.
 #
 # Usage from a shell: bash scripts/release-version.sh <function> [args...]
 
 RELEASE_NUM='(0|[1-9][0-9]*)'
 RELEASE_STABLE_RE="^v${RELEASE_NUM}\\.${RELEASE_NUM}\\.${RELEASE_NUM}\$"
-RELEASE_TAG_RE="^v${RELEASE_NUM}\\.${RELEASE_NUM}\\.${RELEASE_NUM}(-(alpha|beta|nightly)(\\.${RELEASE_NUM})?)?\$"
+RELEASE_TAG_RE="^v${RELEASE_NUM}\\.${RELEASE_NUM}\\.${RELEASE_NUM}(-(alpha|beta)(\\.${RELEASE_NUM})?)?\$"
 
-# release_tag_is_valid <tag>: exit 0 when the tag is a stable, alpha, beta or nightly tag.
+# release_tag_is_valid <tag>: exit 0 when the tag is a stable, alpha or beta tag.
 release_tag_is_valid() {
   [[ "${1:-}" =~ $RELEASE_TAG_RE ]]
 }
@@ -24,8 +25,8 @@ release_tag_is_prerelease() {
   release_tag_is_valid "${1:-}" && ! [[ "$1" =~ $RELEASE_STABLE_RE ]]
 }
 
-# release_tag_channel <tag>: print the release channel: `stable`, `alpha`, `beta`
-# or `nightly`. Exit 1 for an invalid tag.
+# release_tag_channel <tag>: print the release channel: `stable`, `alpha` or
+# `beta`. Exit 1 for an invalid tag.
 release_tag_channel() {
   local tag="${1:-}" pre
   release_tag_is_valid "$tag" || return 1
@@ -53,7 +54,7 @@ release_latest_stable_tag() {
 }
 
 # release_is_newer <tag> <than>: exit 0 when <tag> has higher semver precedence
-# than <than>. Within one X.Y.Z, alpha < beta < nightly < stable.
+# than <than>. Within one X.Y.Z, alpha < beta < stable.
 release_is_newer() {
   local a="${1:-}" b="${2:-}"
   release_tag_is_valid "$a" && release_tag_is_valid "$b" || return 1
@@ -72,10 +73,10 @@ release_sort() {
       channel="${pre%%.*}"
       num="${pre#"$channel"}"
       num="${num#.}"
-      case "$channel" in alpha) rank=0 ;; beta) rank=1 ;; *) rank=2 ;; esac
+      case "$channel" in alpha) rank=0 ;; *) rank=1 ;; esac
       num="${num:-0}"
     else
-      rank=3
+      rank=2
       num=0
     fi
     printf '%s.%s.%s %s\n' "$base" "$rank" "$num" "$tag"

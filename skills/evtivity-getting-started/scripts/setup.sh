@@ -67,8 +67,8 @@ step() { printf '\n== %s\n' "$*"; }
 fail() { printf 'ERROR: %s\n' "$*" >&2; exit 1; }
 
 # ---------------------------------------------------------------- release tag
-# Tag grammar of EVtivity releases: vX.Y.Z or vX.Y.Z-(alpha|beta|nightly)[.N].
-TAG_RE='^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-(alpha|beta|nightly)(\.(0|[1-9][0-9]*))?)?$'
+# Tag grammar of EVtivity releases: vX.Y.Z or vX.Y.Z-(alpha|beta)[.N].
+TAG_RE='^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)(-(alpha|beta)(\.(0|[1-9][0-9]*))?)?$'
 STABLE_RE='^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$'
 
 # commit_of <tag>: the commit of a tag in $remote_refs (peeled for annotated tags).

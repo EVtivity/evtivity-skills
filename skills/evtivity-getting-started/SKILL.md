@@ -44,7 +44,7 @@ Which path to take:
    bash scripts/setup.sh --dir /path/to/evtivity-csms [--tools] [--demo]
    ```
 
-   Release: it installs exactly the CSMS release in `metadata.evtivity-release` above, and stops when that tag no longer points to `metadata.evtivity-commit`. When the tag does not exist, it installs the latest stable release. It never installs `main`, a nightly or another prerelease unless the user passes `--tag <tag>`. `--print-release` shows the choice without installing.
+   Release: it installs exactly the CSMS release in `metadata.evtivity-release` above, and stops when that tag no longer points to `metadata.evtivity-commit`. When the tag does not exist, it installs the latest stable release. It never installs `main` or a prerelease (alpha or beta) unless the user passes `--tag <tag>`. `--print-release` shows the choice without installing.
 
    Then it runs `npm ci`, copies `.env.example` to `.env` only when `.env` is missing, runs the repository's `./scripts/docker-build.sh` with the prompts answered from the options, waits until every service is healthy (up to 600 seconds, `--timeout`), and prints the URLs and the sign-in.
 
