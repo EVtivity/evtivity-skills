@@ -111,7 +111,9 @@ resolve_release() {
       # Never a prerelease by default: the latest stable release only.
       tag=$(printf '%s\n' "$remote_tags" | grep -E "$STABLE_RE" | sed 's/^v//' |
         sort -t. -k1,1n -k2,2n -k3,3n | tail -n 1 | sed 's/^/v/' || true)
-      [ "$tag" != "v" ] && [ -n "$tag" ] || fail "no stable release found in $REPO_URL. Pass --tag <release>."
+      if [ -z "$tag" ] || [ "$tag" = "v" ]; then
+        fail "no stable release found in $REPO_URL. Pass --tag <release>."
+      fi
       commit=$(commit_of "$tag")
       echo "Release ${want:-of these skills} not found. Using the latest stable release."
     fi
