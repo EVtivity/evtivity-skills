@@ -51,6 +51,8 @@ def normalize(path: str) -> str:
 
 ROUTE_RE = re.compile(r"app\.(get|post|put|patch|delete)\(\s*['`]([^'`]+)['`]", re.S)
 AUTH_RE = re.compile(r"authorize\(\s*'([^']+)'")
+# Route tables such as { path: '/sites/:id/neighbors', ..., permission: 'sites:read' } (GET routes).
+TABLE_RE = re.compile(r"path:\s*'([^']+)'[^{}]*?permission:\s*'([^']+)'", re.S)
 
 
 def read_permissions(csms: Path) -> dict[tuple[str, str], str]:
@@ -73,11 +75,15 @@ def read_permissions(csms: Path) -> dict[tuple[str, str], str]:
             if "${" in path:
                 continue
             perms[(method, normalize("/v1" + path))] = auth.group(1)
+        for match in TABLE_RE.finditer(text):
+            perms.setdefault(("get", normalize("/v1" + match.group(1))), match.group(2))
     return perms
 
 
 def permission_for(method: str, path: str, tag: str, perms: dict[tuple[str, str], str]) -> str:
     if tag.endswith(" Commands") and tag.startswith("OCPP "):
+        return "stations:write"
+    if tag.startswith("CSS ") and tag.endswith("Actions") and path.startswith("/v1/css/actions/"):
         return "stations:write"
     if path.startswith("/v1/portal/"):
         return "driver"

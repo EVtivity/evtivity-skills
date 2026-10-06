@@ -13,7 +13,7 @@ The API server serves the operator dashboard, the driver portal and integrations
 
 - Base URL: the API host. Docker Compose: `http://localhost:7102`. Helm and AWS: the API host name of the deployment.
 - Operator routes: `/v1/...`. Driver portal routes: `/v1/portal/...`.
-- Interactive reference on a running stack: Swagger UI at `<api>/docs`. Public reference: https://www.evtivity.com/docs (API reference) and the spec at https://www.evtivity.com/openapi.json.
+- Interactive reference on a running stack: Swagger UI at `<api>/docs`. Public reference: https://www.evtivity.com/api-reference and the spec at https://www.evtivity.com/openapi.json.
 - Route catalog with the permission each route needs: `references/routes.md`.
 - Error codes with HTTP statuses and messages: `references/error-codes.md`.
 

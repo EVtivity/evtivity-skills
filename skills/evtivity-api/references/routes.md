@@ -107,7 +107,7 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/sites/{id}/electricity-rates` | sites:write | Create an electricity rate period for a site |
 | PATCH | `/v1/sites/{id}/electricity-rates/{periodId}` | sites:write | Update an electricity rate period |
 | DELETE | `/v1/sites/{id}/electricity-rates/{periodId}` | sites:write | Delete an electricity rate period |
-| GET | `/v1/sites/{id}/neighbors` |  | Get previous and next entity IDs in default list order |
+| GET | `/v1/sites/{id}/neighbors` | sites:read | Get previous and next entity IDs in default list order |
 
 ## Stations
 
@@ -177,10 +177,10 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/stations/{id}/images/{imageId}/download-url` | stations:read | Get a presigned download URL for a station image |
 | PATCH | `/v1/stations/{id}/images/reorder` | stations:write | Reorder station images |
 | POST | `/v1/stations/{id}/images/{imageId}/set-main` | stations:write | Set an image as the main station image |
-| GET | `/v1/stations/{id}/neighbors` |  | Get previous and next entity IDs in default list order |
-| GET | `/v1/config-templates/{id}/neighbors` |  | Get previous and next entity IDs in default list order |
-| GET | `/v1/smart-charging/templates/{id}/neighbors` |  | Get previous and next entity IDs in default list order |
-| GET | `/v1/firmware-campaigns/{id}/neighbors` |  | Get previous and next entity IDs in default list order |
+| GET | `/v1/stations/{id}/neighbors` | stations:read | Get previous and next entity IDs in default list order |
+| GET | `/v1/config-templates/{id}/neighbors` | settings.stationConfig:read | Get previous and next entity IDs in default list order |
+| GET | `/v1/smart-charging/templates/{id}/neighbors` | smartCharging:read | Get previous and next entity IDs in default list order |
+| GET | `/v1/firmware-campaigns/{id}/neighbors` | settings.firmware:read | Get previous and next entity IDs in default list order |
 
 ## Sessions
 
@@ -190,7 +190,7 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/sessions/{id}` | sessions:read | Get charging session details |
 | GET | `/v1/sessions/{id}/transaction-events` | sessions:read | List transaction events for a charging session |
 | GET | `/v1/sessions/{id}/meter-values` | sessions:read | List meter values for a charging session |
-| GET | `/v1/sessions/{id}/neighbors` |  | Get previous and next entity IDs in default list order |
+| GET | `/v1/sessions/{id}/neighbors` | sessions:read | Get previous and next entity IDs in default list order |
 
 ## Users
 
@@ -231,7 +231,7 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/users/me/permissions` | users:read | Get current user permissions |
 | GET | `/v1/users/{id}/permissions` | users:read | Get a user permissions by user ID |
 | PUT | `/v1/users/{id}/permissions` | users:write | Replace a user permissions |
-| GET | `/v1/users/{id}/neighbors` |  | Get previous and next entity IDs in default list order |
+| GET | `/v1/users/{id}/neighbors` | users:read | Get previous and next entity IDs in default list order |
 
 ## Drivers
 
@@ -259,7 +259,7 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/drivers/{id}/pnc-contracts` | drivers:read | List the Plug and Charge contracts of a driver |
 | POST | `/v1/drivers/{id}/pnc-contracts` | drivers:write | Create a Plug and Charge contract for a driver |
 | POST | `/v1/drivers/{id}/pnc-contracts/{contractId}/revoke` | drivers:write | Revoke a Plug and Charge contract |
-| GET | `/v1/drivers/{id}/neighbors` |  | Get previous and next entity IDs in default list order |
+| GET | `/v1/drivers/{id}/neighbors` | drivers:read | Get previous and next entity IDs in default list order |
 
 ## Pricing
 
@@ -283,7 +283,7 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/pricing-holidays` | pricing:write | Create a pricing holiday |
 | DELETE | `/v1/pricing-holidays/{id}` | pricing:write | Delete a pricing holiday |
 | POST | `/v1/pricing-holidays/bulk` | pricing:write | Bulk create pricing holidays |
-| GET | `/v1/pricing-groups/{id}/neighbors` |  | Get previous and next entity IDs in default list order |
+| GET | `/v1/pricing-groups/{id}/neighbors` | pricing:read | Get previous and next entity IDs in default list order |
 
 ## OCPP 2.1 Commands
 
@@ -419,7 +419,7 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/fleets/{fleetId}/reservations` | reservations:read | List fleet reservations |
 | POST | `/v1/fleets/{fleetId}/reservations` | reservations:write | Create bulk reservations for a fleet |
 | DELETE | `/v1/fleet-reservations/{id}` | reservations:write | Cancel all reservations in a fleet reservation |
-| GET | `/v1/fleets/{id}/neighbors` |  | Get previous and next entity IDs in default list order |
+| GET | `/v1/fleets/{id}/neighbors` | fleets:read | Get previous and next entity IDs in default list order |
 
 ## Tokens
 
@@ -436,7 +436,7 @@ A `write` permission includes `read` for the same resource.
 | PATCH | `/v1/tokens/{id}` | drivers:write | Update a token by ID |
 | DELETE | `/v1/tokens/{id}` | drivers:write | Delete a token by ID |
 | GET | `/v1/authorize-attempts` | drivers:read | List Authorize attempts (success and failure) for forensic triage |
-| GET | `/v1/tokens/{id}/neighbors` |  | Get previous and next entity IDs in default list order |
+| GET | `/v1/tokens/{id}/neighbors` | drivers:read | Get previous and next entity IDs in default list order |
 
 ## Dashboard
 
@@ -596,7 +596,7 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/reservations/{id}/audit` | reservations:read | List audit log entries for a reservation |
 | GET | `/v1/reservations/{id}/commands` | reservations:read | List OCPP commands for a reservation |
 | POST | `/v1/reservations/{id}/reassign` | reservations:write | Move an active reservation to a different station |
-| GET | `/v1/reservations/{id}/neighbors` |  | Get previous and next entity IDs in default list order |
+| GET | `/v1/reservations/{id}/neighbors` | reservations:read | Get previous and next entity IDs in default list order |
 
 ## Maintenance
 
@@ -795,7 +795,7 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/invoices/{id}/send` | payments:write | Email an invoice to its driver |
 | GET | `/v1/invoices/{id}/pdf` | payments:read | Download an invoice as a PDF |
 | GET | `/v1/invoices/{id}/download` | payments:read | Download an invoice as JSON |
-| GET | `/v1/invoices/{id}/neighbors` |  | Get previous and next entity IDs in default list order |
+| GET | `/v1/invoices/{id}/neighbors` | payments:read | Get previous and next entity IDs in default list order |
 
 ## Support Cases
 
@@ -814,7 +814,7 @@ A `write` permission includes `read` for the same resource.
 | DELETE | `/v1/support-cases/{id}/messages/{messageId}/attachments/{attachmentId}` | support:write | Delete an attachment from a support case message |
 | POST | `/v1/support-cases/{id}/refund` | support:write | Issue a refund for a session linked to a support case |
 | POST | `/v1/support-cases/{id}/ai-assist` | support:write | Generate an AI draft reply for a support case |
-| GET | `/v1/support-cases/{id}/neighbors` |  | Get previous and next entity IDs in default list order |
+| GET | `/v1/support-cases/{id}/neighbors` | support:read | Get previous and next entity IDs in default list order |
 
 ## Portal Vehicles
 
@@ -893,7 +893,7 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/ocpi/tariff-mappings/{id}` | roaming:read | Get a single OCPI tariff mapping |
 | PATCH | `/v1/ocpi/tariff-mappings/{id}` | roaming:write | Update OCPI tariff mapping |
 | DELETE | `/v1/ocpi/tariff-mappings/{id}` | roaming:write | Delete OCPI tariff mapping |
-| GET | `/v1/ocpi/partners/{id}/neighbors` |  | Get previous and next entity IDs in default list order |
+| GET | `/v1/ocpi/partners/{id}/neighbors` | roaming:read | Get previous and next entity IDs in default list order |
 
 ## PnC
 
@@ -983,72 +983,72 @@ A `write` permission includes `read` for the same resource.
 
 | Method | Path | Permission | Summary |
 |---|---|---|---|
-| POST | `/v1/css/actions/plugIn` |  | Plug in charging cable |
-| POST | `/v1/css/actions/authorize` |  | Authorize with token |
-| POST | `/v1/css/actions/startCharging` |  | Start a charging session |
-| POST | `/v1/css/actions/stopCharging` |  | Stop a charging session |
-| POST | `/v1/css/actions/unplug` |  | Unplug charging cable |
-| POST | `/v1/css/actions/injectFault` |  | Inject a fault on an EVSE |
-| POST | `/v1/css/actions/clearFault` |  | Clear a fault on an EVSE |
-| POST | `/v1/css/actions/goOffline` |  | Disconnect station from OCPP server |
-| POST | `/v1/css/actions/comeOnline` |  | Reconnect station to OCPP server |
+| POST | `/v1/css/actions/plugIn` | stations:write | Plug in charging cable |
+| POST | `/v1/css/actions/authorize` | stations:write | Authorize with token |
+| POST | `/v1/css/actions/startCharging` | stations:write | Start a charging session |
+| POST | `/v1/css/actions/stopCharging` | stations:write | Stop a charging session |
+| POST | `/v1/css/actions/unplug` | stations:write | Unplug charging cable |
+| POST | `/v1/css/actions/injectFault` | stations:write | Inject a fault on an EVSE |
+| POST | `/v1/css/actions/clearFault` | stations:write | Clear a fault on an EVSE |
+| POST | `/v1/css/actions/goOffline` | stations:write | Disconnect station from OCPP server |
+| POST | `/v1/css/actions/comeOnline` | stations:write | Reconnect station to OCPP server |
 
 ## CSS OCPP 1.6 Actions
 
 | Method | Path | Permission | Summary |
 |---|---|---|---|
-| POST | `/v1/css/actions/v16/sendBootNotification` |  | Send BootNotification |
-| POST | `/v1/css/actions/v16/sendHeartbeat` |  | Send Heartbeat |
-| POST | `/v1/css/actions/v16/sendStatusNotification` |  | Send StatusNotification |
-| POST | `/v1/css/actions/v16/sendMeterValues` |  | Send MeterValues |
-| POST | `/v1/css/actions/v16/sendAuthorize` |  | Send Authorize request |
-| POST | `/v1/css/actions/v16/sendFirmwareStatusNotification` |  | Send FirmwareStatusNotification |
-| POST | `/v1/css/actions/v16/sendDataTransfer` |  | Send DataTransfer |
-| POST | `/v1/css/actions/v16/sendStartTransaction` |  | Send StartTransaction |
-| POST | `/v1/css/actions/v16/sendStopTransaction` |  | Send StopTransaction |
-| POST | `/v1/css/actions/v16/sendDiagnosticsStatusNotification` |  | Send DiagnosticsStatusNotification |
+| POST | `/v1/css/actions/v16/sendBootNotification` | stations:write | Send BootNotification |
+| POST | `/v1/css/actions/v16/sendHeartbeat` | stations:write | Send Heartbeat |
+| POST | `/v1/css/actions/v16/sendStatusNotification` | stations:write | Send StatusNotification |
+| POST | `/v1/css/actions/v16/sendMeterValues` | stations:write | Send MeterValues |
+| POST | `/v1/css/actions/v16/sendAuthorize` | stations:write | Send Authorize request |
+| POST | `/v1/css/actions/v16/sendFirmwareStatusNotification` | stations:write | Send FirmwareStatusNotification |
+| POST | `/v1/css/actions/v16/sendDataTransfer` | stations:write | Send DataTransfer |
+| POST | `/v1/css/actions/v16/sendStartTransaction` | stations:write | Send StartTransaction |
+| POST | `/v1/css/actions/v16/sendStopTransaction` | stations:write | Send StopTransaction |
+| POST | `/v1/css/actions/v16/sendDiagnosticsStatusNotification` | stations:write | Send DiagnosticsStatusNotification |
 
 ## CSS OCPP 2.1 Actions
 
 | Method | Path | Permission | Summary |
 |---|---|---|---|
-| POST | `/v1/css/actions/v21/sendBootNotification` |  | Send BootNotification |
-| POST | `/v1/css/actions/v21/sendHeartbeat` |  | Send Heartbeat |
-| POST | `/v1/css/actions/v21/sendStatusNotification` |  | Send StatusNotification |
-| POST | `/v1/css/actions/v21/sendMeterValues` |  | Send MeterValues |
-| POST | `/v1/css/actions/v21/sendAuthorize` |  | Send Authorize request |
-| POST | `/v1/css/actions/v21/sendFirmwareStatusNotification` |  | Send FirmwareStatusNotification |
-| POST | `/v1/css/actions/v21/sendDataTransfer` |  | Send DataTransfer |
-| POST | `/v1/css/actions/v21/sendTransactionEvent` |  | Send TransactionEvent |
-| POST | `/v1/css/actions/v21/sendLogStatusNotification` |  | Send LogStatusNotification |
-| POST | `/v1/css/actions/v21/sendSecurityEventNotification` |  | Send SecurityEventNotification |
-| POST | `/v1/css/actions/v21/sendNotifyEvent` |  | Send NotifyEvent |
-| POST | `/v1/css/actions/v21/sendNotifyReport` |  | Send NotifyReport |
-| POST | `/v1/css/actions/v21/sendNotifyMonitoringReport` |  | Send NotifyMonitoringReport |
-| POST | `/v1/css/actions/v21/sendNotifyChargingLimit` |  | Send NotifyChargingLimit |
-| POST | `/v1/css/actions/v21/sendNotifyEVChargingNeeds` |  | Send NotifyEVChargingNeeds |
-| POST | `/v1/css/actions/v21/sendClearedChargingLimit` |  | Send ClearedChargingLimit |
-| POST | `/v1/css/actions/v21/sendReservationStatusUpdate` |  | Send ReservationStatusUpdate |
-| POST | `/v1/css/actions/v21/sendNotifyDisplayMessages` |  | Send NotifyDisplayMessages |
-| POST | `/v1/css/actions/v21/sendNotifyCustomerInformation` |  | Send NotifyCustomerInformation |
-| POST | `/v1/css/actions/v21/sendSignCertificate` |  | Send SignCertificate |
-| POST | `/v1/css/actions/v21/sendGetCertificateStatus` |  | Send GetCertificateStatus |
-| POST | `/v1/css/actions/v21/sendGetTransactionStatus` |  | Send GetTransactionStatus |
-| POST | `/v1/css/actions/v21/sendReportChargingProfiles` |  | Send ReportChargingProfiles |
-| POST | `/v1/css/actions/v21/sendNotifyEVChargingSchedule` |  | Send NotifyEVChargingSchedule |
-| POST | `/v1/css/actions/v21/sendNotifySettlement` |  | Send NotifySettlement |
-| POST | `/v1/css/actions/v21/sendNotifyPriorityCharging` |  | Send NotifyPriorityCharging |
-| POST | `/v1/css/actions/v21/sendNotifyAllowedEnergyTransfer` |  | Send NotifyAllowedEnergyTransfer |
-| POST | `/v1/css/actions/v21/sendGet15118EVCertificate` |  | Send Get15118EVCertificate |
-| POST | `/v1/css/actions/v21/sendGetCertificateChainStatus` |  | Send GetCertificateChainStatus |
-| POST | `/v1/css/actions/v21/sendPublishFirmwareStatusNotification` |  | Send PublishFirmwareStatusNotification |
-| POST | `/v1/css/actions/v21/sendNotifyPeriodicEventStream` |  | Send NotifyPeriodicEventStream |
-| POST | `/v1/css/actions/v21/sendNotifyDERAlarm` |  | Send NotifyDERAlarm |
-| POST | `/v1/css/actions/v21/sendNotifyDERStartStop` |  | Send NotifyDERStartStop |
-| POST | `/v1/css/actions/v21/sendReportDERControl` |  | Send ReportDERControl |
-| POST | `/v1/css/actions/v21/sendBatterySwap` |  | Send BatterySwap |
-| POST | `/v1/css/actions/v21/sendPullDynamicScheduleUpdate` |  | Send PullDynamicScheduleUpdate |
-| POST | `/v1/css/actions/v21/sendVatNumberValidation` |  | Send VatNumberValidation |
+| POST | `/v1/css/actions/v21/sendBootNotification` | stations:write | Send BootNotification |
+| POST | `/v1/css/actions/v21/sendHeartbeat` | stations:write | Send Heartbeat |
+| POST | `/v1/css/actions/v21/sendStatusNotification` | stations:write | Send StatusNotification |
+| POST | `/v1/css/actions/v21/sendMeterValues` | stations:write | Send MeterValues |
+| POST | `/v1/css/actions/v21/sendAuthorize` | stations:write | Send Authorize request |
+| POST | `/v1/css/actions/v21/sendFirmwareStatusNotification` | stations:write | Send FirmwareStatusNotification |
+| POST | `/v1/css/actions/v21/sendDataTransfer` | stations:write | Send DataTransfer |
+| POST | `/v1/css/actions/v21/sendTransactionEvent` | stations:write | Send TransactionEvent |
+| POST | `/v1/css/actions/v21/sendLogStatusNotification` | stations:write | Send LogStatusNotification |
+| POST | `/v1/css/actions/v21/sendSecurityEventNotification` | stations:write | Send SecurityEventNotification |
+| POST | `/v1/css/actions/v21/sendNotifyEvent` | stations:write | Send NotifyEvent |
+| POST | `/v1/css/actions/v21/sendNotifyReport` | stations:write | Send NotifyReport |
+| POST | `/v1/css/actions/v21/sendNotifyMonitoringReport` | stations:write | Send NotifyMonitoringReport |
+| POST | `/v1/css/actions/v21/sendNotifyChargingLimit` | stations:write | Send NotifyChargingLimit |
+| POST | `/v1/css/actions/v21/sendNotifyEVChargingNeeds` | stations:write | Send NotifyEVChargingNeeds |
+| POST | `/v1/css/actions/v21/sendClearedChargingLimit` | stations:write | Send ClearedChargingLimit |
+| POST | `/v1/css/actions/v21/sendReservationStatusUpdate` | stations:write | Send ReservationStatusUpdate |
+| POST | `/v1/css/actions/v21/sendNotifyDisplayMessages` | stations:write | Send NotifyDisplayMessages |
+| POST | `/v1/css/actions/v21/sendNotifyCustomerInformation` | stations:write | Send NotifyCustomerInformation |
+| POST | `/v1/css/actions/v21/sendSignCertificate` | stations:write | Send SignCertificate |
+| POST | `/v1/css/actions/v21/sendGetCertificateStatus` | stations:write | Send GetCertificateStatus |
+| POST | `/v1/css/actions/v21/sendGetTransactionStatus` | stations:write | Send GetTransactionStatus |
+| POST | `/v1/css/actions/v21/sendReportChargingProfiles` | stations:write | Send ReportChargingProfiles |
+| POST | `/v1/css/actions/v21/sendNotifyEVChargingSchedule` | stations:write | Send NotifyEVChargingSchedule |
+| POST | `/v1/css/actions/v21/sendNotifySettlement` | stations:write | Send NotifySettlement |
+| POST | `/v1/css/actions/v21/sendNotifyPriorityCharging` | stations:write | Send NotifyPriorityCharging |
+| POST | `/v1/css/actions/v21/sendNotifyAllowedEnergyTransfer` | stations:write | Send NotifyAllowedEnergyTransfer |
+| POST | `/v1/css/actions/v21/sendGet15118EVCertificate` | stations:write | Send Get15118EVCertificate |
+| POST | `/v1/css/actions/v21/sendGetCertificateChainStatus` | stations:write | Send GetCertificateChainStatus |
+| POST | `/v1/css/actions/v21/sendPublishFirmwareStatusNotification` | stations:write | Send PublishFirmwareStatusNotification |
+| POST | `/v1/css/actions/v21/sendNotifyPeriodicEventStream` | stations:write | Send NotifyPeriodicEventStream |
+| POST | `/v1/css/actions/v21/sendNotifyDERAlarm` | stations:write | Send NotifyDERAlarm |
+| POST | `/v1/css/actions/v21/sendNotifyDERStartStop` | stations:write | Send NotifyDERStartStop |
+| POST | `/v1/css/actions/v21/sendReportDERControl` | stations:write | Send ReportDERControl |
+| POST | `/v1/css/actions/v21/sendBatterySwap` | stations:write | Send BatterySwap |
+| POST | `/v1/css/actions/v21/sendPullDynamicScheduleUpdate` | stations:write | Send PullDynamicScheduleUpdate |
+| POST | `/v1/css/actions/v21/sendVatNumberValidation` | stations:write | Send VatNumberValidation |
 
 ## Smart Charging
 
@@ -1093,4 +1093,4 @@ A `write` permission includes `read` for the same resource.
 
 | Method | Path | Permission | Summary |
 |---|---|---|---|
-| GET | `/v1/octt/runs/{id}/neighbors` |  | Get previous and next entity IDs in default list order |
+| GET | `/v1/octt/runs/{id}/neighbors` | conformance:read | Get previous and next entity IDs in default list order |
