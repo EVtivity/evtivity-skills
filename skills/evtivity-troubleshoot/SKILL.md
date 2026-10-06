@@ -11,6 +11,8 @@ metadata:
 
 Work from evidence. Run the diagnostics first, find the matching symptom below, confirm it with the listed check, then apply the fix. Ask the user before anything that deletes data.
 
+This skill covers failures of the stack itself. Operational problems in the field (a stuck or phantom session, a stale connector status, a session without power in `SuspendedEV`) are on the docs page `guides/troubleshooting` (https://www.evtivity.com/docs/guides/troubleshooting). Read it for those and use the `evtivity-guides` skill.
+
 ## 1. Collect diagnostics
 
 Run `scripts/diagnose.sh` from this skill's directory. It reads only and masks passwords, tokens, keys and URL credentials.
@@ -83,13 +85,15 @@ Check in this order:
 6. HTTP 403 at connect: the station was rejected (blocked). Unblock it on the station page.
 7. Connects but stays Pending: `approval-required` registration policy. Approve the station under Stations, filter Pending.
 
-Guide: https://www.evtivity.com/docs/guides/station-onboarding.
+Docs: `guides/station-onboarding` (https://www.evtivity.com/docs/guides/station-onboarding) and `configuration/authentication` (https://www.evtivity.com/docs/configuration/authentication).
 
 ### C. reCAPTCHA blocks sign-in
 
 Sign-in answers 400 `RECAPTCHA_REQUIRED` or 403 `RECAPTCHA_FAILED`. reCAPTCHA v3 is off by default. When an operator turns it on (Settings > Security), Google only issues valid tokens on the domains listed for the site key. A host that is not on that list, such as a new domain, an IP address or a LAN name, fails every sign-in.
 
 Confirm: the browser console shows a reCAPTCHA domain error, or the API log shows the codes above. `curl -s http://<api>/v1/security/public` (or open the sign-in page) shows `recaptchaEnabled: true`.
+
+Docs: `configuration/authentication` and `csms/settings` (Security tab), https://www.evtivity.com/docs/csms/settings.
 
 Fix, best first:
 
@@ -115,7 +119,7 @@ Confirm: `docker compose logs --tail 100 api ocpp worker | grep -iE 'redis|WRONG
 - `NOPERM`: the service runs a command its user may not run. Use the ACL file of the same release as the images. A mixed checkout or old Helm values cause this. Report it with the `evtivity-report-issue` skill when versions match.
 - `ECONNREFUSED` or `ENOTFOUND redis`: Redis is down or unhealthy. `docker compose up -d redis` and check its log.
 - Passwords must be URL-safe: they go into each service's `REDIS_URL`.
-- Helm and external Redis: create the five users with the chart's `redis/acl-rules.conf` and set one URL per service. `rediss://` with a private CA needs `REDIS_TLS_CA_PEM` or `REDIS_TLS_CA_FILE`.
+- Helm and external Redis (`deployment/helm-chart`, https://www.evtivity.com/docs/deployment/helm-chart): create the five users with the chart's `redis/acl-rules.conf` and set one URL per service. `rediss://` with a private CA needs `REDIS_TLS_CA_PEM` or `REDIS_TLS_CA_FILE`.
 
 ### E. Payment provider not configured
 
@@ -131,7 +135,7 @@ Fix:
 - Development only: the test provider (`simulated`) needs `PAYMENTS_ALLOW_SIMULATED=true`. Never in production.
 - A saved card stays with the provider that created it. Keep the old provider's keys until its payments settle.
 
-Docs: https://www.evtivity.com/docs/integrations/payment-providers.
+Docs: `integrations/payment-providers` (https://www.evtivity.com/docs/integrations/payment-providers), with `integrations/stripe` and `integrations/adyen`. Use the `evtivity-integrations` skill for setup.
 
 ### F. Ports in use
 
@@ -139,7 +143,7 @@ Compose publishes 5433 (PostgreSQL), 6379 (Redis, loopback only), 7100 to 7104, 
 
 Confirm: `docker compose up` reports `port is already allocated` or `address already in use`. `diagnose.sh` lists ports held by other processes. By hand: `lsof -nP -iTCP:<port> -sTCP:LISTEN`.
 
-Fix: stop the other process or container, or move EVtivity with `CSMS_PORT`, `PORTAL_PORT`, `API_PORT`, `OCPP_PORT` or `OCPI_PORT` in `.env`, then `docker compose up -d`. A second EVtivity checkout uses the same Compose project name (`evtivity`). Stop one with `docker compose -p evtivity down` before you start the other.
+Fix: stop the other process or container, or move EVtivity (ports: `deployment/docker-compose`, https://www.evtivity.com/docs/deployment/docker-compose) with `CSMS_PORT`, `PORTAL_PORT`, `API_PORT`, `OCPP_PORT` or `OCPI_PORT` in `.env`, then `docker compose up -d`. A second EVtivity checkout uses the same Compose project name (`evtivity`). Stop one with `docker compose -p evtivity down` before you start the other.
 
 ### G. Stale images or volume after an upgrade
 
@@ -167,4 +171,4 @@ For data you must keep, back up first: `docker compose exec postgres pg_dump -U 
 
 Run `scripts/diagnose.sh` again and confirm every service is healthy and the symptom is gone. If the problem stays, use the `evtivity-report-issue` skill with the diagnostics output.
 
-Endpoint checks with an API token (for example the station list or an OCPP command result) are in the `evtivity-api` skill.
+Endpoint checks with an API token (for example the station list or an OCPP command result) are in the `evtivity-api` skill. Setup from scratch: the `evtivity-getting-started` skill. Deployment-specific settings (Helm, AWS): the `evtivity-deployment` skill.
