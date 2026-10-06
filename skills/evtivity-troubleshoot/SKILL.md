@@ -1,0 +1,170 @@
+---
+name: evtivity-troubleshoot
+description: Diagnose and fix a broken or misbehaving EVtivity CSMS deployment. Covers the migrate container failing and blocking the API and OCPP server, charging stations that cannot connect (URL, security profile, Basic Auth password, TLS certificate), reCAPTCHA blocking sign-in, Redis connection or ACL errors, payment provider not configured, ports already in use, and stale images or volumes after an upgrade. Use when EVtivity does not start, a container is unhealthy or restarting, sign-in fails, a station stays offline, or logs show errors. Includes a redacted diagnostics script.
+license: MIT
+compatibility: Requires bash, Docker with Docker Compose v2 and curl. Written for Docker Compose installs; the symptoms and fixes also apply to Helm and AWS deployments.
+metadata:
+  evtivity-version: "0.1.39"
+---
+
+# EVtivity troubleshooting
+
+Work from evidence. Run the diagnostics first, find the matching symptom below, confirm it with the listed check, then apply the fix. Ask the user before anything that deletes data.
+
+## 1. Collect diagnostics
+
+Run `scripts/diagnose.sh` from this skill's directory. It reads only and masks passwords, tokens, keys and URL credentials.
+
+```bash
+bash scripts/diagnose.sh --dir /path/to/evtivity-csms
+```
+
+It prints the versions (checkout, image names, API `/v1/version`), container states, health endpoints, ports held by other processes, and the last warning and error lines of each service. Read it before you change anything.
+
+Useful single commands, run in the checkout:
+
+```bash
+docker compose ps -a
+docker compose logs --tail 100 <service>      # api, ocpp, worker, migrate, redis, postgres
+curl -s http://localhost:7102/v1/health
+```
+
+## 2. Decision tree
+
+Start at the first symptom that matches.
+
+- `migrate` exited with a non-zero code, and api, ocpp and worker are `created` but never start: go to A.
+- A port is already allocated, or a container will not bind: go to F.
+- api, ocpp or worker restarts, and its log shows Redis errors (`WRONGPASS`, `NOPERM`, `ECONNREFUSED ...:6379`): go to D.
+- The stack is healthy but sign-in fails with `RECAPTCHA_REQUIRED` or `RECAPTCHA_FAILED`: go to C.
+- A charging station stays offline or reconnects in a loop: go to B.
+- Card payments, guest checkout or webhooks fail with `PAYMENT_PROVIDER_NOT_CONFIGURED` or `WEBHOOK_NOT_CONFIGURED`: go to E.
+- The problem started after `git pull`, a checkout of a new tag, or an image upgrade: go to G.
+- None of these: collect diagnostics and use the `evtivity-report-issue` skill.
+
+### A. Migrate container failed
+
+The API, OCPP server and worker wait for `migrate` to exit with code 0 (`service_completed_successfully`). A failed migration keeps them down on purpose, so they never run against a stale schema.
+
+Confirm:
+
+```bash
+docker compose ps -a migrate        # Exited (1)
+docker compose logs migrate | tail -n 40
+```
+
+Fix by cause:
+
+- Database not reachable: check `docker compose ps postgres` is healthy. Start it with `docker compose up -d postgres`, wait, then go on.
+- Upgrade path: some releases must be installed in order. The release notes state it, for example installs on v0.1.37 or earlier must run v0.1.38 before the release after it. Check out the required intermediate tag, run it once, then upgrade. Notes: https://github.com/EVtivity/evtivity-csms/releases.
+- Downgrade: the database has migrations newer than the checkout. Check out the version the database was last migrated with. Do not run an older release against a newer database.
+- Migration verifier error (a migration file not recorded): rebuild the migrate image from a clean checkout of the tag (`git status` clean, then `docker compose build migrate`).
+
+Then rerun and start the rest:
+
+```bash
+docker compose up migrate          # watch it exit 0
+docker compose up -d
+```
+
+### B. Station cannot connect
+
+EVtivity never creates a station on its own. An unknown station gets HTTP 404 at the WebSocket upgrade.
+
+Confirm in the dashboard: open the station, Security tab, Security Event Log. `auth_failed` entries name the reason. Also check the ocpp log: `docker compose logs --tail 200 ocpp | grep -i <stationId>`.
+
+Check in this order:
+
+1. Station exists: it is listed under Stations, with the exact OCPP identity. The URL path is case-sensitive.
+2. URL: profile 0 or 1 uses `ws://<host>:7103/<stationId>`. Profile 2 or 3 uses `wss://<host>:8443/<stationId>`. The `/<stationId>` suffix is required. Behind a load balancer, use the public host and port.
+3. Security profile: the station's profile equals the profile on the station record. A station on Basic Auth with a record on TLS + Basic Auth fails, and the reverse.
+4. Basic Auth: the username is the station identity, the password is the one set on the Security tab. 16 to 40 characters for OCPP 2.1, 16 to 20 for OCPP 1.6, letters, digits and `* - _ = : + | @ .`. Set a new one with Change Password and enter the same value on the station.
+5. TLS (profile 2 and 3): the station must trust the CA that signed the server certificate, and the certificate must name the host the station dials. The Compose certificate is a self-signed test certificate for `localhost` and `ocpp` only. For a real station, set `OCPP_TLS_CERT`, `OCPP_TLS_KEY` and `OCPP_TLS_CA` to your own files and install your CA on the station. Profile 3 also needs a client certificate signed by the CA the server trusts. Check the server side with `openssl s_client -connect <host>:8443 -servername <host> </dev/null | head -n 20`.
+6. HTTP 403 at connect: the station was rejected (blocked). Unblock it on the station page.
+7. Connects but stays Pending: `approval-required` registration policy. Approve the station under Stations, filter Pending.
+
+Guide: https://www.evtivity.com/docs/guides/station-onboarding.
+
+### C. reCAPTCHA blocks sign-in
+
+Sign-in answers 400 `RECAPTCHA_REQUIRED` or 403 `RECAPTCHA_FAILED`. reCAPTCHA v3 is off by default. When an operator turns it on (Settings > Security), Google only issues valid tokens on the domains listed for the site key. A host that is not on that list, such as a new domain, an IP address or a LAN name, fails every sign-in.
+
+Confirm: the browser console shows a reCAPTCHA domain error, or the API log shows the codes above. `curl -s http://<api>/v1/security/public` (or open the sign-in page) shows `recaptchaEnabled: true`.
+
+Fix, best first:
+
+1. Add the host to the site key's domain list in the Google reCAPTCHA admin console. Sign in again.
+2. If no operator can sign in, turn reCAPTCHA off in the database and let the cache expire (60 seconds) or restart the API:
+
+   ```bash
+   docker compose exec postgres psql -U evtivity -d evtivity -c \
+     "UPDATE settings SET value = 'false'::jsonb, updated_at = now() WHERE key = 'security.recaptcha.enabled';"
+   docker compose restart api
+   ```
+
+   Sign in, fix the domain list, then turn reCAPTCHA back on in Settings > Security. Ask the user before you edit the database.
+
+### D. Redis connection or ACL errors
+
+Each service connects to Redis as its own ACL user (`api`, `ocpp`, `ocpi`, `worker`, `css`). Compose creates the users from `docker/redis/acl-rules.conf` at every Redis start, with passwords from `REDIS_<USER>_PASSWORD` (default `<user>-dev-password`).
+
+Confirm: `docker compose logs --tail 100 api ocpp worker | grep -iE 'redis|WRONGPASS|NOPERM'` and `docker compose logs --tail 50 redis`.
+
+- `WRONGPASS invalid username-password pair`: Redis and the service disagree on a password. Usually a `REDIS_*_PASSWORD` changed in `.env` and only some containers were recreated. Recreate all of them: `docker compose up -d --force-recreate redis api ocpp worker simulator`.
+- Redis exits at start with a missing password message: a `REDIS_*_PASSWORD` is set to an empty value in `.env`. Set it or remove the line.
+- `NOPERM`: the service runs a command its user may not run. Use the ACL file of the same release as the images. A mixed checkout or old Helm values cause this. Report it with the `evtivity-report-issue` skill when versions match.
+- `ECONNREFUSED` or `ENOTFOUND redis`: Redis is down or unhealthy. `docker compose up -d redis` and check its log.
+- Passwords must be URL-safe: they go into each service's `REDIS_URL`.
+- Helm and external Redis: create the five users with the chart's `redis/acl-rules.conf` and set one URL per service. `rediss://` with a private CA needs `REDIS_TLS_CA_PEM` or `REDIS_TLS_CA_FILE`.
+
+### E. Payment provider not configured
+
+`payments.provider` starts at `none`. Saving keys does not select a provider.
+
+Confirm: the error code is `PAYMENT_PROVIDER_NOT_CONFIGURED` (400), or webhooks answer 500 `WEBHOOK_NOT_CONFIGURED`. Settings > Payment > General shows the selected provider and which providers are ready.
+
+Fix:
+
+- Enter the provider's keys (Settings > Payment > Stripe or Adyen), then pick the provider in **Provider for New Payments**.
+- Webhooks: create them from the same page, or store the signing secret (Stripe) or HMAC key, username and password (Adyen).
+- Adyen also needs the company country (Settings > Company Info).
+- Development only: the test provider (`simulated`) needs `PAYMENTS_ALLOW_SIMULATED=true`. Never in production.
+- A saved card stays with the provider that created it. Keep the old provider's keys until its payments settle.
+
+Docs: https://www.evtivity.com/docs/integrations/payment-providers.
+
+### F. Ports in use
+
+Compose publishes 5433 (PostgreSQL), 6379 (Redis, loopback only), 7100 to 7104, 8443 and 9229, plus 7107 to 7109 and 9090 with profiles.
+
+Confirm: `docker compose up` reports `port is already allocated` or `address already in use`. `diagnose.sh` lists ports held by other processes. By hand: `lsof -nP -iTCP:<port> -sTCP:LISTEN`.
+
+Fix: stop the other process or container, or move EVtivity with `CSMS_PORT`, `PORTAL_PORT`, `API_PORT`, `OCPP_PORT` or `OCPI_PORT` in `.env`, then `docker compose up -d`. A second EVtivity checkout uses the same Compose project name (`evtivity`). Stop one with `docker compose -p evtivity down` before you start the other.
+
+### G. Stale images or volume after an upgrade
+
+Compose builds images from the checkout. After a new tag, `docker compose up -d` without `--build` keeps running the old images.
+
+Confirm: API `/v1/version` differs from `package.json` in the checkout, or the UI lacks a change the release notes list.
+
+Fix:
+
+```bash
+git status                       # clean, at the new tag
+docker compose up -d --build
+```
+
+Stale volume: the data in a volume does not fit the release, for example after a downgrade, after a skipped required upgrade step, or a PostgreSQL major version change (`database files are incompatible with server`). Read the release notes for the upgrade path first. For disposable data only, and only after the user agrees, reset:
+
+```bash
+docker compose down --volumes    # DELETES all data
+docker compose up -d
+```
+
+For data you must keep, back up first: `docker compose exec postgres pg_dump -U evtivity evtivity > backup.sql`.
+
+## 3. After the fix
+
+Run `scripts/diagnose.sh` again and confirm every service is healthy and the symptom is gone. If the problem stays, use the `evtivity-report-issue` skill with the diagnostics output.
+
+Endpoint checks with an API token (for example the station list or an OCPP command result) are in the `evtivity-api` skill.
