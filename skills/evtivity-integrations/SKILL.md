@@ -4,9 +4,9 @@ description: "Set up EVtivity payments: Stripe, Stripe Connect payouts, Adyen, t
 license: MIT
 compatibility: Needs a running EVtivity CSMS (v0.1.38 or later for Adyen and the provider-neutral payment API). API examples use curl and jq. Stripe or Adyen setup needs an account with that provider. Provider webhooks need a public HTTPS URL for the API.
 metadata:
-  evtivity-version: "0.1.39"
-  evtivity-release: "v0.1.39"
-  evtivity-commit: "85333dc7da57a2e0b9d74d1d09d448dee313a29b"
+  evtivity-version: "0.1.40"
+  evtivity-release: "v0.1.40"
+  evtivity-commit: "571bdc26947f0fc8a9a2626615d53eac39d251db"
   evtivity-docs-section: integrations
 ---
 
@@ -205,6 +205,7 @@ docker compose logs --tail 200 api worker | grep -i -E 'payment|webhook|stripe|a
 | 409 `PAYMENT_PROVIDER_UPGRADE_PENDING` | An older process is connected | Finish the upgrade, wait 10 minutes (adyen) |
 | Adyen card form fails | Missing company country or allowed origin | Company Info > Country and the client key origins (adyen) |
 | Adyen payments stuck awaiting confirmation | Webhook missing or failing | Customer Area webhook event log (adyen) |
+| Adyen hold adjustment never confirmed | The answer to the raise was lost | Wait for the daily reconciliation, which re-sends it after 1 hour with the same idempotency key, or run it now with `POST /v1/payments/reconciliation/run`. Act only when listed as `pending_confirmation` after 24 hours (adyen) |
 | Test provider events never arrive | Worker not running | Start the worker (test-payment-provider) |
 
 Run reconciliation on demand (also daily over the last 48 hours): `POST /v1/payments/reconciliation/run`. Stack failures: evtivity-troubleshoot. Never include keys, card numbers or webhook secrets in a bug report.
@@ -215,7 +216,7 @@ Generated from the website docs. Never edit them. The first line of each file is
 
 - `references/payment-providers.md`: provider choice, payment settings, pinning, lifecycle, statuses, reconciliation.
 - `references/stripe.md`: Stripe keys, webhooks, local testing, Stripe Connect payouts.
-- `references/adyen.md`: Adyen credential, webhook, enablements, selection after upgrade, async confirmations.
+- `references/adyen.md`: Adyen credential, webhook, enablements, selection after upgrade, async confirmations, adjustment re-send.
 - `references/test-payment-provider.md`: simulated provider, test cards, sync and async modes.
 - `references/webhooks.md`: incoming payment webhooks, outgoing OCPP event webhooks, SSE streams.
 - `references/energy-management.md`: load management, smart charging profiles, carbon tracking.

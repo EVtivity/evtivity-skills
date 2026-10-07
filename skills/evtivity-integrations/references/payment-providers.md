@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/integrations/payment-providers (website commit 900fb20). Do not edit.
+Generated from https://www.evtivity.com/docs/integrations/payment-providers (website commit 4cd1866). Do not edit.
 
 # Payment Providers
 
@@ -97,7 +97,7 @@ Every status change names the statuses it may start from. A delayed or duplicate
 
 ## Reconciliation
 
-A daily job at 4 AM compares the payment records of the last 48 hours with the provider each payment was made with. It catches delayed or missed webhooks. Discrepancies are stored with the run and logged for manual review. Run it on demand with `POST /v1/payments/reconciliation/run`. Payments of the test provider are skipped, because it has no payment status lookup. Adyen has none either. For Adyen payments, the job lists captures, cancellations, and refunds that have waited more than 24 hours for their webhook. See [Adyen reconciliation](https://www.evtivity.com/docs/integrations/adyen#reconciliation).
+A daily job at 4 AM compares the payment records of the last 48 hours with the provider each payment was made with. It catches delayed or missed webhooks. Discrepancies are stored with the run and logged for manual review. Run it on demand with `POST /v1/payments/reconciliation/run`. Payments of the test provider are skipped, because it has no payment status lookup. Adyen has none either. For Adyen payments, the job lists captures, cancellations, and refunds that have waited more than 24 hours for their webhook. See [Adyen reconciliation](https://www.evtivity.com/docs/integrations/adyen#reconciliation). A session billing by an operator whose card charge got no answer from the provider for 23 hours is listed as a discrepancy of kind `rebill_pending`. Check the provider for a payment with the idempotency key `rebill_<sessionId>`. See [Sessions](https://www.evtivity.com/docs/csms/sessions#billing-a-session-the-csms-could-not-end).
 
 ## Currencies
 

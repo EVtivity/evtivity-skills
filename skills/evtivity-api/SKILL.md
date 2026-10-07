@@ -4,9 +4,9 @@ description: "Call the EVtivity REST API: API keys, sign-in and driver tokens, p
 license: MIT
 compatibility: Examples use curl and jq against a running EVtivity API (default http://localhost:7102 with Docker Compose).
 metadata:
-  evtivity-version: "0.1.39"
-  evtivity-release: "v0.1.39"
-  evtivity-commit: "85333dc7da57a2e0b9d74d1d09d448dee313a29b"
+  evtivity-version: "0.1.40"
+  evtivity-release: "v0.1.40"
+  evtivity-commit: "571bdc26947f0fc8a9a2626615d53eac39d251db"
 ---
 
 # EVtivity REST API
@@ -75,7 +75,7 @@ curl -s "$EVTIVITY_API/v1/stations" -H "Authorization: Bearer $EVTIVITY_TOKEN"
 - IDs: resources use prefixed IDs, for example `sta_` plus 12 characters for stations and `sit_` for sites. A station also has `stationId`, its OCPP identity (`CS-001`). Detail routes such as `/v1/stations/{id}` take the prefixed ID. OCPP command routes take the OCPP identity.
 - Pagination: list routes take `page` (from 1, default 1), `limit` (default 10, max 100) and often `search`, and return `{ "data": [...], "total": <count> }`. Loop until `page * limit >= total`.
 - Money is in cents of the company currency (`currentCostCents`, `finalCostCents`). Energy is in Wh.
-- Errors: `{ "error": "<message>", "code": "<CODE>" }`. Match on `code`, never the message. 401 means no or bad token, 403 a missing permission or forbidden action, 404 also hides resources outside the user's site access, 409 a conflict such as `EVSE_IN_USE`, 429 `RATE_LIMITED` (see the `x-ratelimit-*` headers).
+- Errors: `{ "error": "<message>", "code": "<CODE>" }`. Match on `code`, never the message. 401 means no or bad token, 403 a missing permission or forbidden action, 404 also hides resources outside the user's site access, 409 a conflict such as `EVSE_IN_USE`, 429 `RATE_LIMITED` on every rate-limited route (it was `VALIDATION_ERROR` before v0.1.40, see the `x-ratelimit-*` headers).
 
 ## Permissions
 
@@ -167,7 +167,7 @@ curl -s "${H[@]}" "$EVTIVITY_API/v1/stations/sta_abc123def456/pricing-groups" -d
 curl -s "${H[@]}" "$EVTIVITY_API/v1/stations/sta_abc123def456/active-tariff"
 ```
 
-Generate and download a report. Types: `revenue`, `energy`, `sessions`, `utilization`, `stationHealth`, `sustainability`, `driverActivity`, `nevi`. Formats: `csv`, `pdf`, `xlsx`. Filters: `dateFrom`, `dateTo` and `siteId` (most types), `stationId` and `status` (some), `year` and `quarter` (NEVI):
+Generate and download a report. Types: `revenue`, `energy`, `sessions`, `utilization`, `stationHealth`, `sustainability`, `driverActivity`, `nevi`. Formats: `csv`, `pdf`, `xlsx` (NEVI is always `xlsx`). `GET /v1/reports/types` lists each type's formats. Filters: `dateFrom`, `dateTo` and `siteId` (most types), `stationId` and `status` (some), `year` and `quarter` (NEVI, required, else 400 `VALIDATION_ERROR`). The worker generates reports, so a report stays `pending` until it runs:
 
 ```bash
 REPORT=$(curl -s "${H[@]}" "$EVTIVITY_API/v1/reports/generate" \
@@ -177,6 +177,12 @@ curl -s "${H[@]}" -o revenue.csv "$EVTIVITY_API/v1/reports/$REPORT/download"
 ```
 
 Dashboard numbers without a file: `GET /v1/dashboard/stats`, `GET /v1/dashboard/financial-stats`.
+
+Bill a session the CSMS could not end (status `faulted`, stopped reason `EndRequestFailed`). Needs `sessions:write` and `payments:write`. It charges the driver's saved card or debits the prepaid balance, so confirm with the user first. 409 `SESSION_REBILL_NOT_ELIGIBLE`, `SESSION_REBILL_PAYMENT_PENDING` or `SESSION_REBILL_IN_PROGRESS` means it cannot be billed now:
+
+```bash
+curl -s "${H[@]}" -X POST "$EVTIVITY_API/v1/sessions/<sessionId>/rebill"
+```
 
 ## Real-time events
 

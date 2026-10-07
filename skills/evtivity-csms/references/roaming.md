@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/roaming (website commit 900fb20). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/roaming (website commit 4cd1866). Do not edit.
 
 # Roaming
 
@@ -177,7 +177,7 @@ Location status changes, removed EVSEs, session updates, tariff changes, and CDR
 Trigger a manual sync to pull data from a partner:
 
 1. Find the partner ID on the partner detail page.
-2. Call `POST /v1/ocpi/partners/{id}/sync/{module}` with the module (`locations`, `tariffs`, `cdrs`, or `tokens`). The CSMS has no sync button.
+2. Call `POST /v1/ocpi/partners/{id}/sync/{module}` with the module (`locations`, `tariffs`, or `cdrs`). Any other module, such as `tokens` or `sessions`, returns 400. The CSMS has no sync button.
 3. The system fetches all pages from the partner's sender endpoints using OCPI pagination.
 
 ## OCPI Settings

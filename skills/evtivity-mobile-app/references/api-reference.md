@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/api-reference (website commit 900fb20). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/api-reference (website commit 4cd1866). Do not edit.
 
 # API Reference
 
@@ -46,7 +46,7 @@ Reference: [Portal Auth](https://www.evtivity.com/api-reference/portal-auth).
 What it powers: the operator's name, logo, and feature flags, fetched at startup so the app reflects the network it points at.
 
 - `GET /v1/portal/branding` - company name, logo, colors, portal URL (public).
-- `GET /v1/portal/features` - which features are enabled (reservations, support, roaming) and related settings (public).
+- `GET /v1/portal/features` - which features are enabled (reservations, support, roaming, Plug and Charge, fleet, guest charging, AI assistant) and related settings (public).
 
 Reference: [Settings](https://www.evtivity.com/api-reference/settings).
 

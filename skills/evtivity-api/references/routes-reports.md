@@ -1,6 +1,6 @@
 # EVtivity API routes: Reports
 
-Generated from EVtivity CSMS v0.1.39 (https://github.com/EVtivity/evtivity-csms, commit 85333dc7da57) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.40 (https://github.com/EVtivity/evtivity-csms, commit 571bdc26947f) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -11,6 +11,7 @@ A `write` permission includes `read` for the same resource.
 | Method | Path | Permission | Summary |
 |---|---|---|---|
 | GET | `/v1/reports` | reports:read | List reports |
+| GET | `/v1/reports/types` | reports:read | List report types |
 | GET | `/v1/reports/{id}` | reports:read | Get a report by ID |
 | DELETE | `/v1/reports/{id}` | reports:write | Delete a report |
 | GET | `/v1/reports/{id}/download` | reports:read | Download a report file |

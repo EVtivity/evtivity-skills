@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.39 (https://github.com/EVtivity/evtivity-csms, commit 85333dc7da57) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.40 (https://github.com/EVtivity/evtivity-csms, commit 571bdc26947f) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
@@ -15,7 +15,7 @@ A `write` permission includes `read` for the same resource.
 | Health | 2 | `references/routes-health.md` |
 | Sites | 29 | `references/routes-sites.md` |
 | Stations | 68 | `references/routes-stations.md` |
-| Sessions | 5 | `references/routes-sessions.md` |
+| Sessions | 6 | `references/routes-sessions.md` |
 | Users | 36 | `references/routes-users.md` |
 | Drivers | 23 | `references/routes-drivers.md` |
 | Pricing | 19 | `references/routes-pricing.md` |
@@ -43,11 +43,11 @@ A `write` permission includes `read` for the same resource.
 | Access Logs | 3 | `references/routes-access-logs.md` |
 | Portal Access Logs | 1 | `references/routes-portal-access-logs.md` |
 | Display Messages | 4 | `references/routes-display-messages.md` |
-| Reports | 12 | `references/routes-reports.md` |
+| Reports | 13 | `references/routes-reports.md` |
 | NEVI | 6 | `references/routes-nevi.md` |
 | Webhooks | 2 | `references/routes-webhooks.md` |
 | Invoices | 9 | `references/routes-invoices.md` |
-| Support Cases | 14 | `references/routes-support-cases.md` |
+| Support Cases | 15 | `references/routes-support-cases.md` |
 | Portal Vehicles | 5 | `references/routes-portal-vehicles.md` |
 | Portal Tokens | 4 | `references/routes-portal-tokens.md` |
 | Portal Notifications | 5 | `references/routes-portal-notifications.md` |

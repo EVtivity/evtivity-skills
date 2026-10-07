@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.39 (https://github.com/EVtivity/evtivity-csms, commit 85333dc7da57) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.40 (https://github.com/EVtivity/evtivity-csms, commit 571bdc26947f) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -124,6 +124,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `MFA_TOTP_NO_RESEND` | 400 | Cannot resend TOTP codes |
 | `MISSING_PAYMENT_INTENT` | 400 | Payment intent missing |
 | `MISSING_VERSION_URL` | 400 | Partner version URL is required for registration |
+| `NOTIFICATION_EVENT_REQUIRED` | 400 | This notification is required for account access and cannot be turned off |
 | `NOT_BLOCKED` | 409 | Station is not blocked |
 | `NOT_CHARGING` | 400 | Session is not currently charging |
 | `NOT_DRAFT` |  | Only draft campaigns can be updated |
@@ -184,7 +185,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `PROVIDER_TEST_FAILED` |  | Provider returned ... |
 | `PUSH_NOT_FOUND` | 404 | Push not found |
 | `PUSH_REJECTED` | 502 | Station rejected push: ... |
-| `RATE_LIMITED` | 429 | Too many status checks for this station |
+| `RATE_LIMITED` | 429 | Too many requests. Wait a moment and try again. |
 | `RECAPTCHA_FAILED` | 403 | reCAPTCHA verification failed |
 | `RECAPTCHA_REQUIRED` | 400 | reCAPTCHA token is required |
 | `REFUND_EXCEEDS_REMAINING` | 400, 409 | Refund amount exceeds remaining ... |
@@ -217,6 +218,9 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `SESSION_CREATE_FAILED` | 500 | Failed to create session |
 | `SESSION_NOT_FOUND` | 400, 404 | Session not found |
 | `SESSION_NOT_LINKED` | 400 | Session not linked to this case |
+| `SESSION_REBILL_IN_PROGRESS` | 409 | The session is being billed. Try again in a few minutes. |
+| `SESSION_REBILL_NOT_ELIGIBLE` | 409 | This session cannot be billed |
+| `SESSION_REBILL_PAYMENT_PENDING` | 409 | The session has a payment the provider has not settled yet. Try again later. |
 | `SETTING_NOT_FOUND` | 404 | Setting not found |
 | `SITE_HAS_STATIONS` | 409 | Cannot delete site with stations. Remove or reassign stations first. |
 | `SITE_NOT_FOUND` | 404 | Site not found |

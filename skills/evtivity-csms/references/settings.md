@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/settings (website commit 900fb20). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/settings (website commit 4cd1866). Do not edit.
 
 # Settings
 
@@ -368,9 +368,11 @@ Amazon S3 (or S3-compatible) object storage for file attachments and station ima
 
 - **Bucket Name** - S3 bucket name.
 - **Region** - AWS region (e.g., `us-east-1`).
-- **Access Key ID** - IAM access key.
-- **Secret Access Key** - IAM secret key (stored encrypted).
+- **Access Key ID** - IAM access key ID (stored encrypted).
+- **Secret Access Key** - IAM secret access key (stored encrypted).
 - **Test Connection** button - verifies S3 bucket access.
+
+Leave both access key fields blank to use the default AWS credential chain. On AWS, that is the task or instance role. If you fill in only one of the two fields, S3 stays disabled until you fill in both or clear both.
 
 Includes expandable sections showing the recommended IAM policy and CORS configuration.
 

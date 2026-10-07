@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/guide/find-a-charger (website commit 900fb20). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/guide/find-a-charger (website commit 4cd1866). Do not edit.
 
 # Find a Charger
 

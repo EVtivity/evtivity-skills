@@ -4,9 +4,9 @@ description: "Deploy and upgrade EVtivity in production: Docker images and tags,
 license: MIT
 compatibility: Docker Compose targets need Docker with Compose v2. Kubernetes targets need kubectl, Helm 3, Kubernetes 1.27+ and a Gateway API implementation (Istio or Envoy Gateway), plus minikube and optionally istioctl for local clusters. AWS needs Node.js with npm, the AWS CLI and the AWS CDK, run against your own account.
 metadata:
-  evtivity-version: "0.1.39"
-  evtivity-release: "v0.1.39"
-  evtivity-commit: "85333dc7da57a2e0b9d74d1d09d448dee313a29b"
+  evtivity-version: "0.1.40"
+  evtivity-release: "v0.1.40"
+  evtivity-commit: "571bdc26947f0fc8a9a2626615d53eac39d251db"
   evtivity-docs-section: deployment
 ---
 
@@ -33,7 +33,7 @@ The Compose file builds every service from source with development Dockerfiles. 
 ## Images and tags (`references/docker.md`)
 
 - Images for `linux/amd64` and `linux/arm64` under `ghcr.io/evtivity/evtivity-csms/<service>`: `api`, `ocpp`, `ocpi`, `csms`, `portal`, `worker`, `css`, `migrate`, `ocpi-simulator`.
-- Every release has an exact, immutable tag without a `v` prefix: release `v0.1.38` publishes `0.1.38`. Stable releases also move `0.1`, `0`, `latest` and `stable`. Prereleases (`-alpha.N`, `-beta.N`) move only their channel alias (`alpha` or `beta`).
+- Every release has an exact, immutable tag without a `v` prefix: release `v0.1.38` publishes `0.1.38`. Stable releases also move `0.1`, `0`, `latest` and `stable`. Prereleases (`-alpha.N`, `-beta.N`) move only their channel alias (`alpha` or `beta`). The `nightly` tag no longer moves since v0.1.40: pin a version or use `stable`, `beta` or `alpha`.
 - Pin an exact stable tag in production. Aliases change only when a deployment pulls again.
 - Build from the repo root so the context includes shared packages: `docker build -f packages/api/Dockerfile -t <your-registry>/api .`
 - CSMS and portal images read the API URL at runtime: set `API_URL` on the container. Their nginx listens on port 8080.
@@ -92,7 +92,7 @@ Enter payment credentials in the dashboard, not the config. `payments.allowSimul
 ## Workflow: upgrade a release
 
 1. Read the GitHub release notes of every version between the current and the target: `gh release view v<version> -R EVtivity/evtivity-csms`. Start with **Breaking changes** and **Upgrade notes**.
-2. Follow required upgrade paths. Example: installs on v0.1.37 or earlier upgrade to v0.1.38 and let every pod roll over before the release after it.
+2. Follow required upgrade paths. Example: installs on v0.1.37 or earlier upgrade to v0.1.38 and let every pod roll over before the release after it. v0.1.40 needs v0.1.39 first: its migration drops the old `stripe_*` columns, so no rollback below v0.1.39 afterwards. v0.1.40 also changes the Redis ACL (`report_generate`, worker read of `ocpp:conn:*`): upgrade the Helm chart or CDK stack together with the images, else reports and the offline sweep fail with `NOPERM`.
 3. Back up the database with `pg_dump` first. Rollbacks never reverse migrations.
 4. Pin the target to an exact stable tag, then:
    - Compose: check out the release tag, then `docker compose up -d --build`.

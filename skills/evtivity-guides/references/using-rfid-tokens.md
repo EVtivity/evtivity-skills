@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/guides/using-rfid-tokens (website commit 900fb20). Do not edit.
+Generated from https://www.evtivity.com/docs/guides/using-rfid-tokens (website commit 4cd1866). Do not edit.
 
 # Using RFID Tokens
 

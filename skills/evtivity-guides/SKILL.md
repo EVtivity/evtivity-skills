@@ -3,9 +3,9 @@ name: evtivity-guides
 description: "Step-by-step EVtivity how-to guides: onboard a station, station lifecycle, session monitoring, RFID cards, reservations, charging profiles, notifications, display messages, users and audit, white-labeling, fix stuck sessions and SuspendedEV. Use for an end-to-end procedure or walkthrough. Not for one dashboard page in detail (evtivity-csms)."
 license: MIT
 metadata:
-  evtivity-version: "0.1.39"
-  evtivity-release: "v0.1.39"
-  evtivity-commit: "85333dc7da57a2e0b9d74d1d09d448dee313a29b"
+  evtivity-version: "0.1.40"
+  evtivity-release: "v0.1.40"
+  evtivity-commit: "571bdc26947f0fc8a9a2626615d53eac39d251db"
   evtivity-docs-section: guides
 ---
 
@@ -142,9 +142,10 @@ curl -s -X POST "$EVTIVITY_API/v1/smart-charging/templates/$TPL/push" -H "Author
 ## 7. Notifications (`references/notifications.md`)
 
 1. Channels first: SMTP and Twilio (Settings > Notification). Test with `POST /v1/notifications/test` (`channel` `email` or `sms`, `recipient`).
-2. OCPP events (email or webhook, off until configured): `PUT /v1/ocpp-event-settings` with `eventType`, `channel`, `recipient`. Private-network webhook hosts must be allowed in Settings.
-3. Driver and system events (email and SMS): `PUT /v1/notification-templates` (`eventType`, `channel`, `language`, `subject`, `bodyHtml`). Languages: `en`, `de`, `es`, `ko`, `zh`, `zh-TW`, with English fallback.
-4. Confirm: `GET /v1/notifications` (history) shows each attempt with its status and failure reason.
+2. OCPP events (email or webhook, every event off until configured, `ocpp.MessageLog` only for short investigations): `PUT /v1/ocpp-event-settings` with `eventType`, `channel`, `recipient`. Private-network webhook hosts must be allowed in Settings.
+3. Driver events: turn a type on or off with `PUT /v1/driver-event-settings` (`eventType`, `isEnabled`). The four access-critical types refuse `false` with 400 `NOTIFICATION_EVENT_REQUIRED`. System events are always on: `PUT /v1/system-event-settings` no longer takes `isEnabled`.
+4. Templates for driver and system events (email and SMS): `PUT /v1/notification-templates` (`eventType`, `channel`, `language`, `subject`, `bodyHtml`). Languages: `en`, `de`, `es`, `ko`, `zh`, `zh-TW`, with English fallback.
+5. Confirm: `GET /v1/notifications` (history) shows each attempt with its status and failure reason.
 
 ## 8. Station display messages (`references/station-display-messages.md`)
 
@@ -157,7 +158,7 @@ curl -s -X POST "$EVTIVITY_API/v1/smart-charging/templates/$TPL/push" -H "Author
 ## 9. Users, roles and audit (`references/user-management.md`, `references/audit-logs.md`)
 
 - Create a user (`users:write`): `POST /v1/users` with `email`, `roleId` (`GET /v1/roles`), optional `hasAllSiteAccess` or `siteIds`. The API sends an invitation email with a setup link. Resend: `POST /v1/users/{id}/resend-invite`.
-- Live permission catalog: `GET /v1/permissions`. Customize: `PUT /v1/users/{id}/permissions` with the full list. Users cannot edit their own permissions. Confirm changes with the user.
+- Live permission catalog: `GET /v1/permissions` returns `{ resource, kind, labelKey, permissions }` per group. Customize: `PUT /v1/users/{id}/permissions` with the full list. Users cannot edit their own permissions. Confirm changes with the user.
 - Site access is default-deny: set `hasAllSiteAccess` or `siteIds` (`PATCH /v1/users/{id}`).
 - Audit (`audit:read`): `GET /v1/audit/{entityType}/{entityId}` for one entity, `GET /v1/audit?entityType=station&actor=api_key&from=...&to=...` across entities. Retention: `audit.retentionDays` (default 1095, 0 disables pruning).
 
@@ -174,6 +175,7 @@ If the platform itself is down, use evtivity-troubleshoot.
 | Symptom | Action | API |
 |---|---|---|
 | Session stays active after unplug, new starts get 409 `EVSE_IN_USE` | Connectors tab > Stop active session (confirm first) | `POST /v1/stations/{id}/evses/{evseId}/stop-active-session` |
+| Session `faulted` with stopped reason `EndRequestFailed`, operators got a Session End Failed alert, driver not charged | Session detail > Billing > Bill session (confirm first). Manual billing if it cannot be charged | `POST /v1/sessions/{id}/rebill` |
 | Connector badge stale | Connectors tab > Refresh connector status | `POST /v1/stations/{id}/evses/{evseId}/refresh-status` |
 | Session starts, no power, `SuspendedEV` | Refresh profiles, view composite schedule, clear the low profile, ask the driver to replug | `POST /v1/stations/{id}/charging-profiles/refresh`, `.../composite`, `.../clear` |
 

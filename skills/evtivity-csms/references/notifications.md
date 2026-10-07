@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/notifications (website commit 900fb20). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/notifications (website commit 4cd1866). Do not edit.
 
 # Notifications
 
@@ -12,17 +12,24 @@ The notification system dispatches messages to operators and drivers via email, 
 
 ## Driver Events
 
-Driver events are notifications sent to drivers about their charging sessions. These are always enabled (no per-event toggle). You customize the message template for each event type.
+Driver events are notifications sent to drivers about their sessions, account, payments, reservations, invoices, support cases, tokens, maintenance, and station watches. You turn each event type on or off with its **Active** switch. When an event type is on, each driver's notification preferences apply. You customize the message template for each event type.
 
-Available driver event types:
+The **Driver Events** tab groups them:
 
-| Event | Description |
-|-------|-------------|
-| session.Started | Charging session has begun |
-| session.Updated | Session updated with new meter values |
-| session.Completed | Charging session finished |
-| session.PaymentReceived | Payment captured for a session |
-| session.IdlingStarted | Vehicle stopped charging but remains plugged in |
+- **Sessions**: `session.Started`, `session.Updated`, `session.Completed`, `session.Faulted`, `session.PaymentReceived`, `session.IdlingStarted`, `session.Receipt`
+- **Driver Account**: `driver.Welcome`, `driver.ForgotPassword`, `driver.PasswordChanged`, `driver.AccountVerification`, `driver.MfaDisabled`, `driver.PortalInvite`
+- **Payments**: `payment.Complete`, `payment.Refunded`, `payment.FeeRefunded`, `payment.PreAuthFailed`, `payment.CaptureFailed`, `payment.MissingPaymentMethod`
+- **Reservations**: `reservation.Created`, `reservation.Cancelled`, `reservation.CancelledForMaintenance`, `reservation.Expiring`, `reservation.Expired`, `reservation.StationFaulted`
+- **Invoice Events**: `invoice.Sent`
+- **Support Cases**: `supportCase.Created`, `supportCase.OperatorReply`, `supportCase.Resolved`
+- **Multi-Factor Auth**: `mfa.VerificationCode`
+- **Tokens**: `token.Added`, `token.Removed`, `token.Deactivated`, `token.Reactivated`
+- **Maintenance**: `maintenance.SessionStopped`
+- **Station Watch**: `watch.StationAvailable`
+
+These event types are always on, because drivers need them to get into their account: `driver.ForgotPassword`, `driver.AccountVerification`, `driver.PortalInvite` and `mfa.VerificationCode`. Their switch is locked on, and they are sent even when the driver turned a channel off. The API refuses to turn one off with the error code `NOTIFICATION_EVENT_REQUIRED`.
+
+![Driver event with a locked Active switch](https://www.evtivity.com/screenshots/csms/notifications-driver-event-detail.png)
 
 Channels: email and SMS.
 
@@ -40,16 +47,16 @@ Template variables use Handlebars syntax (e.g., `{{firstName}}`, `{{stationId}}`
 
 ## System Events
 
-System events are notifications for operator-facing and account-related events. Like driver events, these are always enabled. You customize the template for each event type.
+System events are notifications sent to operators and site hosts. They are always on and have no switch. You customize the template for each event type.
 
-Available system event types include:
+The **System Events** tab groups them:
 
-- Driver account events (welcome, password reset, verification)
-- Payment events (complete, refunded, pre-auth failed, capture failed)
-- Reservation events (created, cancelled, expiring, expired)
-- Support case events (created, operator reply, resolved)
-- Session receipt
-- MFA verification code
+- **Operator Events**: `operator.UserCreated`, `operator.ForgotPassword`, `operator.PasswordChanged`
+- **Support Cases**: `supportCase.NewCaseFromDriver`, `supportCase.DriverReply`
+- **Session Alerts**: `session.EndRequestFailed`
+- **Site Hosts**: `site.PayoutOnboarding` (email only)
+
+The **Session End Failed** alert, in the **Session Alerts** group, goes to every active operator with the `sessions:write` permission and access to the session's site when the CSMS gives up ending a session after repeated failed end requests. It names the session and the station, so you can search the session ID on the Sessions page and bill the session. See [Billing a Session the CSMS Could Not End](https://www.evtivity.com/docs/csms/sessions#billing-a-session-the-csms-could-not-end). Each operator receives it in their language and time zone, and the SMS opt-out on their Profile page applies.
 
 Channels: email and SMS.
 
@@ -69,7 +76,13 @@ To enable an OCPP event notification:
 
 To disable, toggle the channel to inactive. This removes the settings row and stops notifications for that event type and channel.
 
-There are 41 OCPP event types covering station connectivity, status changes, transaction events, meter values, firmware updates, certificate events, and more. Events are categorized as Common (1.6/2.1) and OCPP 2.1 Only.
+OCPP events cover station connectivity, status changes, transaction events, meter values, firmware updates, certificate events, and more. The list groups them as **Common (1.6 and 2.1)**, **OCPP 1.6 Only** and **OCPP 2.1 Only**.
+
+- **Common (1.6 and 2.1)**: `station.Connected`, `station.Disconnected`, `ocpp.Authorize`, `ocpp.BootNotification`, `ocpp.DataTransfer`, `ocpp.FirmwareStatusNotification`, `ocpp.Heartbeat`, `ocpp.MessageLog`, `ocpp.MeterValues`, `ocpp.StatusNotification`, `ocpp.TransactionEvent`
+- **OCPP 1.6 Only**: `ocpp.DiagnosticsStatus`
+- **OCPP 2.1 Only**: `ocpp.BatterySwap`, `ocpp.ClearedChargingLimit`, `ocpp.Get15118EVCertificate`, `ocpp.GetCertificateChainStatus`, `ocpp.GetCertificateStatus`, `ocpp.LogStatusNotification`, `ocpp.NotifyAllowedEnergyTransfer`, `ocpp.NotifyChargingLimit`, `ocpp.NotifyCustomerInformation`, `ocpp.NotifyDERAlarm`, `ocpp.NotifyDERStartStop`, `ocpp.NotifyDisplayMessages`, `ocpp.NotifyEVChargingNeeds`, `ocpp.NotifyEVChargingSchedule`, `ocpp.NotifyEvent`, `ocpp.NotifyMonitoringReport`, `ocpp.NotifyPeriodicEventStream`, `ocpp.NotifyPriorityCharging`, `ocpp.NotifyReport`, `ocpp.NotifySettlement`, `ocpp.PublishFirmwareStatusNotification`, `ocpp.PullDynamicScheduleUpdate`, `ocpp.ReportChargingProfiles`, `ocpp.ReportDERControl`, `ocpp.ReservationStatusUpdate`, `ocpp.SecurityEventNotification`, `ocpp.SignCertificate`, `ocpp.VatNumberValidation`
+
+Every OCPP event is off until you enable it. `ocpp.MessageLog` fires for every OCPP message the CSMS logs, in both directions, so enable it only for a short investigation.
 
 Channels: email and webhook.
 
@@ -116,7 +129,7 @@ If you save a wrapper with a Handlebars syntax error, the dispatcher logs a warn
 
 ## Driver Notification Preferences
 
-Drivers control their own notification preferences from the portal's Account page. They can independently enable or disable email and SMS channels. When a driver disables a channel, notifications for that channel are skipped even if the event type is enabled system-wide.
+Drivers control their own notification preferences from the portal's Account page. They can independently enable or disable email and SMS channels. When a driver disables a channel, notifications for that channel are skipped even if the event type is enabled system-wide. The always-on event types listed under Driver Events are sent anyway.
 
 ## Operator Notification Preferences
 

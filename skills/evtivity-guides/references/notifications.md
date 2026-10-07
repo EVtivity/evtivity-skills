@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/guides/notifications (website commit 900fb20). Do not edit.
+Generated from https://www.evtivity.com/docs/guides/notifications (website commit 4cd1866). Do not edit.
 
 # Notifications
 
@@ -6,25 +6,32 @@ Event categories, delivery channels, templates, and configuration for EVtivity n
 
 ## Event Categories
 
-EVtivity has three categories of notification events, each with its own settings table and enable toggles.
+EVtivity has three categories of notification events. OCPP events have a switch per channel, driver events a switch per event type, and system events are always on.
 
-### OCPP Events (41 types)
+### OCPP Events
 
 Station-level events from OCPP messages. Delivered via email and webhook.
 
-Examples: `BootNotification`, `StatusNotification`, `FirmwareStatusNotification`, `SecurityEventNotification`.
+The **OCPP Events** tab groups them as **Common (1.6 and 2.1)** and **OCPP 2.1 Only**. Examples: `BootNotification`, `StatusNotification`, `FirmwareStatusNotification`, `SecurityEventNotification`. See [OCPP Events](https://www.evtivity.com/docs/csms/notifications#ocpp-events).
 
-### Driver Events (5 types)
+### Driver Events
 
 Events relevant to EV drivers. Delivered via email and SMS.
 
-Examples: session started, session completed, session failed, idle fee warning, payment receipt.
+The **Driver Events** tab groups them as **Sessions**, **Driver Account**, **Payments**, **Reservations**, **Invoice Events**, **Support Cases**, **Multi-Factor Auth**, **Tokens**, **Maintenance**, and **Station Watch**. See [Driver Events](https://www.evtivity.com/docs/csms/notifications#driver-events) for each event.
 
-### System Events (19 types)
+### System Events
 
-Operational alerts for CSMS administrators. Delivered via email and SMS.
+Notifications for operators and site hosts. Delivered via email and SMS. Site host events go by email only.
 
-Examples: station offline, certificate expiring, payment failure, low balance, scheduled maintenance.
+The **System Events** tab groups them:
+
+- **Operator Events**: user created, forgot password, password changed
+- **Support Cases**: new case from a driver, driver reply
+- **Session Alerts**: a session the CSMS could not end
+- **Site Hosts**: payout account onboarding
+
+See [System Events](https://www.evtivity.com/docs/csms/notifications#system-events) for the templates and channels.
 
 ## Delivery Channels
 

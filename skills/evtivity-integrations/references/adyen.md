@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/integrations/adyen (website commit 900fb20). Do not edit.
+Generated from https://www.evtivity.com/docs/integrations/adyen (website commit 4cd1866). Do not edit.
 
 # Adyen
 
@@ -35,7 +35,7 @@ The webhook role is optional when you create the webhook by hand. Without it, **
 
 The client key lets the card forms in the browser talk to Adyen. It is not a secret.
 
-1. On the same credential, under **Client settings** > **Authentication**, select the **Client key** tab and click **Generate client key**. Copy it.
+1. In the Customer Area, on the same credential, under **Client settings** > **Authentication**, select the **Client key** tab and click **Generate client key**. Copy it.
 2. Under **Allowed origins**, add the origin of each page that shows a card form, and click **Add** after each:
    - the driver portal, for example `https://portal.example.com`
    - the operator dashboard, for example `https://csms.example.com`
@@ -273,6 +273,8 @@ An event that does not match the operation EVtivity waits for, or that arrives o
 ### Reconciliation
 
 Adyen has no payment status lookup, so the daily reconciliation does not ask Adyen. It lists a capture, cancellation, or refund that has waited more than 24 hours for its event as a discrepancy of kind `pending_confirmation`. Check the webhook's event log in the Customer Area under **Developers** > **Webhooks**. A missing or failing webhook is the usual cause.
+
+If EVtivity asked Adyen to raise a hold but the answer was lost, the next daily reconciliation sends the same request again once it is more than 1 hour old. It uses the same idempotency key, so Adyen replays its first answer or raises the hold once, and the session settles as usual. A hold increase still open after 24 hours is listed as `pending_confirmation`. You need to act only when it is listed.
 
 ### Mobile App
 

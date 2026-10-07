@@ -4,14 +4,14 @@ description: "Fix EVtivity failures: a station cannot connect or stays offline, 
 license: MIT
 compatibility: Requires bash, Docker with Docker Compose v2 and curl. Written for Docker Compose installs; the symptoms and fixes also apply to Helm and AWS deployments.
 metadata:
-  evtivity-version: "0.1.39"
-  evtivity-release: "v0.1.39"
-  evtivity-commit: "85333dc7da57a2e0b9d74d1d09d448dee313a29b"
+  evtivity-version: "0.1.40"
+  evtivity-release: "v0.1.40"
+  evtivity-commit: "571bdc26947f0fc8a9a2626615d53eac39d251db"
 ---
 
 # EVtivity troubleshooting
 
-Not for: field problems on a running network such as a stuck session, a stale connector status or `SuspendedEV` (use evtivity-guides, `references/troubleshooting.md` here), payment setup from scratch (use evtivity-integrations), filing a bug (use evtivity-report-issue).
+Not for: field problems on a running network such as a stuck session, a stale connector status or `SuspendedEV` (use evtivity-guides, `references/troubleshooting.md` here), a session the CSMS could not end (use evtivity-csms, Bill session), payment setup from scratch (use evtivity-integrations), filing a bug (use evtivity-report-issue).
 
 Work from evidence. Run the diagnostics first, find the matching symptom below, confirm it with the listed check, then apply the fix. Ask the user before anything that deletes data.
 
@@ -46,6 +46,8 @@ Start at the first symptom that matches.
 - A charging station stays offline or reconnects in a loop: go to B.
 - Card payments, guest checkout or webhooks fail with `PAYMENT_PROVIDER_NOT_CONFIGURED` or `WEBHOOK_NOT_CONFIGURED`: go to E.
 - The problem started after `git pull`, a checkout of a new tag, or an image upgrade: go to G.
+- A session is `faulted` with stopped reason `EndRequestFailed` (Session End Failed alert): this is a field problem, not a stack failure. Bill it with the evtivity-csms skill (Bill session), or see evtivity-guides field troubleshooting.
+- Reports stay `pending`, or the worker log shows `NOPERM` on `report_generate` or `ocpp:conn:*` after an upgrade to v0.1.40: go to D.
 - None of these: collect diagnostics and use the evtivity-report-issue skill.
 
 ### A. Migrate container failed
@@ -108,7 +110,7 @@ Confirm: `docker compose logs --tail 100 api ocpp worker | grep -iE 'redis|WRONG
 
 - `WRONGPASS invalid username-password pair`: Redis and a service disagree on a password, usually after a `REDIS_*_PASSWORD` change in `.env` with only some containers recreated. `docker compose up -d --force-recreate redis api ocpp worker simulator`.
 - Redis exits at start with a missing password message: a `REDIS_*_PASSWORD` is set to an empty value in `.env`. Set it or remove the line.
-- `NOPERM`: use the ACL file of the same release as the images. A mixed checkout or old Helm values cause this.
+- `NOPERM`: use the ACL file of the same release as the images. A mixed checkout or old Helm values cause this. v0.1.40 adds the `report_generate` channel (api, ocpp, worker) and worker read access to `ocpp:conn:*`. Helm and CDK installs must upgrade the chart or stack with the images.
 - `ECONNREFUSED` or `ENOTFOUND redis`: Redis is down or unhealthy. `docker compose up -d redis` and check its log.
 - Passwords must be URL-safe: they go into each service's `REDIS_URL`.
 - Helm and external Redis: create the five users with the chart's `redis/acl-rules.conf` and set one URL per service (evtivity-deployment). `rediss://` with a private CA needs `REDIS_TLS_CA_PEM` or `REDIS_TLS_CA_FILE`.
