@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/configuration/authentication (website commit 4cd1866). Do not edit.
+Generated from https://www.evtivity.com/docs/configuration/authentication (website commit ffa3c26). Do not edit.
 
 # Authentication
 

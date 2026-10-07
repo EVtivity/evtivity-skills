@@ -56,20 +56,11 @@ The first run builds every image from source and takes several minutes. The Comp
 
 ## Network exposure
 
-`setup.sh` binds the dashboard, portal, API and OCPP ports to 127.0.0.1 unless you pass `--lan` or `.env` sets `BIND_IP`.
+The release's `docker-compose.yml` binds its ports in three groups (`references/quick-start.md`; the full list is on the Docker Compose page of the evtivity-deployment skill):
 
-PostgreSQL is different. The release's `docker-compose.yml` publishes it as `5433:5432`, on all interfaces, whatever `BIND_IP` says, with the default login `evtivity` / `evtivity`. Anyone who reaches port 5433 on the host can read and change the database. A later CSMS release will change this default. Until then, on a machine others can reach:
-
-- Bind it to loopback with a `docker-compose.override.yml` next to `docker-compose.yml` (Docker Compose 2.24.4 or later), then `docker compose up -d postgres`:
-
-  ```yaml
-  services:
-    postgres:
-      ports: !override
-        - '127.0.0.1:5433:5432'
-  ```
-
-- Or block port 5433 in the host firewall.
+- `BIND_IP` binds the user-facing ports: dashboard, portal, API, OCPP (including 8443) and OCPI. `setup.sh` sets it to 127.0.0.1 unless you pass `--lan` or `.env` sets `BIND_IP`.
+- `INFRA_BIND_IP` (default 127.0.0.1) binds PostgreSQL 5433, pgAdmin, Mailpit, FTP, Prometheus, Grafana and Loki. These use default logins (PostgreSQL `evtivity` / `evtivity`). Set it in `.env` only on a trusted network, and change the PostgreSQL login first. Otherwise use an SSH tunnel.
+- Redis 6379 and the OCPP Node inspector 9229 always bind to 127.0.0.1.
 
 ## Check health
 

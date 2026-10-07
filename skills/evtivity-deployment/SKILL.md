@@ -42,7 +42,7 @@ The Compose file builds every service from source with development Dockerfiles. 
 
 1. `docker compose up -d` starts the core services: postgres (5433), redis (127.0.0.1:6379), migrate, api (7102), ocpp (7103 and 8443), csms (7100), portal (7101), worker and simulator.
 2. Profiles: `--profile tools` (pgadmin, mailpit, ftp), `--profile monitoring` (prometheus, grafana, loki, alloy), `--profile ocpi` (ocpi, ocpi-simulator, ocpi-cpo-sim).
-3. On a host others can reach, restrict PostgreSQL port 5433 (published on all interfaces with the default login: see evtivity-getting-started, "Network exposure") and set `BIND_IP`.
+3. Set `BIND_IP` for the user-facing ports. PostgreSQL 5433 and the other infrastructure ports stay on 127.0.0.1 unless `INFRA_BIND_IP` is set; change the default PostgreSQL login `evtivity` / `evtivity` before you set it (evtivity-getting-started, "Network exposure").
 4. Confirm: `docker compose ps` shows the services healthy and `migrate` exited 0. `curl -s http://localhost:7102/v1/health` answers.
 
 Data lives in named volumes. `docker compose down --volumes` deletes all of them, including the database. Ask the user first.

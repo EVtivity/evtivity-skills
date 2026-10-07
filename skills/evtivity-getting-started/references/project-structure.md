@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/getting-started/project-structure (website commit 4cd1866). Do not edit.
+Generated from https://www.evtivity.com/docs/getting-started/project-structure (website commit ffa3c26). Do not edit.
 
 # Project Structure
 

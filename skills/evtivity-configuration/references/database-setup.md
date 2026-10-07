@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/configuration/database-setup (website commit 4cd1866). Do not edit.
+Generated from https://www.evtivity.com/docs/configuration/database-setup (website commit ffa3c26). Do not edit.
 
 # Database Setup
 
@@ -23,6 +23,8 @@ The included `docker-compose.yml` runs PostgreSQL on port 5433 (external) mapped
 ```bash
 docker compose up postgres
 ```
+
+Compose publishes port 5433 on `127.0.0.1` only. To expose it, change the default `evtivity` / `evtivity` login first, then set `INFRA_BIND_IP` in `.env`. See [Docker Compose](https://www.evtivity.com/docs/deployment/docker-compose#port-binding).
 
 pgAdmin is available on port 7109 when you start with the tools profile:
 

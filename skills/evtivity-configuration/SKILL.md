@@ -32,7 +32,7 @@ This skill tells you where a setting lives and how to change it safely. The webs
 | --- | --- | --- |
 | Set production secrets | `JWT_SECRET`, `SETTINGS_ENCRYPTION_KEY` | `references/environment-variables.md` |
 | Change the first admin or driver login | `INITIAL_ADMIN_EMAIL`, `INITIAL_ADMIN_PASSWORD`, `INITIAL_ADMIN_MUST_RESET_PASSWORD`, `INITIAL_DRIVER_*` (first seed only) | `references/environment-variables.md` |
-| Allow other machines to reach Compose ports | `BIND_IP` (`0.0.0.0` all interfaces, `127.0.0.1` local only) | `references/environment-variables.md` |
+| Allow other machines to reach Compose ports | `BIND_IP` for user-facing ports, `INFRA_BIND_IP` (default `127.0.0.1`) for Postgres, pgAdmin, Mailpit, FTP and monitoring | `references/environment-variables.md` |
 | Point at another database or Redis | `DATABASE_URL`, `REDIS_URL` | `references/database-setup.md` |
 | Fix "too many connections" | `DB_POOL_MAX` per process, sum below Postgres `max_connections` | `references/environment-variables.md` |
 | Cross-subdomain cookies | `COOKIE_DOMAIN`, plus `CSMS_URL`, `PORTAL_URL`, `CORS_ORIGIN` | `references/environment-variables.md` |
@@ -73,7 +73,7 @@ Before you change `SETTINGS_ENCRYPTION_KEY` on an existing install, stop and con
 
 ## Workflow: database, migrations and seed (`references/database-setup.md`)
 
-1. Use PostgreSQL 17. Set `DATABASE_URL` (default `postgres://evtivity:evtivity@localhost:5433/evtivity`). Compose publishes Postgres on host port 5433 (see the evtivity-getting-started skill about restricting that port).
+1. Use PostgreSQL 17. Set `DATABASE_URL` (default `postgres://evtivity:evtivity@localhost:5433/evtivity`). Compose publishes Postgres on host port 5433 on 127.0.0.1; `INFRA_BIND_IP` exposes it (see the evtivity-getting-started skill, "Network exposure").
 2. Apply migrations with `npm run db:migrate`. In Compose the `migrate` service runs them before the other services start. Helm and CDK run them in a job.
 3. Seed with `npm run db:seed`. `SEED_DEMO=true` adds demo sites, stations, sessions and drivers. Re-running adds only what is missing and keeps existing values. `npm run db:seed -- --apply-config` writes `seed.config.json` over existing settings: confirm with the user before running it on a database with real data.
 4. Confirm: `psql "$DATABASE_URL" -c 'select 1'` and the API health check.

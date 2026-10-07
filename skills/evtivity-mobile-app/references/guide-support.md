@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/guide/support (website commit 4cd1866). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/guide/support (website commit ffa3c26). Do not edit.
 
 # Support
 

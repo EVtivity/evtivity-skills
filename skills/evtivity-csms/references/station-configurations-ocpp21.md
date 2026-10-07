@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/station-configurations-ocpp21 (website commit 4cd1866). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/station-configurations-ocpp21 (website commit ffa3c26). Do not edit.
 
 # OCPP 2.1 Components & Variables
 
