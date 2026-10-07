@@ -2,12 +2,17 @@
 # Cut a release of the EVtivity skills. The tag matches the EVtivity CSMS
 # release the skills target.
 #
-# Usage: scripts/release.sh <tag> [--push] [--website <dir>] [--website-ref <ref>]
+# Usage: scripts/release.sh <tag> [--push] [--website <dir>] [--website-ref <ref>] [--csms <dir>]
 #   <tag>          vX.Y.Z (stable) or vX.Y.Z-alpha[.N], -beta[.N]
 #   --push         push main and the tag to origin (the Release workflow then
 #                  creates the GitHub release). Without it, nothing leaves this machine.
 #   --website      checkout of the website repository (default: ../evtivity.com)
 #   --website-ref  website ref the references are generated from (default: origin/main)
+#   --csms         CSMS checkout already at the tag's commit with its OpenAPI spec
+#                  (packages/api/openapi.json, as scripts/fetch-csms.sh prepares it).
+#                  Reused as is and left in place. Without it, the CSMS is cloned at
+#                  the tag into a temporary directory and its spec generated.
+#   Relative paths are relative to the root of this repository.
 #
 # Steps: validate the tag, require a clean main that matches origin/main,
 # resolve the commit of the CSMS release tag, regenerate the references from
@@ -27,12 +32,14 @@ tag=""
 push="n"
 website="../evtivity.com"
 website_ref="origin/main"
+csms_given=""
 while [ $# -gt 0 ]; do
   case "$1" in
     --push) push="y"; shift ;;
     --website) website="${2:?--website needs a path}"; shift 2 ;;
     --website-ref) website_ref="${2:?--website-ref needs a ref}"; shift 2 ;;
-    -h | --help) sed -n '2,19p' "$0"; exit 0 ;;
+    --csms) csms_given="${2:?--csms needs a path}"; shift 2 ;;
+    -h | --help) sed -n '2,24p' "$0"; exit 0 ;;
     -*) echo "Unknown option: $1" >&2; exit 2 ;;
     *)
       if [ -n "$tag" ]; then echo "Only one tag, got $tag and $1" >&2; exit 2; fi
@@ -87,6 +94,20 @@ if ! csms_commit=$(release_csms_tag_commit "$tag"); then
   exit 1
 fi
 echo "CSMS $tag is commit $csms_commit."
+if [ -n "$csms_given" ]; then
+  if ! csms_head=$(git -C "$csms_given" rev-parse --verify HEAD 2>/dev/null); then
+    echo "--csms $csms_given is not a git checkout." >&2
+    exit 1
+  fi
+  if [ "$csms_head" != "$csms_commit" ]; then
+    echo "--csms $csms_given is at $csms_head, not CSMS $tag ($csms_commit)." >&2
+    exit 1
+  fi
+  if [ ! -s "$csms_given/packages/api/openapi.json" ]; then
+    echo "--csms $csms_given has no OpenAPI spec. Prepare it with scripts/fetch-csms.sh." >&2
+    exit 1
+  fi
+fi
 if ! git -C "$website" rev-parse --git-dir >/dev/null 2>&1; then
   echo "Website checkout not found at $website. Pass --website <dir>." >&2
   exit 1
@@ -94,11 +115,18 @@ fi
 git -C "$website" fetch --quiet origin
 website_commit=$(git -C "$website" rev-parse --verify "$website_ref^{commit}")
 export_dir=$(mktemp -d)
-csms_dir="$(mktemp -d)/csms"
+csms_tmp=""
+if [ -n "$csms_given" ]; then
+  csms_dir="$csms_given"
+else
+  csms_tmp=$(mktemp -d)
+  csms_dir="$csms_tmp/csms"
+fi
 restore() {
   git checkout --quiet -- .
   git clean --quiet -fd -- skills
-  rm -rf "$export_dir" "$(dirname "$csms_dir")"
+  rm -rf "$export_dir"
+  if [ -n "$csms_tmp" ]; then rm -rf "$csms_tmp"; fi
 }
 trap restore ERR
 
@@ -115,11 +143,12 @@ release_set_source "$tag" "$csms_commit"
 release_check_source "$tag"
 
 # Regenerate the API references from the CSMS release itself: its OpenAPI spec,
-# route sources and error messages at the tag's commit.
+# route sources and error messages at the tag's commit. fetch-csms.sh reuses a
+# --csms checkout (checked above) and clones a fresh one otherwise.
 bash scripts/fetch-csms.sh "$csms_dir" "$tag" "$csms_commit"
 python3 scripts/generate-api-reference.py --csms "$csms_dir" --release "$tag" --commit "$csms_commit"
 python3 scripts/check-api-paths.py --openapi "$csms_dir/packages/api/openapi.json"
-rm -rf "$(dirname "$csms_dir")"
+if [ -n "$csms_tmp" ]; then rm -rf "$csms_tmp"; fi
 
 # Copy the SKILL.md descriptions into the manifests, README.md and AGENTS.md.
 python3 scripts/sync-descriptions.py

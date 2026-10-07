@@ -139,6 +139,8 @@ jobs:
         run: shellcheck --version && shellcheck scripts/*.sh skills/*/scripts/*.sh
       - name: Release tag tests
         run: bash scripts/release-version.test.sh
+      - name: release.sh --csms checks
+        run: bash scripts/release-csms.test.sh
       - name: setup.sh release selection tests
         run: bash scripts/setup-release.test.sh
       - name: diagnose.sh redaction tests
