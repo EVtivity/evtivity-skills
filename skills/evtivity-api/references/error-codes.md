@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.40 (https://github.com/EVtivity/evtivity-csms, commit 571bdc26947f) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.41-alpha.3 (https://github.com/EVtivity/evtivity-csms, commit 83e6334e0f0d) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -188,6 +188,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `RATE_LIMITED` | 429 | Too many requests. Wait a moment and try again. |
 | `RECAPTCHA_FAILED` | 403 | reCAPTCHA verification failed |
 | `RECAPTCHA_REQUIRED` | 400 | reCAPTCHA token is required |
+| `RECAPTCHA_SECRET_REQUIRED` | 400 | A reCAPTCHA secret key is required to enable reCAPTCHA |
 | `REFUND_EXCEEDS_REMAINING` | 400, 409 | Refund amount exceeds remaining ... |
 | `REFUND_TOP_UP_UNKNOWN` | 409 | This payment includes a top-up charge with no recorded payment id. Refund the top-up in the payment provider's dashboard. |
 | `REGION_NOT_FOUND` | 404 | Region not found |

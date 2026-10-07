@@ -3,9 +3,9 @@ name: evtivity-configuration
 description: "Configure EVtivity: environment variables, secrets such as JWT_SECRET and SETTINGS_ENCRYPTION_KEY, operator and driver auth, roles, MFA, reCAPTCHA setup, database, migrations, seed, Redis users, OCPP ports, TLS and station security profiles. Use to change a setting or variable or harden an install. Not for a blocked sign-in (evtivity-troubleshoot)."
 license: MIT
 metadata:
-  evtivity-version: "0.1.40"
-  evtivity-release: "v0.1.40"
-  evtivity-commit: "571bdc26947f0fc8a9a2626615d53eac39d251db"
+  evtivity-version: "0.1.41"
+  evtivity-release: "v0.1.41-alpha.3"
+  evtivity-commit: "83e6334e0f0d0359d3e082a2bd34e8c7c144ba2b"
   evtivity-docs-section: configuration
 ---
 
