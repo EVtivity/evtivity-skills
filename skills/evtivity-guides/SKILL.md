@@ -143,7 +143,7 @@ curl -s -X POST "$EVTIVITY_API/v1/smart-charging/templates/$TPL/push" -H "Author
 
 1. Channels first: SMTP and Twilio (Settings > Notification). Test with `POST /v1/notifications/test` (`channel` `email` or `sms`, `recipient`).
 2. OCPP events (email or webhook, every event off until configured, `ocpp.MessageLog` only for short investigations): `PUT /v1/ocpp-event-settings` with `eventType`, `channel`, `recipient`. Private-network webhook hosts must be allowed in Settings.
-3. Driver events: turn a type on or off with `PUT /v1/driver-event-settings` (`eventType`, `isEnabled`). The four access-critical types refuse `false` with 400 `NOTIFICATION_EVENT_REQUIRED`. System events are always on: `PUT /v1/system-event-settings` no longer takes `isEnabled`.
+3. Driver events: turn a type on or off with `PUT /v1/driver-event-settings` (`eventType`, `isEnabled`). The four access-critical types refuse `false` with 400 `NOTIFICATION_EVENT_REQUIRED`. System events are always on and have no setting.
 4. Templates for driver and system events (email and SMS): `PUT /v1/notification-templates` (`eventType`, `channel`, `language`, `subject`, `bodyHtml`). Languages: `en`, `de`, `es`, `ko`, `zh`, `zh-TW`, with English fallback.
 5. Confirm: `GET /v1/notifications` (history) shows each attempt with its status and failure reason.
 
