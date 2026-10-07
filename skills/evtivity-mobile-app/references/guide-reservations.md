@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/guide/reservations (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/guide/reservations. Do not edit.
 
 # Reservations
 

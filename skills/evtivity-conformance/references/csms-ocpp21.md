@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/conformance/csms-ocpp21 (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/conformance/csms-ocpp21. Do not edit.
 
 # OCPP 2.1 CSMS Results
 

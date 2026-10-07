@@ -4,7 +4,9 @@
 // The website docs are the single source of truth. Every page under
 // app/content/docs/en/<section>/ lands in the skill mapped to its section in
 // scripts/sections.json, plus any extra pages listed there. Also writes
-// scripts/coverage.json and scripts/references-source.json.
+// scripts/coverage.json and scripts/references-source.json (the website commit
+// of every reference). A reference file is rewritten only when its content
+// changes, so a website commit that leaves a page alone leaves its reference alone.
 //
 // Usage: node scripts/generate-references.mjs --website <dir> [--commit <sha>]
 //   --website  a checkout (or exported tree) of the website repository
@@ -371,10 +373,12 @@ export function referenceName(pageId) {
   return pageId.split('/').slice(1).join('-') + '.md';
 }
 
-export function renderPage(pageId, source, { shortSha, octt }) {
+// The header names the page, not the website commit: a reference changes only when its page
+// content changes. scripts/references-source.json records the commit for every reference.
+export function renderPage(pageId, source, { octt }) {
   const { meta, body } = splitFrontmatter(source);
   const url = `${SITE}/docs/${pageId}`;
-  const lines = [`Generated from ${url} (website commit ${shortSha}). Do not edit.`, ''];
+  const lines = [`Generated from ${url}. Do not edit.`, ''];
   if (meta.title) lines.push(`# ${decodeEntities(meta.title)}`, '');
   if (meta.description) lines.push(decodeEntities(meta.description), '');
   lines.push(convertMdx(body, { page: pageId, octt }));
@@ -457,6 +461,7 @@ function main() {
   }
 
   let written = 0;
+  let changed = 0;
   for (const [skill, skillPages] of Object.entries(coverage)) {
     const skillDir = path.join(repoRoot, 'skills', skill);
     if (!fs.existsSync(path.join(skillDir, 'SKILL.md'))) throw new Error(`skills/${skill}/SKILL.md not found`);
@@ -468,7 +473,12 @@ function main() {
       if (keep.has(name)) throw new Error(`${skill}: two pages map to references/${name}`);
       keep.add(name);
       const source = fs.readFileSync(path.join(docsRoot, `${pageId}.mdx`), 'utf8');
-      fs.writeFileSync(path.join(refDir, name), renderPage(pageId, source, { shortSha, octt }));
+      const file = path.join(refDir, name);
+      const rendered = renderPage(pageId, source, { octt });
+      if (!fs.existsSync(file) || fs.readFileSync(file, 'utf8') !== rendered) {
+        fs.writeFileSync(file, rendered);
+        changed += 1;
+      }
       written += 1;
     }
     // Remove generated files of pages that no longer exist.
@@ -489,7 +499,9 @@ function main() {
     path.join(repoRoot, 'scripts/references-source.json'),
     JSON.stringify({ website: 'github.com/EVtivity/evtivity.com', commit }, null, 2) + '\n',
   );
-  console.log(`${written} references from ${pages.length} pages at website commit ${shortSha}`);
+  console.log(
+    `${written} references (${changed} changed) from ${pages.length} pages at website commit ${shortSha}`,
+  );
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

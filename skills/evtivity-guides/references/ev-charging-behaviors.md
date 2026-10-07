@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/guides/ev-charging-behaviors (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/guides/ev-charging-behaviors. Do not edit.
 
 # EV Charging Behaviors
 

@@ -73,7 +73,7 @@ const octt = {
 test('converts every component the website uses', () => {
   const source = fs.readFileSync(path.join(fixtures, 'components.mdx'), 'utf8');
   const expected = fs.readFileSync(path.join(fixtures, 'components.expected.md'), 'utf8');
-  const actual = renderPage('csms/sample', source, { shortSha: 'abc1234', octt });
+  const actual = renderPage('csms/sample', source, { octt });
   assert.equal(actual, expected);
 });
 

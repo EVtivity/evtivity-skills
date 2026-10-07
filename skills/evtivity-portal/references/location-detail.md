@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/portal/location-detail (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/portal/location-detail. Do not edit.
 
 # Location Detail
 

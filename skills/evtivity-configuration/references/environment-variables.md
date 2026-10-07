@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/configuration/environment-variables (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/configuration/environment-variables. Do not edit.
 
 # Environment Variables
 

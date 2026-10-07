@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/integrations/webhooks (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/integrations/webhooks. Do not edit.
 
 # Webhooks and Events
 

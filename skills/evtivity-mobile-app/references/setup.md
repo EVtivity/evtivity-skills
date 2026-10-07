@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/setup (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/setup. Do not edit.
 
 # Mobile App Setup
 

@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/guides/troubleshooting (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/guides/troubleshooting. Do not edit.
 
 # Troubleshooting
 

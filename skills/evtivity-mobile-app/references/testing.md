@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/testing (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/testing. Do not edit.
 
 # Testing
 

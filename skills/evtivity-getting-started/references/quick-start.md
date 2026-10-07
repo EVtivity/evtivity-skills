@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/getting-started/quick-start (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/getting-started/quick-start. Do not edit.
 
 # Quick Start
 

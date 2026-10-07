@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/guides/station-management (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/guides/station-management. Do not edit.
 
 # Station Management
 

@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/notifications (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/notifications. Do not edit.
 
 # Notifications
 

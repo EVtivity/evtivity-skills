@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/guides/station-display-messages (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/guides/station-display-messages. Do not edit.
 
 # Station Display Messages
 

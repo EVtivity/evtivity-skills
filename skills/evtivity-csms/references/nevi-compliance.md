@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/nevi-compliance (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/nevi-compliance. Do not edit.
 
 # NEVI Compliance
 

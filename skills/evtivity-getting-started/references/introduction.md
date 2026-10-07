@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/getting-started/introduction (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/getting-started/introduction. Do not edit.
 
 # Introduction
 

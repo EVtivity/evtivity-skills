@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/dashboard (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/dashboard. Do not edit.
 
 # Dashboard
 

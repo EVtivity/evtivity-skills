@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/simulator/overview (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/simulator/overview. Do not edit.
 
 # Simulator Overview
 

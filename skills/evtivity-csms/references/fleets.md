@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/fleets (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/fleets. Do not edit.
 
 # Fleets
 

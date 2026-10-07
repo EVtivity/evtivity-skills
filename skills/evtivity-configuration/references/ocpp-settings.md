@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/configuration/ocpp-settings (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/configuration/ocpp-settings. Do not edit.
 
 # OCPP Settings
 

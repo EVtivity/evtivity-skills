@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/portal/charging (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/portal/charging. Do not edit.
 
 # Start a Charging Session
 

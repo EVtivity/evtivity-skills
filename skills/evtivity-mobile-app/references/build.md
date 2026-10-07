@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/build (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/build. Do not edit.
 
 # Build
 

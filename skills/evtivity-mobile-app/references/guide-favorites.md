@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/guide/favorites (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/guide/favorites. Do not edit.
 
 # Favorites
 

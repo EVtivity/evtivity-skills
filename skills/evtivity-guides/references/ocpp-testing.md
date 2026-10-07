@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/guides/ocpp-testing (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/guides/ocpp-testing. Do not edit.
 
 # OCPP Testing
 

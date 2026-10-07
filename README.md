@@ -166,7 +166,7 @@ Each skill follows the [Agent Skills](https://agentskills.io/specification) form
 
 - `SKILL.md`: frontmatter (name, description, license, metadata with the CSMS version and docs section) and the workflow. Hand-written.
 - `scripts/`: scripts the skill runs, such as `setup.sh`, `check-stack.sh` and `diagnose.sh`.
-- `references/`: one file per docs page, generated from the website docs by `scripts/generate-references.mjs`. Never edited by hand. Each file starts with the live page URL and the website commit it came from.
+- `references/`: one file per docs page, generated from the website docs by `scripts/generate-references.mjs`. Never edited by hand. Each file starts with the live page URL. `scripts/references-source.json` records the website commit they come from.
 
 The website docs are the single source of truth. CI regenerates the references and fails when they differ. The API references (`references/routes*.md`, `error-codes.md`) come from the OpenAPI spec and sources of the CSMS release in `metadata.evtivity-release`, and CI checks them against that release.
 

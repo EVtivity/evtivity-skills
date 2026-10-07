@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/guides/session-monitoring (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/guides/session-monitoring. Do not edit.
 
 # Session Monitoring
 

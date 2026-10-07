@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/guide/vehicles (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/guide/vehicles. Do not edit.
 
 # Vehicles
 

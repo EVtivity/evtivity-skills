@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/portal/guest-charging (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/portal/guest-charging. Do not edit.
 
 # Guest Charging
 

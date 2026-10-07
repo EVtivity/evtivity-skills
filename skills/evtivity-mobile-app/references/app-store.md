@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/app-store (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/app-store. Do not edit.
 
 # Submit to the App Stores
 

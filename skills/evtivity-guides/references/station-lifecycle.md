@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/guides/station-lifecycle (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/guides/station-lifecycle. Do not edit.
 
 # Charging Session Lifecycle
 

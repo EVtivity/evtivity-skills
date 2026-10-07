@@ -67,16 +67,17 @@ pip install "git+https://github.com/agentskills/agentskills.git#subdirectory=ski
 for d in skills/*/; do skills-ref validate "$d"; done
 shellcheck scripts/*.sh skills/*/scripts/*.sh
 bash scripts/release-version.test.sh
+bash scripts/release-csms.test.sh
 bash scripts/setup-release.test.sh
 bash scripts/diagnose-redaction.test.sh
 claude plugin validate .
 ```
 
-Regenerate the references from a website checkout: `node scripts/generate-references.mjs --website <dir> --commit <sha>`. CI regenerates them at the commit in `scripts/references-source.json` and fails on any difference. A pull request that changes generated references or their sources fails when CI cannot read the website (fork pull requests get no secrets).
+Regenerate the references from a website checkout: `node scripts/generate-references.mjs --website <dir> --commit <sha>`. Only `scripts/references-source.json` records the website commit, so a reference file changes only when its page changes. CI regenerates them at the commit in `scripts/references-source.json` and fails on any difference. A pull request that changes generated references or their sources fails when CI cannot read the website (fork pull requests get no secrets).
 
 Regenerate the API references: `bash scripts/fetch-csms.sh <dir>`, then `python3 scripts/generate-api-reference.py --csms <dir> --release <tag> --commit <sha>`. CI does the same at the recorded release and fails on any difference.
 
 ## Commits and releases
 
 - Conventional Commits, one line, English (`feat(csms): ...`, `fix(troubleshoot): ...`, `docs: ...`).
-- Release tags match CSMS releases. Cut them with `scripts/release.sh <tag> [--push]` only, after the CSMS release exists. It records the CSMS tag and commit, regenerates the website and API references and the description copies, then tags. The Release workflow publishes the GitHub release with the `.well-known` discovery index (`index.json`) and one archive per skill as assets (`scripts/build-discovery.py`).
+- Release tags match CSMS releases. Cut them with `scripts/release.sh <tag> [--push] [--csms <dir>]` only, after the CSMS release exists (`--csms` reuses a CSMS checkout that `scripts/fetch-csms.sh` already prepared at the tag). It records the CSMS tag and commit, regenerates the website and API references and the description copies, then tags. The Release workflow publishes the GitHub release with the `.well-known` discovery index (`index.json`) and one archive per skill as assets (`scripts/build-discovery.py`).

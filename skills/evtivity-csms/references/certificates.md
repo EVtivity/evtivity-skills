@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/certificates (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/certificates. Do not edit.
 
 # Certificates
 

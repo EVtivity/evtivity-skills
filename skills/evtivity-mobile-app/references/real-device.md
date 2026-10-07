@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/mobile-app/real-device (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/mobile-app/real-device. Do not edit.
 
 # Run on a Real Device
 

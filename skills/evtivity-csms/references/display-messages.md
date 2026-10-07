@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/display-messages (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/display-messages. Do not edit.
 
 # Display Messages
 

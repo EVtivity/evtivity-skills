@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/csms/sample (website commit abc1234). Do not edit.
+Generated from https://www.evtivity.com/docs/csms/sample. Do not edit.
 
 # Sample Page
 

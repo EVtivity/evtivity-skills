@@ -1,4 +1,4 @@
-Generated from https://www.evtivity.com/docs/getting-started/installation (website commit ffa3c26). Do not edit.
+Generated from https://www.evtivity.com/docs/getting-started/installation. Do not edit.
 
 # Installation
 
