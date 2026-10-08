@@ -1,6 +1,6 @@
 {
   "name": "evtivity",
-  "version": "0.1.41",
+  "version": "0.1.42",
   "description": "Agent Skills for the EVtivity CSMS (OCPP 1.6 and 2.1): set up, configure, deploy, operate, test, integrate, troubleshoot and report issues.",
   "author": {
     "name": "EVtivity",

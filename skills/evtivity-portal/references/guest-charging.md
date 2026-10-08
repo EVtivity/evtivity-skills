@@ -67,7 +67,7 @@ When the tariff requires payment:
 5. The pre-authorization amount is displayed above the button: "A hold of ... will be placed on your card. You will only be charged for the energy used."
 6. Tap **Start Charging** to authorize the hold and begin the session.
 
-The system places a pre-authorization hold on your card. The final charge is captured when the session ends based on actual energy consumed and time elapsed. If the final amount is less than the hold, the difference is released. A guest has no saved card, so a cost above the hold is not charged.
+The system places a pre-authorization hold on your card. The final charge is captured when the session ends based on actual energy consumed and time elapsed. If the final amount is less than the hold, the difference is released. A guest has no saved card, so a cost above the hold is not charged. When the station's QR code sets a maximum cost below the hold, that maximum is the limit instead: the session stops there and you are charged no more than it.
 
 If the card is refused, the session does not start and the page shows the reason, for example "Your card was declined. Try a different card." Try another card.
 

@@ -23,11 +23,11 @@ Sessions follow the OCPP `TransactionEvent` flow:
 
 ## Idle Detection
 
-When a vehicle stops drawing power but remains plugged in, the session enters an idle state. EVtivity uses a priority-based detection strategy:
+When the vehicle pauses charging itself but remains plugged in, the session enters an idle state. Only an EV-side pause counts: a pause by the station (`SuspendedEVSE`), a fault, or a plugged-in vehicle that is not charging (`Idle`, `EVConnected`, 1.6 `Finishing`) is not idle time and bills no idle fee. EVtivity uses a priority-based detection strategy:
 
-1. **chargingState** (OCPP 2.1) - The `TransactionEvent` includes a `chargingState` field. If it reports `Idle` or `EVConnected`, the session is idle.
-2. **Power.Active.Import** - If power drops to zero, the session is idle.
-3. **StatusNotification** (OCPP 1.6) - A `SuspendedEV` or `Finishing` status indicates idle.
+1. **chargingState** (OCPP 2.1) - The `TransactionEvent` includes a `chargingState` field. If it reports `SuspendedEV`, the session is idle. Any other state ends the idle period.
+2. **Power.Active.Import** - If power drops to zero, the session is idle, unless the connector is faulted or paused by the station.
+3. **StatusNotification** (OCPP 1.6) - A `SuspendedEV` status indicates idle. `SuspendedEVSE`, `Faulted`, `Finishing` and `Charging` end the idle period.
 4. **Flat energy** - If energy delivered has not increased across multiple meter updates, the session is idle.
 
 The idle grace period is configurable in settings. Idle fees do not apply until the grace period expires.

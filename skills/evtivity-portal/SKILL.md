@@ -3,9 +3,9 @@ name: evtivity-portal
 description: "Use the EVtivity driver portal web app and its API: driver registration, sign-in, find a station, start and stop charging, guest charging by QR code, saved cards, RFID cards, sessions and receipts, vehicles, favorites, station watches, support cases. Use when a driver works in the portal. Not for the native app (evtivity-mobile-app)."
 license: MIT
 metadata:
-  evtivity-version: "0.1.41"
-  evtivity-release: "v0.1.41"
-  evtivity-commit: "1e95549f016a878dd406727dedad2f39fa780ac0"
+  evtivity-version: "0.1.42"
+  evtivity-release: "v0.1.42-beta.1"
+  evtivity-commit: "34bf507e0fc3747130048421f45a185cfe0bfe7e"
   evtivity-docs-section: portal
 ---
 

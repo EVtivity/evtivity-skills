@@ -28,6 +28,8 @@ The **Driver Events** tab groups them:
 - **Station Watch**: `watch.StationAvailable`
 - **Prepaid Cards**: `prepaid.LowCredit`, `prepaid.CreditExhausted` (see [Prepaid Cards](https://www.evtivity.com/docs/csms/tokens#prepaid-cards))
 
+`session.IdlingStarted` goes out once per idle period, when the EV has been idle for at least 60 seconds, on OCPP 1.6 and 2.1 alike. A shorter pause, such as an EV that reports full and ends the session a moment later, sends no idling notification. Idle fees follow the idling grace period in Settings.
+
 These event types are always on, because drivers need them to get into their account: `driver.ForgotPassword`, `driver.AccountVerification`, `driver.PortalInvite` and `mfa.VerificationCode`. Their switch is locked on, and they are sent even when the driver turned a channel off. The API refuses to turn one off with the error code `NOTIFICATION_EVENT_REQUIRED`.
 
 ![Driver event with a locked Active switch](https://www.evtivity.com/screenshots/csms/notifications-driver-event-detail.png)

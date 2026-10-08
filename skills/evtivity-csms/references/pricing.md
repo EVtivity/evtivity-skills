@@ -27,7 +27,7 @@ The pricing system uses pricing groups that contain one or more tariffs. Each ta
    - **Price per kWh**
    - **Price per minute**
    - **Price per session**, a flat fee per session
-   - **Idle Fee (Per Min)**, charged per minute after the grace period
+   - **Idle Fee (Per Min)**, charged per minute after the grace period, only while the EV pauses charging itself (not while the station pauses it or in a fault)
    - **Reservation Fee (Per Min)**
    - **Tax Rate** (decimal fraction, 0 to 1)
 5. Optionally select a restriction type to control when this tariff applies.

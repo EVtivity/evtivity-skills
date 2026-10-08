@@ -4,9 +4,9 @@ description: "Set up EVtivity payments: Stripe, Stripe Connect payouts, Adyen, t
 license: MIT
 compatibility: Needs a running EVtivity CSMS (v0.1.38 or later for Adyen and the provider-neutral payment API). API examples use curl and jq. Stripe or Adyen setup needs an account with that provider. Provider webhooks need a public HTTPS URL for the API.
 metadata:
-  evtivity-version: "0.1.41"
-  evtivity-release: "v0.1.41"
-  evtivity-commit: "1e95549f016a878dd406727dedad2f39fa780ac0"
+  evtivity-version: "0.1.42"
+  evtivity-release: "v0.1.42-beta.1"
+  evtivity-commit: "34bf507e0fc3747130048421f45a185cfe0bfe7e"
   evtivity-docs-section: integrations
 ---
 

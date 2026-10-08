@@ -114,12 +114,14 @@ When a session was started under a reservation but the OCPP Authorize matched a 
 
 ## Idle Detection
 
-The CSMS detects idle state using multiple signals, prioritized by reliability:
+Idle time is billed only while the EV pauses charging itself (SuspendedEV). A pause by the station (SuspendedEVSE, for example load management), a fault, or a connected EV that is not charging (OCPP 2.1 Idle or EVConnected, OCPP 1.6 Finishing) is never idle time. The CSMS detects idle state using multiple signals, prioritized by reliability:
 
-1. **chargingState** (OCPP 2.1 only) - TransactionEvent reports the charging state directly.
-2. **Power reading** (1.6 and 2.1) - Power.Active.Import of 0 in meter values.
-3. **StatusNotification** (1.6 only) - SuspendedEV, SuspendedEVSE, or Finishing status.
-4. **Flat energy reading** (1.6 and 2.1) - Energy meter value unchanged between readings.
+1. **chargingState** (OCPP 2.1 only) - TransactionEvent reports the charging state SuspendedEV.
+2. **Power reading** (1.6 and 2.1) - Power.Active.Import of 0 in meter values, unless the connector is faulted, paused by the station, or in one of the other states above.
+3. **StatusNotification** (1.6 only) - SuspendedEV status.
+4. **Flat energy reading** (1.6 and 2.1) - Energy meter value unchanged for at least 30 seconds, with the same exceptions as the power reading. A reading sent moments after another one does not count.
+
+Any other charging state or status (Charging, SuspendedEVSE, Faulted, Finishing) ends an idle period, and so does the end of the session.
 
 Higher-priority signals are never overwritten by lower-priority ones. The idle grace period (configurable in Settings) determines when idle fees start accruing. The grace period is applied during cost calculation, not during detection.
 

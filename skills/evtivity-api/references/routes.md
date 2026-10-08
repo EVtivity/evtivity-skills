@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.41 (https://github.com/EVtivity/evtivity-csms, commit 1e95549f016a) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.42-beta.1 (https://github.com/EVtivity/evtivity-csms, commit 34bf507e0fc3) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
@@ -61,9 +61,9 @@ A `write` permission includes `read` for the same resource.
 | Event Alert Rules | 4 | `references/routes-event-alert-rules.md` |
 | API Keys | 4 | `references/routes-api-keys.md` |
 | CSS Management | 7 | `references/routes-css-management.md` |
-| CSS Actions | 9 | `references/routes-css-actions.md` |
+| CSS Actions | 13 | `references/routes-css-actions.md` |
 | CSS OCPP 1.6 Actions | 10 | `references/routes-css-ocpp-1-6-actions.md` |
-| CSS OCPP 2.1 Actions | 37 | `references/routes-css-ocpp-2-1-actions.md` |
+| CSS OCPP 2.1 Actions | 40 | `references/routes-css-ocpp-2-1-actions.md` |
 | Smart Charging | 12 | `references/routes-smart-charging.md` |
 | AI Assistant | 1 | `references/routes-ai-assistant.md` |
 | OCTT | 4 | `references/routes-octt.md` |

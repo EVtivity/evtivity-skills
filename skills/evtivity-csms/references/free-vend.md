@@ -67,6 +67,7 @@ Operators can edit the generated config templates to add vendor-specific keys. T
 ## Visual Indicators
 
 - Sessions created under free vend display a **Free Vend** label in the driver column.
+- Free vend sessions are recorded with a total cost of 0.
 - Stations at a site with free vend enabled show a **Free Vend** badge on the station card.
 
 ## No Pricing Group Required

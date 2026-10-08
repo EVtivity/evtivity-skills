@@ -110,7 +110,7 @@ What happens:
 
 Caveats for Path B:
 
-- **Idle fees apply.** The session is open. If your tariff charges per minute or has idle fees, the driver pays for the suspended time unless the grace period covers it.
+- **Time charges apply, idle fees do not.** The session is open, so a tariff that charges per minute charges the suspended time. Idle fees accrue only while the EV pauses charging itself, never while the station holds it in `SuspendedEVSE`.
 - **EV may sleep.** Many cars go to sleep after 10 to 30 minutes of inactivity and stop responding to wake-up signals. Some never restart charging when the limit lifts. Tesla and recent VW MEB platforms handle this fine. Older cars often do not.
 - **Station idle timeout.** Some stations have an internal "no energy for N minutes, end transaction" rule. Check the station's `EVConnectionTimeOut` configuration before relying on long suspended windows.
 
