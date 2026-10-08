@@ -24,7 +24,7 @@ The app checks that the cable is detected. If it is not, a message asks you to p
 >
 > You need a saved payment method before you can start, unless your operator runs a free network. Add one under [Payments](https://www.evtivity.com/docs/mobile-app/guide/payments).
 
-If your fleet bills your sessions on account, the station shows **Billed to** and your fleet in place of the card. You start without a card and your fleet pays the session. Earlier versions of the app show a saved card instead of the fleet, and do not charge it.
+If your fleet bills your sessions on account, the station shows **Billed to** and your fleet in place of the card. You start without a card and your fleet pays the session.
 
 ## When you already have a session
 

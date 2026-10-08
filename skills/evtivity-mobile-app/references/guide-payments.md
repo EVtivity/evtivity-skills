@@ -49,6 +49,16 @@ The default card is the one used when you start a session. To change it, tap **S
 
 Tap **Remove** on a card to delete it. If you remove your only card, add another before you start your next session.
 
+## Pay through your fleet
+
+If your fleet bills your charging on account, the Payment Methods screen shows a note above your cards: "Your charging is billed to (your fleet). You need no payment method to charge." Your fleet pays these sessions, so you can charge without a saved card.
+
+When you start a session, the station shows **Billed to** and your fleet in place of a card, with "Your fleet pays for this session. You need no payment method." See [Start and stop a charge](https://www.evtivity.com/docs/mobile-app/guide/start-and-stop-a-charge).
+
+Each session billed to your fleet shows its billing state in [Activity](https://www.evtivity.com/docs/mobile-app/guide/activity-and-statements): Not invoiced yet, Invoiced to the fleet, or Paid by the fleet.
+
+If you are opted out of your fleet's account billing, the note does not show and you pay with a card like any other driver.
+
 > **Note:**
 >
-> If your operator runs a free network or bills you another way (for example, a workplace or fleet account), the Payment Methods screen may show that no card is required. When the operator has not set up payments, the screen shows "Payments are not set up for this operator."
+> If your operator runs a free network, the Payment Methods screen may show that no card is required. When the operator has not set up payments, the screen shows "Payments are not set up for this operator."
