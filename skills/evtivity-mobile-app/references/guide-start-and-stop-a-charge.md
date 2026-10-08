@@ -24,6 +24,8 @@ The app checks that the cable is detected. If it is not, a message asks you to p
 >
 > You need a saved payment method before you can start, unless your operator runs a free network. Add one under [Payments](https://www.evtivity.com/docs/mobile-app/guide/payments).
 
+If your fleet bills your sessions on account, the station shows **Billed to** and your fleet in place of the card. You start without a card and your fleet pays the session. Older app versions also start without a card, but they show a saved card (it is not charged) and not the fleet. Update the app to see it.
+
 ## When you already have a session
 
 You can run only one charging session at a time. If a session is already in progress, opening any station replaces the connector list and Start Charging button with a notice.
@@ -60,3 +62,5 @@ The station ends the session and the screen switches to the final summary: total
 ## After charging
 
 A completed session stays in your history. Open it any time from [Activity](https://www.evtivity.com/docs/mobile-app/guide/activity-and-statements) to see the breakdown, the site and address, the vehicle used, and the payment status. Costs include tax. With **Show prices** set to excluding tax, the breakdown shows the net amount, the tax, and the total. Set to including tax, it shows the total and the tax it contains. If you left the car plugged in after charging finished, an idle warning reminds you to unplug so others can use the connector.
+
+For a session billed to your fleet, the detail shows **Fleet billing** with the fleet and the state: Not invoiced yet, Invoiced to the fleet, or Paid by the fleet. The fleet invoice goes to the fleet, not to you.

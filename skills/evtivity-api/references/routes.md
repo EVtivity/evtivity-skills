@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.41-alpha.3 (https://github.com/EVtivity/evtivity-csms, commit 83e6334e0f0d) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.41-alpha.6 (https://github.com/EVtivity/evtivity-csms, commit d149789379d5) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
@@ -23,7 +23,7 @@ A `write` permission includes `read` for the same resource.
 | OCPP 1.6 Commands | 27 | `references/routes-ocpp-1-6-commands.md` |
 | OCPP | 1 | `references/routes-ocpp.md` |
 | Transactions | 3 | `references/routes-transactions.md` |
-| Fleets | 23 | `references/routes-fleets.md` |
+| Fleets | 31 | `references/routes-fleets.md` |
 | Tokens | 12 | `references/routes-tokens.md` |
 | Dashboard | 16 | `references/routes-dashboard.md` |
 | Settings | 28 | `references/routes-settings.md` |
@@ -46,7 +46,7 @@ A `write` permission includes `read` for the same resource.
 | Reports | 13 | `references/routes-reports.md` |
 | NEVI | 6 | `references/routes-nevi.md` |
 | Webhooks | 2 | `references/routes-webhooks.md` |
-| Invoices | 9 | `references/routes-invoices.md` |
+| Invoices | 11 | `references/routes-invoices.md` |
 | Support Cases | 15 | `references/routes-support-cases.md` |
 | Portal Vehicles | 5 | `references/routes-portal-vehicles.md` |
 | Portal Tokens | 4 | `references/routes-portal-tokens.md` |

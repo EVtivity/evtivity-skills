@@ -176,6 +176,10 @@ Card payment configuration with four sub-tabs: General, Stripe, Adyen, and Site 
   - **Result Mode** - **Synchronous** returns each result in the API response. **Asynchronous** answers captures, cancels, and refunds as pending and confirms them through the webhook pipeline after the delay, as Adyen does.
   - **Async Result Delay (seconds)** - delay of asynchronous results, 0 to 3600.
   - **Random Failure Rate** - share of payments that fail for cards without a test scenario, 0 to 1.
+- **Prepaid Cards** card - shown to users who can change system settings. **Low Credit Notice Threshold** is the balance below which a debit sends the driver the low credit notice `prepaid.LowCredit`, entered in the company currency (default 5.00). 0 turns the notice off. Setting `prepaid.lowCreditThresholdCents`. See [Prepaid Cards](https://www.evtivity.com/docs/csms/tokens#prepaid-cards).
+- **Invoices** card - shown to users who can change system settings. **Payment Terms (days)** is the days from issue to the due date of a new invoice (0 to 365, default 30, 0 makes it due on issue). Setting `invoice.paymentTermsDays`. **Monthly Fleet Invoice Day** is the day of the month, in the system time zone, from which the monthly run invoices the previous month for every fleet with automatic monthly invoice (1 to 28, default 1). Setting `fleet.invoiceRunDay`. See [Monthly Run](https://www.evtivity.com/docs/csms/fleets#monthly-run).
+
+![Invoice settings](https://www.evtivity.com/screenshots/csms/settings-payment-terms.png)
 
 Save sends only the changed fields. When the selection is refused with 409 `PAYMENT_PROVIDER_UPGRADE_PENDING`, the previous provider stays selected and the panel shows the details.
 
@@ -316,9 +320,12 @@ Support cases feature toggle.
 
 ### Fleet
 
-Fleet management feature toggle.
+Fleet management feature toggle and the credit reservation of account sessions.
 
 - **Enable Fleet** - toggle for fleet management. When disabled, fleet nav items and endpoints are hidden.
+- **Credit reserved per session** - fleet credit, in the company currency, that an account session reserves at its start and adds each time its cost nears the reservation, for fleets with a credit limit (default 50.00). The other sessions of the fleet can use the rest of the limit. Setting `fleet.creditReservationCents`. See [Credit Limit](https://www.evtivity.com/docs/csms/fleets#credit-limit).
+
+![Fleet settings](https://www.evtivity.com/screenshots/csms/settings-fleet-credit-reservation.png)
 
 ### Guest Charging
 

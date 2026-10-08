@@ -54,13 +54,24 @@ View all charging sessions for this driver with the same filters available on th
 
 ### Invoices
 
-Monthly invoices for the driver's charging sessions. Click **Generate Invoice** to aggregate the driver's completed, uninvoiced sessions over a date range into one invoice. The invoice has one line per session and tax rate, plus one line for each reservation cancellation or no-show fee charged in the range. Statuses: draft, issued, paid, void. An invoice is created as paid when every session on it was already charged in full to the driver's card or prepaid balance (or cost nothing), and as issued when an amount is still open.
+Monthly invoices for the driver's charging sessions. Click **Generate Invoice** to aggregate the driver's completed, uninvoiced sessions over a date range into one invoice. The invoice has one line per session and tax rate, plus one line for each reservation cancellation or no-show fee charged in the range. Statuses: draft, issued, paid, void, credited. An invoice is created as paid when every session on it was already charged in full to the driver's card or prepaid balance (or cost nothing), and as issued when an amount is still open. Sessions billed to a fleet (charge on account) are left out: the fleet invoice bills them. See [Fleets](https://www.evtivity.com/docs/csms/fleets).
 
 ![Driver invoices](https://www.evtivity.com/screenshots/csms/driver-invoices-tab.png)
 
-Click an invoice number to open the detail page, which shows the billed driver, line items linked to their sessions, and totals. From there you can print, download, resend, or void the invoice.
+Click an invoice number to open the detail page, which shows the billed driver, line items linked to their sessions, and totals. From there you can print, download, or resend the invoice, mark it paid, or issue a credit note. Only a draft invoice can be voided.
 
 ![Invoice detail](https://www.evtivity.com/screenshots/csms/invoice-detail.png)
+
+#### Mark paid and credit notes
+
+An issued invoice is never changed. You record a payment or correct the invoice with these actions on the detail page (both need the `payments:write` permission):
+
+- **Mark Paid** records money received outside EVtivity, such as a bank transfer, on an issued invoice. Enter the **Payment date** and, optionally, the **Payment reference**. The invoice moves to paid.
+- **Issue Credit Note** cancels an issued or paid invoice in full. Enter the **Reason**. The credit note has its own number (`CN-YYYYMM-NNNN`), lists every line of the invoice with negative amounts, and names the invoice it credits. The invoice keeps its content and moves to credited, and its sessions can be invoiced again with the correct amounts. Reservation fees on it are not invoiced again. When the invoice was paid, refund the money outside EVtivity; the credit note says so. The driver gets the **Credit Note Issued** notification. An invoice can be credited once.
+
+Only a draft invoice can be voided. EVtivity creates no draft invoices, so correct every issued invoice with a credit note. This follows the German GoBD rules for electronic records. The invoice history shows who marked an invoice paid or credited it.
+
+Invoice and credit note numbers have no gaps: a number is used only when the invoice is saved. The running number (NNNN) continues across months and does not restart each month.
 
 #### Amounts and tax
 

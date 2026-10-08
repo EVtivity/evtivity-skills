@@ -22,6 +22,8 @@ The page lists all saved cards with:
 
 ![Payment methods](https://www.evtivity.com/screenshots/portal/payment-methods.png)
 
+![Payment methods of a driver billed on account](https://www.evtivity.com/screenshots/portal/payment-methods-account-billing.png)
+
 ## Add a Card
 
 1. On the Payment Methods page, tap **Create Payment Method**.
@@ -63,5 +65,6 @@ If you remove your default card and have other cards saved, you must set a new d
 ## Notes
 
 - You need at least one payment method to start charging at stations with non-free tariffs.
+- If your fleet bills your sessions on account, the page notes that your charging is billed to the fleet and you need no payment method to charge.
 - Pre-authorization holds are placed on your card when a session starts. The final amount is captured when the session ends. Starting a session on a saved card asks for no CVC and no verification.
 - Failed payment captures are logged but do not block session completion. The operator may follow up separately.

@@ -30,6 +30,7 @@ The **System Events** tab groups them:
 - **Support Cases**: new case from a driver, driver reply
 - **Session Alerts**: a session the CSMS could not end
 - **Site Hosts**: payout account onboarding
+- **Fleet Billing Alerts**: a fleet near or at its credit limit
 
 See [System Events](https://www.evtivity.com/docs/csms/notifications#system-events) for the templates and channels.
 
@@ -83,6 +84,9 @@ Money variables are formatted in the recipient's language and the record's curre
 | `session.IdlingStarted` | `idleFeeFormatted`, `taxRatePercent` | `idleFeePricePerMinute`, `currency` |
 | `reservation.Cancelled` | `cancellationFeeFormatted` (includes tax, empty without a fee) | `cancellationFeeCents`, `currency` |
 | `invoice.Sent` | `total` | `totalCents`, `currency` |
+| `invoice.CreditNote` | `total` (the amount credited) | `totalCents`, `currency` |
+| `fleet.CreditLimitWarning`, `fleet.CreditLimitReached` | `exposureFormatted` (open amount on account), `limitFormatted` | `exposureCents`, `limitCents`, `currency` |
+| `invoice.FleetInvoice`, `invoice.FleetCreditNote`, `invoice.FleetOverdue` | `total` (the invoice total or the amount credited) | `totalCents`, `currency` |
 
 Session costs always include tax. `costIncludesTax` is true when a tariff tax rate applied, and the default templates add "incl. tax" only inside `{{#if costIncludesTax}}`. In `session.IdlingStarted`, `idleFeeFormatted` shows the idle fee as the recipient sees prices (with or without tax, see [Settings](https://www.evtivity.com/docs/csms/settings)), and `idleFeeIncludesTax` says which. Test fee text with `{{#if idleFeeFormatted}}`.
 

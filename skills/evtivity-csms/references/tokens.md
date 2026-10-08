@@ -83,6 +83,15 @@ Three surfaces expose this log:
 - **Token detail &rarr; Authorize Log tab** - the same data filtered to the matched token.
 - **Driver detail &rarr; Authorize Log tab** and **Station detail &rarr; Authorize Log tab** - the same data filtered by matched driver or by reporting station. The Station tab is permission-gated on `drivers:read`.
 
+## Prepaid Cards
+
+A prepaid card holds a balance in the company currency. Check **Prepaid card** on the token's edit form and enter the **Prepaid balance**. The station asks for the balance before every charge, and the CSMS debits the cost of each session from it when the session ends. When a session's cost reaches the credit it started with and the station keeps charging, the CSMS stops the session.
+
+The driver gets two notices from the **Prepaid Cards** group on the Driver Events tab ([Notifications](https://www.evtivity.com/docs/csms/notifications#driver-events)):
+
+- `prepaid.LowCredit` - a debit took the balance below the low credit threshold. Each drop below the threshold sends it once. You set the threshold on the General tab of the [Payment settings](https://www.evtivity.com/docs/csms/settings#general).
+- `prepaid.CreditExhausted` - the CSMS stopped a session because its prepaid credit ran out. The station also shows a short message on its screen, which you edit with the station messages in [Settings](https://www.evtivity.com/docs/csms/settings#messages).
+
 ## Notifications
 
 | Event | When it fires |

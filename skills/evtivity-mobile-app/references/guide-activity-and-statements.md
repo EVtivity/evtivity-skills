@@ -19,6 +19,8 @@ The Activity tab is your charging history. It shows every session by month, a tr
 
 Each row shows the station, the date, the energy delivered, and the cost, followed by "incl. tax" when the session has tax.
 
+A session billed to your fleet also shows the fleet and its billing state: Not invoiced yet, Invoiced to the fleet, or Paid by the fleet.
+
 ![Sessions list for the month](https://www.evtivity.com/screenshots/mobile/activity-sessions.png)
 
 ## Read your trends

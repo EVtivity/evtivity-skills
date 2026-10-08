@@ -12,20 +12,21 @@ The notification system dispatches messages to operators and drivers via email, 
 
 ## Driver Events
 
-Driver events are notifications sent to drivers about their sessions, account, payments, reservations, invoices, support cases, tokens, maintenance, and station watches. You turn each event type on or off with its **Active** switch. When an event type is on, each driver's notification preferences apply. You customize the message template for each event type.
+Driver events are notifications sent to drivers about their sessions, account, payments, reservations, invoices, support cases, tokens, maintenance, station watches, and prepaid cards. You turn each event type on or off with its **Active** switch. When an event type is on, each driver's notification preferences apply. You customize the message template for each event type.
 
 The **Driver Events** tab groups them:
 
 - **Sessions**: `session.Started`, `session.Updated`, `session.Completed`, `session.Faulted`, `session.PaymentReceived`, `session.IdlingStarted`, `session.Receipt`
 - **Driver Account**: `driver.Welcome`, `driver.ForgotPassword`, `driver.PasswordChanged`, `driver.AccountVerification`, `driver.MfaDisabled`, `driver.PortalInvite`
-- **Payments**: `payment.Complete`, `payment.Refunded`, `payment.FeeRefunded`, `payment.PreAuthFailed`, `payment.CaptureFailed`, `payment.MissingPaymentMethod`
+- **Payments**: `payment.Complete`, `payment.Refunded`, `payment.FeeRefunded`, `payment.PreAuthFailed`, `payment.CaptureFailed`, `payment.MissingPaymentMethod`, `payment.AccountCreditLimit`
 - **Reservations**: `reservation.Created`, `reservation.Cancelled`, `reservation.CancelledForMaintenance`, `reservation.Expiring`, `reservation.Expired`, `reservation.StationFaulted`
-- **Invoice Events**: `invoice.Sent`
+- **Invoice Events**: `invoice.Sent`, `invoice.CreditNote`
 - **Support Cases**: `supportCase.Created`, `supportCase.OperatorReply`, `supportCase.Resolved`
 - **Multi-Factor Auth**: `mfa.VerificationCode`
 - **Tokens**: `token.Added`, `token.Removed`, `token.Deactivated`, `token.Reactivated`
 - **Maintenance**: `maintenance.SessionStopped`
 - **Station Watch**: `watch.StationAvailable`
+- **Prepaid Cards**: `prepaid.LowCredit`, `prepaid.CreditExhausted` (see [Prepaid Cards](https://www.evtivity.com/docs/csms/tokens#prepaid-cards))
 
 These event types are always on, because drivers need them to get into their account: `driver.ForgotPassword`, `driver.AccountVerification`, `driver.PortalInvite` and `mfa.VerificationCode`. Their switch is locked on, and they are sent even when the driver turned a channel off. The API refuses to turn one off with the error code `NOTIFICATION_EVENT_REQUIRED`.
 
@@ -55,6 +56,14 @@ The **System Events** tab groups them:
 - **Support Cases**: `supportCase.NewCaseFromDriver`, `supportCase.DriverReply`
 - **Session Alerts**: `session.EndRequestFailed`
 - **Site Hosts**: `site.PayoutOnboarding` (email only)
+- **Fleet Billing Alerts**: `fleet.CreditLimitWarning`, `fleet.CreditLimitReached`, `fleet.InvoiceRunFailed`
+- **Fleet Invoices**: `invoice.FleetInvoice`, `invoice.FleetCreditNote`, `invoice.FleetOverdue` (email only)
+
+The **Fleet Billing Alerts** go to a fleet's billing contacts when the open amount on account reaches the warning percent of the fleet's credit limit (`fleet.CreditLimitWarning`) or the limit (`fleet.CreditLimitReached`), each once per month. The reached alert also goes to every active operator with the `fleets:write` permission, and so does the warning while the fleet has no billing contact. See [Credit Limit](https://www.evtivity.com/docs/csms/fleets#credit-limit).
+
+The **Fleet Invoices** emails go to a fleet's billing contacts with the PDF attached: `invoice.FleetInvoice` when a fleet invoice is issued or sent again, `invoice.FleetCreditNote` when it is credited. See [Fleet Invoice](https://www.evtivity.com/docs/csms/fleets#fleet-invoice).
+
+`fleet.InvoiceRunFailed` goes to every active operator with the `payments:write` permission once per month and lists the fleets the monthly run could not invoice or email. `invoice.FleetOverdue` reminds the billing contacts once, with the PDF attached, when an issued fleet invoice passes its due date unpaid. See [Monthly Run](https://www.evtivity.com/docs/csms/fleets#monthly-run).
 
 The **Session End Failed** alert, in the **Session Alerts** group, goes to every active operator with the `sessions:write` permission and access to the session's site when the CSMS gives up ending a session after repeated failed end requests. It names the session and the station, so you can search the session ID on the Sessions page and bill the session. See [Billing a Session the CSMS Could Not End](https://www.evtivity.com/docs/csms/sessions#billing-a-session-the-csms-could-not-end). Each operator receives it in their language and time zone, and the SMS opt-out on their Profile page applies.
 

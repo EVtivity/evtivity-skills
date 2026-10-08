@@ -99,6 +99,12 @@ This check prevents failed start attempts when the cable is not plugged in.
 2. To use a different card, tap the payment method selector dropdown and choose from your saved cards.
 3. If you have no payment method on file and the tariff is not free, you must add one before starting. See [Payment Methods](https://www.evtivity.com/docs/portal/payment-methods).
 
+### Charge on Account
+
+If your fleet bills your sessions on account, the station page shows **Billed to** and your fleet in place of the payment methods. You start without a card, no amount is held, and your fleet pays the session on its invoice. At a free vend site nothing is billed. See [Fleets](https://www.evtivity.com/docs/csms/fleets).
+
+![Station page billed to the fleet](https://www.evtivity.com/screenshots/portal/charger-detail-billed-to.png)
+
 ## Start Charging
 
 1. Tap **Start Charging**.
@@ -129,6 +135,7 @@ If the station rejects the start command because it already has an active transa
 ## Notes
 
 - Charging sessions require a verified email and a valid payment method (unless the tariff is free).
+- A driver whose fleet bills on account needs no payment method.
 - The Portal supports OCPP 1.6 and 2.1 stations.
 - Live session data (energy, cost, duration) updates in real time via polling.
 - If a session fails to start, the Portal displays an error message with the reason from the station.

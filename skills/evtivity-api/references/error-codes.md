@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.41-alpha.3 (https://github.com/EVtivity/evtivity-csms, commit 83e6334e0f0d) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.41-alpha.6 (https://github.com/EVtivity/evtivity-csms, commit d149789379d5) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -65,7 +65,13 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `EVSE_IN_USE` | 409 | Another session is already active on this connector |
 | `EVSE_NOT_FOUND` | 404 | EVSE not found on this station |
 | `FAVORITE_NOT_FOUND` | 404 | Favorite not found |
+| `FLEET_BILLING_CONTACT_REQUIRED` | 400 | The fleet needs at least one billing contact for automatic invoicing and invoice emails. |
+| `FLEET_BILLING_OLD_PODS_CONNECTED` | 409 | A process older than v0.1.41 is still connected. Finish the upgrade, then turn on account billing. |
+| `FLEET_CREDIT_LIMIT_REACHED` | 402 | The credit limit of the fleet your sessions are billed to is reached. Contact your fleet manager. |
 | `FLEET_DISABLED` |  | Fleet is disabled |
+| `FLEET_HAS_OPEN_BILLING` | 409 | The fleet has sessions billed to its account and cannot be deleted. Turn off account billing instead. |
+| `FLEET_INVOICE_NOTHING_TO_BILL` | 409 | The fleet has no unbilled sessions with a cost to invoice for this period. |
+| `FLEET_INVOICE_PERIOD_EXISTS` | 409 | The fleet already has an invoice for this period. Credit it to bill the period again. |
 | `FLEET_NOT_FOUND` | 404 | Fleet not found |
 | `FLEET_RESERVATION_ALREADY_CANCELLED` | 400 | Fleet reservation is already cancelled |
 | `FLEET_RESERVATION_CREATE_FAILED` | 400 | Failed to create fleet reservation |
@@ -91,8 +97,13 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `INVALID_RESTRICTIONS` | 400 | Invalid tariff restrictions |
 | `INVALID_SITE_IDS` |  | One or more siteIds do not exist |
 | `INVALID_TOKEN` | 400 | Invalid or expired reset link |
+| `INVOICE_ALREADY_CREDITED` | 409 | The invoice is already credited by a credit note |
+| `INVOICE_ALREADY_PAID` | 409 | The invoice is already paid |
 | `INVOICE_CREATION_FAILED` | 400 | Failed to create invoice |
+| `INVOICE_IS_CREDIT_NOTE` | 409 | A credit note cannot be marked paid or credited |
 | `INVOICE_NOT_FOUND` | 404 | Invoice not found |
+| `INVOICE_NOT_ISSUED` | 409 | The invoice must be issued for this action |
+| `INVOICE_NOT_VOIDABLE` | 409 | Only a draft invoice can be voided. Correct an issued invoice with a credit note |
 | `INVOICE_NO_DRIVER` | 400 | This invoice has no driver to send to |
 | `INVOICE_NO_SESSIONS` | 400 | No uninvoiced sessions in the selected date range |
 | `LOAD_NOT_FOUND` | 404 | Load not found |
@@ -158,7 +169,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `PAYMENT_NOT_CONFIGURED` | 400 | Payment not configured for this station |
 | `PAYMENT_NOT_FOUND` | 404 | No payment record for this session |
 | `PAYMENT_OPERATION_PENDING` | 409 | The payment has an operation waiting for the provider's confirmation. Try again later. |
-| `PAYMENT_PREAUTH_FAILED` |  | Payment authorization declined |
+| `PAYMENT_PREAUTH_FAILED` | 402 | Payment authorization declined |
 | `PAYMENT_PROVIDER_CONNECTION_FAILED` | 400 | Payment provider connection test failed |
 | `PAYMENT_PROVIDER_NOT_CONFIGURED` | 400, 409 | Payment provider is not configured |
 | `PAYMENT_PROVIDER_PERMISSION_MISSING` | 400 | The payment provider credential lacks a required permission |

@@ -46,6 +46,7 @@ Below the dashboard, your sessions for the selected month are listed with:
 - Estimated miles driven
 - Session duration
 - Total cost, followed by "incl. tax" when the session's tariff has tax
+- The fleet and the billing state, when the session is billed to your fleet
 
 Tap a session to open the session detail page.
 
@@ -72,6 +73,9 @@ The session detail page shows:
 - **Station details** - Station ID, location, connector type
 - **Start and end timestamps**
 - **Report Issue button** - Opens a new support case pre-filled with the session details (see [Support Cases](https://www.evtivity.com/docs/portal/support-cases))
+- **Fleet billing** - For a session billed to your fleet: the fleet and the state (Not invoiced yet, Invoiced to the fleet, or Paid by the fleet). The fleet invoice goes to the fleet, not to you.
+
+![Session detail with fleet billing](https://www.evtivity.com/screenshots/portal/session-detail-account-billing.png)
 
 ### Cost and tax
 
