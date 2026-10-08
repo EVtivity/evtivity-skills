@@ -162,18 +162,6 @@ After a successful push, the same auto-refresh runs so the table immediately ref
 
 OCPP 2.1 components and variables can have an instance name. The table keeps one row per component, component instance, variable, variable instance, EVSE, connector, and attribute type. For example, `DeviceDataCtrlr.ItemsPerMessage` has the instances `GetReport` and `GetVariables`, and the table shows them as two rows with their own values. The CSMS splits large `GetVariables` requests by the `ItemsPerMessage[GetVariables]` value, and drift detection compares the top-level `Actual` row a template sets.
 
-#### After Upgrading to v0.1.33
-
-Before v0.1.33, rows that differed only by instance shared one row. That row kept the first instance name and the last value, so `ItemsPerMessage[GetVariables]` could show the `GetReport` limit. Database migration 0095 separates the rows from then on, but it does not correct the values already stored.
-
-After you upgrade from a version earlier than v0.1.33, refresh every OCPP 2.1 station once:
-
-1. Open the station detail page and go to the **Configurations** tab.
-2. Click **Refresh from Station**. The station must be online.
-3. Wait for the table to reload. The CSMS sends `GetBaseReport` (`FullInventory`), and the station's `NotifyReport` writes each instance to its own row.
-
-Until a station is refreshed, the CSMS can split `GetVariables` requests by the wrong limit, and drift detection can compare against a stale value. An offline station gets the correct rows on its first refresh or template push after it reconnects. OCPP 1.6 stations have no instances and need no refresh.
-
 ### How It Compares to Adjacent Features
 
 Configuration management is one of three independent OCPP write paths in the CSMS. Don't confuse them.

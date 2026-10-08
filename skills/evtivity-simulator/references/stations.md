@@ -95,7 +95,7 @@ A station that authenticated with a password or a certificate, sent no header, a
 The CSMS does not clear the flag on its own in two cases:
 
 - Security profile 0 (`unauthenticated_profile`): the connection has no credentials, so any device can claim the station ID.
-- An enabled simulator that never connected with the header (`simulator_not_verified`): a simulator from an older release sends no header. During an upgrade it can reconnect before it is updated, and an automatic fix would disable the whole simulated fleet.
+- An enabled simulator that never connected with the header (`simulator_not_verified`): a simulator of an earlier release sends no header.
 
 The CSMS records the time of the conflict and writes the event `simulator_conflict` with the reason to the connection log. The simulator flag stays. When the simulator next connects with the header, the CSMS clears a conflict recorded before that.
 

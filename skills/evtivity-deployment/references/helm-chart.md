@@ -172,7 +172,7 @@ awk '$1 == "user" { name = $2; $1 = $2 = ""; printf "ACL SETUSER %s reset on >CH
 
 Run them with `redis-cli` as an admin user, persist them (`ACL SAVE` or `CONFIG REWRITE`), and set `secrets.redisUrls.<user>` to `redis://<user>:<password>@<host>:<port>`.
 
-**Upgrading from an earlier version.** `secrets.redisUrl` and the `REDIS_URL` Secret key were replaced by the five per-service URLs, and the chart refuses to render while `secrets.redisUrl` is set. Create the users first and keep the credential the running pods use. Then upgrade with `--set secrets.redisUrl=` and the five `secrets.redisUrls.*` values (or add the five keys to your Secret). Re-running the install script does both for the bundled Redis.
+The chart refuses to render while `secrets.redisUrl` is set.
 
 ### Redis TLS
 
@@ -225,7 +225,7 @@ Database migrations run as a Helm hook job with the migrate image:
 - Init container waits for PostgreSQL
 - `backoffLimit: 1`
 
-On `helm upgrade`, the job runs before Helm updates the Deployments, so new pods never start against the old schema. If a migration fails, the upgrade stops and the old pods keep running. On upgrade the job reads `DATABASE_URL` from the Secret of the installed release. To change the database URL, upgrade with the new `secrets.databaseUrl` first, then upgrade the image. On `helm install`, the job runs after the Secret and ConfigMap exist. The settings seed job (`post-install`, `post-upgrade`, weight 1) runs after the migration in both cases. Chart versions before v0.1.38 ran migrations after the upgrade (`post-upgrade`).
+On `helm upgrade`, the job runs before Helm updates the Deployments, so new pods never start against the old schema. If a migration fails, the upgrade stops and the old pods keep running. On upgrade the job reads `DATABASE_URL` from the Secret of the installed release. To change the database URL, upgrade with the new `secrets.databaseUrl` first, then upgrade the image. On `helm install`, the job runs after the Secret and ConfigMap exist. The settings seed job (`post-install`, `post-upgrade`, weight 1) runs after the migration in both cases.
 
 ## Initial Admin User
 
@@ -373,7 +373,7 @@ These keys configure payments. For the `appSettings.payments.*`, `appSettings.si
 | Key | Values | Default | Setting |
 |-----|--------|---------|---------|
 | `payments.allowSimulatedProvider` | `true` or `false` | `false` | Sets `PAYMENTS_ALLOW_SIMULATED` on the API, OCPP server, and worker. Allows the test payment provider, which moves no money. Required when demo data is seeded (`seedDemo`). Keep it `false` in production. |
-| `appSettings.payments.provider` | `none`, `stripe`, or `simulated` (needs `payments.allowSimulatedProvider`) | empty | Provider of new payments. A fresh install starts at `none`, or `stripe` when a Stripe secret key is stored. `adyen` is refused: select Adyen in Settings > Payment after the upgrade. See [Select Adyen](https://www.evtivity.com/docs/integrations/adyen#9-select-adyen). |
+| `appSettings.payments.provider` | `none`, `stripe`, or `simulated` (needs `payments.allowSimulatedProvider`) | empty | Provider of new payments. A fresh install starts at `none`, or `stripe` when a Stripe secret key is stored. `adyen` is refused: select Adyen in Settings > Payment. See [Select Adyen](https://www.evtivity.com/docs/integrations/adyen#9-select-adyen). |
 | `appSettings.payments.preAuthAmountCents` | Whole cents, 1 to 1000000 | empty (5000 on a fresh install) | Settings > Payment > General > Default Pre-Auth Amount (`payments.preAuthAmountCents`) |
 | `appSettings.payments.platformFeePercent` | 0 to 100 | empty (0 on a fresh install) | Settings > Payment > General > Platform Fee % (`payments.platformFeePercent`) |
 | `appSettings.simulated.resultMode` | `sync` or `async` | empty (`sync`) | Settings > Payment > General > Test Provider > Result Mode (`simulated.resultMode`) |
@@ -389,14 +389,7 @@ These keys configure payments. For the `appSettings.payments.*`, `appSettings.si
 | `appSettings.mobile.app.urlSchemes` | List of lowercase app URL schemes, not `http`, `https`, or `adyencheckout` | `[evtivity]` | `mobile.app.urlSchemes`. The `scheme` of each mobile app brand. The API accepts an Adyen 3D Secure return to the iOS app only for these. |
 | `appSettings.mobile.app.androidPackageNames` | List of Android application ids | `[com.evtivity.driver]` | `mobile.app.androidPackageNames`. The `androidPackage` of each mobile app brand, for the Adyen 3D Secure return on Android. |
 
-`appSettings.stripe.preAuthAmountCents` and `appSettings.stripe.platformFeePercent` moved to `appSettings.payments.*`, because they apply to every provider. The chart fails with "moved to appSettings.payments" when either is set, `0` included. An upgrade with `--reuse-values` carries the old chart defaults, so remove them first:
-
-```bash
-helm upgrade evtivity . -n evtivity --reuse-values \
-  --set appSettings.stripe=null
-```
-
-The upgrade copies the stored values to the new settings, so the dashboard keeps them. The mobile app lists have defaults, so every upgrade writes them. Set them to your brands, or edit them with `PUT /v1/settings/:key` and keep the chart values in step.
+The chart refuses `appSettings.stripe.preAuthAmountCents` and `appSettings.stripe.platformFeePercent`. The mobile app lists have defaults, so every upgrade writes them. Set them to your brands, or edit them with `PUT /v1/settings/:key` and keep the chart values in step.
 
 Pass payment credentials with `--set` under `appSettings.sensitive`. Never commit them to `values.yaml`. Secret keys are stored encrypted.
 

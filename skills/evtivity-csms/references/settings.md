@@ -166,10 +166,10 @@ Card payment configuration with four sub-tabs: General, Stripe, Adyen, and Site 
 
 ### General
 
-- **Provider for New Payments** - None (payments off), Stripe, Adyen, or Test provider. Payments already made keep the provider that made them. A provider without credentials shows "(credentials missing)", and Adyen shows "(upgrade in progress)" while an older process is connected. The test provider is listed only where it is enabled.
+- **Provider for New Payments** - None (payments off), Stripe, Adyen, or Test provider. Payments already made keep the provider that made them. A provider without credentials shows "(credentials missing)", and Adyen shows "(upgrade in progress)" while services of an earlier release are connected. The test provider is listed only where it is enabled.
 - **Providers** - each provider with its badge: Selected, Ready, Not configured, or Upgrade pending.
 - With None selected, a warning says that payments are off: sessions start without a pre-authorization and guests charge without paying.
-- **Upgrade pending** panel - appears for Adyen while a process older than v0.1.38 is connected. It shows the open connections from older processes, their hosts, when an older process was last seen, and when the worker last checked. Adyen can be selected once no older process has connected for 10 minutes. See [Select Adyen](https://www.evtivity.com/docs/integrations/adyen#9-select-adyen).
+- **Upgrade pending** panel - appears for Adyen while services of an earlier release are connected. It shows their open connections and hosts, when one was last seen, and when the worker last checked. See [Select Adyen](https://www.evtivity.com/docs/integrations/adyen#9-select-adyen).
 - **Default Pre-Auth Amount** - hold placed on a card before charging starts, entered in the company currency (0.01 to 10,000.00, default 50.00). A site configuration can override it. Setting `payments.preAuthAmountCents`.
 - **Platform Fee %** - share of each payment kept from a site host payout account (0-100%). The fee is a percent of the net amount charged, tax excluded, and is set when the payment is captured, not on the pre-authorization hold. A site configuration can override it. Setting `payments.platformFeePercent`.
 - **Test Provider** card - shown where the test provider is enabled. "Test mode. No real money moves."
@@ -181,7 +181,7 @@ Card payment configuration with four sub-tabs: General, Stripe, Adyen, and Site 
 
 ![Invoice settings](https://www.evtivity.com/screenshots/csms/settings-payment-terms.png)
 
-Save sends only the changed fields. When the selection is refused with 409 `PAYMENT_PROVIDER_UPGRADE_PENDING`, the previous provider stays selected and the panel shows the details.
+Save sends only the changed fields. When the selection is refused, the previous provider stays selected and the panel shows the details.
 
 ### Stripe
 
@@ -202,7 +202,7 @@ The **Webhooks** card creates and lists the two Stripe endpoints:
 
 ### Adyen
 
-Adyen configuration. Select Adyen on the General tab only after every process runs v0.1.38 or later. Until then the selection is refused, and the General tab shows why. You can save the settings, test the connection, and create the webhook before that. Step-by-step setup and selection: [Adyen](https://www.evtivity.com/docs/integrations/adyen).
+Adyen configuration. Adyen cannot be selected on the General tab while services of an earlier release are still connected. You can save the settings, test the connection, and create the webhook before that. Step-by-step setup and selection: [Adyen](https://www.evtivity.com/docs/integrations/adyen).
 
 ![Payment settings, Adyen tab](https://www.evtivity.com/screenshots/csms/settings-payment-adyen.png)
 
@@ -350,8 +350,6 @@ Session lifecycle settings.
 Billing settings.
 
 - **Split Billing** - toggle for per-segment billing when tariffs change during a session.
-
-The previous **Display Format** and **Push Display Enabled** settings have moved to the Messages tab and are now `stationMessage.pricingFormat` and `stationMessage.enabled`.
 
 ### Messages
 

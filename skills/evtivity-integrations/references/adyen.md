@@ -2,11 +2,7 @@ Generated from https://www.evtivity.com/docs/integrations/adyen. Do not edit.
 
 # Adyen
 
-Set up and use Adyen step by step. Merchant account, API credential roles, client key and allowed origins, the Adyen settings, the webhook, Adyen Support enablements, local testing, selecting Adyen after the upgrade, 3D Secure, guest checkout, captures and refunds confirmed by webhook, the mobile app, and the Content Security Policy.
-
-> **Warning:**
->
-> Adyen payments need v0.1.38 or later on every API, OCPP, and worker process. Set up Adyen first, then select it in the dashboard after the upgrade is complete. See [Select Adyen](#9-select-adyen). After you select Adyen, do not roll back below v0.1.38.
+Set up and use Adyen step by step. Merchant account, API credential roles, client key and allowed origins, the Adyen settings, the webhook, Adyen Support enablements, local testing, selecting Adyen, 3D Secure, guest checkout, captures and refunds confirmed by webhook, the mobile app, and the Content Security Policy.
 
 EVtivity talks to the Adyen Checkout API v72 for payments and the Adyen Management API v3 for webhook setup. Platform fees and per-site payouts need Adyen for Platforms, which EVtivity does not support yet, so a site with a payout account cannot take Adyen payments. Cards are the only payment method. The company currency IDR is not supported with Adyen.
 
@@ -176,35 +172,12 @@ A quick tunnel gets a new address each time it starts. Click **Create webhook** 
 
 ## 9. Select Adyen
 
-Select Adyen in Settings > Payment after the upgrade to v0.1.38 is complete. Helm and CDK refuse `payments.provider: adyen`, so the dashboard is the only place to select it.
+Select Adyen in Settings > Payment. Helm and CDK refuse `payments.provider: adyen`, so the dashboard is the only place to select it.
 
 1. Finish steps 1 to 5: the settings are saved, **Test connection** succeeds, the webhook test shows `success`, and **Settings > Company Info > Country** holds a two-letter code.
-2. Make sure no process older than v0.1.38 still runs: API, OCPP, OCPI, worker, and any job that connects to the database.
-3. In Settings > Payment > General, choose **Adyen** in **Provider for New Payments** and click **Save**.
+2. In Settings > Payment > General, choose **Adyen** in **Provider for New Payments** and click **Save**.
 
-### The Upgrade Guard
-
-A process older than v0.1.38 cannot handle Adyen. It treats Adyen as "payments off", so guests would charge for free, and it would send Adyen holds to Stripe. EVtivity therefore refuses to select Adyen while such a process may still run. Selecting Stripe, the test provider, or `none` is never refused.
-
-EVtivity names every database connection with its release version. Older releases do not, so their connections are recognizable. The worker checks the open connections every minute and remembers when it last saw an old one. Selecting Adyen succeeds only when all of these hold:
-
-- No old connection is open at that moment.
-- The worker checked within the last 3 minutes. A worker that is stopped, or still on an old release, blocks the switch.
-- The worker has seen no old connection in the last 10 minutes.
-
-Otherwise the request answers 409 `PAYMENT_PROVIDER_UPGRADE_PENDING`. Until the conditions hold, the select lists "Adyen (upgrade in progress)" and the **Providers** list shows the badge **Upgrade pending**. The General tab keeps the previous provider and shows a panel, "Adyen cannot be selected until the upgrade finishes", with:
-
-- the number of old connections and the addresses they come from
-- when an old process was last seen
-- when the worker last checked
-
-During a rolling upgrade, wait until the old pods are gone, then wait 10 more minutes and select Adyen again. Payments continue with the previous provider in the meantime.
-
-A tool of your own that connects with the application's database user through the Node.js `postgres` library also counts as an old process, because its connections carry no name. Stop it, or connect it with another database user. The guard has no bypass.
-
-### Rollback
-
-After you select Adyen, do not roll back below v0.1.38. An older release cannot capture or cancel Adyen holds. To roll back, first select another provider, then wait until every open Adyen hold is captured or cancelled and no refund is pending.
+Adyen cannot be selected while services of an earlier release are still connected, and earlier releases cannot process Adyen payments. A tool of your own that connects with the application's database user through the Node.js `postgres` library counts as such a service. Stop it, or connect it with another database user.
 
 ## 10. Payments with Adyen
 

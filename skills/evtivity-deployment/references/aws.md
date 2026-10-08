@@ -76,13 +76,13 @@ aws secretsmanager get-secret-value --secret-id evtivity/dev/initial-admin \
 Enter payment credentials in the dashboard (Settings > Payment), not in the config. Leave a key out to keep the value set in the dashboard. The config validates these payment keys:
 
 - `payments.allowSimulatedProvider` (default `false`) allows the test payment provider, which moves no money. It is refused in the `prod` environment and required when `seedDemo.enabled` is true, because demo drivers have test cards.
-- `appSettings['payments.provider']` is `none`, `stripe`, or `simulated` (only with `payments.allowSimulatedProvider`). `adyen` is refused: select Adyen in Settings > Payment after the upgrade. See [Select Adyen](https://www.evtivity.com/docs/integrations/adyen#9-select-adyen).
-- `appSettings['payments.preAuthAmountCents']` (whole cents, 1 to 1000000) and `appSettings['payments.platformFeePercent']` (0 to 100). The synth refuses the old names `stripe.preAuthAmountCents` and `stripe.platformFeePercent`. The upgrade copies their stored values to the new settings.
+- `appSettings['payments.provider']` is `none`, `stripe`, or `simulated` (only with `payments.allowSimulatedProvider`). `adyen` is refused: select Adyen in Settings > Payment. See [Select Adyen](https://www.evtivity.com/docs/integrations/adyen#9-select-adyen).
+- `appSettings['payments.preAuthAmountCents']` (whole cents, 1 to 1000000) and `appSettings['payments.platformFeePercent']` (0 to 100).
 - `appSettings['simulated.resultMode']` (`sync` or `async`), `appSettings['simulated.asyncDelaySeconds']` (whole seconds, 0 to 3600), and `appSettings['simulated.randomFailureRate']` (0 to 1), for the test provider.
 - `appSettings['mobile.app.urlSchemes']` and `appSettings['mobile.app.androidPackageNames']`, the lists of your mobile app builds for the Adyen 3D Secure return (defaults `[evtivity]` and `[com.evtivity.driver]`). These two keys take lists, as in `mobile.app.urlSchemes: [evtivity, acme]`. See [Mobile App White-labeling](https://www.evtivity.com/docs/mobile-app/white-labeling).
 - `appSettings['adyen.environment']` (`test` or `live`), `appSettings['adyen.liveUrlPrefix']` (required when live), `appSettings['adyen.liveRegion']` (`eu`, `us`, `au`, `nea`, or `in`), and `appSettings['adyen.authorisationAdjustment']` (boolean).
 
-The WAF lets Stripe webhooks through only on `/v1/webhooks/payments/stripe` and only from Stripe's published addresses. A POST to exactly `/v1/webhooks/payments/adyen` on the API host skips the country rule, because Adyen sends from outside the allowed countries and publishes no addresses. It has its own rate limit, `waf.adyenWebhookRateLimitPer5Min` (default 1000 per IP per 5 minutes). When you upgrade from v0.1.37 or earlier, deploy the CDK stack in the same window as the application, because the Stripe webhook path changed.
+The WAF lets Stripe webhooks through only on `/v1/webhooks/payments/stripe` and only from Stripe's published addresses. A POST to exactly `/v1/webhooks/payments/adyen` on the API host skips the country rule, because Adyen sends from outside the allowed countries and publishes no addresses. It has its own rate limit, `waf.adyenWebhookRateLimitPer5Min` (default 1000 per IP per 5 minutes).
 
 See [Payment Providers](https://www.evtivity.com/docs/integrations/payment-providers).
 
@@ -107,8 +107,6 @@ Sign in as `admin` with the password from `evtivity/<env>/grafana-admin`.
 ### Valkey Users
 
 Each enabled service connects to Valkey as its own RBAC user: `api`, `ocpp`, `ocpi`, `worker`, and `css`. A user gets only the keys, pub/sub channels, and commands of its service, from `config/redis-acl-rules.conf`, a copy of the CSMS rules. [Redis Access Control](https://www.evtivity.com/docs/deployment/helm-chart#redis-access-control) lists what each user may do. Each user has its own Secrets Manager secret, `evtivity/<env>/cache-<service>`.
-
-The legacy shared user `cache-app` stays in place but unused for one release, so tasks of the previous release keep working during the upgrade. It is removed in the release after v0.1.38.
 
 A change to `config/redis-acl-rules.conf` updates the users and resets their passwords to the current secrets. Redeploy the services after an ACL change.
 

@@ -66,8 +66,6 @@ Published locations include all EVSE and connector details, transformed to OCPI 
 
 Partners address an EVSE by its `uid` in commands and in the EVSE and connector endpoints. The EVSE must belong to the location in the request.
 
-Earlier versions used `{siteId}-{evseNumber}` as the `uid`. That value repeated across stations at one site, so a partner command could reach the wrong charger. After the upgrade, every connected partner with a locations receiver gets each published location once with the new `uid` values, and each old `uid` with status `REMOVED`, so partners do not need a full pull.
-
 ## Roaming Sessions
 
 When a roaming partner's driver charges at your station, a roaming session is created.
@@ -85,7 +83,7 @@ When a driver presents a token that is not found in your local driver database, 
 
 ## Charge Detail Records (CDRs)
 
-CDRs are immutable billing records. A CDR is generated once for each completed roaming session, about a minute after the session ends, and pushed to the partner whose driver charged when the partner has a CDRs receiver endpoint. A failed push is retried. Partners without a receiver pull CDRs from `GET /ocpi/{version}/cpo/cdrs`. Sessions that end faulted or failed are not billed (OCPI status `INVALID`) and get no CDR. After the upgrade to v0.1.38, CDRs are also generated once for completed roaming sessions of the 30 days before the upgrade, about 50 every 5 minutes.
+CDRs are immutable billing records. A CDR is generated once for each completed roaming session, about a minute after the session ends, and pushed to the partner whose driver charged when the partner has a CDRs receiver endpoint. A failed push is retried. Partners without a receiver pull CDRs from `GET /ocpi/{version}/cpo/cdrs`. Sessions that end faulted or failed are not billed (OCPI status `INVALID`) and get no CDR.
 
 1. Navigate to **Roaming > CDRs**.
 2. View CDR details including location snapshot, energy, duration, and **Cost (excl. tax)**.

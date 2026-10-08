@@ -42,7 +42,7 @@ Payment providers send events to one endpoint per provider. Both answer 200 only
 | 401 | `WEBHOOK_SIGNATURE_MISSING`, `WEBHOOK_SIGNATURE_INVALID` | Adyen Basic auth credentials missing or wrong |
 | 500 | `WEBHOOK_NOT_CONFIGURED` | The secrets are not stored yet. The provider retries later. |
 
-Settings > Payment can create both webhooks in the provider for you. The URL must be public HTTPS. The old Stripe path `/v1/webhooks/stripe` was removed in v0.1.38. See [Stripe](https://www.evtivity.com/docs/integrations/stripe#2-webhooks) and [Adyen](https://www.evtivity.com/docs/integrations/adyen#5-webhook) for the setup, the events, and local testing.
+Settings > Payment can create both webhooks in the provider for you. The URL must be public HTTPS. See [Stripe](https://www.evtivity.com/docs/integrations/stripe#2-webhooks) and [Adyen](https://www.evtivity.com/docs/integrations/adyen#5-webhook) for the setup, the events, and local testing.
 
 The [test payment provider](https://www.evtivity.com/docs/integrations/test-payment-provider#events) has no HTTP endpoint. The worker delivers its events into the same pipeline.
 

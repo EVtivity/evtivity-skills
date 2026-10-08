@@ -132,7 +132,7 @@ Each affected driver receives a notification. Turning the switch off works the s
 
 Changing the switch needs the `fleets:write` permission. Every change is recorded in the fleet history.
 
-During an upgrade the CSMS refuses to turn it on while processes of a release before v0.1.41 run, and answers `FLEET_BILLING_OLD_PODS_CONNECTED`. Finish the upgrade, wait 10 minutes, then try again.
+Charge on account cannot be turned on while services of an earlier release are still connected.
 
 ### Members Who Pay by Card
 
@@ -192,7 +192,7 @@ Driver invoices leave account sessions out, so the CSMS never bills a session tw
 
 A session that was paid by card, for example through a hold an operator placed, shows no badge and is not billed to the fleet.
 
-Drivers see the fleet and the billing state of their account sessions in the portal and the mobile app. They never see the fleet invoice. Mobile app versions before v0.1.41 also start an account session without a card, but they show the driver's saved card (it is not charged) and not the fleet, so ask fleet drivers to update the app.
+Drivers see the fleet and the billing state of their account sessions in the portal and the mobile app. They never see the fleet invoice. Earlier versions of the mobile app show the driver's saved card instead of the fleet for an account session, and do not charge it.
 
 ### Revenue
 

@@ -89,10 +89,6 @@ Other events are acknowledged and ignored.
 
 EVtivity checks the `Stripe-Signature` header of every request against the platform secret, then the Connect secret. Until a secret and the Stripe keys are set, the endpoint answers 500 `WEBHOOK_NOT_CONFIGURED`, so Stripe retries later. A missing signature answers 400 `WEBHOOK_SIGNATURE_MISSING`, a wrong one 400 `WEBHOOK_SIGNATURE_INVALID`. Each event ID is processed once, and a repeated delivery is acknowledged and skipped. Stripe retries a failed delivery for up to three days in live mode, and a few times over a few hours in a sandbox.
 
-> **Warning:**
->
-> Upgrading from v0.1.37 or earlier: the endpoint moved from `/v1/webhooks/stripe` to `/v1/webhooks/payments/stripe`, and the old path is gone. Click **Create webhook**, which creates both endpoints at the new path, then delete the old endpoint in Stripe. Or change the URL of your endpoint in Stripe. On AWS (CDK), deploy the CDK stack in the same window, because its WAF allows Stripe only on the new path.
-
 ## 3. Local Testing
 
 Stripe cannot send webhooks to `localhost`. The Stripe CLI forwards them instead.

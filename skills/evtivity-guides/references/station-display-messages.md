@@ -105,7 +105,7 @@ The tax note is template text, so you word it for your jurisdiction. The English
 {{#if taxRatePercent}}{{#if pricesIncludeTax}}incl.{{else}}excl.{{/if}} {{taxRatePercent}}% tax{{/if}}
 ```
 
-It renders as `incl. 19% tax` or `excl. 19% tax`. The German default renders `inkl. 19 % MwSt.` or `zzgl. 19 % MwSt.`. The standard pricing format no longer appends `Tax: N%` to `{{pricingDisplay}}`. If you edited a template before this change, add the tax note variables to show the rate.
+It renders as `incl. 19% tax` or `excl. 19% tax`. The German default renders `inkl. 19 % MwSt.` or `zzgl. 19 % MwSt.`.
 
 The preview renders a sample tariff (0.30 per kWh, 0.02 per minute, 0.10 per idle minute, 19% tax) in the company currency, the price display, and the template language, through the same code that renders station screens.
 

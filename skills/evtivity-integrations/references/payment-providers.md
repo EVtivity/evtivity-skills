@@ -11,7 +11,7 @@ EVtivity takes card payments through a payment provider. Every payment flow (car
 | Provider | Status | Use |
 |---|---|---|
 | [Stripe](https://www.evtivity.com/docs/integrations/stripe) | Available | Production card payments, including Stripe Connect payouts per site |
-| [Adyen](https://www.evtivity.com/docs/integrations/adyen) | Available from v0.1.38. Select it in Settings > Payment after the upgrade. | Alternative to Stripe for one merchant account, without payouts per site |
+| [Adyen](https://www.evtivity.com/docs/integrations/adyen) | Select it in Settings > Payment. | Alternative to Stripe for one merchant account, without payouts per site |
 | [Test (simulated)](https://www.evtivity.com/docs/integrations/test-payment-provider) | Available in development and test deployments | Development, demos, and automated tests. Moves no money. |
 
 Each provider has its own step-by-step setup page.
@@ -41,8 +41,6 @@ These settings apply to every provider. Set them in Settings > Payment > General
 | `simulated.resultMode` | `sync` | Test provider only: `sync` or `async`. See [Sync and Async Modes](https://www.evtivity.com/docs/integrations/test-payment-provider#sync-and-async-modes). |
 | `simulated.asyncDelaySeconds` | `3` | Test provider only: delay of async results, 0 to 3600 seconds |
 | `simulated.randomFailureRate` | `0.2` | Test provider only: failure rate of cards without a test scenario, 0 to 1 |
-
-Before v0.1.38 the pre-auth amount and the platform fee were `stripe.preAuthAmountCents` and `stripe.platformFeePercent`, set on the Stripe tab. The upgrade copies them to the `payments.*` settings. The `stripe.*` names are deprecated: EVtivity still writes them for processes of the previous release during the upgrade, and a later release removes them. `PUT /v1/settings/stripe` no longer takes them, and `GET /v1/settings/stripe` no longer returns them. Helm and CDK refuse the old names.
 
 ### Provider Pinning
 
@@ -79,7 +77,7 @@ Providers report asynchronous outcomes (failed payments, refunds, disputes, acco
 | Adyen | `POST /v1/webhooks/payments/adyen` | Basic auth plus an HMAC signature per event | [Adyen webhook](https://www.evtivity.com/docs/integrations/adyen#5-webhook) |
 | Test provider | No HTTP endpoint. The worker delivers its events. | Signature with a key derived from the settings encryption key | [Test provider events](https://www.evtivity.com/docs/integrations/test-payment-provider#events) |
 
-Settings > Payment can create the Stripe and Adyen webhooks for you. All three run through one pipeline: verify the request, record each event ID once, then apply the event. A provider that retries a delivery never applies an event twice. The old Stripe path `/v1/webhooks/stripe` was removed in v0.1.38.
+Settings > Payment can create the Stripe and Adyen webhooks for you. All three run through one pipeline: verify the request, record each event ID once, then apply the event. A provider that retries a delivery never applies an event twice.
 
 ## Payment Statuses
 
