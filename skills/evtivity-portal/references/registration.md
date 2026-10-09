@@ -50,6 +50,8 @@ The verification link is sent by email only, never by SMS.
 
 If the email does not arrive, tap **Resend verification email** on the **Verify Your Email** screen. Each request sends a new link and replaces the previous one. You can request one email a minute and five emails in 24 hours, the first one included. Over the limit, the screen explains the limit and keeps the button disabled until you can request again.
 
+![Verify Your Email screen](https://www.evtivity.com/screenshots/portal/verify-email.png)
+
 ## Log In
 
 1. Open the Portal.

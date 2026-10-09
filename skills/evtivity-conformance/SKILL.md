@@ -5,8 +5,8 @@ license: MIT
 compatibility: API examples use curl and jq against a running EVtivity API (default http://localhost:7102 with Docker Compose). Command-line conformance runs need a CSMS source checkout with Node.js.
 metadata:
   evtivity-version: "0.1.42"
-  evtivity-release: "v0.1.42-beta.6"
-  evtivity-commit: "83073ffb3163330362c883e1662959e99a018c04"
+  evtivity-release: "v0.1.42"
+  evtivity-commit: "a4268227cc431562cfe40ec9ff9abe8268107ef3"
   evtivity-docs-section: conformance
 ---
 

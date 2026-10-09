@@ -427,6 +427,8 @@ When enabled, login pages require a passing reCAPTCHA score before authenticatin
 
 While reCAPTCHA is off, the tab shows a warning: driver portal sign-up, sign-in and password reset are protected only by IP rate limits. Turn it on when anyone can register in the portal.
 
+![Security settings, reCAPTCHA tab with the warning](https://www.evtivity.com/screenshots/csms/settings-security.png)
+
 ### MFA
 
 Multi-factor authentication methods available system-wide. Enabling a method makes it available for users and drivers to activate on their profiles. It does not force MFA on anyone.
