@@ -119,6 +119,7 @@ A standalone eMSP/CPO partner simulator for testing OCPI roaming.
 | `OCPI_SIM_AUTO_SESSION` | `false` | CPO role only. Automatically generate charging sessions. |
 | `OCPI_SIM_SESSION_INTERVAL` | `60` | Seconds between auto-generated sessions |
 | `OCPI_SIM_SESSION_DURATION` | `30` | Duration of each auto-generated session in seconds |
+| `OCPI_SIM_TARGET_ORIGIN` | - | Docker Compose only. Replaces the scheme, host and port of every URL the simulator calls, so the Compose simulators reach the OCPI server at `http://ocpi:7104`. |
 
 ## Payments
 

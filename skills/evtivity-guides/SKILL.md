@@ -4,8 +4,8 @@ description: "Step-by-step EVtivity how-to guides: onboard a station, station li
 license: MIT
 metadata:
   evtivity-version: "0.1.42"
-  evtivity-release: "v0.1.42-beta.2"
-  evtivity-commit: "627b28b192ed2a0d2c466571e11f5b065f2009a6"
+  evtivity-release: "v0.1.42-beta.3"
+  evtivity-commit: "3955bbb2ae6940b8ccaf4d6ddb0c4bf41c257b02"
   evtivity-docs-section: guides
 ---
 

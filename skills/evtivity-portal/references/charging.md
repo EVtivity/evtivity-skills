@@ -93,6 +93,8 @@ Before starting, the Portal sends a TriggerMessage to the station to request a f
 
 This check prevents failed start attempts when the cable is not plugged in.
 
+On an OCPP 2.1 station, you can also start from the Portal when your cable is already plugged in and the station is waiting for authorization.
+
 ## Select a Payment Method
 
 1. After selecting a connector, your default payment method is shown.
