@@ -14,11 +14,13 @@ The EVtivity Portal requires a driver account for authenticated charging, sessio
 2. Fill in the registration form:
    - **First name** and **Last name**
    - **Email** (used for login and notifications)
-   - **Password** (minimum 12 characters, must include upper, lower, digit, and symbol)
+   - **Password** (at least 12 characters, with an uppercase letter, a lowercase letter, and a number). The form lists these requirements under the field and checks them as you type.
    - **Phone (optional)** (used for SMS notifications and MFA)
 3. Tap **Create Account**.
 
 ![Registration form](https://www.evtivity.com/screenshots/portal/register.png)
+
+A phone number can be used for at most three new accounts in 24 hours.
 
 If the operator has disabled portal self-registration (`portal.registrationEnabled = false`), the endpoint returns `PORTAL_REGISTRATION_DISABLED` and the form shows a "contact your operator to be invited" message. In that case, the operator creates your account and sends you an invitation. See [Accept an Invitation](#accept-an-invitation).
 
@@ -27,7 +29,7 @@ If the operator has disabled portal self-registration (`portal.registrationEnabl
 If your charging provider created your driver account, you receive an email invitation instead of signing up.
 
 1. Open the invitation email and click the **Set Your Password** link.
-2. Enter a password (minimum 12 characters, must include upper, lower, digit, and symbol) and confirm it.
+2. Enter a password (at least 12 characters, with an uppercase letter, a lowercase letter, and a number) and confirm it.
 3. Tap **Set Password**, then sign in with your email and new password.
 
 ![Accept an invitation](https://www.evtivity.com/screenshots/portal/activate.png)
@@ -43,6 +45,10 @@ After registration, the system sends a verification email to the address you pro
 3. You are redirected to the Portal login page with a confirmation message.
 
 You cannot start authenticated charging sessions until your email is verified.
+
+The verification link is sent by email only, never by SMS.
+
+If the email does not arrive, tap **Resend verification email** on the **Verify Your Email** screen. Each request sends a new link and replaces the previous one. You can request one email a minute and five emails in 24 hours, the first one included. Over the limit, the screen explains the limit and keeps the button disabled until you can request again.
 
 ## Log In
 
@@ -60,7 +66,7 @@ If MFA is enabled on your account, you will be prompted for a verification code 
 2. Enter your registered email address.
 3. Tap **Send Reset Link**.
 4. Open the email and click the reset link (valid for 1 hour, single use).
-5. Enter a new password and confirm it.
+5. Enter a new password that meets the listed requirements and confirm it.
 6. You are redirected to the login page.
 
 Completing the reset revokes every existing session on your account, so any device you previously signed in on will be logged out and require re-authentication.

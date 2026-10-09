@@ -5,8 +5,8 @@ license: MIT
 compatibility: Requires the GitHub CLI (gh) signed in to a GitHub account. The diagnostics step needs bash, Docker and curl.
 metadata:
   evtivity-version: "0.1.42"
-  evtivity-release: "v0.1.42-beta.3"
-  evtivity-commit: "3955bbb2ae6940b8ccaf4d6ddb0c4bf41c257b02"
+  evtivity-release: "v0.1.42-beta.6"
+  evtivity-commit: "83073ffb3163330362c883e1662959e99a018c04"
 ---
 
 # Report an EVtivity issue

@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.42-beta.3 (https://github.com/EVtivity/evtivity-csms, commit 3955bbb2ae69) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.42-beta.6 (https://github.com/EVtivity/evtivity-csms, commit 83073ffb3163) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -180,6 +180,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `PAYOUT_ACCOUNT_EXISTS` | 409 | The site already has a payout account |
 | `PAYOUT_ACCOUNT_NOT_READY` | 409 | The site's payout account cannot receive payments yet |
 | `PERMISSIONS_EXCEED_OWN` | 403 | API key permissions must be a subset of your own permissions |
+| `PHONE_REGISTRATION_LIMITED` | 429 | Too many accounts were registered with this phone number. Try again later. |
 | `PKI_ROOT_REFRESH_FAILED` | 502 | Root certificate refresh from the PKI provider failed |
 | `PNC_CONTRACT_NOT_FOUND` | 404 | Plug & Charge contract not found |
 | `PNC_DISABLED` |  | Plug & Charge is disabled |
@@ -275,6 +276,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `VALIDATION_ERROR` | 400 | Validation error |
 | `VEHICLE_NOT_FOUND` | 404 | Vehicle not found |
 | `VENDOR_NOT_FOUND` | 404 | Vendor not found |
+| `VERIFICATION_RESEND_LIMITED` | 429 | Too many verification emails. Wait before you request another one. |
 | `WEAK_PASSWORD` | 400 | Password does not meet complexity requirements |
 | `WEBHOOK_NOT_CONFIGURED` | 500 | Webhook not configured |
 | `WEBHOOK_SIGNATURE_INVALID` | 400, 401 | Invalid signature |

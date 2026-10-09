@@ -85,6 +85,16 @@ EVtivity uses Google reCAPTCHA v3 for bot protection.
 - Score-based with a configurable threshold (default 0.5).
 - Enable and configure in Settings > Security.
 - The site key, secret key, and threshold are dashboard settings, not environment variables. The secret key is stored encrypted.
+- Turn it on when anyone can sign up in the driver portal. It protects the portal sign-in, sign-up, forgot password and reset password forms. The mobile apps prove themselves with device attestation instead.
+- While it is off, those forms are protected only by IP rate limits, and Settings > Security shows a warning.
+
+### Driver sign-up limits
+
+These limits apply whether reCAPTCHA is on or off, on top of the IP rate limits:
+
+- The account verification link goes to the driver's email address only, never by SMS.
+- A driver gets at most one verification email a minute and five in 24 hours, the sign-up email included. Over the limit, the API returns `VERIFICATION_RESEND_LIMITED`.
+- A phone number can be used for at most three portal registrations in 24 hours. Over the limit, the API returns `PHONE_REGISTRATION_LIMITED`. Several drivers can share a phone number.
 
 ## CSRF Protection
 
