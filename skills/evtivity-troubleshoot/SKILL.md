@@ -5,8 +5,8 @@ license: MIT
 compatibility: Requires bash, Docker with Docker Compose v2 and curl. Written for Docker Compose installs; the symptoms and fixes also apply to Helm and AWS deployments.
 metadata:
   evtivity-version: "0.1.43"
-  evtivity-release: "v0.1.43-beta.1"
-  evtivity-commit: "d1264d35d3915ca23522cabf67d0336abd705e96"
+  evtivity-release: "v0.1.43"
+  evtivity-commit: "94253c800a6609399b9a1af6625a252e01d259a7"
 ---
 
 # EVtivity troubleshooting
