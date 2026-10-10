@@ -2,11 +2,11 @@ Generated from https://www.evtivity.com/docs/getting-started/introduction. Do no
 
 # Introduction
 
-What EVtivity CSMS is, what it does, and how it is built.
+What EVtivity CSMS is, the AI-powered EV charging platform, what it does, and how it is built.
 
 ## What is EVtivity?
 
-EVtivity is an open-source charging station management system (CSMS) for EV charging network operators, charge point operators, and developers. It handles the full lifecycle of EV charging: station management, driver authentication, session monitoring, billing, and roaming.
+EVtivity is an AI-powered, open-source charging station management system (CSMS) for EV charging network operators, charge point operators, and developers. It handles the full lifecycle of EV charging: station management, driver authentication, session monitoring, billing, and roaming. A built-in AI assistant answers operator questions, reads attachments such as a photo of a charger screen, a PDF, or a log, and drafts support replies.
 
 ## Key Features
 
@@ -20,7 +20,7 @@ EVtivity is an open-source charging station management system (CSMS) for EV char
 - **OCPI roaming** (2.2.1 and 2.3.0) for interoperability with roaming networks
 - **Plug and Charge** (ISO 15118) with certificate management
 - **Carbon footprint tracking** per session and per driver
-- **AI assistant** for natural language queries against station and session data
+- **AI assistant** with Anthropic, OpenAI, Gemini, or DeepSeek: answers questions in plain language, proposes changes that run only after you confirm, drafts support replies in the driver's language, and redacts secrets and personal data before they reach the model
 
 ## Architecture
 

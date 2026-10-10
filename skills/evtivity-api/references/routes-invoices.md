@@ -1,6 +1,6 @@
 # EVtivity API routes: Invoices
 
-Generated from EVtivity CSMS v0.1.42 (https://github.com/EVtivity/evtivity-csms, commit a4268227cc43) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.43-beta.1 (https://github.com/EVtivity/evtivity-csms, commit d1264d35d391) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -18,6 +18,7 @@ A `write` permission includes `read` for the same resource.
 | PATCH | `/v1/invoices/{id}/paid` | payments:write | Mark an invoice paid |
 | POST | `/v1/invoices/{id}/credit-note` | payments:write | Credit an invoice with a credit note |
 | POST | `/v1/invoices/{id}/send` | payments:write | Email an invoice to its driver or fleet |
+| GET | `/v1/invoices/print-logo` | payments:read | Get the logo of the printed invoice |
 | GET | `/v1/invoices/{id}/pdf` | payments:read | Download an invoice as a PDF |
 | GET | `/v1/invoices/{id}/download` | payments:read | Download an invoice as JSON |
 | GET | `/v1/invoices/{id}/neighbors` | payments:read | Get previous and next entity IDs in default list order |

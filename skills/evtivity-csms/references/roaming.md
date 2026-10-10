@@ -89,6 +89,14 @@ CDRs are immutable billing records. A CDR is generated once for each completed r
 2. View CDR details including location snapshot, energy, duration, and **Cost (excl. tax)**.
 3. Check push status to confirm the CDR was delivered to the partner.
 
+### CDR time, parking, and tariffs
+
+- **Charging periods.** Each priced part of the session (the session, or each tariff segment under split billing) gets a period with ENERGY and TIME for its charging time, then PARKING_TIME periods for its time not charging: one for the idle grace period and one for the billed parking. A part without an idle fee gets one PARKING_TIME period. Each period names the tariff it was billed at in `tariff_id`.
+- **Time and parking costs.** `total_time_cost` is the time price for the charging time. `total_parking_cost` is the time price for the time not charging plus the idle fee after the idle grace period. They match the TIME and PARKING_TIME volumes and the published prices, and the dimension costs add up to `total_cost`.
+- **Billed tariffs.** The CDR embeds the tariffs the session was billed at, from the prices fixed when the session or segment started, not the tariff's current prices. A split session embeds one tariff per distinct price snapshot, under the mapping's OCPI tariff ID with `-2`, `-3` suffixes for the further ones.
+
+Example: a tariff of 0.30 per kWh, 0.02 per minute, and 0.10 per idle minute at a tax rate of `0.19`, with an idle grace period of 5 minutes. A session of 60 minutes delivers 10 kWh and idles for 15 minutes. The CDR shows an energy cost of 3.00 excl. tax, a time cost of 0.90 (45 charging minutes), and a parking cost of 1.30 (15 idle minutes at 0.02 plus 10 billed minutes at 0.10), 5.20 excl. tax and 6.19 incl. tax in total. Its charging periods are TIME 0.75 h, then PARKING_TIME 0.0833 h (grace) and 0.1667 h (billed).
+
 ![Roaming CDRs](https://www.evtivity.com/screenshots/csms/roaming-cdrs.png)
 
 ### Credit CDRs
@@ -121,7 +129,9 @@ Publish your tariffs and pricing groups to roaming partners as OCPI tariffs. A m
 Partners receive each tariff generated from your pricing:
 
 - **Prices excluding tax.** Published prices are always net. When tariff prices are entered including tax, they are converted to net with 4 decimals. Each price component carries the tariff tax rate as `vat`, a percentage (`19` for a rate of `0.19`). A rate of 0 omits `vat`.
-- **Time per hour.** OCPI defines time prices per hour, so TIME is the per-minute price times 60. PARKING_TIME is the time price plus the idle fee, times 60. The idle grace period has no OCPI equivalent.
+- **Time per hour.** OCPI defines time prices per hour, so TIME is the per-minute price times 60. PARKING_TIME is the time price plus the idle fee, times 60.
+- **Idle grace as `min_duration`.** A tariff with an idle fee gets an element with `min_duration` set to the idle grace period in seconds and PARKING_TIME at the time price plus the idle fee, then the same element without `min_duration` and PARKING_TIME at the time price. OCPI counts `min_duration` from the session start, so the published price matches the bill exactly when the EV idles from the start. The CDR carries the billed amounts.
+- **Holidays and date ranges** are published until they have ended in the last time zone (UTC-12), because a published tariff is not tied to one site. Partners apply the dates in each location's `time_zone`, and the CSMS bills them in the site's local date.
 - **Exact steps.** `step_size` is 1 for every dimension, as the CSMS bills exact energy and time.
 - **Reservation fees** become an element with a TIME component and the `RESERVATION` restriction.
 - **OCPI 2.3.0** adds `tax_included`: `NO` when any tariff is taxed, `N/A` otherwise.

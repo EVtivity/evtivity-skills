@@ -121,6 +121,10 @@ Basic Auth passwords are 16 to 40 characters for OCPP 2.1 and 16 to 20 character
 
 When the station is online on Basic Auth or TLS + Basic Auth, the CSMS sends the new password to the station: `SetVariables(SecurityCtrlr.BasicAuthPassword)` for OCPP 2.1, `ChangeConfiguration(AuthorizationKey)` with the hex-encoded password for OCPP 1.6. The CSMS saves the new password only after the station accepts it. If the station rejects it or does not answer, the old password stays valid. When the station is offline, the CSMS saves the password and you configure the station to match on site.
 
+### Failed login throttling
+
+After 5 wrong passwords for one station within 60 seconds, the OCPP server refuses that station for 60 seconds. It answers HTTP 429 with a `Retry-After` header and does not check the password. A station with a wrong password therefore cannot slow down the connections of other stations. The connection log on the station **Security** tab records each refusal as `auth_failed` with the reason `Too many failed password attempts`. A station whose last successful login is still cached connects during the lockout. A successful login clears the count. Each OCPP server process keeps its own count.
+
 ### Changing the security profile
 
 For an offline station, the new profile is saved directly. Configure the station to match on site.
@@ -285,6 +289,39 @@ View and manage OCPP charging profiles on the station. Refresh profiles from the
 Generate and download QR codes for each EVSE on the station. QR codes link to the driver portal charging flow at `/charge/:stationId/:evseId`.
 
 ![Station QR codes tab](https://www.evtivity.com/screenshots/csms/station-qr-tab.png)
+
+#### Dynamic QR codes
+
+A static QR code is printed once and never changes. A dynamic QR code is shown on the station's display and changes over time. Its URL holds a time-based one-time password (TOTP). The station makes a new password every validity period, and the portal checks the password when a driver scans the code. A photo or copy of the code stops working once its password expires.
+
+Dynamic QR codes work only on OCPP 2.1 stations whose firmware implements the `WebPaymentsCtrlr` component and that have a display that can show a changing QR code. Other stations use the static QR code. OCPP 1.6 stations show a note instead of the settings.
+
+The **Dynamic QR codes** card on the QR Codes tab shows the station support:
+
+- **Supported**: the station reports `WebPaymentsCtrlr`.
+- **Not supported**: the station does not know `WebPaymentsCtrlr`, lacks a setting the feature needs, or reports it as not available. **Enable** is disabled.
+- **Unknown**: the station is offline, did not answer, or was not checked yet.
+
+When the card opens, it uses the station's last device model report from the past 24 hours, if there is one. Select **Check support** to ask the online station now. The CSMS sends GetVariables for `WebPaymentsCtrlr` and shows the answer with the time of the check. **Check support** sends a command to the station, so it needs the `stations:write` permission.
+
+![Dynamic QR codes card after a support check](https://www.evtivity.com/screenshots/csms/station-qr-dynamic.png)
+
+To enable dynamic QR codes:
+
+1. Make sure the station is online.
+2. Enter **Password validity (seconds)**, from 6 to 3600 (default 60). The station shows each code for this long.
+3. Enter **Password length**, from 6 to 32 characters (default 8).
+4. Select **Enable**.
+
+The CSMS sends the station its `WebPaymentsCtrlr` settings: a URL template that points to the portal, the TOTP version, the validity, the length, and a new random shared secret. The card turns **On** only when the station accepts every setting. Each code then opens `/qr/:stationId/:evseId/:password/v1` on the portal.
+
+You can select **Enable** before a support check. When the station answers that it does not know `WebPaymentsCtrlr`, or its last report shows the component as not available, the CSMS shows that the station does not support dynamic QR codes and stores nothing.
+
+**Update and rotate secret** sends the entered validity and length with a new shared secret. Codes made with the old secret stop working. Use it to change the settings or when the secret may have leaked.
+
+**Disable** asks for confirmation, then turns dynamic QR codes off on the station and removes the stored secret. The portal refuses every code the station showed before. When the station is offline, the CSMS removes the secret at once, so its codes are refused.
+
+A station can let the driver enter a maximum cost, energy, or time before it shows the code. The station adds them to the code URL as `maxcost`, `maxenergy` (Wh), and `maxtime` (seconds), and the session uses them as limits, the same as with a static QR code.
 
 ### Pricing
 

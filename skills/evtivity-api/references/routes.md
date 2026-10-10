@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.42 (https://github.com/EVtivity/evtivity-csms, commit a4268227cc43) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.43-beta.1 (https://github.com/EVtivity/evtivity-csms, commit d1264d35d391) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
@@ -14,9 +14,9 @@ A `write` permission includes `read` for the same resource.
 |---|---|---|
 | Health | 2 | `references/routes-health.md` |
 | Sites | 29 | `references/routes-sites.md` |
-| Stations | 68 | `references/routes-stations.md` |
+| Stations | 69 | `references/routes-stations.md` |
 | Sessions | 6 | `references/routes-sessions.md` |
-| Users | 36 | `references/routes-users.md` |
+| Users | 37 | `references/routes-users.md` |
 | Drivers | 23 | `references/routes-drivers.md` |
 | Pricing | 19 | `references/routes-pricing.md` |
 | OCPP 2.1 Commands | 57 | `references/routes-ocpp-2-1-commands.md` |
@@ -26,7 +26,7 @@ A `write` permission includes `read` for the same resource.
 | Fleets | 31 | `references/routes-fleets.md` |
 | Tokens | 12 | `references/routes-tokens.md` |
 | Dashboard | 16 | `references/routes-dashboard.md` |
-| Settings | 28 | `references/routes-settings.md` |
+| Settings | 29 | `references/routes-settings.md` |
 | Payments | 38 | `references/routes-payments.md` |
 | Events | 1 | `references/routes-events.md` |
 | Load Management | 18 | `references/routes-load-management.md` |
@@ -46,7 +46,7 @@ A `write` permission includes `read` for the same resource.
 | Reports | 13 | `references/routes-reports.md` |
 | NEVI | 6 | `references/routes-nevi.md` |
 | Webhooks | 2 | `references/routes-webhooks.md` |
-| Invoices | 11 | `references/routes-invoices.md` |
+| Invoices | 12 | `references/routes-invoices.md` |
 | Support Cases | 15 | `references/routes-support-cases.md` |
 | Portal Vehicles | 5 | `references/routes-portal-vehicles.md` |
 | Portal Tokens | 4 | `references/routes-portal-tokens.md` |
@@ -65,7 +65,7 @@ A `write` permission includes `read` for the same resource.
 | CSS OCPP 1.6 Actions | 10 | `references/routes-css-ocpp-1-6-actions.md` |
 | CSS OCPP 2.1 Actions | 40 | `references/routes-css-ocpp-2-1-actions.md` |
 | Smart Charging | 12 | `references/routes-smart-charging.md` |
-| AI Assistant | 1 | `references/routes-ai-assistant.md` |
+| AI Assistant | 13 | `references/routes-ai-assistant.md` |
 | OCTT | 4 | `references/routes-octt.md` |
 | Audit | 2 | `references/routes-audit.md` |
 | Conformance | 1 | `references/routes-conformance.md` |

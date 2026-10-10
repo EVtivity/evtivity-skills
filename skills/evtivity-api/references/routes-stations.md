@@ -1,6 +1,6 @@
 # EVtivity API routes: Stations
 
-Generated from EVtivity CSMS v0.1.42 (https://github.com/EVtivity/evtivity-csms, commit a4268227cc43) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.43-beta.1 (https://github.com/EVtivity/evtivity-csms, commit d1264d35d391) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -66,6 +66,7 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/stations/{id}/web-payments` | stations:read | Get the dynamic QR code payment configuration of a station |
 | PUT | `/v1/stations/{id}/web-payments` | stations:write | Enable dynamic QR code payments on a station |
 | DELETE | `/v1/stations/{id}/web-payments` | stations:write | Disable dynamic QR code payments on a station |
+| GET | `/v1/stations/{id}/web-payments/support` | stations:read | Check whether a station supports dynamic QR codes |
 | GET | `/v1/stations/{id}/images` | stations:read | List all images for a station |
 | POST | `/v1/stations/{id}/images` | stations:write | Confirm a station image upload after S3 PUT |
 | POST | `/v1/stations/{id}/images/upload-url` | stations:write | Get a presigned S3 upload URL for a station image |

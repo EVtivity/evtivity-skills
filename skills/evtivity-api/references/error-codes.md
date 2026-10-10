@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.42 (https://github.com/EVtivity/evtivity-csms, commit a4268227cc43) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.43-beta.1 (https://github.com/EVtivity/evtivity-csms, commit d1264d35d391) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -11,8 +11,24 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 |---|---|---|
 | `ACCOUNT_DEACTIVATED` |  | Account deactivated |
 | `ACCOUNT_DISABLED` | 401, 403 | Account disabled |
-| `AI_ERROR` | 500 | Failed to process AI request |
+| `AI_ACTION_EXPIRED` | 409 | The AI action expired. Ask the assistant again |
+| `AI_ACTION_INVALID` | 409 | The AI action no longer matches or was already rejected |
+| `AI_ACTION_NOT_FOUND` | 404 | AI action not found |
+| `AI_ATTACHMENT_REJECTED` | 400 | The attachment was rejected: its content does not match its type or could not be processed |
+| `AI_ATTACHMENT_TOO_LARGE` | 400 | The attachment is too large, or the message has too many attachments |
+| `AI_ATTACHMENT_TYPE_NOT_ALLOWED` | 400 | This file type is not allowed |
+| `AI_ATTACHMENT_UNSUPPORTED` | 400 | The selected AI model cannot read this attachment type |
+| `AI_BASE_URL_INVALID` | 400 | The AI provider base URL must be an https URL without credentials on a public host |
+| `AI_BUDGET_EXCEEDED` | 429 | Your daily AI usage limit is reached |
+| `AI_CONVERSATION_BUSY` | 409 | The assistant is still answering in this conversation. Wait for it to finish or stop it |
+| `AI_CONVERSATION_NOT_FOUND` | 404 | Conversation not found |
+| `AI_ERROR` |  | Failed to process AI request |
+| `AI_MODEL_UNAVAILABLE` |  | The configured AI model does not exist or is retired |
 | `AI_NOT_CONFIGURED` | 400 | AI is not configured |
+| `AI_PROVIDER_AUTH_FAILED` |  | The AI provider refused the configured API key |
+| `AI_PROVIDER_RATE_LIMITED` |  | The AI provider is rate limiting requests. Try again shortly |
+| `AI_PROVIDER_UNAVAILABLE` |  | The AI provider is unavailable. Try again later |
+| `AI_RATE_LIMITED` | 429 | Too many AI requests. Try again in a minute |
 | `ALERT_NOT_FOUND` | 404 | Alert not found |
 | `ALREADY_FAVORITED` | 409 | Already favorited |
 | `ALREADY_VERIFIED` | 400 | Email already verified |
@@ -22,6 +38,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `ATTACHMENT_NOT_FOUND` | 404 | Attachment not found |
 | `ATTESTATION_FAILED` | 403 | Device attestation failed. Update the app and try again. |
 | `AUDIT_ENTITY_TYPE_INVALID` | 400 | Unknown audit entity type |
+| `CAMPAIGN_NOT_ACTIVE` | 409 | Only active campaigns can be cancelled |
 | `CAMPAIGN_NOT_FOUND` | 404 | Campaign not found |
 | `CASE_NOT_FOUND` | 404 | Case not found |
 | `CA_CERT_NOT_FOUND` | 404 | CA certificate not found |
@@ -46,6 +63,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `DRIVER_CREATE_FAILED` |  | Failed to create driver |
 | `DRIVER_INACTIVE` | 409 | Driver is inactive |
 | `DRIVER_NOT_FOUND` | 400, 404 | Driver not found |
+| `DUPLICATE_ALERT_RULE` | 409 | An alert rule for this component and variable already exists |
 | `DUPLICATE_API_KEY_NAME` | 409 | An API key with this name already exists |
 | `DUPLICATE_CONNECTOR_ID` | 409 | Connector ID ... already exists on this EVSE |
 | `DUPLICATE_EMAIL` | 409 | Email already in use |
@@ -82,7 +100,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `HOLIDAY_NOT_FOUND` | 404 | Holiday not found |
 | `IMAGE_NOT_FOUND` | 404 | Image not found |
 | `INSERT_FAILED` | 500 | Failed to create run |
-| `INSUFFICIENT_PERMISSIONS` |  | Insufficient permissions |
+| `INSUFFICIENT_PERMISSIONS` | 403 | Insufficient permissions |
 | `INTERNAL_ERROR` | 500 | Internal server error |
 | `INVALID_CIRCUIT` | 400 | Circuit not found in this site |
 | `INVALID_CREDENTIALS` | 401 | Invalid email or password |
@@ -121,7 +139,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `MESSAGE_CREATE_FAILED` | 500 | Failed to create message |
 | `MESSAGE_NOT_CLEARABLE` | 400 | Only accepted messages can be cleared |
 | `MESSAGE_NOT_FOUND` | 404 | Message not found |
-| `MESSAGE_REFRESH_FAILED` |  | Failed to refresh display messages |
+| `MESSAGE_REFRESH_FAILED` | 502 | Failed to refresh display messages |
 | `MESSAGE_SEND_FAILED` | 502 | Failed to send display message |
 | `MESSAGE_TIMEOUT` | 504 | Display message command timed out |
 | `MFA_ALREADY_ENABLED` |  | MFA is already enabled. Disable it first before setting up a new method. |
@@ -179,7 +197,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `PAYMENT_WEBHOOK_EXISTS` | 409 | An EVtivity webhook already exists for this provider |
 | `PAYOUT_ACCOUNT_EXISTS` | 409 | The site already has a payout account |
 | `PAYOUT_ACCOUNT_NOT_READY` | 409 | The site's payout account cannot receive payments yet |
-| `PERMISSIONS_EXCEED_OWN` | 403 | API key permissions must be a subset of your own permissions |
+| `PERMISSIONS_EXCEED_OWN` | 403 | Permissions must be a subset of your own permissions |
 | `PHONE_REGISTRATION_LIMITED` | 429 | Too many accounts were registered with this phone number. Try again later. |
 | `PKI_ROOT_REFRESH_FAILED` | 502 | Root certificate refresh from the PKI provider failed |
 | `PNC_CONTRACT_NOT_FOUND` | 404 | Plug & Charge contract not found |
@@ -188,6 +206,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `PORTAL_REGISTRATION_DISABLED` | 403 | Driver self-registration is disabled. Contact your operator to be invited. |
 | `PRE_AUTH_FAILED` |  | Payment pre-authorization failed |
 | `PRICING_ASSIGNMENT_NOT_FOUND` | 404 | No pricing group is assigned to this entity |
+| `PRICING_GROUP_DEFAULT_EXISTS` | 409 | Another pricing group is already the default |
 | `PRICING_GROUP_NOT_FOUND` | 404 | Pricing group not found |
 | `PRICING_GROUP_TARIFFS_IN_USE` | 409 | Pricing group has tariffs referenced by charging sessions |
 | `PRICING_NOT_FOUND` | 404 | No pricing found |
@@ -260,6 +279,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `SUPPORT_AI_NOT_CONFIGURED` | 400 | Support AI is not configured |
 | `SUPPORT_CASE_NOT_FOUND` | 404 | Support case not found |
 | `SUPPORT_DISABLED` |  | Support is disabled |
+| `TARIFF_DEFAULT_REQUIRED` | 409 | A pricing group with tariffs needs one active default tariff without restrictions |
 | `TARIFF_IN_USE` | 409 | Tariff is referenced by charging sessions and cannot be deleted |
 | `TARIFF_NOT_FOUND` | 404 | Tariff not found |
 | `TARIFF_OVERLAP` | 409 | Tariff overlaps with an existing tariff |
@@ -281,6 +301,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `WEBHOOK_NOT_CONFIGURED` | 500 | Webhook not configured |
 | `WEBHOOK_SIGNATURE_INVALID` | 400, 401 | Invalid signature |
 | `WEBHOOK_SIGNATURE_MISSING` | 400, 401 | Missing webhook signature or credentials |
+| `WEB_PAYMENTS_NOT_SUPPORTED` | 409 | The station does not support dynamic QR codes |
 | `retry` |  | Try Again |
 | `serverDown` |  | Unable to Connect |
 | `serverDownDescription` |  | The server is not responding. Please check that the API service is running and try again. |

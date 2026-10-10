@@ -10,6 +10,25 @@ The Settings page contains all system-wide configuration organized into tabs. Ea
 
 ![Settings page](https://www.evtivity.com/screenshots/csms/settings.png)
 
+## System Information
+
+**Permission:** `settings.system:read` and access to every site.
+
+The **System Information** button at the top of the Settings page opens a read-only dialog with the running configuration:
+
+- **Runtime** - version, `NODE_ENV`, `LOG_LEVEL`, and `SEED_DEMO`.
+- **Network** - `BIND_IP`, the API and OCPP hosts and ports, the TLS port, the metrics port, the CSMS and portal URLs, the cookie domain, and the CORS origin. `BIND_IP` is the address the Docker Compose ports bind to, such as `192.168.1.234`. The row appears on Docker Compose installs only and is hidden on Helm and AWS installs, which have no bind address.
+- **Rate Limits** - the API and auth rate limits and the OCPP per-IP connection and message limits.
+- **OCPP** - `OCPP_INSTANCE_ID` and the registration policy.
+- **OCPI** - base URL, country code, party ID, and business name.
+- **Simulator** - `CSS_MODE`, the action interval, and the station limit.
+- **Payments** - the selected payment provider and whether it is ready.
+- **Integrations** - whether each secret and integration is configured: `JWT_SECRET`, `SETTINGS_ENCRYPTION_KEY`, Stripe, Adyen, SMTP, Twilio, S3, reCAPTCHA, Hubject, and Google Maps.
+
+The dialog never shows secret values. **Configured** only means that a value is set.
+
+The API also offers a response cache flush (`POST /v1/cache/flush`), which empties the response cache that every site shares. It needs `settings.system:write` and access to every site.
+
 ## Company Info
 
 **Permission:** `settings.system:read` / `settings.system:write`
@@ -41,7 +60,7 @@ Company branding, contact information, and SEO configuration.
 - **Contact Email** - general contact email for the company.
 - **Support Email** - displayed in support communications.
 - **Support Phone** - displayed in support communications and email footers.
-- **Street Address, City, State / Province, ZIP / Postal Code, Country** - company address used in email footers. Enter **Country** as a two-letter ISO code, for example `US`. The Adyen card forms need it.
+- **Street Address, City, State / Province, ZIP / Postal Code, Country** - company address used in email footers and in the "From" block of invoices. Enter **Country** as a two-letter ISO code, for example `US`. The Adyen card forms need it.
 - **Driver Portal URL** - the public URL of the driver portal (e.g., `https://portal.example.com`). Used for QR code links and email links, and shown as a link on the operator login page.
 
 ### Tax calculation method
@@ -72,6 +91,30 @@ The setting applies to:
 Session costs always include tax, whatever the setting. Session details split the total into net amount and tax.
 
 EU and UK consumer price rules usually require gross prices at the point of sale (for example the EU Price Indication Directive 98/6/EC). Operators in those markets should choose **Including tax (gross)**.
+
+### Invoice seller details
+
+The **Invoice seller details** section sets what invoices print as the seller, in the "From" block under the company name and address. This covers driver invoices, credit notes, and fleet invoices. Many countries require the seller's address and tax number on an invoice, for example the VAT ID on an EU invoice.
+
+- **Tax ID** - your VAT ID or tax number.
+- **Tax ID label** - printed before the tax ID, for example `VAT ID`. Leave it empty to print "Tax ID" in the invoice language.
+- **Company registration number** - for example your trade register entry.
+- **Invoice contact email** and **Invoice contact phone** - contact details for questions about an invoice.
+
+Each field is one line of text. An empty field is left off the invoice. A new installation starts with every field empty. Changing these settings needs `settings.system:write` and access to all sites.
+
+![Invoice seller details](https://www.evtivity.com/screenshots/csms/settings-invoice-seller.png)
+
+### PDF branding
+
+The **PDF branding** section sets the logo and the footer of every PDF the platform generates: invoices, credit notes, fleet invoices, and reports.
+
+- **PDF logo** - upload a PNG or SVG file (max 512 KB). The preview shows the logo in use. Scripts and references to other files are removed from SVG files. **Reset to default** returns to the default logo: the EVtivity mark with the word EVtivity.
+- **PDF footer** - plain text centered at the bottom of every page, up to 5 lines and 500 characters. Long lines wrap. The footer is shown exactly as entered in every PDF, whatever its language. It is not translated. A new installation starts with `www.evtivity.com`. Leave it empty for no footer.
+
+Changing these settings needs `settings.system:write` and access to all sites.
+
+![PDF branding](https://www.evtivity.com/screenshots/csms/settings-pdf-branding.png)
 
 ## Marketing
 
@@ -180,6 +223,8 @@ Card payment configuration with four sub-tabs: General, Stripe, Adyen, and Site 
 - **Invoices** card - shown to users who can change system settings. **Payment Terms (days)** is the days from issue to the due date of a new invoice (0 to 365, default 30, 0 makes it due on issue). Setting `invoice.paymentTermsDays`. **Monthly Fleet Invoice Day** is the day of the month, in the system time zone, from which the monthly run invoices the previous month for every fleet with automatic monthly invoice (1 to 28, default 1). Setting `fleet.invoiceRunDay`. See [Monthly Run](https://www.evtivity.com/docs/csms/fleets#monthly-run).
 
 ![Invoice settings](https://www.evtivity.com/screenshots/csms/settings-payment-terms.png)
+
+A site-restricted user does not see the provider, Stripe, and Adyen settings. It sees the **Site Configurations** sub-tab, and the **Prepaid Cards** and **Invoices** cards read-only when it can read system settings. See [Company-Wide Features](https://www.evtivity.com/docs/csms/users#company-wide-features).
 
 Save sends only the changed fields. When the selection is refused, the previous provider stays selected and the panel shows the details.
 
@@ -309,8 +354,8 @@ Reservation feature toggle and settings.
 
 - **Enable Reservations** - toggle for the reservation system.
 - **Buffer Time (minutes)** - minutes of buffer added to reservation windows (default 15).
-- **Cancellation Window (minutes)** - minutes within which cancellation is free (default 5).
-- **Cancellation Fee** - amount excluding tax, in the company currency, charged for a cancellation inside the cancellation window (default 0). The tax rate of the station's tariff is added when the fee is charged.
+- **Cancellation Window (minutes)** - minutes before the start time within which a cancellation is charged the cancellation fee (default 5).
+- **Cancellation Fee** - amount in the company currency, excluding or including tax as **Tariff prices are entered** sets (the label says which), charged for a cancellation inside the cancellation window (default 0). The fee is taxed at the tax rate of the station's tariff. A reservation is charged the fee in effect when it was made.
 
 ### Support
 
@@ -337,7 +382,7 @@ Guest charging feature toggle.
 
 Idle fee configuration.
 
-- **Grace period (minutes)** - minutes of idle time before idle fees start accruing (default 30).
+- **Grace period (minutes)** - minutes of idle time before idle fees start (default 30). The first idle minutes of the session are free, across all of its idle periods and wherever its tariff segments split. Set to 0 to start idle fees immediately.
 
 ### Session
 
@@ -349,7 +394,7 @@ Session lifecycle settings.
 
 Billing settings.
 
-- **Split Billing** - toggle for per-segment billing when tariffs change during a session.
+- **Split Billing** - toggle for per-segment billing when tariffs change during a session (`pricing.splitBillingEnabled`, default on). See [Pricing](https://www.evtivity.com/docs/csms/pricing).
 
 ### Messages
 
@@ -498,34 +543,67 @@ Embeds the Smart Charging Templates page. Create charging profile templates with
 
 **Permission:** `settings.ai:read` / `settings.ai:write`
 
-AI assistant configuration with two sections.
+Configures the [AI assistant](https://www.evtivity.com/docs/csms/ai-assistant) and the support case AI draft. The tab has four sections, each with its own **Save** button.
 
-### Chatbot AI
+The conversation text, the data the AI tools read (with secrets removed), and attached files are sent to the selected AI provider. This data leaves your deployment. Check the provider's data retention terms before you turn on either surface.
 
-System-wide configuration for the operator chatbot assistant.
+### AI providers
 
-- **Enable Chatbot AI** - toggle for the chatbot feature.
-- **Default Provider** - select between Anthropic, OpenAI, or Gemini.
-- **API Key** - provider API key (stored encrypted). Shows `********` when already configured.
-- **Default Model (optional)** - model name override (blank uses the provider default).
-- **Temperature** - generation randomness (0-2, lower is more deterministic).
-- **Top P** - nucleus sampling threshold (0-1).
-- **Top K** - top-K token selection limit (1-100).
-- **System Prompt** - custom instructions for the AI assistant (blank uses the built-in default).
+One API key per provider. The AI assistant and support AI each pick one of these providers.
+
+| Provider | Default model |
+|----------|---------------|
+| Anthropic | claude-sonnet-5-5 |
+| OpenAI | gpt-6.1-sol |
+| Google Gemini | gemini-3.8-flash |
+| DeepSeek | deepseek-flash |
+
+For each provider:
+
+- **API key** - the provider API key, stored encrypted (`ai.<provider>.apiKeyEnc`, for example `ai.anthropic.apiKeyEnc`).
+- **Base URL (optional)** - leave blank for the official endpoint. A custom URL must use https and point to a public host (`ai.<provider>.baseUrl`).
+
+![AI providers](https://www.evtivity.com/screenshots/csms/settings-ai-providers.png)
+
+### AI assistant
+
+The chat panel operators open with the AI button or Ctrl+K.
+
+- **Enable the AI assistant** - turns the assistant on or off for everyone (`chatbotAi.enabled`). When off, the AI button is hidden and every assistant request is refused, including requests that use a personal configuration.
+- **Provider** - one of the providers above (`chatbotAi.provider`). A provider without an API key cannot answer.
+- **Model (optional)** - pick one of the known models of the selected provider. The provider's default model is marked **(default)** and is used when the field is blank (`chatbotAi.model`). Choose **Custom model id** to enter a model the list does not have yet. **Where to find model ids** opens the provider's models page. Switching the provider resets a listed model to the new provider's default and keeps a custom id.
+- **Effort** - Low, Medium (default), or High (`chatbotAi.effort`). Higher effort gives more thorough answers and uses more tokens.
+- **System prompt (optional)** - the instructions for the model (`chatbotAi.systemPrompt`). Without a custom prompt, the field shows the built-in prompt for your language, marked **Default** and read-only. Click **Edit** to start a custom prompt from it, and **Reset to default** to go back to the built-in prompt. Saving the built-in prompt unchanged stores no copy, so later improvements to the default still apply. Security rules are always added to the prompt and cannot be changed or removed. Open **Show the rules that are always added** to read them.
+
+![AI assistant settings](https://www.evtivity.com/screenshots/csms/settings-ai-assistant.png)
 
 ### Support AI
 
-Separate configuration for AI-powered support case reply drafting.
+Drafts replies to support cases for the operator to review.
 
-- **Enable Support AI** - toggle for support AI.
-- **Provider** - select between Anthropic, OpenAI, or Gemini.
-- **API Key** - provider API key (stored encrypted).
-- **Model** - model name override.
-- **Temperature** - generation randomness (0-2).
-- **Top P** - nucleus sampling threshold (0-1).
-- **Top K** - top-K token selection limit (1-100).
-- **Reply Tone** - reply tone: Professional, Friendly, or Formal.
-- **System Prompt** - custom instructions for support AI drafting.
+- **Enable support AI** - turns the **AI Draft** button on or off (`supportAi.enabled`).
+- **Provider**, **Model (optional)**, **Effort**, and **System prompt (optional)** - as above (`supportAi.provider`, `supportAi.model`, `supportAi.effort`, `supportAi.systemPrompt`).
+- **Reply tone** - Professional (default), Friendly, or Formal (`supportAi.tone`).
+
+Users can override the provider, key, model, effort, and system prompt for themselves on the **Chatbot AI** and **Support AI** tabs of their **Profile**. The switches on this tab still apply to them.
+
+### AI limits
+
+These apply to both surfaces and every provider.
+
+| Field | Setting key | Default | Range |
+|-------|-------------|---------|-------|
+| **Requests per user per minute** | `ai.rateLimit.userPerMinute` | 10 | 1 to 1,000 |
+| **Support AI requests per site per minute** | `ai.rateLimit.sitePerMinute` | 60 | 1 to 100,000 |
+| **Tokens per user per day** | `ai.budget.userDailyTokens` | 2,000,000 | 0 to 10,000,000,000 (0 means no daily limit) |
+| **Tool calls per answer** | `ai.maxToolCallsPerTurn` | 20 | 1 to 100 |
+| **Keep conversations for (days)** | `ai.conversationRetentionDays` | 30 | 1 to 3,650 |
+| **Maximum attachment size (bytes)** | `ai.attachments.maxBytes` | 10,485,760 (10 MB) | 1 to 33,554,432 (32 MB) |
+| **Attachments per message** | `ai.attachments.maxPerMessage` | 5 | 1 to 20 |
+
+![AI limits](https://www.evtivity.com/screenshots/csms/settings-ai-limits.png)
+
+The maximum attachment size also applies to [support case](https://www.evtivity.com/docs/csms/support-cases) attachments.
 
 ## Conformance
 

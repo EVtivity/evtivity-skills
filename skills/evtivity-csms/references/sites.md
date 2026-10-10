@@ -91,6 +91,10 @@ When a session ends, the system resolves the period that matches the session end
 
 Electricity cost and profit (revenue excluding tax minus electricity cost) appear on the dashboard financial cards, the site and station Metrics tabs, and the session list and detail pages.
 
+Profit counts only sessions with an electricity cost. A session that delivered energy gets no electricity cost when the site has no rate period, when no period matches its end time (the site has only restricted periods and no Always default), or when its station has no site. Its revenue stays in revenue but is left out of profit, and the dashboard, the Metrics tabs, and the revenue report show how many sessions were left out. The site page warns when the site has no rate period or no default period, and the dashboard lists the sites with sessions left out. Add an Always period to every site so each session gets a cost.
+
+![Site without electricity rates](https://www.evtivity.com/screenshots/csms/site-electricity-notice.png)
+
 ![Site electricity rates tab](https://www.evtivity.com/screenshots/csms/site-electricity-rates-tab.png)
 
 ### Reservations

@@ -1,6 +1,6 @@
 # EVtivity API routes: Settings
 
-Generated from EVtivity CSMS v0.1.42 (https://github.com/EVtivity/evtivity-csms, commit a4268227cc43) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.43-beta.1 (https://github.com/EVtivity/evtivity-csms, commit d1264d35d391) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -21,6 +21,7 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/settings/s3/status` | settings.system:read | Get S3 storage configuration status |
 | PUT | `/v1/settings/s3` | settings.system:write | Save S3 storage settings |
 | POST | `/v1/settings/s3/test` | settings.system:write | Test S3 connection |
+| GET | `/v1/settings/ai/defaults` | settings.ai:read | Get the built-in AI prompts and models |
 | POST | `/v1/email-wrapper/preview` | settings.notification:read | Preview a draft email layout |
 | GET | `/v1/security/settings` | settings.security:read | Get all security settings |
 | PUT | `/v1/security/recaptcha` | settings.security:write | Update reCAPTCHA v3 settings |

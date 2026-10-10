@@ -32,16 +32,22 @@ The system has 66 total permissions across two categories:
 
 After assigning a role, you can customize individual permissions for any user. The role sets the baseline. Toggle specific permissions on or off to tailor access.
 
+You can grant only the permissions you hold yourself, directly or through your role's defaults. This also applies to the role you assign. A grant above your own permissions returns 403.
+
 ## Site Access Control
 
 Site access uses a default-deny model. Users see nothing until granted access.
 
 Two modes:
 
-- **All sites** - A boolean flag (`hasAllSiteAccess`) that grants access to every site, including sites created in the future.
-- **Specific site assignments** - Assign individual sites to a user. They only see data for those sites.
+- **All sites** - A boolean flag (`hasAllSiteAccess`) that grants access to every site, including sites created in the future, and to company-wide features.
+- **Specific site assignments** - Assign individual sites to a user. The user is site-restricted and sees only data for those sites.
 
-Site access controls visibility for: stations, sessions, dashboard metrics, support cases, and reservations.
+A site-restricted user sees only the stations, sessions, reservations, payments, reports, support cases, and audit rows of its sites. Stations without a site are hidden from it.
+
+Company-wide features need all-site access: invoices, fleet billing and credit, payment provider settings and reconciliation, pricing changes, the notification log and settings, alert rules, station message templates, conformance runs, roaming partners and tariffs, access and worker logs, and creating sites. The dashboard hides their controls from a site-restricted user, and the API answers as if the item does not exist (404).
+
+A site-restricted user cannot grant all-site access or assign sites outside its own. It manages only users whose sites are all within its own sites, and it cannot see users with all-site access. See [Users](https://www.evtivity.com/docs/csms/users) for details.
 
 ## API Keys
 

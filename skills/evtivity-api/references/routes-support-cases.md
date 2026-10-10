@@ -1,6 +1,6 @@
 # EVtivity API routes: Support Cases
 
-Generated from EVtivity CSMS v0.1.42 (https://github.com/EVtivity/evtivity-csms, commit a4268227cc43) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.43-beta.1 (https://github.com/EVtivity/evtivity-csms, commit d1264d35d391) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -23,5 +23,5 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/support-cases/{id}/messages/{messageId}/attachments/{attachmentId}/download-url` | support:read | Get a presigned S3 download URL for an attachment |
 | DELETE | `/v1/support-cases/{id}/messages/{messageId}/attachments/{attachmentId}` | support:write | Delete an attachment from a support case message |
 | POST | `/v1/support-cases/{id}/refund` | support:write | Issue a refund for a session linked to a support case |
-| POST | `/v1/support-cases/{id}/ai-assist` | support:write | Generate an AI draft reply for a support case |
+| POST | `/v1/support-cases/{id}/ai-assist` | support:write | Stream an AI draft reply for a support case |
 | GET | `/v1/support-cases/{id}/neighbors` | support:read | Get previous and next entity IDs in default list order |

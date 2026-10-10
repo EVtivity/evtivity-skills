@@ -70,6 +70,10 @@ profit = revenue (excl. tax) - electricity cost
 
 Profit can be negative. Today's values count sessions started today and fees charged today. Sessions billed in an earlier company currency are left out of revenue totals.
 
+Profit counts only sessions with an electricity cost. When sessions have none, because their site has no matching electricity rate, a notice at the top of the dashboard shows how many sessions and how much revenue were left out of profit, and lists their sites. Each site links to its electricity rates. Users who cannot edit sites do not see the notice. See [Electricity Rates](https://www.evtivity.com/docs/csms/sites#electricity-rates).
+
+![Sessions without an electricity cost](https://www.evtivity.com/screenshots/csms/dashboard-cost-missing.png)
+
 ## Charts
 
 The admin dashboard includes these chart panels:

@@ -142,10 +142,10 @@ A flat per-cancel charge applied to the driver's default payment method when the
 
 Settings (Settings > Integrations & Features > Reservation):
 
-- `reservation.cancellationFeeCents` - flat fee in cents, excluding tax. Default `0` (off). The tax rate of the station's tariff for the driver is added when the fee is charged.
+- `reservation.cancellationFeeCents` - flat fee in cents, in the company tax basis (excluding or including tax). Default `0` (off). The fee is taxed at the tax rate of the station's tariff for the driver.
 - `reservation.cancellationWindowMinutes` - window before `startsAt` during which the fee applies. Default `0` (off).
 
-The fee fires when all of the following hold: the system fee is greater than zero, the system window is greater than zero, the reservation has a `driverId`, the cancel happens with `minutesUntilStart` less than `cancellationWindowMinutes`, and the driver has a default card. Charged via a one-shot Stripe PaymentIntent with idempotency key `cancellation-fee-{reservationId}`. The amount charged includes tax and is stored on the reservation.
+The fee fires when all of the following hold: the system fee is greater than zero, the system window is greater than zero, the reservation has a `driverId`, the cancel happens with `minutesUntilStart` less than `cancellationWindowMinutes`, and the driver has a default card. Charged as a one-shot payment with idempotency key `cancellation-fee-{reservationId}`. The amount charged includes tax and is stored on the reservation. The fee amount, tax rate, and tax basis are the ones in effect when the reservation was created. The window is the current setting.
 
 #### Who pays
 
@@ -161,11 +161,11 @@ The actor that triggered the cancel decides whether the fee is even considered:
 
 The audit row writes `cancellation_fee_cents = 0` first; only after Stripe confirms is it updated to the actual amount. If the Stripe charge throws (declined card, expired card, network error), the row stays at `0` and the API response includes `feeChargeFailed: true` so the caller knows to reconcile against Stripe. The cancellation itself still succeeds - the reservation is gone whether or not the fee was collected.
 
-Both the CSMS detail tab and the portal detail page render a "Cancellation policy" card when the policy is active, and the cancel-confirm dialog adds a fee warning when the cancel will fall inside the window, for example "A cancellation fee of $5.00 plus applicable tax will be charged to the driver's default payment method."
+Both the CSMS detail tab and the portal detail page render a "Cancellation policy" card when the policy is active. Both show the fee as it is charged, tax included, with a tax label, for example "€5.95 incl. 19% tax". In the CSMS cancel dialog the **Charge cancellation fee** option shows the same amount. In the portal the cancel-confirm dialog adds a fee warning when the cancel will fall inside the window, for example "A cancellation fee of €5.95 incl. 19% tax will be charged to your default payment method."
 
 ### Tax, payment records, and revenue
 
-Both fees are priced excluding tax and taxed at the tax rate of the station's tariff for the driver. Each charge:
+Both fees are entered in the company tax basis (Settings > Company Info > **Tariff prices are entered**) and taxed once at the tax rate of the station's tariff for the driver. On the net basis the tax is added. On the gross basis the amount includes it. The fee terms (holding fee per minute, cancellation fee, tax rate, and tax basis) are fixed when the reservation is created, so a later tariff or settings change does not change them. Each charge:
 
 - Creates a payment record (`reservation_cancellation` or `reservation_no_show`) with the tax rate, before the charge. A retry or a concurrent call for the same reservation and fee type charges nothing.
 - Goes through the site's Stripe connected account with the platform fee of its net amount.
@@ -175,16 +175,24 @@ Both fees are priced excluding tax and taxed at the tax rate of the station's ta
 
 Per-minute charge for the time the connector was held when the holder reserved but never plugged in.
 
-Per-tariff field: `tariffs.reservation_fee_per_minute` (decimal dollars per minute, configured in the tariff editor). Applies to both OCPP 1.6 and 2.1 stations - the rate is read from the resolved tariff and multiplied by the held minutes regardless of which protocol the station speaks.
+Per-tariff field: `tariffs.reservation_fee_per_minute` (per minute in the company currency, configured in the tariff editor). Applies to both OCPP 1.6 and 2.1 stations - the rate of the station's tariff for the driver is recorded when the reservation is created and multiplied by the held minutes regardless of which protocol the station speaks.
 
-The reaper job `reservation-expiry-check` runs every minute. When an `active` reservation expires WITHOUT a linked charging session and the resolved tariff has a non-zero rate:
+The reaper job `reservation-expiry-check` runs every minute. When an `active` reservation expires WITHOUT a linked charging session and its recorded rate is not zero:
 
 ```
 holdingMinutes  = ceil((expiresAt - startsAt) / 60_000)
 amountCents     = round(holdingMinutes * ratePerMinute * 100)
 ```
 
-The amount is net. The tax rate of the tariff is added, and the gross is charged to the driver's saved card through its payment provider with idempotency key `no-show-fee-{reservationId}`. Skipped when the holder actually charged (the rate already feeds into the session cost via the tariff resolver), the reservation has no `driverId`, the rate is zero, or the driver has no default card.
+The rate is in the company tax basis. On the net basis the tax rate is added, on the gross basis the amount includes the tax. The gross is charged to the driver's saved card through its payment provider with idempotency key `no-show-fee-{reservationId}`. Skipped when the holder actually charged (the rate already feeds into the session cost via the tariff resolver), the reservation has no `driverId`, the rate is zero, or the driver has no default card.
+
+The portal shows the no-show fee before the driver reserves and on the detail page of an open reservation, under a **No-show fee** card. The amount is the holding fee per minute times the minutes from the reservation start (or its creation for an instant reservation) to its expiry, rounded up, on the terms fixed when the reservation was made. It is shown as charged, tax included, with a tax label, for example "If you do not start charging before the reservation expires, a no-show fee of €3.57 incl. 19% tax is charged to your default payment method."
+
+### Free Vend Sites
+
+A reservation at a site with [free vend](https://www.evtivity.com/docs/csms/free-vend) turned on costs nothing. The fee terms recorded when the reservation is made have no holding fee and no cancellation fee, so the reservation is never charged a no-show fee or a cancellation fee, and no card hold or charge is made. The portal and the mobile app show no fee for these stations.
+
+The terms recorded at creation decide. A site that turns free vend on after a reservation was made keeps the fees of that reservation, and a site that turns it off keeps a reservation made during free vend free.
 
 ### In-Session Holding Fee
 
@@ -218,7 +226,7 @@ Settings > Integrations & Features > Reservation:
 |---------|---------|--------|
 | `reservation.enabled` | `true` | System-wide kill switch. When `false`, no new reservations can be created and existing ones are not enforced. |
 | `reservation.bufferMinutes` | `0` | Pre-block window in minutes before `startsAt`. New driver / guest sessions on the EVSE are rejected with `RESERVATION_BUFFER_ACTIVE` while the reservation is approaching. `0` disables the pre-block. |
-| `reservation.cancellationFeeCents` | `0` | Flat cancellation fee in cents, excluding tax, charged with the tariff tax rate added to the driver's default payment method when they cancel inside the cancellation window. `0` disables the fee. |
+| `reservation.cancellationFeeCents` | `0` | Flat cancellation fee in cents, in the company tax basis, taxed at the tariff tax rate and charged to the driver's default payment method when they cancel inside the cancellation window. `0` disables the fee. |
 | `reservation.cancellationWindowMinutes` | `0` | Window in minutes before `startsAt` during which a cancellation triggers the fee above. Outside the window the cancel is free. `0` disables the late-cancel fee. |
 | `reservation.maxHours` | `3` | Maximum reservation duration in hours (`expiresAt - startsAt`). Create routes return `400 RESERVATION_TOO_LONG` when exceeded. Both UIs show the cap as a hint near the date pickers. `0` disables the cap. |
 

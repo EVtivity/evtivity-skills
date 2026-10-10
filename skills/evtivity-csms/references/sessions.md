@@ -45,10 +45,16 @@ The cost includes tax. With the default tax calculation method (net), the calcul
 - Energy cost (kWh delivered multiplied by the per-kWh rate)
 - Time cost (session duration multiplied by the per-minute rate)
 - Session fee (flat fee per session)
-- Idle fee (idle minutes beyond the grace period multiplied by the idle rate)
-- Tax at the tariff tax rate
+- Idle fee (idle minutes after the idle grace period multiplied by the idle rate. The first idle minutes of the session are free.)
+- Tax at the tariff tax rate, computed exactly and rounded half up to the cent once per tax rate
 
 When split billing is enabled and the tariff changed during the session, each tariff segment is costed and taxed at its own rate. The driver's invoice lists the net amount and tax per rate. See [Drivers](https://www.evtivity.com/docs/csms/drivers).
+
+#### Station cost (OCPP 2.1)
+
+An OCPP 2.1 station that calculates the cost locally reports the tariff ID it applies and its own cost. The CSMS stores both with the session. When the session ends, it stores the difference between the station's total and the bill: the station's amount including tax against the final cost, or its amount excluding tax against the net amount when the station sends no amount including tax. A difference above 2 cents or 1% of the bill, whichever is larger, is logged as a warning. The driver is charged the bill, not the station's cost.
+
+`GET /v1/sessions/:id` returns these values as `stationTariffId`, `stationCostCents`, and `stationCostDifferenceCents`. See [Pricing](https://www.evtivity.com/docs/csms/pricing) for the tariff the station receives.
 
 ### Meter Values
 
@@ -123,7 +129,7 @@ Idle time is billed only while the EV pauses charging itself (SuspendedEV). A pa
 
 Any other charging state or status (Charging, SuspendedEVSE, Faulted, Finishing) ends an idle period, and so does the end of the session.
 
-Higher-priority signals are never overwritten by lower-priority ones. The idle grace period (configurable in Settings) determines when idle fees start accruing. The grace period is applied during cost calculation, not during detection.
+Higher-priority signals are never overwritten by lower-priority ones. The idle grace period (Settings > Idling) makes the first idle minutes of the session free, across all of its idle periods and wherever its tariff segments split. The grace period is applied during cost calculation, not during detection.
 
 ## Reporting an Issue
 

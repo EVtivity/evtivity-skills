@@ -28,6 +28,10 @@ Every audit table uses the same shape. Tokens, reservations, and pricing (split 
 
 Both views require the `audit:read` permission. Admins receive it by default; operators do too.
 
+Entity types, actions, and actors show as labels in your CSMS language, such as **Invoice sent** for `invoice_sent`. An action without a label shows its code in words.
+
+![Audit Log page](https://www.evtivity.com/screenshots/csms/audit.png)
+
 ## Reading an audit row
 
 Each row shows:

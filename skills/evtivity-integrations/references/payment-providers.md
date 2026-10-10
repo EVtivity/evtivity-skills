@@ -61,7 +61,7 @@ Guest drivers pay at checkout without registering a card. EVtivity places a hold
 
 ### Reservation Fees
 
-Reservation cancellation and no-show fees are configured excluding tax. When a fee is charged, the tax rate of the station's tariff for the driver is added, and the gross amount is charged to the driver's saved card through the site's connected account, with the platform fee of its net amount. Each fee gets a payment record (pending before the charge, then captured or failed) with its tax rate. A retry of the same fee charges nothing. Fees count in revenue and appear on the driver's aggregated invoice. See [Reservations](https://www.evtivity.com/docs/csms/reservations).
+Reservation cancellation and no-show fees are entered in the company tax basis (excluding or including tax) and taxed once at the tax rate of the station's tariff for the driver. The fee terms are fixed when the reservation is created. The gross amount is charged to the driver's saved card through the site's connected account, with the platform fee of its net amount. Each fee gets a payment record (pending before the charge, then captured or failed) with its tax rate. A retry of the same fee charges nothing. Fees count in revenue and appear on the driver's aggregated invoice. See [Reservations](https://www.evtivity.com/docs/csms/reservations).
 
 ### Retries
 

@@ -48,7 +48,11 @@ The pricing section displays the resolved tariff for your account. This is the p
 
 Prices are shown excluding or including tax, depending on your **Show prices** choice in [Account settings](https://www.evtivity.com/docs/portal/account) or, until you choose, the operator default. When the tariff has tax, a note below the price says which one you see, for example "Prices include 19% tax" or "Prices exclude 19% tax, which is added to the amount charged". Prices show 2 to 4 decimals, so a price such as 0.357 per kWh is not rounded. The pricing section appears once the Portal knows which display applies.
 
-When the resolved tariff has time-of-day or other restrictions, a one-line summary appears below the rate, for example "Mon, Tue, Wed 09:00-17:00" or "Holiday rate". If the site is in free vend mode, the section shows a **Free charging** badge instead of a rate.
+When the resolved tariff has time-of-day or other restrictions, a one-line summary appears below the rate, for example "Mon, Tue, Wed 09:00-17:00" or "Holiday rate". For a time or day restriction, the summary names the timezone of the time window, for example "Times in Europe/Berlin". If the site is in free vend mode, the section shows a **Free charging** badge instead of a rate.
+
+When the price can change during the session, a note says so: "The price can change during the session (time of day, day or energy charged)." This happens when the operator bills each tariff change separately and the station has tariffs for other times or amounts of energy.
+
+A tariff shows as free when all its prices are zero, whatever its tax rate.
 
 ### EVSE Grid
 
@@ -99,7 +103,7 @@ On an OCPP 2.1 station, you can also start from the Portal when your cable is al
 
 1. After selecting a connector, your default payment method is shown.
 2. To use a different card, tap the payment method selector dropdown and choose from your saved cards.
-3. If you have no payment method on file and the tariff is not free, you must add one before starting. See [Payment Methods](https://www.evtivity.com/docs/portal/payment-methods).
+3. If you have no payment method on file and the tariff is not free, you must add one before starting. See [Payment Methods](https://www.evtivity.com/docs/portal/payment-methods). You also need one when the current tariff is free but a paid tariff can apply later in the session.
 
 ### Charge on Account
 
@@ -136,7 +140,7 @@ If the station rejects the start command because it already has an active transa
 
 ## Notes
 
-- Charging sessions require a verified email and a valid payment method (unless the tariff is free).
+- Charging sessions require a verified email and a valid payment method, unless the tariff is free and no paid tariff can apply later in the session.
 - A driver whose fleet bills on account needs no payment method.
 - The Portal supports OCPP 1.6 and 2.1 stations.
 - Live session data (energy, cost, duration) updates in real time via polling.

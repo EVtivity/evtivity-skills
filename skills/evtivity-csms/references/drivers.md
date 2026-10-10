@@ -71,6 +71,10 @@ An issued invoice is never changed. You record a payment or correct the invoice 
 
 Only a draft invoice can be voided. EVtivity creates no draft invoices, so correct every issued invoice with a credit note. This follows the German GoBD rules for electronic records. The invoice history shows who marked an invoice paid or credited it.
 
+The **History** section at the bottom of the detail page lists every change made to the invoice, with who made it and when. It starts collapsed. Click it to open it. It needs the `audit:read` permission and does not print.
+
+![Invoice history, collapsed](https://www.evtivity.com/screenshots/csms/invoice-detail-history.png)
+
 Invoice and credit note numbers have no gaps: a number is used only when the invoice is saved. The running number (NNNN) continues across months and does not restart each month.
 
 #### Amounts and tax
@@ -88,6 +92,8 @@ A session billed across tariffs with split billing gets one line per tax rate, s
 #### Language and PDF
 
 **Download** produces a PDF in the driver's language (English, German, Spanish, Korean, Simplified Chinese, or Traditional Chinese), the language the driver chose in the portal or you set on the driver. Invoices without a driver render in English. Korean and Chinese PDFs use the Noto Sans CJK fonts installed in the API Docker image. Outside Docker (for example `npm run dev:api` on macOS) the fonts are missing, and those invoices render in English.
+
+Every invoice and credit note PDF shows the PDF logo at the top and the PDF footer centered at the bottom of each page, as set in [Settings](https://www.evtivity.com/docs/csms/settings#pdf-branding). The "From" block shows the company name and address and the [invoice seller details](https://www.evtivity.com/docs/csms/settings#invoice-seller-details): tax ID, registration number, and invoice contact. Empty fields are left out.
 
 ### Authorize Log
 

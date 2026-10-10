@@ -20,6 +20,19 @@ Guest charging lets drivers use a charging station without creating a Portal acc
 
 The QR code URL follows the format `/charge/:stationId/:evseId` (specific connector) or `/charge/:stationId` (station level).
 
+### Dynamic QR Codes
+
+Some OCPP 2.1 stations show a QR code on their display that changes over time instead of a printed one. The code holds a one-time password that is valid only for a short period, so a photo or copy of the code expires. The operator turns this on per station (see [Stations](https://www.evtivity.com/docs/csms/stations)).
+
+When a driver scans a dynamic QR code, the portal opens `/qr/...` and checks the password:
+
+- **Valid code**: the portal continues to the landing page of that connector, the same page a static QR code opens.
+- **Expired or invalid code**: the portal shows **QR code not valid** and does not start a session. Scan the QR code shown on the station again.
+
+![QR code not valid page](https://www.evtivity.com/screenshots/portal/qr-invalid.png)
+
+If the station let the driver enter a maximum cost, energy, or time before it showed the code, the code URL carries them as `maxcost`, `maxenergy` (Wh), and `maxtime` (seconds). They limit the session the same way for static and dynamic QR codes.
+
 ### Single Connector Landing (`/charge/:stationId/:evseId`)
 
 This page shows the details for a specific connector:

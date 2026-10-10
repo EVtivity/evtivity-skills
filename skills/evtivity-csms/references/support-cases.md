@@ -40,7 +40,26 @@ System messages are automatically generated when the case status, priority, or a
 
 ### Attachments
 
-Attach files to any message. Click the paperclip icon when composing a message, select files, and send. Files are uploaded to S3 with presigned URLs. Maximum file size is 10 MB. Click any attachment to preview or download it.
+Attach files to any message. Click the paperclip icon when composing a message, select files, and send. Attachments need S3 storage (see [Settings](https://www.evtivity.com/docs/csms/settings#s3-bucket)).
+
+Allowed file types:
+
+- Images (JPEG, PNG, WebP, GIF)
+- PDF
+- CSV, plain text, and log files
+- JSON and JSONL
+
+The maximum file size is the **Maximum attachment size (bytes)** limit in **Settings > AI** (10 MB by default). Drivers who attach files in the portal get the same checks.
+
+The server checks every file before it stores it:
+
+- It checks the file content against the declared type and refuses a mismatch.
+- It re-encodes images and removes their metadata, such as camera and location data.
+- It refuses encrypted PDFs and cuts text files to 2 MB.
+
+Click an attachment to preview an image or download the file. A download always saves the file instead of opening it in the browser.
+
+With a self-managed S3 bucket, add a CORS rule that allows `POST` from the CSMS origin. The browser uploads files straight to the bucket, and uploads fail without this rule.
 
 ### Linked Sessions
 
@@ -111,4 +130,6 @@ The system sends notifications for support case events:
 
 ## AI-Assisted Replies
 
-When AI is configured, click the AI Draft button in the message input area to generate a draft reply. The AI gathers context from the case, linked sessions, station info, and driver history to produce a relevant response. You can generate drafts for public replies or internal notes. The draft populates the text area for review and editing before sending.
+When support AI is turned on in **Settings > AI**, users with the `support:write` permission see an **AI Draft** button in the message input area. Check **Internal note** for a note to your team, or leave it unchecked for a reply to the customer. The draft streams into the message box. Click **Stop draft** to end it early. A **Sources** list shows the data the AI read. The AI reads only the case and its linked data, follows the driver's language in customer replies, and never changes anything or sends a message. See [AI Assistant](https://www.evtivity.com/docs/csms/ai-assistant) for details.
+
+![Support case AI draft](https://www.evtivity.com/screenshots/csms/support-case-ai-draft.png)

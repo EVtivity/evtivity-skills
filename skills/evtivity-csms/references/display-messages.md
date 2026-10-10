@@ -24,6 +24,12 @@ Operators can perform three actions from the Station Detail page:
 | Clear | Remove an accepted message from the station |
 | Refresh | Query the station via `GetDisplayMessages` to update the message list |
 
+### Offline Stations
+
+**Send Message** and **Refresh from Station** need a connected station. **Clear Message** (the trash icon of an accepted message) also works while the station is offline: the CSMS queues the clear and shows "Station offline. The command is queued and sent when the station reconnects." The message keeps its status until the station reconnects and answers. An accepted clear then marks it cleared. The same happens when a station disconnects while a message is being sent or refreshed.
+
+![Clear queued for an offline station](https://www.evtivity.com/screenshots/csms/station-messages-queued.png)
+
 ## Message Fields
 
 | Field | Description |

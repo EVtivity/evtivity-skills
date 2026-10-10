@@ -1,6 +1,6 @@
 # EVtivity API routes: Users
 
-Generated from EVtivity CSMS v0.1.42 (https://github.com/EVtivity/evtivity-csms, commit a4268227cc43) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.43-beta.1 (https://github.com/EVtivity/evtivity-csms, commit d1264d35d391) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -45,4 +45,5 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/users/me/permissions` | users:read | Get current user permissions |
 | GET | `/v1/users/{id}/permissions` | users:read | Get a user permissions by user ID |
 | PUT | `/v1/users/{id}/permissions` | users:write | Replace a user permissions |
+| GET | `/v1/users/me/ai-defaults` |  | Get the built-in AI prompts and models for personal AI configuration |
 | GET | `/v1/users/{id}/neighbors` | users:read | Get previous and next entity IDs in default list order |

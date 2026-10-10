@@ -88,7 +88,24 @@ Money variables are formatted in the recipient's language and the record's curre
 | `fleet.CreditLimitWarning`, `fleet.CreditLimitReached` | `exposureFormatted` (open amount on account), `limitFormatted` | `exposureCents`, `limitCents`, `currency` |
 | `invoice.FleetInvoice`, `invoice.FleetCreditNote`, `invoice.FleetOverdue` | `total` (the invoice total or the amount credited) | `totalCents`, `currency` |
 
-Session costs always include tax. `costIncludesTax` is true when a tariff tax rate applied, and the default templates add "incl. tax" only inside `{{#if costIncludesTax}}`. In `session.IdlingStarted`, `idleFeeFormatted` shows the idle fee as the recipient sees prices (with or without tax, see [Settings](https://www.evtivity.com/docs/csms/settings)), and `idleFeeIncludesTax` says which. Test fee text with `{{#if idleFeeFormatted}}`.
+Session costs always include tax. `costIncludesTax` is true when the cost contains tax, as stored with the session cost, and the default templates add "incl. tax" only inside `{{#if costIncludesTax}}`. A session whose tariffs charged no tax never reads "incl. tax". In `session.IdlingStarted`, `idleFeeFormatted` shows the idle fee as the recipient sees prices (with or without tax, see [Settings](https://www.evtivity.com/docs/csms/settings)), and `idleFeeIncludesTax` says which. Test fee text with `{{#if idleFeeFormatted}}`.
+
+### Receipt variables
+
+`session.Completed` and `session.Receipt` carry the tax and tariff lines stored with the final cost. Amounts are formatted like the other money variables.
+
+| Variable | Meaning |
+|---|---|
+| `taxFormatted`, `taxCents` | Tax contained in the cost. `taxFormatted` is empty without tax. |
+| `netFormatted` | Cost without tax. Empty without tax. |
+| `taxRatePercent` | Tax rate in percent when all tax was charged at one rate. Empty otherwise. |
+| `taxLinesFormatted` | Tax per rate when tax was charged at several rates, for example "7%: €0.11; 19%: €0.29". Empty otherwise. |
+| `energyCostFormatted`, `timeCostFormatted`, `sessionFeeFormatted`, `idleCostFormatted`, `reservationFeeFormatted` | Energy cost, time cost, session fee, idle fee, and reservation holding fee, each with tax included, so they add up to the total. Empty when not billed. |
+| `partiallyPaid` | True when the payment collected less than the cost, because the top-up above the hold was declined or was below the provider minimum charge. Use with `{{#if}}`. |
+| `chargedFormatted`, `chargedCents` | Amount charged. |
+| `unpaidFormatted`, `unpaidCents` | Amount still open. `unpaidCents` is `0` when fully paid. |
+
+The default receipt emails list the tariff lines and the tax as table rows. When the payment collected less than the cost, they show what was charged and what is still open. The SMS templates keep the total only.
 
 ### Email Wrapper
 

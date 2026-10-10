@@ -30,7 +30,7 @@ When the vehicle pauses charging itself but remains plugged in, the session ente
 3. **StatusNotification** (OCPP 1.6) - A `SuspendedEV` status indicates idle. `SuspendedEVSE`, `Faulted`, `Finishing` and `Charging` end the idle period.
 4. **Flat energy** - If energy delivered has not increased across multiple meter updates, the session is idle.
 
-The idle grace period is configurable in settings. Idle fees do not apply until the grace period expires.
+The idle grace period is configurable in settings. The first idle minutes of the session are free, and idle fees apply to the idle time after them.
 
 ## Cost Calculation
 
@@ -40,13 +40,13 @@ Each session is billed against a tariff with these components:
 |---|---|
 | `sessionFee` | Flat fee charged once per session |
 | `pricePerKwh` | Energy cost per kilowatt-hour |
-| `pricePerMinute` | Time cost per minute of active charging |
+| `pricePerMinute` | Time cost per minute of the session, charging or idle |
 | `idleFeePricePerMinute` | Fee per minute while idle (after grace period) |
 | `taxRate` | Tax rate as a decimal fraction (`0.19` for 19%). Tariff prices exclude or include tax, as the company tax calculation method sets. |
 
 ### Split Billing
 
-When a tariff changes mid-session (e.g., time-of-use pricing), the CSMS tracks costs per segment. A cron job runs every minute to check for tariff transitions and close the current billing segment.
+Split billing is on by default. When a tariff changes mid-session (e.g., time-of-use pricing), the CSMS tracks costs per segment. A cron job runs every minute to check for tariff transitions and close the current billing segment.
 
 Each segment is taxed at its own tariff tax rate. The driver's invoice shows the net amount and tax per rate, and the total matches the amount charged.
 

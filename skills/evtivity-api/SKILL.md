@@ -4,9 +4,9 @@ description: "Call the EVtivity REST API: API keys, sign-in and driver tokens, p
 license: MIT
 compatibility: Examples use curl and jq against a running EVtivity API (default http://localhost:7102 with Docker Compose).
 metadata:
-  evtivity-version: "0.1.42"
-  evtivity-release: "v0.1.42"
-  evtivity-commit: "a4268227cc431562cfe40ec9ff9abe8268107ef3"
+  evtivity-version: "0.1.43"
+  evtivity-release: "v0.1.43-beta.1"
+  evtivity-commit: "d1264d35d3915ca23522cabf67d0336abd705e96"
 ---
 
 # EVtivity REST API

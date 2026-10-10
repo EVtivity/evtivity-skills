@@ -182,6 +182,68 @@ Off by default. With TLS on, the per-service passwords and all Redis traffic are
 - **Chart values:** `redisTls.enabled: true` and `redisTls.caSecret` (key `redisTls.caKey`, default `ca.crt`) give every service the CA in `REDIS_TLS_CA_PEM`. The chart refuses to render while a service URL is not `rediss://`.
 - **Managed Redis with a public certificate:** use `rediss://` URLs and leave `redisTls` off.
 
+## Credential Rotation
+
+Off by default. With `credentialRotation.enabled: true`, a CronJob rotates the PostgreSQL and Redis passwords of the services on a schedule, without downtime. It needs admin credentials for both servers, so you turn it on deliberately.
+
+Each run works in five steps:
+
+1. The job checks every connection and server setting. It changes nothing when a check fails.
+2. It adds new credentials next to the old ones. The services log in to PostgreSQL as one of two alternating roles, `evtivity_app` and `evtivity_app_clone`, both members of `evtivity_app_group`. The idle role gets a new password. Each Redis service user gets a second password.
+3. It writes the new URLs to the Secret `<fullname>-credentials` and restarts the api, ocpp, ocpi, worker, and css Deployments.
+4. When every rollout completes, it waits `revokeDelaySeconds` for terminating pods, then removes the old credentials.
+5. With `database.rotateOwner`, it also changes the owner password, which only the migrate and seed jobs use.
+
+If a rollout does not finish within `rolloutTimeoutSeconds`, or the run fails before step 4, the old credentials stay valid and the pods keep running. The next run finishes the rollout before it rotates again. A failed run shows as a failed Job of the CronJob and logs `[rotation] failed: <reason>`. At the first run the services move from the owner role to `evtivity_app`, which holds data privileges only. Migrations still run as the owner.
+
+Run one rotation now:
+
+```bash
+kubectl create job --from=cronjob/<fullname>-credential-rotation rotate-now -n <namespace>
+```
+
+### Credentials Secret
+
+When you enable rotation, a `pre-install`/`pre-upgrade` hook copies `DATABASE_URL` and the `REDIS_URL_*` keys into the Secret `<fullname>-credentials` once. From then on this Secret is the source of truth: the services read their connections from it, the rotation job updates it, and later changes to `secrets.databaseUrl` or `secrets.redisUrls` are ignored. Helm never renders it, so an upgrade cannot restore a password the job has rotated away. `helm uninstall` keeps the Secret.
+
+### Rotation Values
+
+| Value | Default | Description |
+|-------|---------|-------------|
+| `credentialRotation.enabled` | `false` | Create the credentials Secret and the rotation CronJob |
+| `credentialRotation.schedule` | `0 3 1 * *` | Cron schedule (03:00 on the 1st of each month) |
+| `credentialRotation.timeZone` | `""` | IANA time zone of the schedule (empty: the controller's zone) |
+| `credentialRotation.suspend` | `false` | Pause the schedule |
+| `credentialRotation.rolloutTimeoutSeconds` | `900` | Time each Deployment has to finish its rollout |
+| `credentialRotation.revokeDelaySeconds` | `120` | Wait after the rollouts before the old credentials are removed |
+| `credentialRotation.database.enabled` | `true` | Rotate the PostgreSQL credentials |
+| `credentialRotation.database.appUser` | `evtivity_app` | First alternating login role (the second is `<appUser>_clone`) |
+| `credentialRotation.database.groupRole` | `evtivity_app_group` | Role that holds the application privileges |
+| `credentialRotation.database.rotateOwner` | `true` | Also rotate the owner password |
+| `credentialRotation.database.admin.user` | `postgres` | PostgreSQL admin user |
+| `credentialRotation.database.admin.passwordSecret.name` | `""` | Secret with the admin password (required) |
+| `credentialRotation.database.admin.passwordSecret.key` | `postgres-password` | Key of the admin password |
+| `credentialRotation.redis.enabled` | `true` | Rotate the Redis ACL user passwords |
+| `credentialRotation.redis.admin.user` | `default` | Redis admin user |
+| `credentialRotation.redis.admin.passwordSecret.name` | `""` | Secret with the admin password (required) |
+| `credentialRotation.redis.admin.passwordSecret.key` | `redis-password` | Key of the admin password |
+| `credentialRotation.redis.aclFile.kind` | `Secret` | `Secret` or `ConfigMap` that holds the ACL file Redis loads at start |
+| `credentialRotation.redis.aclFile.name` | `""` | Its name (required for the bundled Redis) |
+| `credentialRotation.redis.aclFile.key` | `users.acl` | Its key |
+
+The admin passwords are not rotated. `CREDENTIAL_ROTATION=true ./scripts/install.sh` turns rotation on for the bundled PostgreSQL and Redis and sets the admin Secrets and the Redis ACL file.
+
+### External Databases
+
+- **PostgreSQL:** the admin user needs superuser, or `CREATEROLE` with `ADMIN` on the group role (`evtivity_app_group`). On Amazon RDS, use the master user. Store its password in a Secret and set `credentialRotation.database.admin.*`.
+- **Redis:** rotation needs a single primary, because ACL changes do not replicate. The job refuses replicas, Sentinel, and cluster setups. The admin user needs `ACL SETUSER`, `ACL GETUSER`, `ACL SAVE`, `CONFIG GET`, and `INFO`. The rotated passwords must survive a restart: either Redis loads a writable `aclfile` (the job runs `ACL SAVE`), or you set `credentialRotation.redis.aclFile` to the Secret or ConfigMap Redis loads at start.
+- **Managed caches** that manage users through their own API (ElastiCache, Memorystore, Azure Cache): set `credentialRotation.redis.enabled: false`.
+- **Another rotation system** (Vault, External Secrets, a cloud secret manager): leave `credentialRotation.enabled: false` and let that system update `secrets.existingSecret`.
+
+### Turning Rotation Off
+
+Copy the current credentials back into your values first: `secrets.databaseUrl` from `MIGRATE_DATABASE_URL` and each `secrets.redisUrls.<service>` from `REDIS_URL_<SERVICE>` of `<fullname>-credentials`. Then upgrade with `credentialRotation.enabled=false` and delete the Secret.
+
 ## ConfigMap
 
 Non-sensitive environment variables are stored in a shared ConfigMap mounted by all deployments:
@@ -244,7 +306,7 @@ The job uses `ON CONFLICT DO NOTHING` for idempotency. If the admin already exis
 
 ## Autoscaling
 
-HPA is supported for the API and OCPP services. Disabled by default.
+HPA is supported for the API, OCPP, and worker services. Disabled by default.
 
 ```yaml
 api:
@@ -265,6 +327,19 @@ ocpp:
 The OCPP HPA includes a 300-second scale-down stabilization window with a maximum of 1 pod removed per 120 seconds. This allows graceful WebSocket session draining.
 
 OCPP horizontal scaling uses `RedisConnectionRegistry` with per-pod instance IDs (from Kubernetes downward API) to route station commands to the correct pod.
+
+Worker HPA values and defaults:
+
+```yaml
+worker:
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 4
+    targetCPUUtilization: 70
+```
+
+The CPU target is a percentage of `worker.resources.requests.cpu` (default `500m`, limit `1` CPU and `2Gi`). It is safe to run several worker replicas. Keep one replica when `worker.env.octtOcspResponderUrl` is set: the chart refuses more.
 
 ## Monitoring
 
@@ -291,7 +366,7 @@ monitoring:
 Components:
 
 - **Prometheus** - scrapes API metrics port (9091)
-- **Grafana** - provisions Prometheus and Loki datasources with three pre-built dashboards (system metrics, business metrics, logs)
+- **Grafana** - provisions Prometheus and Loki datasources with three pre-built dashboards (system metrics, business metrics, logs). The system metrics dashboard shows connected stations per OCPP server. See [Per-process health](https://www.evtivity.com/docs/configuration/ocpp-settings#per-process-health).
 - **Loki** - log aggregation (sub-toggled under monitoring)
 - **Alloy** - ships container logs to Loki (sub-toggled under monitoring)
 
@@ -336,7 +411,8 @@ Key sections in `values.yaml`:
 | `csms.*` | CSMS frontend resources |
 | `portal.*` | Portal frontend resources |
 | `css.*` | Simulator config, TLS client certs |
-| `worker.*` | Background job processor resources |
+| `worker.*` | Background job processor resources, autoscaling |
+| `credentialRotation.*` | Scheduled PostgreSQL and Redis password rotation |
 | `gatewayAPI.*` | Gateway creation, routes, listeners |
 | `istio.*` | PeerAuthentication mode, enable toggle |
 | `secrets.*` | Secret management mode and values |

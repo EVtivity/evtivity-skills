@@ -33,6 +33,30 @@ Each environment is driven by one YAML file (`config/{dev,qa,prod}.yaml`). Every
 | qa   | 1 task per service | Serverless v2, 0.5 to 4 ACU | t4g.micro, single node | fck-nat | On |
 | prod | 2+ tasks per public service, autoscaling | Serverless v2, 1 to 16 ACU, writer and reader | t4g.medium, replica, failover | NAT gateway x 2 | On |
 
+### Worker Sizing and Autoscaling
+
+In prod the worker runs on 1 vCPU and 2 GB and autoscales from 1 to 4 tasks. It is safe to run several worker tasks. Set the worker size and scaling under `services.worker` in the environment's config YAML:
+
+```yaml
+services:
+  worker:
+    enabled: true
+    cpu: 1024
+    memoryMiB: 2048
+    desiredCount: 1
+    autoscaling:
+      min: 1
+      max: 4
+      cpuTargetPercent: 70
+      memoryTargetPercent: 85
+```
+
+`cpuTargetPercent` (default 70), `memoryTargetPercent` (default 85), `scaleInCooldownSeconds` (default 120), and `scaleOutCooldownSeconds` (default 60) are optional. With autoscaling, set `desiredCount` equal to `autoscaling.min`, or the synth fails. Leave out `autoscaling` for a fixed task count. Every other service takes the same keys. `octt.ocspResponder` needs exactly one worker task, so the synth fails when it is on and the worker can run more.
+
+### Sizing Preset
+
+`sizing: prod` in `config/dev.local.yaml` or `config/qa.local.yaml` (or `--context sizing=prod`) gives that environment the sizing and topology of `config/prod.yaml`: service sizes and autoscaling, Aurora, Valkey, NAT, and WAF limits. The environment keeps its account, domain, names, and safety settings, and values in its local YAML still win. Use it for load tests and benchmarks. Deploy it to a fresh environment: converting a running one changes NAT and Valkey in place.
+
 ### Hostnames
 
 Hostnames are `<service>.<subdomain>.<apex>`. With `domain.subdomain: dev`, the dashboard is `csms.dev.example.com`. Production can use an empty subdomain (`csms.example.com`). Rename a service with `services.<name>.hostname`. The stacks only add records under your zone. They never change the apex or `www`.
