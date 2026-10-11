@@ -555,7 +555,7 @@ Each tab has its own link: `/settings?tab=ai&sub=<id>`, where `<id>` is `provide
 >
 > The AI provider never receives stored credentials, such as passwords, API keys, secrets and station passwords. Card numbers and IBANs are cut to their last 4 characters. Support drafts, automatic insights, background workers and driver support also mask email addresses and phone numbers, and hash or shorten driver token ids. The assistant sends driver contact details as stored, only to users allowed to read them. Text you type and text files you attach are checked for keys and card numbers. Images and PDFs you attach are sent as they are.
 
-### Providers and keys
+### Providers and Keys
 
 One API key per provider. Every AI feature uses these keys: each feature tab picks one of these providers.
 
@@ -587,7 +587,7 @@ The **AI Assistant** card configures the chat panel operators open with the AI b
 
 ![Assistant tab](https://www.evtivity.com/screenshots/csms/settings-ai-assistant.png)
 
-### Support drafts
+### Support Drafts
 
 The **Support AI** card configures the drafts of replies to support cases, which an operator reviews before sending.
 
@@ -600,7 +600,7 @@ Users can override the provider, key, model, effort, and system prompt of the as
 
 ![Support drafts tab](https://www.evtivity.com/screenshots/csms/settings-ai-support.png)
 
-### Driver support
+### Driver Support
 
 The **Driver Support** card configures the automatic first answer to a driver support request. The model answers only when the driver allows it, uses the company provider key, and has no tools. The portal and the mobile app offer the AI analysis only while the switch is on and the selected provider has an API key. See [Support Cases](https://www.evtivity.com/docs/csms/support-cases) for the operator view and [Support Cases](https://www.evtivity.com/docs/portal/support-cases) in the portal for the driver flow.
 
@@ -629,7 +629,7 @@ The consent notice drivers see before they choose is built in and cannot be edit
 
 ![Driver support tab](https://www.evtivity.com/screenshots/csms/settings-ai-driver.png)
 
-### Automatic insights
+### Automatic Insights
 
 This tab holds two cards. The **Automatic Insights and Workers** card sets the model for automatic insights and background workers. They run without a user and use the company provider key, never a personal configuration.
 
@@ -657,7 +657,7 @@ Each site also has its own **Automatic Insights** switch on its **AI** tab (see 
 
 ![Automatic insights tab](https://www.evtivity.com/screenshots/csms/settings-ai-insights.png)
 
-### Background workers
+### Background Workers
 
 The **Background AI Workers** card holds the scheduled jobs. See [Background AI Workers](https://www.evtivity.com/docs/csms/ai-workers). Workers use the model of the **Automatic Insights** tab: the **Choose the model they use in Automatic insights** link opens it. Every job is off by default.
 
@@ -686,7 +686,7 @@ The **MCP Server** card configures the server that lets external AI agents use E
 
 ![MCP tab](https://www.evtivity.com/screenshots/csms/settings-ai-mcp.png)
 
-### Usage and limits
+### Usage and Limits
 
 The **AI Limits** card holds the rate limits and token budgets of the assistant, support drafts, automatic insights, and background workers, for every provider. The driver limits are on the [Driver support](#driver-support) tab.
 
