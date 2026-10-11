@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.43 (https://github.com/EVtivity/evtivity-csms, commit 94253c800a66) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.44-beta.1 (https://github.com/EVtivity/evtivity-csms, commit 3a48572ad4f5) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
@@ -13,7 +13,7 @@ A `write` permission includes `read` for the same resource.
 | Tag | Routes | File |
 |---|---|---|
 | Health | 2 | `references/routes-health.md` |
-| Sites | 29 | `references/routes-sites.md` |
+| Sites | 30 | `references/routes-sites.md` |
 | Stations | 69 | `references/routes-stations.md` |
 | Sessions | 6 | `references/routes-sessions.md` |
 | Users | 37 | `references/routes-users.md` |
@@ -66,6 +66,10 @@ A `write` permission includes `read` for the same resource.
 | CSS OCPP 2.1 Actions | 40 | `references/routes-css-ocpp-2-1-actions.md` |
 | Smart Charging | 12 | `references/routes-smart-charging.md` |
 | AI Assistant | 13 | `references/routes-ai-assistant.md` |
+| AI Proposals | 4 | `references/routes-ai-proposals.md` |
+| AI | 3 | `references/routes-ai.md` |
+| MCP | 1 | `references/routes-mcp.md` |
+| AI Insights | 5 | `references/routes-ai-insights.md` |
 | OCTT | 4 | `references/routes-octt.md` |
 | Audit | 2 | `references/routes-audit.md` |
 | Conformance | 1 | `references/routes-conformance.md` |

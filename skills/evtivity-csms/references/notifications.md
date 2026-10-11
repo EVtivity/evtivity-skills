@@ -60,6 +60,7 @@ The **System Events** tab groups them:
 - **Site Hosts**: `site.PayoutOnboarding` (email only)
 - **Fleet Billing Alerts**: `fleet.CreditLimitWarning`, `fleet.CreditLimitReached`, `fleet.InvoiceRunFailed`
 - **Fleet Invoices**: `invoice.FleetInvoice`, `invoice.FleetCreditNote`, `invoice.FleetOverdue` (email only)
+- **AI**: `ai.ProposalDigest` (email only)
 
 The **Fleet Billing Alerts** go to a fleet's billing contacts when the open amount on account reaches the warning percent of the fleet's credit limit (`fleet.CreditLimitWarning`) or the limit (`fleet.CreditLimitReached`), each once per month. The reached alert also goes to every active operator with the `fleets:write` permission, and so does the warning while the fleet has no billing contact. See [Credit Limit](https://www.evtivity.com/docs/csms/fleets#credit-limit).
 
@@ -68,6 +69,8 @@ The **Fleet Invoices** emails go to a fleet's billing contacts with the PDF atta
 `fleet.InvoiceRunFailed` goes to every active operator with the `payments:write` permission once per month and lists the fleets the monthly run could not invoice or email. `invoice.FleetOverdue` reminds the billing contacts once, with the PDF attached, when an issued fleet invoice passes its due date unpaid. See [Monthly Run](https://www.evtivity.com/docs/csms/fleets#monthly-run).
 
 The **Session End Failed** alert, in the **Session Alerts** group, goes to every active operator with the `sessions:write` permission and access to the session's site when the CSMS gives up ending a session after repeated failed end requests. It names the session and the station, so you can search the session ID on the Sessions page and bill the session. See [Billing a Session the CSMS Could Not End](https://www.evtivity.com/docs/csms/sessions#billing-a-session-the-csms-could-not-end). Each operator receives it in their language and time zone, and the SMS opt-out on their Profile page applies.
+
+The **AI Proposal Digest** (`ai.ProposalDigest`), in the **AI** group, is the exception to always on: it goes only to active users with the `aiProposals:write` permission who turned on **AI Inbox digest email** in their Profile. It goes out once a day while proposals from background workers are pending at their sites, with the counts per job, the site names, and a link to the AI Inbox. See [Daily Digest Email](https://www.evtivity.com/docs/csms/ai-inbox#daily-digest-email).
 
 Channels: email and SMS.
 

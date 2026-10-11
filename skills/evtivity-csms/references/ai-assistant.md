@@ -8,6 +8,14 @@ Ask questions about your charging network, review proposed changes, and draft su
 
 The AI assistant answers questions about your charging network in plain language. It reads live data through the CSMS API with your own permissions and site access, so it sees only what you can see. It can also propose changes, but it never runs one until you confirm it.
 
+The assistant is one of the AI features of the CSMS:
+
+- [Automatic insights](https://www.evtivity.com/docs/csms/ai-insights): root-cause notes about offline or faulted stations, failed sessions, and refused authorizations.
+- [AI Inbox](https://www.evtivity.com/docs/csms/ai-inbox): actions proposed by background workers and MCP clients, waiting for your confirmation.
+- [Background AI workers](https://www.evtivity.com/docs/csms/ai-workers): optional scheduled jobs that summarize the network and find stuck sessions and tariff anomalies.
+- [AI usage and budgets](https://www.evtivity.com/docs/csms/ai-usage): token usage and budgets.
+- [MCP server](https://www.evtivity.com/docs/integrations/mcp-server): connects AI agents to EVtivity with an API key.
+
 The assistant works with four AI providers: Anthropic, OpenAI, Google Gemini, and DeepSeek. An administrator sets it up under **Settings > AI** (see [Settings](https://www.evtivity.com/docs/csms/settings#ai)).
 
 The conversation text, the data the assistant reads (with secrets removed), and attached files are sent to the selected AI provider. This data leaves your deployment. Check the provider's data retention terms before you turn the assistant on.
@@ -75,7 +83,31 @@ The assistant reads data without asking. Any change, such as creating, updating,
 
 The assistant proposes one change at a time. A proposal expires after 5 minutes and then shows **Expired**. Ask again to get a new one.
 
+Confirming a change needs a signed-in CSMS session. A client that uses an API key can reject a change but cannot confirm it (`AI_CONFIRMATION_REQUIRES_SESSION`).
+
 Some actions are never available to the assistant, even with confirmation: settings and stored secrets, API keys, sign-in and MFA, users and permissions, the AI configuration itself, payments, refunds, invoices, pricing, free vend, station credentials, certificates, network profiles, configuration variables, and firmware. Do these in the CSMS directly.
+
+## Explain
+
+An **Explain** button opens the assistant about one record, with the record's data already loaded. It appears on:
+
+- a station that is offline or faulted, in the station header
+- a session that failed or faulted
+- a refused attempt in the authorize log, on the token, driver, and station pages
+
+The button needs the assistant to be turned on and the `aiAssistant:write` permission.
+
+1. Click **Explain**.
+2. When a current [automatic insight](https://www.evtivity.com/docs/csms/ai-insights) exists for the record, the panel shows it (**Showing the latest automatic insight**). This uses no tokens. Click **Ask a follow-up** to ask about it.
+3. Without an insight, or after **Ask a follow-up**, the message box holds a prepared question, such as "Why did this session fail, and what should I do?". Edit it if you like, then send it.
+
+![Explain with an automatic insight](https://www.evtivity.com/screenshots/csms/ai-explain.png)
+
+While the conversation is about a record, the message box shows **About** and the record. Each answer reads the record's current data, its recent events, and its latest insight. **New chat** starts a conversation without the record.
+
+EVtivity checks your access to the record when the conversation starts and before every answer. When you lose access to the record, the conversation keeps its earlier answers but refuses new questions (`AI_CONTEXT_NOT_FOUND`). The same error answers a record that does not exist or that you cannot see.
+
+Explain sends the record's data, its recent events, and its latest insight to the AI provider, with secrets removed and email addresses masked. A change the assistant suggests still needs your confirmation.
 
 ## Conversation History
 
@@ -122,11 +154,15 @@ The tab appears only while the assistant is turned on in Settings. When an admin
 An administrator sets these in **Settings > AI**. They apply to every user and provider.
 
 - **Requests per user per minute**: default 10.
-- **Tokens per user per day**: default 2,000,000. 0 means no daily limit.
+- **Tokens per user per day**: default 2,000,000. 0 means no daily limit. The day runs from midnight to midnight UTC.
 - **Tool calls per answer**: default 20. The assistant stops calling the API for that answer when it reaches the limit.
 - **Keep conversations for (days)**: default 30.
 
+Company and site monthly token budgets also apply. See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage).
+
 When you reach a limit, the assistant shows an error. Try again later.
+
+The panel footer shows your tokens today against your daily budget.
 
 ## Support Case AI Draft
 

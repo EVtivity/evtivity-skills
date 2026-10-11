@@ -12,11 +12,13 @@ Sessions represent individual charging transactions between a driver and a stati
 
 ## Session List
 
-The sessions list shows all charging sessions with filters for status, station, site, driver, and date range. Each row displays the station name, driver, status, energy delivered, duration, and cost.
+The sessions list shows all charging sessions with filters for site, station, status, and electricity cost, and a search by session ID, transaction ID, station, or driver name. Each row displays the station name, driver, status, energy delivered, duration, and cost.
 
 Free vend sessions show a "Free Vend" label in the driver column instead of a driver name.
 
 Select **Manual billing** in the status filter to list the sessions that wait for billing outside the platform. See [Billing a Session the CSMS Could Not End](#billing-a-session-the-csms-could-not-end).
+
+Select **Missing** in the electricity cost filter to list the billed sessions that delivered energy but have no electricity cost, so profit leaves them out. The dashboard **Electricity cost missing** card opens this view for a site. With a site selected, **Recalculate electricity cost** fills their cost from the site's current rates. See [Recalculate Electricity Cost](https://www.evtivity.com/docs/csms/sites#recalculate-electricity-cost).
 
 ## Session Statuses
 

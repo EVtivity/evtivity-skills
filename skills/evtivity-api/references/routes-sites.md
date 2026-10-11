@@ -1,6 +1,6 @@
 # EVtivity API routes: Sites
 
-Generated from EVtivity CSMS v0.1.43 (https://github.com/EVtivity/evtivity-csms, commit 94253c800a66) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.44-beta.1 (https://github.com/EVtivity/evtivity-csms, commit 3a48572ad4f5) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -38,4 +38,5 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/sites/{id}/electricity-rates` | sites:write | Create an electricity rate period for a site |
 | PATCH | `/v1/sites/{id}/electricity-rates/{periodId}` | sites:write | Update an electricity rate period |
 | DELETE | `/v1/sites/{id}/electricity-rates/{periodId}` | sites:write | Delete an electricity rate period |
+| POST | `/v1/sites/{id}/electricity-cost/recalculate` | sites:write | Fill missing electricity costs from the site rates |
 | GET | `/v1/sites/{id}/neighbors` | sites:read | Get previous and next entity IDs in default list order |

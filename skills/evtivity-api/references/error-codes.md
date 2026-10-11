@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.43 (https://github.com/EVtivity/evtivity-csms, commit 94253c800a66) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.44-beta.1 (https://github.com/EVtivity/evtivity-csms, commit 3a48572ad4f5) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -20,15 +20,27 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `AI_ATTACHMENT_UNSUPPORTED` | 400 | The selected AI model cannot read this attachment type |
 | `AI_BASE_URL_INVALID` | 400 | The AI provider base URL must be an https URL without credentials on a public host |
 | `AI_BUDGET_EXCEEDED` | 429 | Your daily AI usage limit is reached |
+| `AI_CONFIRMATION_REQUIRES_SESSION` | 403 | Confirm this action while signed in to the dashboard, not with an API key |
+| `AI_CONTEXT_NOT_FOUND` | 404 | Explain context not found |
 | `AI_CONVERSATION_BUSY` | 409 | The assistant is still answering in this conversation. Wait for it to finish or stop it |
 | `AI_CONVERSATION_NOT_FOUND` | 404 | Conversation not found |
 | `AI_ERROR` |  | Failed to process AI request |
+| `AI_INSIGHTS_DISABLED` | 400 | Automatic insights are turned off |
+| `AI_INSIGHT_COOLDOWN` | 429 | This insight was regenerated recently. Try again later |
+| `AI_INSIGHT_NOT_FOUND` | 404 | Insight not found |
+| `AI_MCP_RATE_LIMITED` |  | Too many MCP requests. Try again later |
 | `AI_MODEL_UNAVAILABLE` |  | The configured AI model does not exist or is retired |
+| `AI_MONTHLY_BUDGET_EXCEEDED` | 429 | The monthly AI usage limit is reached |
 | `AI_NOT_CONFIGURED` | 400 | AI is not configured |
+| `AI_PROPOSAL_ALREADY_DECIDED` | 409 | This proposal was already decided |
+| `AI_PROPOSAL_EXPIRED` | 409 | This proposal has expired |
+| `AI_PROPOSAL_NOT_FOUND` | 404 | Proposal not found |
+| `AI_PROPOSAL_STALE` | 409 | This proposal no longer applies because the situation changed |
 | `AI_PROVIDER_AUTH_FAILED` |  | The AI provider refused the configured API key |
 | `AI_PROVIDER_RATE_LIMITED` |  | The AI provider is rate limiting requests. Try again shortly |
 | `AI_PROVIDER_UNAVAILABLE` |  | The AI provider is unavailable. Try again later |
 | `AI_RATE_LIMITED` | 429 | Too many AI requests. Try again in a minute |
+| `AI_SITE_BUDGET_EXCEEDED` | 429 | The site's daily AI usage limit is reached |
 | `ALERT_NOT_FOUND` | 404 | Alert not found |
 | `ALREADY_FAVORITED` | 409 | Already favorited |
 | `ALREADY_VERIFIED` | 400 | Email already verified |

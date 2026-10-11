@@ -34,6 +34,8 @@ Edit the site's name, address, coordinates, contact information, and hours of op
 
 Contact information has a **Make contact info public** toggle. When off (the default) the contact name, email, and phone are visible only to operators and never to drivers. When on, the same three fields appear on the driver portal's charger and location detail pages, and the operator name is published to OCPI roaming partners. The toggle change is captured in the site audit log so a later compliance query can find when each site started or stopped publishing contact details.
 
+The **AI usage** card shows the site's AI tokens this month against its budget. Users with access to every site can set the site's **Monthly token budget** and turn its **Automatic insights** off. See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage#site-budget).
+
 ### Metrics
 
 Site performance metrics including total stations, uptime percentage, utilization, total sessions, and energy delivered, plus **Total Revenue (incl. tax)**, **Revenue (excl. tax)**, **Tax Collected**, electricity cost, and **Profit** (revenue excluding tax minus electricity cost). Revenue follows the [dashboard definition](https://www.evtivity.com/docs/csms/dashboard): final costs of ended sessions and reservation fees charged at the site, minus refunds.
@@ -87,11 +89,21 @@ Restriction types:
 - **Day and time** - applies during a time window on the selected days of the week.
 - **Date range** - a seasonal rate that applies between two calendar dates (MM-DD). Ranges that wrap the year end (for example 11-01 to 03-31) are supported.
 
-When a session ends, the system resolves the period that matches the session end time in the site's timezone and stores the electricity cost (energy delivered multiplied by the rate). More specific periods win: date range, then day and time, then time of day, then the Always default. The cost is computed once at session end and is never backfilled onto historical sessions. If no period matches or the lookup fails, the session still completes normally with no electricity cost recorded.
+When a session ends, the system resolves the period that matches the session end time in the site's timezone and stores the electricity cost (energy delivered multiplied by the rate). More specific periods win: date range, then day and time, then time of day, then the Always default. The cost is computed once at session end, at the period of the end time, for the whole session. A session that ended without a cost keeps none until you recalculate it (see below). If no period matches or the lookup fails, the session still completes normally with no electricity cost recorded.
 
 Electricity cost and profit (revenue excluding tax minus electricity cost) appear on the dashboard financial cards, the site and station Metrics tabs, and the session list and detail pages.
 
 Profit counts only sessions with an electricity cost. A session that delivered energy gets no electricity cost when the site has no rate period, when no period matches its end time (the site has only restricted periods and no Always default), or when its station has no site. Its revenue stays in revenue but is left out of profit, and the dashboard, the Metrics tabs, and the revenue report show how many sessions were left out. The site page warns when the site has no rate period or no default period, and the dashboard lists the sites with sessions left out. Add an Always period to every site so each session gets a cost.
+
+#### Recalculate Electricity Cost
+
+Sessions that ended before a site had rates, or outside every period before you added an Always period, keep no electricity cost. To fill them, click **Recalculate electricity cost** on the Electricity Rates tab and confirm. The same action is on the dashboard **Electricity cost missing** card and on the sessions list filtered to sessions without an electricity cost.
+
+- Each billed session of the site that delivered energy and has no electricity cost gets one from the site's current rate periods, at the period in force when that session ended in the site's timezone, the same way as at session end.
+- Existing costs never change. Sessions billed in another currency and sessions of other sites are left alone. Running it again changes nothing.
+- Sessions whose end time matches no period keep no cost. The message shown after the run says how many remain.
+- Each run that adds costs is recorded in the site's **History** tab with the number of sessions without a cost before and after.
+- The action needs permission to edit sites.
 
 ![Site without electricity rates](https://www.evtivity.com/screenshots/csms/site-electricity-notice.png)
 
