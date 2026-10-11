@@ -41,6 +41,7 @@ The official MCP TypeScript client (`@modelcontextprotocol/client` 2.3.1) is tes
 2. In **Settings > API Keys**, create an API key with these permissions:
    - `aiMcp:read` to use the MCP server and its read tools.
    - `aiMcp:write` and `stations:read` to propose changes. Without them, the client sees no write tools.
+   - `aiProposals:read` for a client that polls `get_ai_proposal` for the result of a change. Without it, the poll answers 403.
    - The permissions of the data the client should read, such as `stations:read` and `sessions:read`.
 3. Configure your MCP client with the endpoint URL and the header `Authorization: Bearer <API key>`. The format of the client configuration depends on the client.
 
@@ -106,7 +107,7 @@ Other clients receive a normal result:
 { "status": "pending_approval", "proposalId": "...", "approveIn": "...", "expiresAt": "..." }
 ```
 
-The client then polls the `get_ai_proposal` tool (in the `ai-proposals` toolset) until the proposal is decided.
+The client then polls the `get_ai_proposal` tool (in the `ai-proposals` toolset) until the proposal is decided. The key needs `aiProposals:read` for this tool.
 
 ## Limits
 
