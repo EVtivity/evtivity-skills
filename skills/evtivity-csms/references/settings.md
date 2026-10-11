@@ -631,7 +631,7 @@ The consent notice drivers see before they choose is built in and cannot be edit
 
 ### Automatic Insights
 
-This tab holds two cards. The **Automatic Insights and Workers** card sets the model for automatic insights and background workers. They run without a user and use the company provider key, never a personal configuration.
+This tab holds three cards. The **Automatic Insights and Workers** card sets the model for automatic insights and background workers. They run without a user and use the company provider key, never a personal configuration.
 
 - **Turn on system-initiated AI** - off by default (`opsAi.enabled`). Automatic insights and background workers run only while it is on. The card warns: "When this is on, station, session and token status data is sent to the configured provider without a user action."
 - **Provider** (`opsAi.provider`, default Anthropic), **Model (optional)** (`opsAi.model`; blank uses the provider's lowest-cost model), **Effort** (`opsAi.effort`, default Low), and **System prompt (optional)** under **Advanced Options** (`opsAi.systemPrompt`; blank uses the built-in prompt).
@@ -654,6 +654,8 @@ The **Automatic Insights** card holds the insight settings. See [Automatic Insig
 **Reservation insights** shows only while reservations are on. While they are off, the card shows **Reservation insights are off while reservations are turned off.** with a **Turn on reservations** link to [Reservation](#reservation).
 
 Each site also has its own **Automatic Insights** switch on its **AI** tab (see [Sites](https://www.evtivity.com/docs/csms/sites#ai)).
+
+The **Insight Quality** card shows how users rated insights in your sites over the last 30 days. It lists each insight type that has a vote, with the **Helpful** and **Wrong** vote counts and the **Helpful Rate**. With no votes, it shows "No votes in the last 30 days." When an insight has a **Wrong** vote, the **View Insights Marked Wrong** link opens the AI Insights list filtered to them. The card needs the `aiInsights:read` permission. See [Feedback](https://www.evtivity.com/docs/csms/ai-insights#feedback).
 
 ![Automatic insights tab](https://www.evtivity.com/screenshots/csms/settings-ai-insights.png)
 

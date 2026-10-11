@@ -140,7 +140,7 @@ The header of the reservation page also has [Explain](https://www.evtivity.com/d
 
 ![AI Insights List](https://www.evtivity.com/screenshots/csms/ai-insights.png)
 
-The AI Insights list, `/ai/insights`, shows every insight of your sites, newest first. Filter by **Status**, **Type**, **Root cause**, and **Site**. The table has these columns: **Insight**, **Status**, **Root cause**, **Confidence**, **Station**, **Site**, and **Created**.
+The AI Insights list, `/ai/insights`, shows every insight of your sites, newest first. Filter by **Status**, **Type**, **Root cause**, **Site**, and **Feedback**. The **Feedback** filter shows **Any feedback**, **Marked wrong**, or **Marked helpful**: the insights at least one user marked that way. The table has these columns: **Insight**, **Status**, **Root cause**, **Confidence**, **Station**, **Site**, and **Created**.
 
 Click a row to open the insight page, `/ai/insights/<id>`. It shows:
 
@@ -153,7 +153,7 @@ Both pages need the `aiInsights:read` permission.
 ## History
 
 - **AI Insights list**: open it with **View all** on the dashboard card, or at `/ai/insights`. Use the **Status** filter to see active, resolved, dismissed, superseded, skipped, or failed insights, or **All statuses**.
-- **Insight page**: the **History** section lists who dismissed, regenerated, or rated the insight, and when.
+- **Insight page**: the **History** section lists who dismissed or regenerated the insight, who set, changed, or removed a vote, and when.
 - **Audit**: filter the Audit page by the **Automatic Insight** type.
 
 You see only the insights of your sites.
@@ -164,7 +164,23 @@ These actions need the `aiInsights:write` permission:
 
 - **Regenerate**: analyze again, for an insight that is out of date, resolved, skipped, or failed. EVtivity refuses it while another analysis of the same record is running (`AI_INSIGHT_COOLDOWN`), when insights are turned off (`AI_INSIGHTS_DISABLED`), or when a budget is used up.
 - **Dismiss**: hide an insight you do not need.
-- **Helpful** or **Wrong**: tell EVtivity whether the insight was right. Feedback and dismissals are recorded in the audit log.
+- **Helpful** or **Wrong**: tell EVtivity whether the insight was right (see [Feedback](#feedback)).
+
+Dismissals and vote changes are recorded in the audit log.
+
+### Feedback
+
+Each user has one vote per insight: **Helpful** or **Wrong**. The thumb you chose shows as pressed. Click another thumb to change your vote. Click the pressed thumb again to remove your vote: its tooltip reads **Remove your vote**. The vote buttons appear on active and resolved insights, not while an insight is analyzing, skipped, failed, or out of date.
+
+Every reader sees how many users found the insight helpful in the card footer, such as "3 found this helpful".
+
+When you click **Wrong**, the card opens a panel with **Marked wrong. Generate the insight again from fresh data, or dismiss it.** It holds:
+
+- **What is wrong? (optional)**: a note of up to 500 characters. Click **Save Note** to store it. The note is stored with your vote only.
+- **Regenerate**, unless the insight is dismissed.
+- **Dismiss**, while the insight is active.
+
+Votes and notes are never sent to an AI provider. They are not part of the insight prompts, and the AI assistant cannot read them. To see how insights rate over time, open the **Insight Quality** card in **Settings > AI > Automatic Insights** (see [Settings](https://www.evtivity.com/docs/csms/settings#automatic-insights)).
 
 ## Turn On Automatic Insights
 
