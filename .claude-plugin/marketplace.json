@@ -72,7 +72,7 @@
     },
     {
       "name": "evtivity-integrations",
-      "description": "Set up EVtivity payments: Stripe, Stripe Connect payouts, Adyen, the test payment provider, holds, captures, refunds, guest payments, currency, payment webhooks and energy management. Use to accept cards, refund a payment, test payments without money, or debug a failed payment or webhook. Not for tariffs and prices (evtivity-csms).",
+      "description": "Set up EVtivity payments and integrations: Stripe, Stripe Connect, Adyen, the test payment provider, holds, refunds, guest payments, currency, payment webhooks, energy management, the MCP server for AI agents. Use to accept cards, refund, test payments, connect an AI agent, or debug a failed payment. Not for tariffs and prices (evtivity-csms).",
       "source": "./",
       "strict": false,
       "skills": [
