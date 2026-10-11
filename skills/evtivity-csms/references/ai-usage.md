@@ -1,0 +1,93 @@
+Generated from https://www.evtivity.com/docs/csms/ai-usage. Do not edit.
+
+# AI Usage and Budgets
+
+See how many AI tokens your company, sites, and users use, and set daily and monthly token budgets.
+
+## Overview
+
+EVtivity records the tokens of every AI request: assistant answers, support drafts, automatic insights, their translations, and background workers. Token budgets per company, per site, and per user stop AI requests once a budget is used up.
+
+Budgets count tokens, not money, so they work the same with every provider. A request's tokens are its input tokens plus its output tokens.
+
+## Budgets
+
+Set the budgets in **Settings > AI > AI limits**. 0 means no limit.
+
+| Budget | Setting | Default | Counts |
+|--------|---------|---------|--------|
+| **Company tokens per month** | `ai.budget.companyMonthlyTokens` | 0 | Every AI request |
+| **Tokens per site per month** | `ai.budget.siteMonthlyTokens` | 0 | Requests charged to the site |
+| **Tokens per site per day (insights and workers)** | `ai.budget.siteDailyTokens` | 300,000 | Automatic insights and background workers of the site |
+| **Tokens per user per day** | `ai.budget.userDailyTokens` | 2,000,000 | The user's assistant and support draft requests |
+| **Warn at (% of a budget)** | `ai.budget.warnPercent` | 80 | When to warn about the company and site monthly budgets |
+
+- Daily budgets run from midnight to midnight UTC.
+- Monthly budgets run for the calendar month in the system timezone.
+- A site can have its own monthly budget. See [Site Budget](#site-budget).
+
+EVtivity checks the budgets before each AI request. A request that is already running finishes, so usage can go slightly over a budget.
+
+### Which Requests Count Where
+
+| Request | Charged to |
+|---------|-----------|
+| Assistant and [Explain](https://www.evtivity.com/docs/csms/ai-assistant#explain) | The company and the user, no site |
+| Support case AI draft | The company, the user, and the site of the case's station |
+| Automatic insights and their translations | The company and the site |
+| Background workers | The company and the site |
+| MCP server | Nothing. MCP clients bring their own AI model |
+
+### When a Budget Is Used Up
+
+- The assistant and support drafts show an error: `AI_BUDGET_EXCEEDED` for the user's daily budget, `AI_MONTHLY_BUDGET_EXCEEDED` for a company or site monthly budget.
+- Automatic insights are stored with their rule-based fields only, without an AI-written summary.
+- Background workers store their findings and proposals without the AI-written text.
+
+## Usage Tab
+
+Open **Settings > AI** and select the **Usage** tab. It needs the `aiUsage:read` permission and access to every site.
+
+![AI usage tab](https://www.evtivity.com/screenshots/csms/settings-ai-usage.png)
+
+- **Month**: the month to show. The **Period** shows its start and end.
+- **Company**: the company's tokens this month against its budget.
+- **Sites**: tokens per site against each site's budget.
+- **Assistant (not site-specific)**: assistant and Explain tokens, which belong to no site.
+- **By surface**: tokens per surface (Assistant, Support drafts, Insights, Insight translations, Background workers), split into input, cached input, cache writes, output, and reasoning tokens.
+- **Top users**: the users with the most tokens this month.
+
+The tab shows a banner for each monthly budget at or past the warning percent. When the company or a site passes the warning percent or uses up its monthly budget, the assistant panel also shows a notice, once per budget and month.
+
+### Cost
+
+The tab shows the cost of the tokens only when the company currency is US dollars, because AI providers price in US dollars. In any other currency it shows tokens only.
+
+## Site Budget
+
+The **AI usage** card on a site's **Details** tab shows the site's tokens this month against its budget.
+
+![Site AI usage card](https://www.evtivity.com/screenshots/csms/site-ai-card.png)
+
+Users with access to every site and the `sites:write` permission can also change:
+
+- **Monthly token budget**: leave it empty to use **Tokens per site per month**. 0 means no limit.
+- **Automatic insights**: turn off to stop [automatic insights](https://www.evtivity.com/docs/csms/ai-insights) for this site.
+
+## Your Own Usage
+
+The footer of the assistant panel shows your tokens today against your daily budget, for example "Today: 12,400 of 2,000,000 tokens".
+
+## Permissions
+
+| Permission | Allows |
+|------------|--------|
+| `aiUsage:read` | See company and site usage. A user limited to some sites sees only those sites, with no company totals, no assistant row, and no top users. |
+| `aiAssistant:read` | See your own usage in the panel footer |
+
+By default, operators have `aiUsage:read`.
+
+## Notes
+
+- The API returns usage at `GET /v1/ai/usage`, `GET /v1/ai/usage/sites/{siteId}`, and `GET /v1/users/me/ai-usage`.
+- See the [error codes](https://www.evtivity.com/api-reference/error-codes) for every budget error.

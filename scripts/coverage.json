@@ -17,6 +17,10 @@
   "evtivity-csms": [
     "csms/access-logs",
     "csms/ai-assistant",
+    "csms/ai-inbox",
+    "csms/ai-insights",
+    "csms/ai-usage",
+    "csms/ai-workers",
     "csms/certificates",
     "csms/conformance-testing",
     "csms/dashboard",
@@ -81,6 +85,7 @@
   "evtivity-integrations": [
     "integrations/adyen",
     "integrations/energy-management",
+    "integrations/mcp-server",
     "integrations/payment-providers",
     "integrations/stripe",
     "integrations/test-payment-provider",

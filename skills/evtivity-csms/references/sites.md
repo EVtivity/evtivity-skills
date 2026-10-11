@@ -34,6 +34,8 @@ Edit the site's name, address, coordinates, contact information, and hours of op
 
 Contact information has a **Make contact info public** toggle. When off (the default) the contact name, email, and phone are visible only to operators and never to drivers. When on, the same three fields appear on the driver portal's charger and location detail pages, and the operator name is published to OCPI roaming partners. The toggle change is captured in the site audit log so a later compliance query can find when each site started or stopped publishing contact details.
 
+The **AI usage** card shows the site's AI tokens this month against its budget. Users with access to every site can set the site's **Monthly token budget** and turn its **Automatic insights** off. See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage#site-budget).
+
 ### Metrics
 
 Site performance metrics including total stations, uptime percentage, utilization, total sessions, and energy delivered, plus **Total Revenue (incl. tax)**, **Revenue (excl. tax)**, **Tax Collected**, electricity cost, and **Profit** (revenue excluding tax minus electricity cost). Revenue follows the [dashboard definition](https://www.evtivity.com/docs/csms/dashboard): final costs of ended sessions and reservation fees charged at the site, minus refunds.

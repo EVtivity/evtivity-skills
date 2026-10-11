@@ -543,7 +543,7 @@ Embeds the Smart Charging Templates page. Create charging profile templates with
 
 **Permission:** `settings.ai:read` / `settings.ai:write`
 
-Configures the [AI assistant](https://www.evtivity.com/docs/csms/ai-assistant) and the support case AI draft. The tab has four sections, each with its own **Save** button.
+Configures the [AI assistant](https://www.evtivity.com/docs/csms/ai-assistant), the support case AI draft, [automatic insights](https://www.evtivity.com/docs/csms/ai-insights), [background AI workers](https://www.evtivity.com/docs/csms/ai-workers), and the [MCP server](https://www.evtivity.com/docs/integrations/mcp-server). The tab has two sub-tabs: **Configuration**, with eight sections that each have their own **Save** button, and **Usage** (see [Usage](#usage)).
 
 The conversation text, the data the AI tools read (with secrets removed), and attached files are sent to the selected AI provider. This data leaves your deployment. Check the provider's data retention terms before you turn on either surface.
 
@@ -587,9 +587,65 @@ Drafts replies to support cases for the operator to review.
 
 Users can override the provider, key, model, effort, and system prompt for themselves on the **Chatbot AI** and **Support AI** tabs of their **Profile**. The switches on this tab still apply to them.
 
+### Automatic insights and workers
+
+The model for automatic insights and background workers. They run without a user and use the company provider key, never a personal configuration.
+
+- **Turn on system-initiated AI** - off by default (`opsAi.enabled`). Automatic insights and background workers run only while it is on. When it is on, station, session, and token status data is sent to the selected provider without a user action.
+- **Provider** (`opsAi.provider`, default Anthropic), **Model (optional)** (`opsAi.model`; blank uses the provider's lowest-cost model), **Effort** (`opsAi.effort`, default Low), and **System prompt (optional)** (`opsAi.systemPrompt`; blank uses the built-in prompt).
+
+![Automatic insights and workers settings](https://www.evtivity.com/screenshots/csms/settings-ai-ops.png)
+
+### Automatic insights
+
+See [Automatic Insights](https://www.evtivity.com/docs/csms/ai-insights).
+
+| Field | Setting key | Default | Range |
+|-------|-------------|---------|-------|
+| **Station insights** | `aiInsights.station.enabled` | On | |
+| **Session insights** | `aiInsights.session.enabled` | On | |
+| **Authorization insights** | `aiInsights.authorization.enabled` | On | |
+| **Summary language** | `aiInsights.primaryLanguage` | English | en, de, es, ko, zh, zh-TW |
+| **Wait before analyzing (seconds)** | `aiInsights.debounceSeconds` | 120 | 0 to 3,600 |
+| **Cooldown per station, session or token (minutes)** | `aiInsights.cooldownMinutes` | 60 | 1 to 10,080 |
+| **Stations down at one site that make one site incident** | `aiInsights.siteIncidentThreshold` | 3 | 2 to 1,000 |
+| **Insights per site per day** | `aiInsights.maxPerSitePerDay` | 50 | 1 to 10,000 |
+| **Keep insights (days)** | `aiInsights.retentionDays` | 90 | 1 to 3,650 |
+
+Each site also has its own **Automatic insights** switch on its **Details** tab.
+
+### Background AI workers
+
+See [Background AI Workers](https://www.evtivity.com/docs/csms/ai-workers). Every job is off by default.
+
+| Field | Setting key | Default | Range |
+|-------|-------------|---------|-------|
+| **Nightly network summary** | `aiWorkers.networkSummary.enabled` | Off | |
+| **Stuck sessions** | `aiWorkers.stuckSessions.enabled` | Off | |
+| **Write the rationale with AI** | `aiWorkers.stuckSessions.useModel` | Off | |
+| **Tariff anomalies** | `aiWorkers.tariffAnomalies.enabled` | Off | |
+| **Idle time before a session counts as stuck (minutes)** | `aiWorkers.stuckSessions.idleMinutes` | 90 | 15 to 1,440 |
+| **Proposal lifetime (hours)** | `aiWorkers.proposalTtlHours` | 24 | 1 to 168 |
+
+![Background AI workers settings](https://www.evtivity.com/screenshots/csms/settings-ai-workers.png)
+
+### MCP server
+
+See [MCP Server](https://www.evtivity.com/docs/integrations/mcp-server). The section also shows the endpoint URL and the default toolsets.
+
+| Field | Setting key | Default | Range |
+|-------|-------------|---------|-------|
+| **Turn on the MCP server** | `ai.mcp.enabled` | Off | |
+| **Calls per API key per minute** | `ai.mcp.rateLimitPerMinute` | 60 | 1 to 10,000 |
+| **Calls per API key per day** | `ai.mcp.dailyCallsPerKey` | 5,000 | 1 to 10,000,000 |
+| **Time to approve an MCP change (minutes)** | `ai.mcp.proposalTtlMinutes` | 30 | 5 to 1,440 |
+| **Allowed origins** | `ai.mcp.allowedOrigins` | Empty | Up to 50 http or https origins without a path, one per line |
+
+![MCP server settings](https://www.evtivity.com/screenshots/csms/settings-ai-mcp.png)
+
 ### AI limits
 
-These apply to both surfaces and every provider.
+These apply to every AI feature and every provider.
 
 | Field | Setting key | Default | Range |
 |-------|-------------|---------|-------|
@@ -600,10 +656,20 @@ These apply to both surfaces and every provider.
 | **Keep conversations for (days)** | `ai.conversationRetentionDays` | 30 | 1 to 3,650 |
 | **Maximum attachment size (bytes)** | `ai.attachments.maxBytes` | 10,485,760 (10 MB) | 1 to 33,554,432 (32 MB) |
 | **Attachments per message** | `ai.attachments.maxPerMessage` | 5 | 1 to 20 |
+| **Company tokens per month** | `ai.budget.companyMonthlyTokens` | 0 | 0 to 1,000,000,000,000 (0 means no limit) |
+| **Tokens per site per month** | `ai.budget.siteMonthlyTokens` | 0 | 0 to 1,000,000,000,000 (0 means no limit) |
+| **Tokens per site per day (insights and workers)** | `ai.budget.siteDailyTokens` | 300,000 | 0 to 10,000,000,000 (0 means no limit) |
+| **Warn at (% of a budget)** | `ai.budget.warnPercent` | 80 | 1 to 100 |
 
 ![AI limits](https://www.evtivity.com/screenshots/csms/settings-ai-limits.png)
 
 The maximum attachment size also applies to [support case](https://www.evtivity.com/docs/csms/support-cases) attachments.
+
+Token budgets count input plus output tokens. Daily budgets run on UTC days, monthly budgets on calendar months in the system timezone. See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage).
+
+### Usage
+
+The **Usage** sub-tab shows the AI tokens of the company, each site, each surface, and the top users for a month. It needs the `aiUsage:read` permission and access to every site. See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage#usage-tab).
 
 ## Conformance
 

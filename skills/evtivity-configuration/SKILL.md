@@ -42,6 +42,8 @@ This skill tells you where a setting lives and how to change it safely. The webs
 | Stations on TLS (profiles 2 and 3) | `OCPP_TLS_PORT`, `OCPP_TLS_CERT`, `OCPP_TLS_KEY`, `OCPP_TLS_CA` (or the `*_PEM` variants), `OCPP_STATION_TLS_URL` on the API | `references/ocpp-settings.md` |
 | Run several OCPP servers | `OCPP_INSTANCE_ID` per instance | `references/ocpp-settings.md` |
 | Open or approval-based station onboarding | `REGISTRATION_POLICY` at first install, later in the dashboard | `references/environment-variables.md` |
+| Turn on automatic insights, AI workers or the MCP server | Settings > AI in the dashboard: `opsAi.enabled`, `aiInsights.*`, `aiWorkers.*`, `ai.mcp.*` (all AI features off by default) | evtivity-csms skill, Settings page |
+| Cap AI token use | `ai.budget.companyMonthlyTokens`, `ai.budget.siteMonthlyTokens`, `ai.budget.siteDailyTokens`, `ai.budget.userDailyTokens` (input plus output tokens, days in UTC, months in the system timezone) | evtivity-csms skill, AI usage page |
 | Allow the test payment provider | `PAYMENTS_ALLOW_SIMULATED=true` on API, OCPP and worker (never in production) | `references/environment-variables.md` |
 
 `references/environment-variables.md` is long: grep it for the variable, for example `grep -n 'OCPP_TLS' references/environment-variables.md`.

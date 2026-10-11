@@ -1,6 +1,6 @@
 ---
 name: evtivity-integrations
-description: "Set up EVtivity payments: Stripe, Stripe Connect payouts, Adyen, the test payment provider, holds, captures, refunds, guest payments, currency, payment webhooks and energy management. Use to accept cards, refund a payment, test payments without money, or debug a failed payment or webhook. Not for tariffs and prices (evtivity-csms)."
+description: "Set up EVtivity payments and integrations: Stripe, Stripe Connect, Adyen, the test payment provider, holds, refunds, guest payments, currency, payment webhooks, energy management, the MCP server for AI agents. Use to accept cards, refund, test payments, connect an AI agent, or debug a failed payment. Not for tariffs and prices (evtivity-csms)."
 license: MIT
 compatibility: Needs a running EVtivity CSMS (v0.1.38 or later for Adyen and the provider-neutral payment API). API examples use curl and jq. Stripe or Adyen setup needs an account with that provider. Provider webhooks need a public HTTPS URL for the API.
 metadata:
@@ -187,7 +187,21 @@ curl -s -X POST "$EVTIVITY_API/v1/sessions/$SESSION_ID/refund" -H "Authorization
 
 Confirm: `GET /v1/sites/$SITE_ID/load-management` and `/load-management/history`.
 
-### 11. Troubleshoot a payment failure
+### 11. MCP server for AI agents (`references/mcp-server.md`)
+
+Connects an MCP client (an AI agent with its own model) to EVtivity. Off by default.
+
+1. Confirm with the user, then turn on **Turn on the MCP server** in Settings > AI > MCP server.
+2. Create an API key with `aiMcp:read` plus the read permissions the agent needs. Add `aiMcp:write` and `stations:read` only when the agent may propose OCPP commands.
+3. Point the client at the endpoint the MCP server section shows, with `Authorization: Bearer <key>`. Pick toolsets with `?toolsets=`.
+
+Rules that trip agents:
+
+- Writes never run over MCP. They become proposals that the key's own user confirms in the CSMS AI Inbox. Clients without URL elicitation get `pending_approval` and poll `get_ai_proposal`.
+- A browser `Origin` must be in **Allowed origins**, else 403. An API key never confirms (`AI_CONFIRMATION_REQUIRES_SESSION`).
+- Over the per-key limits: 429 with `AI_MCP_RATE_LIMITED` and `Retry-After`.
+
+### 12. Troubleshoot a payment failure
 
 ```bash
 curl -s "$EVTIVITY_API/v1/settings/payments" -H "Authorization: Bearer $EVTIVITY_TOKEN" | jq '{provider, providers}'
@@ -220,3 +234,4 @@ Generated from the website docs. Never edit them. The first line of each file is
 - `references/test-payment-provider.md`: simulated provider, test cards, sync and async modes.
 - `references/webhooks.md`: incoming payment webhooks, outgoing OCPP event webhooks, SSE streams.
 - `references/energy-management.md`: load management, smart charging profiles, carbon tracking.
+- `references/mcp-server.md`: MCP endpoint, API key permissions, toolsets, proposals and approval, limits.
