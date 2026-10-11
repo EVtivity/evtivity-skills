@@ -125,7 +125,7 @@ Charge on account lets the drivers of a fleet charge without a card. Their sessi
 ### Turn It On
 
 1. Open the fleet and select the **Billing** tab.
-2. Click the **Charge on account** switch.
+2. Click the **Charge on Account** switch.
 3. Confirm the change.
 
 Each affected driver receives a notification. Turning the switch off works the same way. New sessions are then paid by card. Running sessions keep how they started. Sessions not billed yet stay billed to the fleet.

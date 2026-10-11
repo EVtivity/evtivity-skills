@@ -191,9 +191,9 @@ Confirm: `GET /v1/sites/$SITE_ID/load-management` and `/load-management/history`
 
 Connects an MCP client (an AI agent with its own model) to EVtivity. Off by default.
 
-1. Confirm with the user, then turn on **Turn on the MCP server** in Settings > AI > MCP server.
+1. Confirm with the user, then turn on **Turn on the MCP server** in Settings > AI > MCP.
 2. Create an API key with `aiMcp:read` plus the read permissions the agent needs. Add `aiMcp:write` and `stations:read` only when the agent may propose OCPP commands.
-3. Point the client at the endpoint the MCP server section shows, with `Authorization: Bearer <key>`. Pick toolsets with `?toolsets=`.
+3. Point the client at the endpoint the MCP tab shows, with `Authorization: Bearer <key>`. Pick toolsets with `?toolsets=`.
 
 Rules that trip agents:
 

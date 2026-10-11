@@ -543,13 +543,21 @@ Embeds the Smart Charging Templates page. Create charging profile templates with
 
 **Permission:** `settings.ai:read` / `settings.ai:write`
 
-Configures the [AI assistant](https://www.evtivity.com/docs/csms/ai-assistant), the support case AI draft, [automatic insights](https://www.evtivity.com/docs/csms/ai-insights), [background AI workers](https://www.evtivity.com/docs/csms/ai-workers), and the [MCP server](https://www.evtivity.com/docs/integrations/mcp-server). The tab has two sub-tabs: **Configuration**, with eight sections that each have their own **Save** button, and **Usage** (see [Usage](#usage)).
+Configures the [AI assistant](https://www.evtivity.com/docs/csms/ai-assistant), the support case AI draft, driver support, [automatic insights](https://www.evtivity.com/docs/csms/ai-insights), [background AI workers](https://www.evtivity.com/docs/csms/ai-workers), and the [MCP server](https://www.evtivity.com/docs/integrations/mcp-server). The tab has eight tabs, one per function, in this order: **Providers and Keys**, **Assistant**, **Support Drafts**, **Driver Support**, **Automatic Insights**, **Background Workers**, **MCP**, and **Usage and Limits**.
 
-The conversation text, the data the AI tools read (with secrets removed), and attached files are sent to the selected AI provider. This data leaves your deployment. Check the provider's data retention terms before you turn on either surface.
+Each tab has its own link: `/settings?tab=ai&sub=<id>`, where `<id>` is `providers`, `assistant`, `support`, `driver`, `insights`, `workers`, `mcp`, or `usage`. An unknown id opens **Providers and Keys**. Each tab starts with a short description of what it does. Each card has its own **Save** button. Rarely used options, such as base URLs, system prompts, and MCP origins, sit under **Advanced Options**. Unsaved changes stay when you switch to another tab.
 
-### AI providers
+**Providers and Keys** and every feature tab, from **Assistant** to **MCP**, show this note:
 
-One API key per provider. The AI assistant and support AI each pick one of these providers.
+> **Note:**
+>
+> **What the AI Provider Receives**
+>
+> The AI provider never receives stored credentials, such as passwords, API keys, secrets and station passwords. Card numbers and IBANs are cut to their last 4 characters. Support drafts, automatic insights, background workers and driver support also mask email addresses and phone numbers, and hash or shorten driver token ids. The assistant sends driver contact details as stored, only to users allowed to read them. Text you type and text files you attach are checked for keys and card numbers. Images and PDFs you attach are sent as they are.
+
+### Providers and keys
+
+One API key per provider. Every AI feature uses these keys: each feature tab picks one of these providers.
 
 | Provider | Default model |
 |----------|---------------|
@@ -561,50 +569,81 @@ One API key per provider. The AI assistant and support AI each pick one of these
 For each provider:
 
 - **API key** - the provider API key, stored encrypted (`ai.<provider>.apiKeyEnc`, for example `ai.anthropic.apiKeyEnc`).
-- **Base URL (optional)** - leave blank for the official endpoint. A custom URL must use https and point to a public host (`ai.<provider>.baseUrl`).
+- **Base URL (optional)** - under **Advanced Options**. Leave it blank for the official endpoint (**Default endpoint**). A custom URL must use https and point to a public host (`ai.<provider>.baseUrl`).
 
-![AI providers](https://www.evtivity.com/screenshots/csms/settings-ai-providers.png)
+The tab warns: "Messages, tool results and attachments are sent to the selected provider and leave this deployment. Check the provider's data retention terms."
 
-### AI assistant
+![Providers and keys tab](https://www.evtivity.com/screenshots/csms/settings-ai-providers.png)
 
-The chat panel operators open with the AI button or Ctrl+K.
+### Assistant
 
-- **Enable the AI assistant** - turns the assistant on or off for everyone (`chatbotAi.enabled`). When off, the AI button is hidden and every assistant request is refused, including requests that use a personal configuration.
-- **Provider** - one of the providers above (`chatbotAi.provider`). A provider without an API key cannot answer.
+The **AI Assistant** card configures the chat panel operators open with the AI button or Ctrl+K.
+
+- **Enable the AI assistant** - off by default (`chatbotAi.enabled`). Turns the assistant on or off for everyone. When off, the AI button is hidden and every assistant request is refused, including requests that use a personal configuration.
+- **Provider** - one of the providers above (`chatbotAi.provider`, default Anthropic). A provider without an API key cannot answer, and the field shows **This provider has no API key yet.**
 - **Model (optional)** - pick one of the known models of the selected provider. The provider's default model is marked **(default)** and is used when the field is blank (`chatbotAi.model`). Choose **Custom model id** to enter a model the list does not have yet. **Where to find model ids** opens the provider's models page. Switching the provider resets a listed model to the new provider's default and keeps a custom id.
 - **Effort** - Low, Medium (default), or High (`chatbotAi.effort`). Higher effort gives more thorough answers and uses more tokens.
-- **System prompt (optional)** - the instructions for the model (`chatbotAi.systemPrompt`). Without a custom prompt, the field shows the built-in prompt for your language, marked **Default** and read-only. Click **Edit** to start a custom prompt from it, and **Reset to default** to go back to the built-in prompt. Saving the built-in prompt unchanged stores no copy, so later improvements to the default still apply. Security rules are always added to the prompt and cannot be changed or removed. Open **Show the rules that are always added** to read them.
+- **System prompt (optional)** - under **Advanced Options** (`chatbotAi.systemPrompt`). Without a custom prompt, the field shows the built-in prompt for your language, marked **Default** and read-only. Click **Edit** to start a custom prompt from it, and **Reset to default** to go back to the built-in prompt. Saving the built-in prompt unchanged stores no copy, so later improvements to the default still apply. Security rules are always added to the prompt and cannot be changed or removed. Open **Show the rules that are always added** to read them.
 
-![AI assistant settings](https://www.evtivity.com/screenshots/csms/settings-ai-assistant.png)
+![Assistant tab](https://www.evtivity.com/screenshots/csms/settings-ai-assistant.png)
 
-### Support AI
+### Support drafts
 
-Drafts replies to support cases for the operator to review.
+The **Support AI** card configures the drafts of replies to support cases, which an operator reviews before sending.
 
-- **Enable support AI** - turns the **AI Draft** button on or off (`supportAi.enabled`).
-- **Provider**, **Model (optional)**, **Effort**, and **System prompt (optional)** - as above (`supportAi.provider`, `supportAi.model`, `supportAi.effort`, `supportAi.systemPrompt`).
+- **Enable support AI** - turns the **AI Draft** button on or off (`supportAi.enabled`, on by default).
+- **Provider** - no provider is selected by default (`supportAi.provider`). Select one with an API key before the first draft.
+- **Model (optional)**, **Effort**, and **System prompt (optional)** - as on the **Assistant** tab (`supportAi.model`, `supportAi.effort` default Medium, `supportAi.systemPrompt`).
 - **Reply tone** - Professional (default), Friendly, or Formal (`supportAi.tone`).
 
-Users can override the provider, key, model, effort, and system prompt for themselves on the **Chatbot AI** and **Support AI** tabs of their **Profile**. The switches on this tab still apply to them.
+Users can override the provider, key, model, effort, and system prompt of the assistant and of support AI for themselves on the **Chatbot AI** and **Support AI** tabs of their **Profile**. The switches on these tabs still apply to them.
 
-### Automatic insights and workers
+![Support drafts tab](https://www.evtivity.com/screenshots/csms/settings-ai-support.png)
 
-The model for automatic insights and background workers. They run without a user and use the company provider key, never a personal configuration.
+### Driver support
 
-- **Turn on system-initiated AI** - off by default (`opsAi.enabled`). Automatic insights and background workers run only while it is on. When it is on, station, session, and token status data is sent to the selected provider without a user action.
-- **Provider** (`opsAi.provider`, default Anthropic), **Model (optional)** (`opsAi.model`; blank uses the provider's lowest-cost model), **Effort** (`opsAi.effort`, default Low), and **System prompt (optional)** (`opsAi.systemPrompt`; blank uses the built-in prompt).
+The **Driver Support** card configures the automatic first answer to a driver support request. The model answers only when the driver allows it, uses the company provider key, and has no tools. The portal and the mobile app offer the AI analysis only while the switch is on and the selected provider has an API key. See [Support Cases](https://www.evtivity.com/docs/csms/support-cases) for the operator view and [Support Cases](https://www.evtivity.com/docs/portal/support-cases) in the portal for the driver flow.
 
-![Automatic insights and workers settings](https://www.evtivity.com/screenshots/csms/settings-ai-ops.png)
+The card warns: "When this is on and a driver allows it, the request text and the driver's own sessions, payments, reservations, used stations and tokens (last 4 characters) are sent to the configured provider."
+
+| Field | Setting key | Default |
+|-------|-------------|---------|
+| **Offer AI analysis to drivers** | `driverAi.enabled` | Off |
+| **Provider** | `driverAi.provider` | Anthropic |
+| **Model (optional)** | `driverAi.model` | Blank: the provider's lowest-cost model |
+| **Effort** | `driverAi.effort` | Low |
+| **System prompt (optional)**, under **Advanced Options** | `driverAi.systemPrompt` | Blank: the built-in prompt |
+
+The **Driver Support Limits** card holds the limits per driver. Requests over a limit go straight to the support team.
+
+| Field | Setting key | Default | Range |
+|-------|-------------|---------|-------|
+| **AI-analyzed requests per driver per day** | `driverAi.maxCasesPerDriverPerDay` | 3 | 1 to 100 |
+| **Wait for the driver's feedback (hours)** | `driverAi.feedbackTimeoutHours` | 24 | 1 to 168 |
+| **Tokens per driver per day** | `ai.budget.driverDailyTokens` | 40,000 | 0 to 10,000,000,000 (0 means no limit) |
+| **AI requests per driver per minute** | `ai.rateLimit.driverPerMinute` | 2 | 1 to 1,000 |
+
+A request without feedback after the wait time goes to the support team.
+
+The consent notice drivers see before they choose is built in and cannot be edited. Have it reviewed against your privacy obligations before you turn driver support on.
+
+![Driver support tab](https://www.evtivity.com/screenshots/csms/settings-ai-driver.png)
 
 ### Automatic insights
 
-See [Automatic Insights](https://www.evtivity.com/docs/csms/ai-insights).
+This tab holds two cards. The **Automatic Insights and Workers** card sets the model for automatic insights and background workers. They run without a user and use the company provider key, never a personal configuration.
+
+- **Turn on system-initiated AI** - off by default (`opsAi.enabled`). Automatic insights and background workers run only while it is on. The card warns: "When this is on, station, session and token status data is sent to the configured provider without a user action."
+- **Provider** (`opsAi.provider`, default Anthropic), **Model (optional)** (`opsAi.model`; blank uses the provider's lowest-cost model), **Effort** (`opsAi.effort`, default Low), and **System prompt (optional)** under **Advanced Options** (`opsAi.systemPrompt`; blank uses the built-in prompt).
+
+The **Automatic Insights** card holds the insight settings. See [Automatic Insights](https://www.evtivity.com/docs/csms/ai-insights).
 
 | Field | Setting key | Default | Range |
 |-------|-------------|---------|-------|
 | **Station insights** | `aiInsights.station.enabled` | On | |
 | **Session insights** | `aiInsights.session.enabled` | On | |
 | **Authorization insights** | `aiInsights.authorization.enabled` | On | |
+| **Reservation insights** | `aiInsights.reservation.enabled` | On | |
 | **Summary language** | `aiInsights.primaryLanguage` | English | en, de, es, ko, zh, zh-TW |
 | **Wait before analyzing (seconds)** | `aiInsights.debounceSeconds` | 120 | 0 to 3,600 |
 | **Cooldown per station, session or token (minutes)** | `aiInsights.cooldownMinutes` | 60 | 1 to 10,080 |
@@ -612,26 +651,30 @@ See [Automatic Insights](https://www.evtivity.com/docs/csms/ai-insights).
 | **Insights per site per day** | `aiInsights.maxPerSitePerDay` | 50 | 1 to 10,000 |
 | **Keep insights (days)** | `aiInsights.retentionDays` | 90 | 1 to 3,650 |
 
-Each site also has its own **Automatic insights** switch on its **Details** tab.
+**Reservation insights** shows only while reservations are on. While they are off, the card shows **Reservation insights are off while reservations are turned off.** with a **Turn on reservations** link to [Reservation](#reservation).
 
-### Background AI workers
+Each site also has its own **Automatic Insights** switch on its **AI** tab (see [Sites](https://www.evtivity.com/docs/csms/sites#ai)).
 
-See [Background AI Workers](https://www.evtivity.com/docs/csms/ai-workers). Every job is off by default.
+![Automatic insights tab](https://www.evtivity.com/screenshots/csms/settings-ai-insights.png)
+
+### Background workers
+
+The **Background AI Workers** card holds the scheduled jobs. See [Background AI Workers](https://www.evtivity.com/docs/csms/ai-workers). Workers use the model of the **Automatic Insights** tab: the **Choose the model they use in Automatic insights** link opens it. Every job is off by default.
 
 | Field | Setting key | Default | Range |
 |-------|-------------|---------|-------|
-| **Nightly network summary** | `aiWorkers.networkSummary.enabled` | Off | |
-| **Stuck sessions** | `aiWorkers.stuckSessions.enabled` | Off | |
+| **Nightly Network Summary** | `aiWorkers.networkSummary.enabled` | Off | |
+| **Stuck Sessions** | `aiWorkers.stuckSessions.enabled` | Off | |
 | **Write the rationale with AI** | `aiWorkers.stuckSessions.useModel` | Off | |
-| **Tariff anomalies** | `aiWorkers.tariffAnomalies.enabled` | Off | |
+| **Tariff Anomalies** | `aiWorkers.tariffAnomalies.enabled` | Off | |
 | **Idle time before a session counts as stuck (minutes)** | `aiWorkers.stuckSessions.idleMinutes` | 90 | 15 to 1,440 |
 | **Proposal lifetime (hours)** | `aiWorkers.proposalTtlHours` | 24 | 1 to 168 |
 
-![Background AI workers settings](https://www.evtivity.com/screenshots/csms/settings-ai-workers.png)
+![Background workers tab](https://www.evtivity.com/screenshots/csms/settings-ai-workers.png)
 
-### MCP server
+### MCP
 
-See [MCP Server](https://www.evtivity.com/docs/integrations/mcp-server). The section also shows the endpoint URL and the default toolsets.
+The **MCP Server** card configures the server that lets external AI agents use EVtivity with an API key. See [MCP Server](https://www.evtivity.com/docs/integrations/mcp-server). The card also shows the **Endpoint** URL and the default tool categories.
 
 | Field | Setting key | Default | Range |
 |-------|-------------|---------|-------|
@@ -639,13 +682,13 @@ See [MCP Server](https://www.evtivity.com/docs/integrations/mcp-server). The sec
 | **Calls per API key per minute** | `ai.mcp.rateLimitPerMinute` | 60 | 1 to 10,000 |
 | **Calls per API key per day** | `ai.mcp.dailyCallsPerKey` | 5,000 | 1 to 10,000,000 |
 | **Time to approve an MCP change (minutes)** | `ai.mcp.proposalTtlMinutes` | 30 | 5 to 1,440 |
-| **Allowed origins** | `ai.mcp.allowedOrigins` | Empty | Up to 50 http or https origins without a path, one per line |
+| **Allowed origins**, under **Advanced Options** | `ai.mcp.allowedOrigins` | Empty | Up to 50 http or https origins without a path, one per line |
 
-![MCP server settings](https://www.evtivity.com/screenshots/csms/settings-ai-mcp.png)
+![MCP tab](https://www.evtivity.com/screenshots/csms/settings-ai-mcp.png)
 
-### AI limits
+### Usage and limits
 
-These apply to every AI feature and every provider.
+The **AI Limits** card holds the rate limits and token budgets of the assistant, support drafts, automatic insights, and background workers, for every provider. The driver limits are on the [Driver support](#driver-support) tab.
 
 | Field | Setting key | Default | Range |
 |-------|-------------|---------|-------|
@@ -661,15 +704,13 @@ These apply to every AI feature and every provider.
 | **Tokens per site per day (insights and workers)** | `ai.budget.siteDailyTokens` | 300,000 | 0 to 10,000,000,000 (0 means no limit) |
 | **Warn at (% of a budget)** | `ai.budget.warnPercent` | 80 | 1 to 100 |
 
-![AI limits](https://www.evtivity.com/screenshots/csms/settings-ai-limits.png)
-
 The maximum attachment size also applies to [support case](https://www.evtivity.com/docs/csms/support-cases) attachments.
 
-Token budgets count input plus output tokens. Daily budgets run on UTC days, monthly budgets on calendar months in the system timezone. See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage).
+Token budgets count input plus output tokens. Daily budgets run on UTC days, monthly budgets on calendar months in the system timezone.
 
-### Usage
+Below the limits, the tab shows the AI tokens of the company, each site, each surface, and the top users for a month. This part needs the `aiUsage:read` permission and access to every site. See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage#usage-and-limits-tab).
 
-The **Usage** sub-tab shows the AI tokens of the company, each site, each surface, and the top users for a month. It needs the `aiUsage:read` permission and access to every site. See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage#usage-tab).
+![Usage and limits tab](https://www.evtivity.com/screenshots/csms/settings-ai-usage.png)
 
 ## Conformance
 

@@ -12,6 +12,8 @@ This page is a growing FAQ for issues operators run into in the field. Each entr
 - [Connector status is stuck or stale](#stuck-status)
 - [Session starts but no power is delivered (SuspendedEV)](#suspended-ev-no-power)
 - [Session faulted with stopped reason EndRequestFailed](#session-end-failed)
+- [Drivers do not see the AI option on a new support case](#driver-ai-not-offered)
+- [A driver support case went straight to the support team](#driver-ai-skipped)
 
 ## Phantom or stuck charging session won't end
 
@@ -39,11 +41,11 @@ If the station never sends one of these, the session record stays `active` in th
 - A simulator or test fixture was killed before it sent the stop event.
 - The station was rebooted while a session was still active.
 
-The active session record blocks new starts on the same EVSE -- the `EVSE_IN_USE` guard refuses a second start until the first session is closed.
+The active session record blocks new starts on the same EVSE - the `EVSE_IN_USE` guard refuses a second start until the first session is closed.
 
 ### Fix
 
-On the station's **Connectors** tab, click the red **Stop active session** icon (square in a circle) on the EVSE row. Confirm the prompt. The CSMS dispatches an OCPP `RequestStopTransaction` to the station for that transaction. When the station acknowledges, it sends back the missing end event and the session is closed normally -- final cost, energy, and duration are computed the same way as a driver-initiated stop.
+On the station's **Connectors** tab, click the red **Stop active session** icon (square in a circle) on the EVSE row. Confirm the prompt. The CSMS dispatches an OCPP `RequestStopTransaction` to the station for that transaction. When the station acknowledges, it sends back the missing end event and the session is closed normally - final cost, energy, and duration are computed the same way as a driver-initiated stop.
 
 The button is enabled only when the CSMS has an active session recorded for that EVSE. If the EVSE is free, there's nothing to stop.
 
@@ -51,7 +53,7 @@ The button is enabled only when the CSMS has an active session recorded for that
 
 - **Station offline.** `RequestStopTransaction` only reaches connected stations. The session stays active until the station comes back. Bring it online first; in most cases it catches up and emits the missing end event on reconnect.
 - **Station rejected the stop.** Some firmware refuses `RequestStopTransaction` if it has already cleared its own transaction state. When the station answers `Rejected` with reason `TxNotFound`, the CSMS ends the session the normal way (completed at its last metered energy, with final cost and receipt). Any other rejection leaves the session active, and the dashboard still shows **Stop request sent**: check the station's OCPP message log for the reply. Power-cycle the station; on reconnect it usually emits a fresh `StatusNotification` and the missing end event.
-- **No active session on this EVSE.** The button reports `No active session on this EVSE`. The session you're seeing might belong to a different EVSE on the same station -- check the Sessions tab and locate the EVSE the session was started on.
+- **No active session on this EVSE.** The button reports `No active session on this EVSE`. The session you're seeing might belong to a different EVSE on the same station - check the Sessions tab and locate the EVSE the session was started on.
 
 ## Connector status is stuck or stale
 
@@ -70,7 +72,7 @@ The connector badge on the dashboard reads `connectors.status` in the database. 
 - `StatusNotification` (the canonical path)
 - `TransactionEvent` with a `chargingState` value (OCPP 2.1 enrichment)
 
-If the station never sends a follow-up `StatusNotification` after a state change -- common with some firmware after a remote stop, after a network blip, or on certain OCPP 2.1 stations that bundle the post-stop state into `TransactionEvent` only -- the badge stays at whatever it was last set to until the next status report arrives.
+If the station never sends a follow-up `StatusNotification` after a state change - common with some firmware after a remote stop, after a network blip, or on certain OCPP 2.1 stations that bundle the post-stop state into `TransactionEvent` only - the badge stays at whatever it was last set to until the next status report arrives.
 
 ### Fix
 
@@ -78,21 +80,21 @@ Click the **Refresh connector status** icon (circular arrow) on the EVSE row in 
 
 The CSMS picks the right `requestedMessage` based on protocol and whether a transaction is active, because OCPP 2.1 splits the state across two channels:
 
-- **OCPP 1.6** -- always `TriggerMessage(StatusNotification)`. 1.6 statuses are already fine-grained (`Charging`, `Preparing`, `Finishing`, `SuspendedEV`, `SuspendedEVSE`), so a single StatusNotification gives the accurate state.
-- **OCPP 2.1, active session** -- `TriggerMessage(TransactionEvent)`. The 2.1 `StatusNotification` only carries the coarse connector-level value (`Occupied`); the fine-grained `chargingState` (`Charging`, `EVConnected`, `SuspendedEV`, etc.) lives on `TransactionEvent`. Triggering a fresh `TransactionEvent` returns the current `chargingState`, which the projection writes to `connectors.status`.
-- **OCPP 2.1, no active session** -- `TriggerMessage(StatusNotification)`. There's no transaction to refresh, so the connector-level value is all the station has.
+- **OCPP 1.6** - always `TriggerMessage(StatusNotification)`. 1.6 statuses are already fine-grained (`Charging`, `Preparing`, `Finishing`, `SuspendedEV`, `SuspendedEVSE`), so a single StatusNotification gives the accurate state.
+- **OCPP 2.1, active session** - `TriggerMessage(TransactionEvent)`. The 2.1 `StatusNotification` only carries the coarse connector-level value (`Occupied`); the fine-grained `chargingState` (`Charging`, `EVConnected`, `SuspendedEV`, etc.) lives on `TransactionEvent`. Triggering a fresh `TransactionEvent` returns the current `chargingState`, which the projection writes to `connectors.status`.
+- **OCPP 2.1, no active session** - `TriggerMessage(StatusNotification)`. There's no transaction to refresh, so the connector-level value is all the station has.
 
 The result lands in the same projection path as a spontaneous status update, so the dashboard refreshes the same way it would if the station had reported on its own.
 
 ### Even if the badge is wrong, two drivers cannot start on the same connector
 
-The CSMS enforces a server-side guard: starting a session is refused with `409 EVSE_IN_USE` whenever an active session already exists on that EVSE, regardless of what the connector badge currently says. So if the badge is briefly stale, a second driver attempting to start will still be rejected -- the door stays closed.
+The CSMS enforces a server-side guard: starting a session is refused with `409 EVSE_IN_USE` whenever an active session already exists on that EVSE, regardless of what the connector badge currently says. So if the badge is briefly stale, a second driver attempting to start will still be rejected - the door stays closed.
 
 ### If it doesn't work
 
 - **Station offline.** The button is disabled when the station isn't connected. Get the station back online first; the badge will refresh automatically once it sends its first status report after reconnect.
 - **Station rejected the trigger** (rare). Some firmware advertises `NotImplemented` for `TriggerMessage`. The badge then keeps the cached value. Power-cycle the station or wait for the next spontaneous report.
-- **Status truly hasn't changed yet** -- the station's actual state is what the badge says. Check the OCPP message log on the station detail page for recent inbound `StatusNotification` and `TransactionEvent` entries.
+- **Status truly hasn't changed yet** - the station's actual state is what the badge says. Check the OCPP message log on the station detail page for recent inbound `StatusNotification` and `TransactionEvent` entries.
 
 ## Session starts but no power is delivered (SuspendedEV)
 
@@ -142,7 +144,7 @@ Bill the session from the session detail page:
 
 1. Open the session from the Sessions page.
 2. On the **Details** tab, click **Bill session** in the **Billing** card.
-3. Confirm in the **Bill this session?** dialog.
+3. Confirm in the **Bill This Session?** dialog.
 
 The CSMS recomputes the cost from the tariff up to the last meter value of the session. It then debits the balance of a prepaid token, or charges the driver's default saved card without the driver present. The session becomes completed and the driver receives a session receipt. See [Billing a Session the CSMS Could Not End](https://www.evtivity.com/docs/csms/sessions#billing-a-session-the-csms-could-not-end).
 
@@ -151,3 +153,63 @@ The CSMS recomputes the cost from the tariff up to the last meter value of the s
 - **The card cannot be charged.** When the card is declined or needs 3D Secure, the driver has no saved card, the session is a guest session, or the prepaid balance cannot be debited, the CSMS marks the session for manual billing. The session becomes completed with its recomputed cost and shows the **Manual billing** badge. Collect the amount shown in the **Billing** card outside the platform, for example by invoice or bank transfer. Select **Manual billing** in the status filter of the Sessions page to list these sessions.
 - **No Bill session button.** The button requires both the `sessions:write` and `payments:write` permissions.
 - **The button is disabled.** Its tooltip gives the reason, for example a payment the provider has not settled yet or another billing of the session in progress. Roaming sessions, free vend sessions, sessions without a tariff, and sessions already paid cannot be billed.
+
+## Drivers do not see the AI option on a new support case
+
+### Symptom
+
+You turned on driver AI support, but drivers who open a new support case in the portal or the mobile app go straight to the case form. They never see **Ask AI first** and **Send to the team**.
+
+### Why it happens
+
+The portal and the app offer the AI analysis only when the CSMS reports it as available. That needs all of these:
+
+- **Offer AI analysis to drivers** is on in **Settings > AI > Driver Support**.
+- A provider is selected for driver support, and that provider has an API key in **Settings > AI > Providers and Keys**.
+- The provider endpoint is accepted. A custom base URL that the CSMS refuses, such as a private address outside development, turns the option off.
+
+The app or portal build must also know the consent notice the CSMS reports. An older build of the mobile app that has no consent step, or no text for the current notice version, shows the form without the choice and creates a normal case.
+
+### Fix
+
+1. Open **Settings > AI > Driver Support**. Turn on **Offer AI analysis to drivers** and select a provider. A warning under the provider means it has no API key.
+2. Add the key in **Settings > AI > Providers and Keys**.
+3. Save, then reload the portal page. Saved AI settings take up to a minute to apply, and an open portal page checks the features again after a few minutes.
+4. Ask drivers who use the mobile app to update it.
+
+### If it doesn't work
+
+- **The settings read fails.** When the CSMS cannot read the AI settings, it reports the option as off and logs a warning in the API log. Check the API log for `Driver AI settings could not be read`.
+- **The driver saw the choice, but the form asks again.** The consent notice changed while the form was open. The portal or app shows the new notice, and the driver chooses once more.
+
+## A driver support case went straight to the support team
+
+### Symptom
+
+A driver chose **Ask AI first**, but the case reached your team without an automatic answer. The **Driver Consent** card on the case shows the AI state **AI Analysis Skipped** or **AI Analysis Failed**.
+
+### Why it happens
+
+The CSMS sends a case to your team instead of the AI when the AI step cannot run. The reason under the AI state tells you which check stopped it:
+
+| Reason | Cause |
+|--------|-------|
+| **Too many requests** | The driver went over **AI requests per driver per minute** |
+| **The driver reached the daily limit** | The driver went over **AI-analyzed requests per driver per day** |
+| **AI budget reached** | The company or site monthly budget, or **Tokens per driver per day**, is used up |
+| **Driver AI support is off** | Driver AI support was turned off, or the provider has no usable key |
+| **The driver account is inactive** | The driver account was deactivated |
+| **No data to analyze** | The CSMS found no data for the case |
+| **AI provider error** | The provider failed on every attempt (3 attempts) |
+| **The answer failed the safety checks** | The answer was invalid twice and was not shown to the driver |
+
+### Fix
+
+Handle the case as any other case. The driver already sees **We sent your request to the support team.**
+
+To let more cases through, raise the limits in **Settings > AI > Driver Support**, or the monthly budgets in **Settings > AI > Usage and Limits**. See [Driver AI Support](https://www.evtivity.com/docs/csms/support-cases#driver-ai-support) for the defaults.
+
+### If it doesn't work
+
+- **Many cases fail with AI provider error.** Check the API key and the provider status, and look for provider errors in the worker log.
+- **Budgets look unused.** Check **Settings > AI > Usage and Limits** for the company and site totals of the month. See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage).

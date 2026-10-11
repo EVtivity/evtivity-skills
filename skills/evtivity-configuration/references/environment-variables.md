@@ -48,7 +48,7 @@ Created by the migrate container's seed steps on first `docker compose up -d`. I
 | `API_PORT` | `7102` | HTTP port for the REST API |
 | `API_HOST` | `0.0.0.0` | Bind address |
 | `JWT_SECRET` | `dev-secret-change-in-production` | Secret for signing JWTs. Always set it in production: the default is a known development value. |
-| `CORS_ORIGIN` | `*` | Allowed CORS origins. Comma-separated for multiple. |
+| `CORS_ORIGIN` | `*` | Allowed CORS origins, comma-separated. `local` allows private network and same-origin requests and refuses others with 403. A listed origin gets the CORS headers. Any other origin gets the response without them, so the browser blocks the page from reading it. |
 | `SETTINGS_ENCRYPTION_KEY` | - | Any non-empty value. The AES-256-GCM key for sensitive settings is derived from it with scrypt. Use a long random value (32 characters or more). Required; the API refuses to start without it. |
 | `LOG_LEVEL` | `info` | Log verbosity: `trace`, `debug`, `info`, `warn`, `error`, `fatal` |
 | `NODE_ENV` | `development` | `development`, `production`, or `test`. Set `production` in production. |

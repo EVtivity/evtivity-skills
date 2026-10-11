@@ -22,6 +22,8 @@ A reservation holds a connector so it is free when you arrive. The Reserve tab l
 
 The reservation appears under **Upcoming**.
 
+A reservation that starts now is sent to the station, and the app waits for the station to confirm the hold. If the station refuses or does not answer, the app shows an error and the reservation is cancelled with no fee. A scheduled reservation is sent to the station at its start time.
+
 ## View your reservations
 
 The Reserve tab has two tabs of its own:
@@ -33,7 +35,11 @@ Tap any reservation to see its full detail: the station, the start and expiry ti
 
 ## Start charging from a reservation
 
-When your reservation is active, go to the station and start as usual. The connector is already held for you. If the reservation converts into a charging session, its detail links to that session.
+When your reservation is active, go to the station and start as usual, from the app or with the RFID card you last used. The connector is already held for you. If the reservation converts into a charging session, its detail links to that session.
+
+Another driver cannot use your reservation. If someone else starts on the connector, you get a notification and no no-show fee applies.
+
+If the station goes offline or reports a fault during your reservation, the reservation is cancelled, no fee is charged, and you get a notification.
 
 ## Cancel a reservation
 
@@ -43,4 +49,4 @@ When your reservation is active, go to the station and start as usual. The conne
 
 > **Warning:**
 >
-> Some operators charge a fee if you cancel close to the start time or let a reservation expire unused. If a fee applies, the app warns you before you confirm.
+> Some operators charge a fee if you cancel close to the start time or let a reservation expire unused. If a cancellation fee applies, the app warns you before you confirm. A no-show fee applies only when the station confirmed the hold and stayed available, and you did not charge. It is charged once.

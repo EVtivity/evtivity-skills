@@ -101,13 +101,13 @@ Start with `references/guide-overview.md`: five tabs (Home, Charge, Activity, Re
 | "Where is a charger?", QR scanning, location permission | `references/guide-find-a-charger.md` |
 | "It will not start", "How do I stop?" | `references/guide-start-and-stop-a-charge.md` |
 | Card form, 3D Secure, "Update the app" message, test mode | `references/guide-payments.md` |
-| Booking or cancelling a connector, cancellation fee | `references/guide-reservations.md` |
+| Booking or cancelling a connector, cancellation or no-show fee, a reservation the station refused | `references/guide-reservations.md` |
 | History, trend chart, monthly statement | `references/guide-activity-and-statements.md` |
 | Distance or range numbers look wrong | `references/guide-vehicles.md` |
 | Tap-to-charge card, lost card | `references/guide-rfid-cards.md` |
 | Saved stations | `references/guide-favorites.md` |
 | "Tell me when a charger frees up" | `references/guide-station-watch.md` |
-| Notifications inbox, contacting the operator | `references/guide-support.md` |
+| Notifications inbox, contacting the operator, Ask AI first | `references/guide-support.md` |
 | Language, units, Show prices, notification channels, MFA settings, sign out | `references/guide-account-and-settings.md` |
 
 Common answers:
@@ -115,6 +115,8 @@ Common answers:
 - Start fails: the driver needs a saved card unless the network is free, an **Available** connector, and the cable plugged in. Only one session runs at a time.
 - "Update the app..." instead of a card form: the app version does not support the operator's payment provider. Install the latest version. Saved cards keep working.
 - "Payments are not set up for this operator.": operator-side setup (evtivity-integrations).
+- Support case with **Ask AI first** (only when the operator turned on driver AI support): the driver chooses before the form opens. The AI gives one automatic answer, then asks **Did this solve your issue?**. No, a message, no answer within the operator's timeout (24 hours by default), or an AI failure sends the case to the support team. **Send to the team** sends nothing to the AI. No choice shown: the operator has not turned it on, or the app build is older (update the app).
+- A reservation that starts now waits for the station to confirm the hold. A refusal or no answer cancels it with no fee.
 - Lost RFID card: deactivate it at once. Accurate distance: assign the right vehicle to each session.
 - Push not arriving: check Account > Notifications, then the operator's push setup (A4).
 

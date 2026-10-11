@@ -18,7 +18,7 @@ Free vend sessions show a "Free Vend" label in the driver column instead of a dr
 
 Select **Manual billing** in the status filter to list the sessions that wait for billing outside the platform. See [Billing a Session the CSMS Could Not End](#billing-a-session-the-csms-could-not-end).
 
-Select **Missing** in the electricity cost filter to list the billed sessions that delivered energy but have no electricity cost, so profit leaves them out. The dashboard **Electricity cost missing** card opens this view for a site. With a site selected, **Recalculate electricity cost** fills their cost from the site's current rates. See [Recalculate Electricity Cost](https://www.evtivity.com/docs/csms/sites#recalculate-electricity-cost).
+Select **Missing** in the electricity cost filter to list the billed sessions that delivered energy but have no electricity cost, so profit leaves them out. The dashboard **Electricity Cost Missing** card opens this view for a site. With a site selected, **Recalculate electricity cost** fills their cost from the site's current rates. See [Recalculate Electricity Cost](https://www.evtivity.com/docs/csms/sites#recalculate-electricity-cost).
 
 ## Session Statuses
 
@@ -88,7 +88,7 @@ To bill the session:
 
 1. Open the session from the Sessions page.
 2. On the **Details** tab, click **Bill session** in the **Billing** card.
-3. Confirm in the **Bill this session?** dialog.
+3. Confirm in the **Bill This Session?** dialog.
 
 The CSMS recomputes the cost from the tariff up to the last meter value of the session. It then debits the balance of a prepaid token, or charges the driver's default saved card without the driver present. The session becomes completed, the card shows **Billed by an operator**, and the driver receives a session receipt.
 
@@ -118,7 +118,7 @@ The session becomes completed with its recomputed cost and shows a **Manual bill
 
 ## Reservation Token Mismatch
 
-When a session was started under a reservation but the OCPP Authorize matched a different token than the one the reservation was bound to, the session detail page shows a yellow **Reservation token mismatch** badge next to the status. The check is informational - the session is allowed to proceed, but the badge surfaces a discrepancy worth investigating (e.g., the driver swiped a different card than the one they pre-bound the reservation with, or two cards are sharing the same `idToken`). The expected/actual token ids are stored in `charging_sessions.metadata.reservationTokenMismatch`.
+When a session was started under a reservation but the OCPP Authorize matched a different token than the one the reservation was bound to, the session detail page shows a yellow **Reservation Token Mismatch** badge next to the status. The check is informational - the session is allowed to proceed, but the badge surfaces a discrepancy worth investigating (e.g., the driver swiped a different card than the one they pre-bound the reservation with, or two cards are sharing the same `idToken`). The expected/actual token ids are stored in `charging_sessions.metadata.reservationTokenMismatch`.
 
 ## Idle Detection
 

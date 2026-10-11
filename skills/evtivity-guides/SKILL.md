@@ -108,7 +108,7 @@ Free-vend sites accept any card and attribute no driver. 1.6 sends `idTag`, 2.1 
 
    A future `startsAt` creates a `scheduled` row and a worker job sends ReserveNow at the start. A driver-attached reservation needs a default card (400 `PAYMENT_METHOD_REQUIRED`).
 3. Window errors: `RESERVATION_WINDOW_TOO_SHORT`, `RESERVATION_EXPIRES_TOO_SOON`, `RESERVATION_STARTS_IN_PAST`, `RESERVATION_TOO_LONG`, `RESERVATION_CONFLICT`, `RESERVATION_DURING_MAINTENANCE`.
-4. Confirm: `GET /v1/reservations/{id}` shows `active` after the station accepts. `GET /v1/reservations/{id}/commands` shows the ReserveNow result.
+4. Confirm: `GET /v1/reservations/{id}` shows `active` after the station accepts. An immediate reservation waits for the station: a refusal or no answer cancels it with no fee (`400 RESERVATION_REJECTED`, `504 RESERVATION_TIMEOUT`). A no-show fee applies only to a hold the station confirmed. `GET /v1/reservations/{id}/commands` shows the ReserveNow result.
 5. Cancel: `DELETE /v1/reservations/{id}` with optional `{"chargeCancellationFee":true,"reason":"..."}`. Confirm before charging a fee. A failed charge returns `feeChargeFailed: true` and the cancel still succeeds.
 6. Move: `POST /v1/reservations/{id}/reassign` with `newStationOcppId` and optional `newEvseId`.
 

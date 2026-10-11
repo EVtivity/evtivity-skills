@@ -21,12 +21,14 @@ The **Driver Events** tab groups them:
 - **Payments**: `payment.Complete`, `payment.Refunded`, `payment.FeeRefunded`, `payment.PreAuthFailed`, `payment.CaptureFailed`, `payment.MissingPaymentMethod`, `payment.AccountCreditLimit`
 - **Reservations**: `reservation.Created`, `reservation.Cancelled`, `reservation.CancelledForMaintenance`, `reservation.Expiring`, `reservation.Expired`, `reservation.StationFaulted`
 - **Invoice Events**: `invoice.Sent`, `invoice.CreditNote`
-- **Support Cases**: `supportCase.Created`, `supportCase.OperatorReply`, `supportCase.Resolved`
+- **Support Cases**: `supportCase.Created`, `supportCase.OperatorReply`, `supportCase.Resolved`, `supportCase.AiAnswered`
 - **Multi-Factor Auth**: `mfa.VerificationCode`
 - **Tokens**: `token.Added`, `token.Removed`, `token.Deactivated`, `token.Reactivated`
 - **Maintenance**: `maintenance.SessionStopped`
 - **Station Watch**: `watch.StationAvailable`
 - **Prepaid Cards**: `prepaid.LowCredit`, `prepaid.CreditExhausted` (see [Prepaid Cards](https://www.evtivity.com/docs/csms/tokens#prepaid-cards))
+
+`supportCase.AiAnswered` goes out when the [driver AI support](https://www.evtivity.com/docs/csms/support-cases#driver-ai-support) stores its automatic answer to a case. It has email and SMS templates. The push notification uses the SMS text.
 
 `session.IdlingStarted` goes out once per idle period, when the EV has been idle for at least 60 seconds, on OCPP 1.6 and 2.1 alike. A shorter pause, such as an EV that reports full and ends the session a moment later, sends no idling notification. Idle fees follow the idling grace period in Settings.
 

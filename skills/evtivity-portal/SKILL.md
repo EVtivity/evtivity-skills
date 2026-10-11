@@ -63,6 +63,8 @@ curl -s "$EVTIVITY_API/v1/portal/chargers/sessions/active" -H "Authorization: Be
 
 Starting sends a real command to a station: confirm with the user on a live network, or use evtivity-simulator stations. A start at an unavailable station returns `409 STATION_UNAVAILABLE`. If the station rejects the start because of a transaction the CSMS does not know, the system stops it and retries once.
 
+Reservations (`references/charging.md`, Reserve a Connector, shown only when the operator turned them on): the **Reserve** tab > **New reservation** > **Reserve Connector**. A reservation that starts now waits for the station to confirm the hold. A refusal or no answer shows an error and cancels it with no fee. A no-show fee applies only to a hold the station confirmed. Starting on the reserved connector links the session, so no fee applies.
+
 ## Workflow 4: guest charging by QR (`references/guest-charging.md`)
 
 1. The driver scans the QR code: `/charge/:stationId/:evseId` (one connector) or `/charge/:stationId` (pick one).
@@ -96,6 +98,13 @@ Account > RFID Cards > **Add RFID Card**, enter the printed number (alphanumeric
 1. Best path: Activity > session > **Report Issue**, so the session is attached. Otherwise `/support` > **New Case**.
 2. Pick a category, enter Subject and Description, **Submit Case**. The case gets a number such as CASE-00001.
 3. Reply in the thread with **Send**. Drivers never see internal operator notes.
+
+Ask AI First (only when the operator turned on driver AI support, so many networks do not show it):
+
+1. **New Case** or **Report Issue** first asks **How Should We Handle Your Request?**. The driver reads the notice and **What the AI Reads**, then picks **Ask AI first** or **Send to the team**. Nothing is preselected, and the form opens only after the choice. **Send to the team** sends nothing to the AI.
+2. With **Ask AI first** the case shows **Automatic Answer** while the AI works. The AI gives one answer per case and holds no conversation.
+3. The driver answers **Did this solve your issue?**. Yes resolves the case. No sends it to the support team.
+4. The case also goes to the team when the driver writes a message before answering, gives no answer within the operator's timeout (24 hours by default), or the AI cannot answer (limit, budget or provider error). Writing on a case the AI resolved reopens it for the team.
 
 ## Account (`references/account.md`)
 

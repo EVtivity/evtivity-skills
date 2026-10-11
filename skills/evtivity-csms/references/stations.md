@@ -119,7 +119,17 @@ Mutual TLS stations do not require a password. The station presents a client cer
 
 Basic Auth passwords are 16 to 40 characters for OCPP 2.1 and 16 to 20 characters for OCPP 1.6. Allowed characters are letters, digits, and `* - _ = : + | @ .`. **Rotate Credentials** on the **Security** tab sets a new random 20-character password that works for both versions.
 
-When the station is online on Basic Auth or TLS + Basic Auth, the CSMS sends the new password to the station: `SetVariables(SecurityCtrlr.BasicAuthPassword)` for OCPP 2.1, `ChangeConfiguration(AuthorizationKey)` with the hex-encoded password for OCPP 1.6. The CSMS saves the new password only after the station accepts it. If the station rejects it or does not answer, the old password stays valid. When the station is offline, the CSMS saves the password and you configure the station to match on site.
+When the station is online on Basic Auth or TLS + Basic Auth, the CSMS sends the new password to the station: `SetVariables(SecurityCtrlr.BasicAuthPassword)` for OCPP 2.1, `ChangeConfiguration(AuthorizationKey)` with the hex-encoded password for OCPP 1.6. The CSMS saves the new password only after the station accepts it. If the station rejects it or does not answer, the old password stays valid. When the station is offline, the CSMS saves the password and you configure the station to match on site. A password command is never queued: if the station disconnects before the command reaches it, the change fails and the old password stays valid.
+
+Change a station password only with **Change Password** or **Rotate Credentials** on the **Security** tab, or through the API with `POST /v1/stations/{id}/credentials`. Change the security profile on the same tab or with `PATCH /v1/stations/{id}`. The generic OCPP command routes refuse a password write with `400 STATION_CREDENTIALS_ROUTE_REQUIRED` (see [Error Codes](https://www.evtivity.com/api-reference/error-codes#sites-stations)):
+
+- `POST /v1/ocpp/commands/v21/SetVariables` with `SecurityCtrlr.BasicAuthPassword`
+- `POST /v1/ocpp/commands/v16/ChangeConfiguration` with `AuthorizationKey`
+- `POST /v1/ocpp/commands/v21/SetNetworkProfile` with `connectionData.basicAuthPassword`
+
+[Configuration templates](https://www.evtivity.com/docs/csms/station-configurations) cannot hold these variables either.
+
+The CSMS keeps station passwords out of its logs. The OCPP message log (requests and responses, in both directions) and the API access log show the password as `[redacted]`. A station configuration value that holds a password is stored as `[redacted]`. Passwords stored by earlier releases are replaced with `[redacted]` when the database is migrated.
 
 ### Failed login throttling
 
@@ -226,7 +236,7 @@ Send OCPP commands to the station and view the real-time OCPP message log. Avail
 
 **Offline stations queue the command.** When the target station is not connected to any OCPP pod, the API returns `202 Accepted` with code `COMMAND_QUEUED` and the UI shows a yellow **Queued** badge on the response card. The command is held in the offline queue and dispatched on the next reconnect.
 
-**Every dispatch is audited.** Each command dispatched through the OCPP Commands tab writes a row to the per-station audit log with `action: 'command_dispatched'`, the actor, the OCPP action name, the outcome (`accepted`, `queued (station offline)`, `timeout`, or `error: <msg>`), and a payload snapshot. Payloads are capped at 16 KB to keep audit rows lean — oversized payloads are replaced with a `_truncated` marker referencing the original size. View the audit trail under the **History** tab on the station detail page or globally at `/audit`.
+**Every dispatch is audited.** Each command dispatched through the OCPP Commands tab writes a row to the per-station audit log with `action: 'command_dispatched'`, the actor, the OCPP action name, the outcome (`accepted`, `queued (station offline)`, `timeout`, or `error: <msg>`), and a payload snapshot. Payloads are capped at 16 KB to keep audit rows lean. Oversized payloads are replaced with a `_truncated` marker referencing the original size. View the audit trail under the **History** tab on the station detail page or globally at `/audit`.
 
 ![Station OCPP commands tab](https://www.evtivity.com/screenshots/csms/station-commands.png)
 

@@ -141,7 +141,7 @@ Compare a run with the published results of the release: the totals, the per-mod
 ## 4. Connect a real station for testing
 
 1. Create the station first. An unknown station gets HTTP 404 at the WebSocket upgrade. `POST /v1/stations` with `stationId`, `ocppProtocol` (`ocpp1.6` or `ocpp2.1`) and `securityProfile` (0 none, 1 Basic Auth, 2 TLS + Basic Auth, 3 mutual TLS).
-2. Password for profile 1 or 2: Security tab, **Change Password**, or `POST /v1/stations/{id}/credentials` with `{"password": "..."}`. 16 to 40 characters for 2.1, 16 to 20 for 1.6. `appliedTo` says `station` (sent and accepted) or `stored`.
+2. Password for profile 1 or 2: Security tab, **Change Password**, or `POST /v1/stations/{id}/credentials` with `{"password": "..."}`. 16 to 40 characters for 2.1, 16 to 20 for 1.6. `appliedTo` says `station` (sent and accepted) or `stored`. The generic command routes refuse a password write (SetVariables `SecurityCtrlr.BasicAuthPassword`, ChangeConfiguration `AuthorizationKey`, SetNetworkProfile `basicAuthPassword`) with `400 STATION_CREDENTIALS_ROUTE_REQUIRED`.
 3. Point the station at `ws://<host>:7103/<stationId>` (profile 0 or 1) or `wss://<host>:8443/<stationId>` (profile 2 or 3). The path equals the station ID exactly. The Basic Auth username is the station ID.
 4. Approve it (`POST /v1/stations/{id}/approve`) under the default `approval-required` policy. A pending station can connect and take configuration commands, but remote start is refused.
 5. Verify: Online, inbound `BootNotification`, `Heartbeat` and `StatusNotification` in the log, and a TriggerMessage round trip (section 1).

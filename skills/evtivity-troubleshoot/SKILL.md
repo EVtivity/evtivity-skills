@@ -48,6 +48,9 @@ Start at the first symptom that matches.
 - The problem started after `git pull`, a checkout of a new tag, or an image upgrade: go to G.
 - A session is `faulted` with stopped reason `EndRequestFailed` (Session End Failed alert): this is a field problem, not a stack failure. Bill it with the evtivity-csms skill (Bill session), or see evtivity-guides field troubleshooting.
 - Reports stay `pending`, or the worker log shows `NOPERM` on `report_generate` or `ocpp:conn:*` after an upgrade to v0.1.40: go to D.
+- Drivers do not see the AI option on a new support case, or a case the driver sent to the AI reached the team without an automatic answer: go to H.
+- An OCPP command route answers `400 STATION_CREDENTIALS_ROUTE_REQUIRED`: a station password goes only through `POST /v1/stations/{id}/credentials` or the station Security tab (Change Password, Rotate Credentials). The generic SetVariables, ChangeConfiguration and SetNetworkProfile routes refuse password values, and configuration templates cannot hold them.
+- A driver paid a reservation no-show fee although they charged on the reservation: releases before v0.1.45 could do this. Upgrade (evtivity-deployment, or G for Compose). The upgrade does not return fees already charged. From v0.1.45 a no-show fee applies only to a hold the station confirmed, with no linked session, no other driver on the EVSE and no station outage.
 - None of these: collect diagnostics and use the evtivity-report-issue skill.
 
 ### A. Migrate container failed
@@ -141,6 +144,20 @@ Fix: `git status` (clean, at the new tag), then `docker compose up -d --build`.
 
 Stale volume: the data in a volume does not fit the release, for example after a downgrade, a skipped required upgrade step, or a PostgreSQL major version change (`database files are incompatible with server`). Read the release notes for the upgrade path first. For data you must keep, back up first: `docker compose exec postgres pg_dump -U evtivity evtivity > backup.sql`. For disposable data only, and only after the user agrees: `docker compose down --volumes` (deletes all data), then `docker compose up -d`.
 
+### H. Driver AI support
+
+Both symptoms are in `references/troubleshooting.md` (grep `driver-ai`). Driver AI support is off by default.
+
+AI option missing in the portal or app. Check in this order:
+
+1. **Offer AI analysis to drivers** is on in Settings > AI > Driver Support, with a provider selected.
+2. That provider has an API key in Settings > AI > Providers and Keys (a warning under the provider means none). A refused custom base URL also turns the option off.
+3. Settings apply within a minute. Reload the portal page.
+4. Mobile app: an older build without the consent step shows the plain form. Ask drivers to update the app.
+5. Still off: the API log shows `Driver AI settings could not be read`.
+
+Case went straight to the team: the **Driver Consent** card on the case shows **AI Analysis Skipped** or **AI Analysis Failed** and a reason. Causes: the per-minute rate limit (`ai.rateLimit.driverPerMinute`, default 2), the daily case limit per driver (default 3), the token budget (`ai.budget.driverDailyTokens`, default 40,000, or the company or site monthly budget), the feature turned off, or a provider error after 3 attempts (check the key, the provider status and the worker log). Handle the case as any other case. Raise limits in Settings > AI > Driver Support, budgets in Settings > AI > Usage and Limits (evtivity-configuration). Ask the user before changing them.
+
 ## 3. After the fix
 
 Run `scripts/diagnose.sh` again and confirm every service is healthy and the symptom is gone. If the problem stays, use the evtivity-report-issue skill with the diagnostics output.
@@ -149,4 +166,4 @@ Run `scripts/diagnose.sh` again and confirm every service is healthy and the sym
 
 Generated from the website docs. Never edit them. The first line is the live page URL: link it when you answer.
 
-- `references/troubleshooting.md`: field fixes for stuck sessions, stale connector status and `SuspendedEV`.
+- `references/troubleshooting.md`: field fixes for stuck sessions, stale connector status and `SuspendedEV`, and driver AI support (H).

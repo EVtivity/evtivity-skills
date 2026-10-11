@@ -87,16 +87,23 @@ EVtivity uses BullMQ on the existing Redis instance. When the API creates a rese
 
 1. Re-reads the reservation row to make sure it's still `scheduled` (it may have been cancelled in the meantime).
 2. Checks the station and the EVSE. An offline station cancels the reservation (`station_offline_at_activation`). A busy or faulted EVSE cancels it (`evse_in_use_at_activation` or `station_faulted_at_activation`), unless the reserved driver is already charging there, which moves it to `in_use`.
-3. Updates the row to `active`, then sends `ReserveNow` to the station via the standard `ocpp_commands` pubsub bridge with version-specific command translation. The worker does not wait for the station's answer.
+3. Updates the row to `active`, then sends `ReserveNow` to the station via the standard `ocpp_commands` pubsub bridge with version-specific command translation. The worker does not wait for the station's answer. If the send fails, the row goes back to `scheduled` and the job retries.
 
-If the station answers `ReserveNow` with anything other than `Accepted`, the OCPP server cancels the reservation (`station_rejected_occupied` or `station_rejected_other`, no fee) and the driver gets a `reservation.Cancelled` notification.
+The pubsub message that schedules the job is not durable, so the expiry check also activates any `scheduled` reservation whose start time has passed, with the same job id. A duplicate activation does nothing.
+
+A reservation counts as held only once the station accepts `ReserveNow`: the OCPP server records the acceptance on the row. If the station answers with anything other than `Accepted`, the OCPP server cancels the reservation (`station_rejected_occupied` or `station_rejected_other`, no fee) and the driver gets a `reservation.Cancelled` notification.
+
+An immediate reservation (start time now) sends `ReserveNow` from the API and waits for the answer. A refusal cancels it as above. No answer cancels it with `station_no_response` and sends a best-effort `CancelReservation`, so a late `Accepted` does not keep the EVSE held. Either way, no fee applies. The portal waits too and shows the driver the error.
+
+`ReserveNow` carries the token bound to the reservation (`idToken` and its type in 2.1, `idTag` in 1.6), by default the driver's most recently used active token. A driver without a token is reserved under the driver id as a `Central` token, the id the portal remote start sends. The overlap check and the insert of a new reservation run under a per-station lock, so two concurrent creates for one window cannot both succeed.
 
 ### Cancellation and expiry
 
-Three different paths can take a reservation out of `active`:
+Four different paths can take a reservation out of `active`:
 
-- **Driver or operator cancel.** API receives `DELETE`. If the row is `active`, dispatches `CancelReservation` to the station, then sets `cancelled`. Scheduled rows skip the OCPP step.
-- **Session start during the window.** When `TransactionEvent.Started` arrives with the matching `reservationId`, the projection updates the reservation to `in_use` and links the resulting `session_id`. When the session ends, the reservation moves to `used`.
+- **Driver or operator cancel.** API receives `DELETE`, sets `cancelled` first, then, if the row was `active`, sends `CancelReservation` to the station and waits for the answer. Scheduled rows skip the OCPP step. When the station refuses, does not answer, or is offline, the row stays cancelled, the audit log records `station_cancel_failed`, and the response carries `warning: station_cancel_failed`.
+- **Session start during the window.** When `TransactionEvent.Started` arrives with the matching `reservationId`, or the holder (the reservation's driver or token) starts on the station inside the window without one, the projection updates the reservation to `in_use` and links the resulting `session_id`. When the session ends, the reservation moves to `used`. A start by another driver never uses the reservation: the audit log records `taken_by_other`, the holder is notified, and no no-show fee applies.
+- **Station outage.** A station that goes offline, or a connector that reports Faulted, during an `active` hold cancels it as `system` with `station_unavailable_during_hold`. No fee is charged, `CancelReservation` goes to the station, and the driver is notified.
 - **No-show.** The worker's `reservation-expiry-check` job runs every minute. It marks `active` and `scheduled` reservations whose `expires_at` has passed as `expired`, and sends `CancelReservation` to the station for the ones that were `active`. A `reservation.Expired` notification is dispatched if the reservation had a driver attached and email/SMS was enabled.
 
 #### Cancel actor and reason
@@ -111,21 +118,25 @@ The reason enum is the source of truth for "why did this row die":
 | `operator_manual` | Operator dashboard `DELETE /v1/reservations/:id` |
 | `expired_no_show` | `reservation-expiry-check` cron after `expires_at` |
 | `station_rejected_occupied` | Station replied `Occupied` to ReserveNow |
-| `station_rejected_other` | Station replied with another non-Accepted status, or the request timed out |
+| `station_rejected_other` | Station replied with another non-Accepted status, or the command could not be sent |
+| `station_no_response` | Station did not answer ReserveNow |
 | `station_offline_at_activation` | Worker tried to dispatch ReserveNow at `startsAt` but the station was offline |
 | `evse_in_use_at_activation` | At `startsAt` the reserved EVSE was busy (another session or a plugged-in cable) |
 | `station_faulted_at_activation` | At `startsAt` every connector of the reserved EVSE was faulted or unavailable |
+| `station_unavailable_during_hold` | Station went offline or faulted during an active hold |
 | `system_cleanup` | Station-initiated `ReservationStatusUpdate(Removed)` |
+
+The operator dashboard shows each reason by its label, for example **Station did not respond** and **Station unavailable during the reservation**.
 
 All cancel paths route through a single helper (`packages/services/src/reservation-cancel.ts`) so the metadata is consistent and concurrency-safe. The helper performs a conditional UPDATE filtered on `status IN ('active','scheduled')`, so two concurrent cancels are safe: only one wins; the loser sees `cancelled: false` and skips the fee dispatch. The Stripe charge runs only after a successful UPDATE.
 
-System paths (the bottom three reasons above) hard-block the fee: even if a caller passes `chargeFee: true`, the helper short-circuits to `wantsFee = chargeFee && actor !== 'system'`. Operator-initiated cancels are opt-in (the dashboard cancel dialog has a checkbox), so a typical operator action does not bill the driver.
+System paths (every `station_*`, `evse_*` and `system_cleanup` reason above) hard-block the fee: even if a caller passes `chargeFee: true`, the helper short-circuits to `wantsFee = chargeFee && actor !== 'system'`. Operator-initiated cancels are opt-in (the dashboard cancel dialog has a checkbox), so a typical operator action does not bill the driver.
 
 ### Fees
 
 Reservation creation **requires** a default payment method on a driver-attached reservation but does **not** place a Stripe hold at that point - it only verifies the card exists. There is no PaymentIntent until a fee actually fires.
 
-- **No-show fee** is charged by the `reservation-expiry-check` cron job (`packages/worker/src/handlers/reservation-expiry-check.ts`, runs every minute) when an `active` reservation reaches `expires_at` without a linked session. The handler creates a fresh off-session `PaymentIntent` (`confirm: true, off_session: true`) against the saved customer and payment method, sized as `holdingMinutes * reservationFeePerMinute`. Idempotency keyed on the reservation id so retries don't double-charge.
+- **No-Show Fee** is charged by the `reservation-expiry-check` cron job (runs every minute) when an `active` reservation reaches `expires_at`, the station confirmed the hold, no session is linked, no other driver took the EVSE, and the station had no outage during the hold. The expiry marks the fee `due` in the same update that expires the row, then charges it as a fresh off-session payment against the saved payment method, sized as `holdingMinutes * reservationFeePerMinute`. The fee is charged once: the key `no-show-fee-<id>` and a unique index stop a second charge, the cron settles a `due` fee that a crash left behind, and reconciliation resumes a fee record that never reached the payment provider. A station-reported expiry gets the same check.
 - **Cancellation fee** fires from the cancel endpoint only when (1) the actor is `driver` or `operator` (system paths always waive), (2) the operator opted in via `chargeCancellationFee: true` in the request body when the actor is `operator` (drivers always opt in), (3) `cancellationFeeCents > 0` and `cancellationWindowMinutes > 0`, (4) the reservation has a driver attached, and (5) the cancellation lands inside the window.
 
 Both fees are stand-alone charges, not captures of a prior pre-auth. The operator enters them in the company tax basis (excluding or including tax, Settings > Company Info > **Tariff prices are entered**), and each fee is taxed once at the tax rate of the station's tariff for the driver. The fee terms are fixed when the reservation is created: the holding fee per minute, the cancellation fee, the tax rate, and the tax basis. A later change to the tariff or the settings does not change the fee of an existing reservation. The portal shows the cancellation fee with tax included, for example "€5.95 incl. 19% tax". It shows the no-show fee of the chosen window the same way, before the driver reserves and on an open reservation.

@@ -14,6 +14,14 @@ Writes never run directly. An MCP change becomes a proposal that the same user a
 
 The MCP server is off by default.
 
+The tool results an MCP client receives are filtered the same way as the tool results of the AI assistant. The assistant rules of this note apply to them:
+
+> **Note:**
+>
+> **What the AI Provider Receives**
+>
+> The AI provider never receives stored credentials, such as passwords, API keys, secrets and station passwords. Card numbers and IBANs are cut to their last 4 characters. Support drafts, automatic insights, background workers and driver support also mask email addresses and phone numbers, and hash or shorten driver token ids. The assistant sends driver contact details as stored, only to users allowed to read them. Text you type and text files you attach are checked for keys and card numbers. Images and PDFs you attach are sent as they are.
+
 ## Endpoint
 
 ```
@@ -22,7 +30,7 @@ POST https://<your API host>/v1/mcp
 
 The server uses the Streamable HTTP transport and is stateless, so any API instance answers any request. It answers `POST` only. `GET` and `DELETE` answer 405.
 
-**Settings > AI > MCP server** shows the endpoint URL of your installation.
+**Settings > AI > MCP** shows the endpoint URL of your installation.
 
 ![MCP server settings](https://www.evtivity.com/screenshots/csms/settings-ai-mcp.png)
 
@@ -37,7 +45,7 @@ The official MCP TypeScript client (`@modelcontextprotocol/client` 2.3.1) is tes
 
 ## Set Up
 
-1. In **Settings > AI > MCP server**, turn on **Turn on the MCP server** and click **Save**.
+1. In **Settings > AI > MCP**, turn on **Turn on the MCP server** and click **Save**.
 2. In **Settings > API Keys**, create an API key with these permissions:
    - `aiMcp:read` to use the MCP server and its read tools.
    - `aiMcp:write` and `stations:read` to propose changes. Without them, the client sees no write tools.
@@ -124,7 +132,7 @@ Errors of a tool call appear as an error result with a text and `structuredConte
 
 ## Audit
 
-EVtivity logs every tool call with the key, the user, the client name and version, the tool, the redacted arguments, the status, and the duration. Audit entries written by MCP reads, and by proposals confirmed from MCP, are marked as made through MCP. Call logs are deleted after the conversation retention period of **Settings > AI** (30 days by default), and never sooner than 3 days.
+EVtivity logs every tool call with the key, the user, the client name and version, the tool, the redacted arguments, the status, and the duration. Audit entries written by MCP reads, and by proposals confirmed from MCP, are marked as made through MCP. Call logs are deleted after the conversation retention period of **Settings > AI > Usage and Limits** (30 days by default), and never sooner than 3 days.
 
 ## Settings
 

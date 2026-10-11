@@ -23,11 +23,21 @@ Reservations allow drivers or operators to reserve a specific EVSE at a station 
 
 ### Scheduled Reservations
 
-If the start time is in the future, the reservation is created with a **scheduled** status. The CSMS does not send the OCPP ReserveNow command immediately. Instead, a background worker job fires at the scheduled start time, sends ReserveNow to the station, and updates the status to **active**.
+If the start time is in the future, the reservation is created with a **scheduled** status. The CSMS does not send the OCPP ReserveNow command immediately. Instead, a background worker job fires at the scheduled start time, sends ReserveNow to the station, and updates the status to **active**. The expiry check also activates a scheduled reservation whose start time has passed, so a lost activation job does not leave it scheduled.
+
+A scheduled reservation counts as held on the station only once the station accepts ReserveNow. If the station refuses it, the reservation is cancelled without a fee.
 
 ### Immediate Reservations
 
-If the start time is now or in the past, the CSMS sends the ReserveNow command to the station immediately. If the station accepts, the reservation becomes **active**.
+If the start time is now or in the past, the CSMS sends ReserveNow to the station and waits for the answer. The station must be online.
+
+- The station accepts: the reservation is **active** and the station holds the EVSE.
+- The station refuses: the reservation is cancelled as **Station rejected: occupied** or **Station rejected**, with no fee. The API answers `400 RESERVATION_REJECTED`.
+- The station does not answer: the reservation is cancelled as **Station did not respond**, with no fee. The CSMS also sends CancelReservation, so a late acceptance does not keep the EVSE held. The API answers `504 RESERVATION_TIMEOUT`.
+
+ReserveNow carries the token bound to the reservation. A new reservation binds the driver's most recently used active token, so the driver's RFID card starts on the held EVSE. A driver without a token is reserved under the driver ID, the same ID a portal start uses.
+
+Two reservations created at the same moment for the same window cannot both succeed. The second one gets `409 RESERVATION_CONFLICT`.
 
 ## Batch Reservations
 
@@ -41,11 +51,19 @@ Click any reservation in the list to view its detail page.
 
 ![Reservation detail](https://www.evtivity.com/screenshots/csms/reservation-detail.png)
 
+### Insight and Explain
+
+When an [AI insight](https://www.evtivity.com/docs/csms/ai-insights) covers the reservation, its card shows above the tabs. Reservation insights cover a station that refused or never confirmed the hold, a no-show, a station cancel that failed, a failed fee, and a station that faulted during the hold. **Explain** opens the AI assistant about this reservation. It shows for an expired reservation, a reservation cancelled for a station reason, and a reservation with a failed fee. The card and **Explain** show only while reservations are turned on.
+
+![Reservation insight](https://www.evtivity.com/screenshots/csms/reservation-insight.png)
+
+### Tabs
+
 The detail page has the following tabs:
 
 - **Details** - station, EVSE, driver, token (linked to its detail page when bound), time range, current status, and the cancel action.
 - **Session** - the linked charging session when one exists (status `in_use` or `used`).
-- **History** - paginated `reservation_audit_log` with the action (created / updated / cancelled / expired / used / session_failed), the actor name (operator or driver, linked to their detail page), and a field-by-field diff of `driverId`, `tokenId`, `evseId`, `expiresAt`, and `status`.
+- **History** - paginated `reservation_audit_log` with the action (see the table below), the actor name (operator or driver, linked to their detail page), and a field-by-field diff of `driverId`, `tokenId`, `evseId`, `expiresAt`, and `status`.
 - **OCPP Logs** - the OCPP ReserveNow / CancelReservation commands the CSMS dispatched for this reservation, with their results.
 
 ## Audit Trail
@@ -54,11 +72,18 @@ Every reservation mutation writes to `reservation_audit_log`. The History tab on
 
 | Action | Triggered by |
 |--------|--------------|
-| `created` | Operator POST, portal POST, fleet bulk POST, or worker delayed activation for scheduled reservations |
-| `updated` | Operator PATCH that changed `driverId`, `tokenId`, `evseId`, or `expiresAt`; operator reassign to a different station; or system linkage when a charging session starts and consumes the reservation |
+| `created` | Operator POST, portal POST, or fleet bulk POST |
+| `activated` | The worker sent ReserveNow for a scheduled reservation at its start time |
+| `updated` | Operator PATCH that changed `driverId`, `tokenId`, `evseId`, or `expiresAt`, operator reassign to a different station, or an edit the station did not answer, after which the CSMS sent the previous hold again |
 | `cancelled` | Operator, driver, or system cancel - see the cancellation metadata section below |
-| `expired` | Expiry cron (`expires_at` passed) or station-reported `ReservationStatusUpdate(Expired)` |
-| `used` | A linked charging session entered the `active` state - the reservation transitions `active &rarr; in_use` |
+| `station_rejected` | The station refused ReserveNow or did not answer. The reason names which |
+| `station_cancel_failed` | The station refused CancelReservation, did not answer, or was offline. The reservation stays cancelled |
+| `station_faulted` | The station went offline or a connector faulted during the hold. The reservation is cancelled without a fee |
+| `expired` | Expiry cron (`expires_at` passed) or station-reported `ReservationStatusUpdate(Expired)`. The reason says whether it was a no-show |
+| `used` | A linked charging session started (`active &rarr; in_use`) or ended (`in_use &rarr; used`) |
+| `taken_by_other` | Another driver started a session on the held EVSE. The holder is notified and no no-show fee applies |
+| `fee_charged` | A cancellation or no-show fee was charged |
+| `fee_failed` | A fee charge failed: declined, no payment method, or a provider error |
 | `session_failed` | A charging session linked to this reservation ended in `faulted` or `failed` state. Written from every fault path: stale-session sweep, `EVConnectTimeout` on start, payment-gate eager cleanup, and the `TransactionEvent.Ended` handler. The reservation status itself stays `in_use` - the audit row records that the attempt did not produce a billable session, with the fault reason in the notes column. |
 
 Each audit row includes the actor (`operator`, `driver`, or `system`) with the linked user or driver, and a before/after diff for any of the mutable fields above.
@@ -70,7 +95,18 @@ Each audit row includes the actor (`operator`, `driver`, or `system`) with the l
 3. In the confirmation dialog, optionally tick **Charge cancellation fee** (operator opt-in, defaults to off) and add a free-text note describing why you are cancelling.
 4. Confirm the cancellation.
 
-For active reservations, the CSMS sends an OCPP CancelReservation command to the station. For scheduled reservations (not yet sent to the station), the cancellation is database-only. Either way, the cancel writes the actor and reason metadata described below.
+The CSMS saves the cancellation first. For an active reservation it then sends an OCPP CancelReservation command to the station and waits for the answer. A scheduled reservation never reached the station, so its cancellation is database-only. Either way, the cancel writes the actor and reason metadata described below.
+
+When the station refuses the cancel, does not answer, or is offline, the reservation stays cancelled. The **History** tab records **Station cancel failed**, and the API response carries `warning: station_cancel_failed`. The station can still hold the EVSE until the reservation expires.
+
+## Edit and Reassign
+
+**Reassign Station** moves an active or scheduled reservation to another station. To change the EVSE on the same station, edit the reservation instead. Edit and reassign run the same checks as a create:
+
+- The new window or station must not overlap another reservation (`409 RESERVATION_CONFLICT`).
+- A cancelled, expired, or used reservation cannot be edited or reassigned (`RESERVATION_NOT_ACTIVE`).
+- For an active reservation, the CSMS sends ReserveNow again with the new values. On an edit, a refusal or a missing answer keeps the previous values. On a reassign, the new station must accept first. The CSMS then moves the reservation and sends CancelReservation to the old station.
+- A scheduled reservation moves in the database only. The worker sends ReserveNow at the start time.
 
 ## Cancellation Metadata
 
@@ -83,19 +119,25 @@ Every cancelled reservation carries four audit fields:
 | `cancel_note` | Optional operator free-text note (max 500 chars) |
 | `cancellation_fee_cents` | Fee actually charged (`0` when waived, no payment method, or charge attempt failed) |
 
-Cancel reasons:
+Cancel reasons, with the label the dashboard shows:
 
-| Reason | When it fires |
-|--------|---------------|
-| `driver_initiated` | Driver cancelled from the portal |
-| `operator_manual` | Operator cancelled from the dashboard |
-| `expired_no_show` | Reservation reached `expires_at` without being used |
-| `station_rejected_occupied` | Station replied `Occupied` to ReserveNow |
-| `station_rejected_other` | Station replied with another non-Accepted status, or the request timed out |
-| `station_offline_at_activation` | The worker tried to dispatch ReserveNow at `startsAt` but the station was offline |
-| `evse_in_use_at_activation` | At `startsAt` the reserved EVSE was busy (another session or a plugged-in cable) |
-| `station_faulted_at_activation` | At `startsAt` every connector of the reserved EVSE was faulted or unavailable |
-| `system_cleanup` | Station-side `ReservationStatusUpdate(Removed)` arrived (operator pressed cancel on the station, fault, etc.) |
+| Reason | Label | When it fires |
+|--------|-------|---------------|
+| `driver_initiated` | **Driver cancelled** | Driver cancelled from the portal |
+| `operator_manual` | **Operator cancelled** | Operator cancelled from the dashboard |
+| `expired_no_show` | **Expired (no-show)** | Reservation reached `expires_at` without being used |
+| `station_rejected_occupied` | **Station rejected: occupied** | Station replied `Occupied` to ReserveNow |
+| `station_rejected_other` | **Station rejected** | Station replied with another non-Accepted status, or the command could not be sent |
+| `station_no_response` | **Station did not respond** | Station did not answer ReserveNow, or the station went offline before the command reached it |
+| `station_offline_at_activation` | **Station offline at activation** | The worker tried to dispatch ReserveNow at `startsAt` but the station was offline |
+| `evse_in_use_at_activation` | **EVSE in use at activation** | At `startsAt` the reserved EVSE was busy (another session or a plugged-in cable) |
+| `station_faulted_at_activation` | **Station faulted at activation** | At `startsAt` every connector of the reserved EVSE was faulted or unavailable |
+| `station_unavailable_during_hold` | **Station unavailable during the reservation** | The station went offline, or a connector reported Faulted, while the reservation was active |
+| `system_cleanup` | **System cleanup** | Station-side `ReservationStatusUpdate(Removed)` arrived (operator pressed cancel on the station, fault, etc.) |
+
+### Station Outage During a Reservation
+
+When a station goes offline, or a connector reports Faulted, while a reservation is active, the CSMS cancels the reservation as `system` with **Station unavailable during the reservation**. No fee is charged. The CSMS sends CancelReservation to the station and notifies the driver that no fee applies. A reservation that is already in use keeps running.
 
 Existing rows cancelled before this metadata was introduced have `NULL` actor and reason fields.
 
@@ -155,7 +197,7 @@ The actor that triggered the cancel decides whether the fee is even considered:
 |-------|-----------|
 | `driver` | Always evaluates the window check above. Pays the fee when inside the window. |
 | `operator` | **Opt-in.** The operator must tick **Charge cancellation fee** in the cancel dialog. Defaults to off so a typical operator-side cancel does not surprise-bill the driver. The window check still applies on top of the opt-in. |
-| `system` | **Never charges.** System paths (station rejected ReserveNow, station offline at activation time, station-side `ReservationStatusUpdate(Removed)`) always waive the fee. |
+| `system` | **Never charges.** System paths (station rejected or did not answer ReserveNow, station offline at activation time, station outage during the reservation, station-side `ReservationStatusUpdate(Removed)`) always waive the fee. |
 
 #### Charge attempt failures
 
@@ -177,16 +219,32 @@ Per-minute charge for the time the connector was held when the holder reserved b
 
 Per-tariff field: `tariffs.reservation_fee_per_minute` (per minute in the company currency, configured in the tariff editor). Applies to both OCPP 1.6 and 2.1 stations - the rate of the station's tariff for the driver is recorded when the reservation is created and multiplied by the held minutes regardless of which protocol the station speaks.
 
-The reaper job `reservation-expiry-check` runs every minute. When an `active` reservation expires WITHOUT a linked charging session and its recorded rate is not zero:
+The reaper job `reservation-expiry-check` runs every minute. A reservation that expires is charged a no-show fee only when all of these hold:
+
+- It was `active` and the station confirmed the hold (accepted ReserveNow). A hold the station never confirmed is never charged.
+- No charging session is linked to it.
+- No other driver took the held EVSE.
+- The station had no outage during the hold. An outage cancels the reservation instead (see [Station Outage During a Reservation](#station-outage-during-a-reservation)).
+- It has a driver, the recorded rate is not zero, and the driver has a default card.
+
+The fee is charged once. The expiry marks the fee as due in the same database write that expires the reservation, and the next run settles a fee that a crash left unsettled. Reconciliation resumes a charge that was started but not sent to the payment provider. A fee that stays unsettled for 24 hours is marked failed and recorded as **Fee charge failed** in the **History** tab. A station that reports the reservation expired gets the same check.
+
+The amount:
 
 ```
 holdingMinutes  = ceil((expiresAt - startsAt) / 60_000)
 amountCents     = round(holdingMinutes * ratePerMinute * 100)
 ```
 
-The rate is in the company tax basis. On the net basis the tax rate is added, on the gross basis the amount includes the tax. The gross is charged to the driver's saved card through its payment provider with idempotency key `no-show-fee-{reservationId}`. Skipped when the holder actually charged (the rate already feeds into the session cost via the tariff resolver), the reservation has no `driverId`, the rate is zero, or the driver has no default card.
+The rate is in the company tax basis. On the net basis the tax rate is added, on the gross basis the amount includes the tax. The gross is charged to the driver's saved card through its payment provider with idempotency key `no-show-fee-{reservationId}`. When the holder actually charged, the rate already feeds into the session cost via the tariff resolver.
 
-The portal shows the no-show fee before the driver reserves and on the detail page of an open reservation, under a **No-show fee** card. The amount is the holding fee per minute times the minutes from the reservation start (or its creation for an instant reservation) to its expiry, rounded up, on the terms fixed when the reservation was made. It is shown as charged, tax included, with a tax label, for example "If you do not start charging before the reservation expires, a no-show fee of €3.57 incl. 19% tax is charged to your default payment method."
+### Session Link
+
+A session starts the reservation (`active &rarr; in_use`) when the station echoes the reservation ID, or when the reservation holder starts on the station inside the window without one. The holder is the reservation's driver or token, so a portal start or an RFID start both count. A portal start by the holder links the session directly.
+
+A start by another driver never uses the holder's reservation. The CSMS records **Taken by another driver**, notifies the holder, and waives the no-show fee for that reservation.
+
+The portal shows the no-show fee before the driver reserves and on the detail page of an open reservation, under a **No-Show Fee** card. The amount is the holding fee per minute times the minutes from the reservation start (or its creation for an instant reservation) to its expiry, rounded up, on the terms fixed when the reservation was made. It is shown as charged, tax included, with a tax label, for example "If you do not start charging before the reservation expires, a no-show fee of €3.57 incl. 19% tax is charged to your default payment method."
 
 ### Free Vend Sites
 

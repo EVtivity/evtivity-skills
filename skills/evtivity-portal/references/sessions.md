@@ -73,7 +73,7 @@ The session detail page shows:
 - **Station details** - Station ID, location, connector type
 - **Start and end timestamps**
 - **Report Issue button** - Opens a new support case pre-filled with the session details (see [Support Cases](https://www.evtivity.com/docs/portal/support-cases))
-- **Fleet billing** - For a session billed to your fleet: the fleet and the state (Not invoiced yet, Invoiced to the fleet, or Paid by the fleet). The fleet invoice goes to the fleet, not to you.
+- **Fleet Billing** - For a session billed to your fleet: the fleet and the state (Not invoiced yet, Invoiced to the fleet, or Paid by the fleet). The fleet invoice goes to the fleet, not to you.
 
 ![Session detail with fleet billing](https://www.evtivity.com/screenshots/portal/session-detail-account-billing.png)
 

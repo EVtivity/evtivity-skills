@@ -27,7 +27,7 @@ Some OCPP 2.1 stations show a QR code on their display that changes over time in
 When a driver scans a dynamic QR code, the portal opens `/qr/...` and checks the password:
 
 - **Valid code**: the portal continues to the landing page of that connector, the same page a static QR code opens.
-- **Expired or invalid code**: the portal shows **QR code not valid** and does not start a session. Scan the QR code shown on the station again.
+- **Expired or invalid code**: the portal shows **QR Code Not Valid** and does not start a session. Scan the QR code shown on the station again.
 
 ![QR code not valid page](https://www.evtivity.com/screenshots/portal/qr-invalid.png)
 
@@ -74,7 +74,7 @@ Some stations are configured for free charging. On these stations:
 When the tariff requires payment:
 
 1. Tap **Pay with card** on the guest landing page.
-2. The **Guest checkout** page opens with the card form of the operator's payment provider (Stripe or Adyen). Card data goes straight to the provider.
+2. The **Guest Checkout** page opens with the card form of the operator's payment provider (Stripe or Adyen). Card data goes straight to the provider.
 3. Enter your credit or debit card number, expiration date, and CVC.
 4. Optionally enter your email address in **Email (for receipt)** to receive a receipt.
 5. The pre-authorization amount is displayed above the button: "A hold of ... will be placed on your card. You will only be charged for the energy used."

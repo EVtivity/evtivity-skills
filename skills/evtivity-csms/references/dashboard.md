@@ -70,7 +70,7 @@ profit = revenue (excl. tax) - electricity cost
 
 Profit can be negative. Today's values count sessions started today and fees charged today. Sessions billed in an earlier company currency are left out of revenue totals.
 
-Profit counts only sessions with an electricity cost. When sessions have none, the **Electricity cost missing** card among the financial cards shows how many sessions and how much revenue were left out of profit, with one row per site:
+Profit counts only sessions with an electricity cost. When sessions have none, the **Electricity Cost Missing** card among the financial cards shows how many sessions and how much revenue were left out of profit, with one row per site:
 
 - **Set electricity rates for: _site_** - the site has no electricity rate period. The row opens the site's electricity rates. Add rates, then recalculate.
 - **_n_ sessions at _site_ have no electricity cost** - the site has rates, but these sessions ended before the rates existed or outside every rate period. The link opens the sessions list filtered to those sessions. **Recalculate electricity cost** fills their cost from the site's current rates.
@@ -80,6 +80,14 @@ The card shows at most 5 sites: sites without rates first, then the sites with t
 Users who cannot edit sites do not see the card. See [Electricity Rates](https://www.evtivity.com/docs/csms/sites#electricity-rates) and [Recalculate Electricity Cost](https://www.evtivity.com/docs/csms/sites#recalculate-electricity-cost).
 
 ![Sessions without an electricity cost](https://www.evtivity.com/screenshots/csms/dashboard-cost-missing.png)
+
+## Active Insights
+
+The **Active insights** card shows below the stat cards, full width, on the admin and the operator dashboard. It lists up to five open [automatic insights](https://www.evtivity.com/docs/csms/ai-insights) of your sites, site incidents first. Click a row to open the insight, or **View all** to open the AI Insights list.
+
+![Active insights card](https://www.evtivity.com/screenshots/csms/ai-insights-dashboard.png)
+
+The card needs the `aiInsights:read` permission. It shows while automatic insights are on, with **No open insights** when none are open, and while insights are still open after they were turned off. See [Active Insights Card](https://www.evtivity.com/docs/csms/ai-insights#active-insights-card).
 
 ## Charts
 
@@ -99,6 +107,7 @@ The admin dashboard includes these chart panels:
 Operator users (non-admin) see a compact dashboard with:
 
 - One row of stat cards: total stations, online stations, active sessions, faulted stations
+- The **Active insights** card below the stat cards
 - Energy chart showing energy delivered over time
 - Station status chart showing connector distribution
 - Active sessions table with real-time updates

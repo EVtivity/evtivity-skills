@@ -30,7 +30,7 @@ Ask the user before any destructive or customer-visible action, and say what it 
 - Refunds, cancellation fees, and changes to currency, tax basis or price display.
 - Bill session (charges the saved card or prepaid balance).
 - Notification template, SMTP, Twilio or webhook changes that reach drivers.
-- Confirming AI proposals. Turning on system AI, AI workers or the MCP server.
+- Confirming AI proposals. Turning on system AI, AI workers, driver AI support or the MCP server.
 
 Never print secrets (API keys, station passwords, SMTP or provider credentials) unless the user asks for that value.
 
@@ -85,8 +85,8 @@ Each row names the reference file for the page (page id `csms/<name>`).
 | Ask AI, Explain a record | `references/ai-assistant.md` | AI button, Explain | `aiAssistant:write` |
 | Automatic insights | `references/ai-insights.md` | AI Insights | `aiInsights:read` |
 | AI proposals | `references/ai-inbox.md` | AI Inbox | `aiProposals:write` |
-| Background AI workers | `references/ai-workers.md` | Settings > AI | `settings.ai:write` |
-| AI tokens and budgets | `references/ai-usage.md` | Settings > AI > Usage | `aiUsage:read` |
+| Background AI workers | `references/ai-workers.md` | Settings > AI > Background Workers | `settings.ai:write` |
+| AI tokens and budgets | `references/ai-usage.md` | Settings > AI > Usage and Limits, Site > AI | `aiUsage:read` |
 
 Default roles: admin has all permissions, operator has operational read and write without settings or `users:write`, viewer is read only. `references/settings.md` is long: grep it for the tab or setting key.
 
@@ -114,7 +114,7 @@ Confirm: the station list shows the station online after the charger connects. O
 - **Disable Station** sends ChangeAvailability(Inoperative). Running sessions continue. It survives reboots until **Enable Station**, which also clears a failed firmware install.
 - API: `POST /v1/stations/<id>/approve`, `PATCH /v1/stations/<id>` with `{"availability":"unavailable"}` or `"available"` (`faulted` is computed and rejected with 400). Read `statusReason` and `reportedStatus` to learn why a station is unavailable or faulted.
 - A critical security event auto-disables a station when `security.autoDisableOnCritical` is on (default). Commands to an offline station return `202 COMMAND_QUEUED` and run on reconnect.
-- Security tab: rotate the password or raise the security profile. Lowering the profile of an online station is refused.
+- Security tab: rotate the password or raise the security profile. Lowering the profile of an online station is refused. Change a password only there or with `POST /v1/stations/<id>/credentials`: the OCPP command routes refuse it (`400 STATION_CREDENTIALS_ROUTE_REQUIRED`).
 
 ```bash
 curl -s "$EVTIVITY_API/v1/stations?onboardingStatus=pending" "${auth[@]}"
@@ -139,10 +139,10 @@ Confirm: the Maintenance History columns Taken Offline, Re-asserted and Restored
 
 - Drivers > Create Driver (name, email, phone, language). Emails are unique, case-insensitive (`409 DUPLICATE_EMAIL`).
 - **Invite to Driver Portal** sends a one-time link valid for 7 days (`POST /v1/drivers/<id>/portal-invite`). `GET /v1/drivers/<id>` shows `portalAccess.status`.
-- Deactivating or deleting a driver deactivates all its tokens. Reactivation does not reactivate tokens. **Generate Invoice** groups completed, uninvoiced sessions for a date range.
+- Deactivating or deleting a driver deactivates all its tokens. Reactivation does not reactivate tokens.
 - Tokens > Create Token: driver, type, value (RFID UID, 4 to 20 characters). Toggle inactive to block a card. A hard delete fails with `409 TOKEN_IN_USE` during a session. One token cannot run two sessions at once (`ConcurrentTx`).
 - The Authorize Log tab explains rejected cards (blocked, expired, concurrent_tx, no_credit).
-- Fleets > Create Fleet, then add drivers and a pricing group. A driver in several fleets gets the oldest membership's pricing. Bulk Reservations reserve one connector per station. Failed slots do not roll back the rest.
+- Fleets > Create Fleet, then add drivers and a pricing group. A driver in several fleets gets the oldest membership's pricing. Bulk Reservations do not roll back failed slots.
 - Local auth list: add and remove tokens (database only), then push. Every push sends the full list. Deactivated tokens go as `Blocked`.
 
 ### Pricing groups and tariffs (`references/pricing.md`)
@@ -165,8 +165,10 @@ Confirm: the group Schedule tab, and the station Pricing tab or `GET /v1/station
 
 - Reservations > Create Reservation: station, EVSE, driver, start and expiry. A future start is `scheduled` and sent at start time. Otherwise ReserveNow goes out now.
 - Enablement is global (`reservation.enabled`), per site and per station. Any off returns `403 RESERVATION_DISABLED`. A driver reservation needs a default card (`400 PAYMENT_METHOD_REQUIRED`).
-- Window errors: `RESERVATION_WINDOW_TOO_SHORT`, `RESERVATION_EXPIRES_TOO_SOON`, `RESERVATION_STARTS_IN_PAST`, `RESERVATION_TOO_LONG` (`reservation.maxHours`, default 3), `RESERVATION_CONFLICT`.
-- Operator cancels charge a fee only with **Charge cancellation fee** ticked, inside the window.
+- Window errors (`RESERVATION_TOO_LONG`, `RESERVATION_CONFLICT` and others): grep the reference for the code.
+- The station must accept ReserveNow. A refusal (`400 RESERVATION_REJECTED`) or no answer (`504 RESERVATION_TIMEOUT`) cancels the reservation without a fee. A no-show fee applies only to a hold the station confirmed.
+- Operator cancels charge a fee only with **Charge cancellation fee** ticked, inside the window. A failed station cancel keeps the reservation cancelled (`warning: station_cancel_failed`).
+- The reservation page shows its AI insight and **Explain** (station cancels, expiries, failed fees) while reservations are on.
 
 ### Smart charging and load management (`references/smart-charging.md`, `references/load-management.md`)
 
@@ -178,36 +180,36 @@ Confirm: push history per station (Accepted, Rejected, Failed), the Load Mgmt po
 ### Notifications and display messages (`references/notifications.md`, `references/display-messages.md`)
 
 - Set up SMTP and Twilio first (Settings > Notification) and use **Send Test**.
-- Notifications page: edit Driver and System event templates (Handlebars). Driver events have an **Active** switch per type; four access types are locked on (400 `NOTIFICATION_EVENT_REQUIRED`). System events are always on. OCPP events are off until you set a channel (email or webhook) and recipient. Webhooks to private addresses are blocked unless listed in **Allowed private webhook hosts**.
+- Notifications page: edit Driver and System event templates (Handlebars). Driver events have an **Active** switch per type (access events stay on). System events are always on. OCPP events are off until you set a channel (email or webhook) and recipient.
 - History tab: a `failed` row shows the reason.
 - Display messages (OCPP 2.1 only): Station > Display Messages. Per-state screens: **Enable Station Messages** (Settings > Integrations & Features > Messages).
 
 ### Roaming, certificates, reports (`references/roaming.md`, `references/certificates.md`, `references/reports.md`, `references/nevi-compliance.md`)
 
-- Roaming: enable it and set country code, party ID and business name in Settings > Integrations & Features. Roaming > Partners > Create Partner, share the registration token or click **Register**. Roaming > Locations: toggle **Published** per site. API only: credit a CDR with `POST /v1/ocpi/cdrs/credit`, pull a module with `POST /v1/ocpi/partners/<id>/sync/<locations|tariffs|cdrs>`. Confirm: partner status `Connected`.
-- Plug and Charge: Settings > Integrations & Features > Plug & Charge, pick Hubject, Manual or Local, **Test Connection**. While off, Certificates is hidden (routes 403).
-- Reports > Generate: Revenue, Utilization, Energy, Station Health, Sessions, Sustainability, Driver Activity or NEVI Compliance as CSV, PDF or XLSX, or on a schedule. CO2 needs a carbon region per site. NEVI needs 97% uptime, is always XLSX, excluded downtime per station: `GET /v1/nevi/excluded-downtime`.
+- Roaming: enable it and set country code, party ID and business name in Settings > Integrations & Features. Roaming > Partners > Create Partner, share the registration token or click **Register**. Roaming > Locations: toggle **Published** per site. Credit CDRs and module pulls are API only (see the reference). Confirm: partner status `Connected`.
+- Plug and Charge: Settings > Integrations & Features > Plug & Charge, pick Hubject, Manual or Local, **Test Connection**.
+- Reports > Generate: eight report types as CSV, PDF or XLSX, or on a schedule. CO2 needs a carbon region per site. NEVI needs 97% uptime and is always XLSX.
 
 ### Users and settings (`references/users.md`, `references/settings.md`)
 
 - Users > Create User: first and last name, email, mobile, role. The user gets an invitation email to set a password. Role defaults are copied, then edit on the Permissions tab.
 - New users see nothing until you grant **All sites** or specific sites under Site Access. Drivers, tokens, fleets, pricing, settings and roaming are not filtered by site access.
-- Settings tab permissions: Company Info, Marketing, Content, Sustainability `settings.system`; Notification `settings.notification`; Payment `settings.payment` (provider actions also `payments:write`); Integrations & Features `settings.integrations`; Security `settings.security`; API Keys `settings.apiKeys`.
+- Each Settings tab has its own `settings.<tab>` permission (payment provider actions also need `payments:write`).
 - Company currency is one value for the platform. Changing it does not relabel past records. API keys show the token once. Revoking is permanent.
 
 ### Firmware and station configurations (`references/firmware-updates.md`, `references/station-configurations.md`)
 
 - Firmware: Settings > Firmware Campaign > Create (name, HTTPS firmware URL, version, optional signing certificate and signature, set both or neither). Start Campaign sends UpdateFirmware to online stations. A failed install marks the station faulted until the next install or **Enable Station**.
-- Configuration templates are bound to one OCPP version: 1.6 keys (ChangeConfiguration), 2.1 component and variable (SetVariables). Push, then the CSMS refreshes and checks drift. Station > Configurations > **Refresh from Station** reads the live values. The 1.6 and 2.1 reference files are long: grep them for the key or variable.
+- Configuration templates are bound to one OCPP version: 1.6 keys (ChangeConfiguration), 2.1 component and variable (SetVariables). Push, then the CSMS checks drift. The 1.6 and 2.1 reference files are long: grep them for the key or variable.
 
 ### More pages
 
 - Free vend (`references/free-vend.md`): Site > Free Vend toggle. Any token is accepted, payment is skipped, and config templates go to online stations. Turning it off does not revert station configuration: edit or remove the generated templates.
-- Sessions and refunds (`references/sessions.md`): filters by status (also **Manual billing**), station, site, driver and date. Refund from the Payment tab on captured payments (`POST /v1/sessions/<id>/refund`). A `faulted` session with stopped reason `EndRequestFailed` (Session End Failed alert) is not billed: Details > Billing > **Bill session** (`POST /v1/sessions/<id>/rebill`). Uncharged ones become **Manual billing** (collect outside the platform). Payment provider detail: evtivity-integrations.
+- Sessions and refunds (`references/sessions.md`): Refund from the Payment tab on captured payments (`POST /v1/sessions/<id>/refund`). A `faulted` session with stopped reason `EndRequestFailed` (Session End Failed alert) is not billed: Details > Billing > **Bill session** (`POST /v1/sessions/<id>/rebill`). Uncharged ones become **Manual billing** (collect outside the platform). Payment provider detail: evtivity-integrations.
 - Access logs (`references/access-logs.md`): tabs CSMS, Portal, API, Workers. Each entity has a History tab, the global audit page is `/audit` (`GET /v1/audit`, `audit:read`). Retention: `logs.*.retentionDays`.
-- Station images (`references/station-images.md`): upload (10 MB max, needs S3), main image, tags, captions, driver-visible flag.
-- Support cases (`references/support-cases.md`): public messages reach the driver, internal notes do not. Refund a linked session from the case (`POST /v1/support-cases/<id>/refund`). AI Draft never sends.
-- AI: off until turned on in Settings > AI. A change runs only after a signed-in user confirms it (API keys get `AI_CONFIRMATION_REQUIRES_SESSION`).
+- Station images (`references/station-images.md`): upload needs S3 (10 MB max).
+- Support cases (`references/support-cases.md`): public messages reach the driver, internal notes do not. Refund a linked session from the case (`POST /v1/support-cases/<id>/refund`). AI Draft never sends. Driver AI support (off by default): a case the driver sent to the AI is **With the AI**, hidden from the default list and counts until it reaches the team. Filter by **Status** or **AI State**. The **Driver Consent** card shows what the driver allowed.
+- AI: off until turned on. Settings > AI has 8 tabs: Providers and Keys, Assistant, Support Drafts, Driver Support, Automatic Insights, Background Workers, MCP, Usage and Limits (link: `/settings?tab=ai&sub=<id>`, ids in `references/settings.md`). Per-site budget and the insights switch: Site > AI. The dashboard shows **Active insights** below the stat cards. A change runs only after a signed-in user confirms it (API keys get `AI_CONFIRMATION_REQUIRES_SESSION`).
 - Conformance testing (`references/conformance-testing.md`): Settings > Conformance > **Run Tests**. Command line runner and results: evtivity-conformance.
 
 ## References

@@ -16,7 +16,7 @@ To watch a station:
 
 1. Open the Station Detail page for any charging station.
 2. If no connector is currently available, a **Notify me when free** button appears above Report Issue.
-3. Tap **Notify me when free**. The button changes to **Remove from Watching** to confirm. Tap it again to stop watching.
+3. Tap **Notify me when free**. The button changes to **Remove From Watching** to confirm. Tap it again to stop watching.
 
 The **Notify me when free** button is shown only when the station has no available connector. If a connector is already free, the button is hidden because there is nothing to wait for and you can start charging right away.
 

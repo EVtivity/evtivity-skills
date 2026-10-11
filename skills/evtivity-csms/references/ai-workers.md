@@ -16,9 +16,9 @@ Every worker is off by default.
 
 | Job | Runs | What it does | Proposes |
 |-----|------|--------------|----------|
-| **Nightly network summary** | Daily at 05:30 | For each site with activity, compares the last 24 hours with the daily average of the 7 days before: stations online, offline, and faulted, sessions, failed sessions, refused authorizations, and alerts. Writes a short summary per site and one summary of the whole network. | A soft reset for up to 3 online stations per site that have been faulted for more than 6 hours |
-| **Stuck sessions** | Every 15 minutes | Finds active sessions that stopped reporting: no meter values or transaction events for the idle time, or on a station that is offline or a connector that reports Available, silent for 15 minutes. | A stop of the session, in the OCPP version of the station |
-| **Tariff anomalies** | Daily at 06:00 | Finds sessions billed nothing on a priced tariff, station costs that differ from the CSMS cost, prices per kWh more than 3 times the site's 30-day median, and sessions priced with an inactive tariff. | Nothing. Findings only |
+| **Nightly Network Summary** | Daily at 05:30 | For each site with activity, compares the last 24 hours with the daily average of the 7 days before: stations online, offline, and faulted, sessions, failed sessions, refused authorizations, and alerts. Writes a short summary per site and one summary of the whole network. | A soft reset for up to 3 online stations per site that have been faulted for more than 6 hours |
+| **Stuck Sessions** | Every 15 minutes | Finds active sessions that stopped reporting: no meter values or transaction events for the idle time, or on a station that is offline or a connector that reports Available, silent for 15 minutes. | A stop of the session, in the OCPP version of the station |
+| **Tariff Anomalies** | Daily at 06:00 | Finds sessions billed nothing on a priced tariff, station costs that differ from the CSMS cost, prices per kWh more than 3 times the site's 30-day median, and sessions priced with an inactive tariff. | Nothing. Findings only |
 
 Times follow the system timezone. Summaries and findings appear as [automatic insights](https://www.evtivity.com/docs/csms/ai-insights): **Site summary**, **Network summary**, and **Tariff anomaly**. The network summary is visible only to users with access to every site.
 
@@ -35,8 +35,8 @@ Tariff anomalies never propose anything: changes to prices, billing, and payment
 
 ## Turn On a Worker
 
-1. Turn on **Turn on system-initiated AI** in **Settings > AI**, under **Automatic insights and workers**. Workers use the same provider and model as automatic insights.
-2. Under **Background AI workers**, turn on the jobs you want: **Nightly network summary**, **Stuck sessions**, and **Tariff anomalies**.
+1. Open **Settings > AI > Automatic Insights** and turn on **Turn on system-initiated AI** in the **Automatic Insights and Workers** card. Workers use the same provider and model as automatic insights.
+2. Open **Settings > AI > Background Workers** and turn on the jobs you want: **Nightly Network Summary**, **Stuck Sessions**, and **Tariff Anomalies**.
 3. Optionally set **Proposal lifetime (hours)** (24 by default), the time a network summary proposal stays open.
 4. Click **Save**.
 
@@ -47,6 +47,12 @@ Each AI request of a worker counts against the site's daily token budget (**Toke
 ## Data Sent to the AI Provider
 
 A worker sends the facts it found to the selected provider: per-site counts of stations, sessions, refusals, and alerts, the stuck session's station and duration, and the tariff findings. This data leaves your deployment.
+
+> **Note:**
+>
+> **What the AI Provider Receives**
+>
+> The AI provider never receives stored credentials, such as passwords, API keys, secrets and station passwords. Card numbers and IBANs are cut to their last 4 characters. Support drafts, automatic insights, background workers and driver support also mask email addresses and phone numbers, and hash or shorten driver token ids. The assistant sends driver contact details as stored, only to users allowed to read them. Text you type and text files you attach are checked for keys and card numbers. Images and PDFs you attach are sent as they are.
 
 ## Notes
 

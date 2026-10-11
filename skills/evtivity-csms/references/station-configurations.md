@@ -113,6 +113,8 @@ A template is a named bundle of configuration values plus a target filter. Each 
 
 You can preview the matching station count before pushing.
 
+A template cannot hold a station password. Creating, editing, or pushing a template with a credential variable, such as `SecurityCtrlr.BasicAuthPassword` (2.1) or `AuthorizationKey` (1.6), fails with `400 STATION_CREDENTIALS_ROUTE_REQUIRED`. Change passwords on the station's **Security** tab instead (see [Station passwords](https://www.evtivity.com/docs/csms/stations#station-passwords)).
+
 ![Create configuration template](https://www.evtivity.com/screenshots/csms/station-configurations-create.png)
 
 Once a template is created, the detail page shows the variables and the target filter, and gives you the matching-station preview and push action.

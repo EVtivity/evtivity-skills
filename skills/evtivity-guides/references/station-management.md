@@ -108,6 +108,8 @@ EVtivity supports four OCPP security profiles:
 
 Configure the security profile per station. TLS + Basic Auth and Mutual TLS require certificate management.
 
+Change a station password on the station's **Security** tab, or with `POST /v1/stations/{id}/credentials`. For a connected station, the CSMS stores the new password only after the station accepts it. See [Station passwords](https://www.evtivity.com/docs/csms/stations#station-passwords).
+
 ## Free Vend
 
 Free vend allows a site to dispense energy without payment or authorization. Enable it at the site level. Three enforcement layers ensure it works end-to-end:
@@ -123,4 +125,4 @@ The CSMS maintains a read-only view of each station's OCPP configuration variabl
 - **OCPP 2.1** - Sends a `GetBaseReport` request. The station responds with `NotifyReport` messages containing all variables.
 - **OCPP 1.6** - Sends `GetConfiguration` requests. The station returns its key-value configuration.
 
-Configuration values are displayed on the station detail page but cannot be edited directly from the CSMS UI. Use `ChangeConfiguration` (1.6) or `SetVariables` (2.1) OCPP commands to modify station settings.
+Configuration values are displayed on the station detail page but cannot be edited directly from the CSMS UI. Use `ChangeConfiguration` (1.6) or `SetVariables` (2.1) OCPP commands to modify station settings. These commands refuse a station password with `400 STATION_CREDENTIALS_ROUTE_REQUIRED`.
