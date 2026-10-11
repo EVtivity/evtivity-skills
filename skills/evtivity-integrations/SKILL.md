@@ -220,3 +220,4 @@ Generated from the website docs. Never edit them. The first line of each file is
 - `references/test-payment-provider.md`: simulated provider, test cards, sync and async modes.
 - `references/webhooks.md`: incoming payment webhooks, outgoing OCPP event webhooks, SSE streams.
 - `references/energy-management.md`: load management, smart charging profiles, carbon tracking.
+- `references/mcp-server.md`: MCP server for AI agents (`POST /v1/mcp`, API key with `aiMcp:*`), off by default. Writes become AI Inbox proposals.

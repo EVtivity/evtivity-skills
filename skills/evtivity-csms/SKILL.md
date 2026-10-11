@@ -13,7 +13,7 @@ metadata:
 
 Not for: Stripe, Adyen or payment webhooks (use evtivity-integrations), scripts and the route catalog (use evtivity-api), end-to-end procedures such as onboarding a station (use evtivity-guides), a broken stack (use evtivity-troubleshoot).
 
-The CSMS is the operator dashboard of EVtivity. Every dashboard action calls the REST API, so each workflow also works with curl. The website docs are the source of truth: read the reference for any detail not covered here. Do not guess.
+Every dashboard action calls the REST API, so each workflow also works with curl. The references (website docs) are the source of truth: read them for any detail not covered here. Do not guess.
 
 ## Confirm before you act
 
@@ -81,7 +81,11 @@ Each row names the reference file for the page (page id `csms/<name>`).
 | System configuration, API keys | `references/settings.md` | Settings > tab | `settings.<tab>:write` |
 | Request and worker logs | `references/access-logs.md` | Access Logs | `logs:read` |
 | OCTT conformance runs | `references/conformance-testing.md` | Settings > Conformance | `conformance:write` |
-| Natural-language questions | `references/ai-assistant.md` | Chatbot AI button | `settings.ai:write` to configure |
+| Ask AI, Explain a record | `references/ai-assistant.md` | AI button, Explain | `aiAssistant:write` |
+| Automatic insights | `references/ai-insights.md` | AI Insights | `aiInsights:read` |
+| AI proposals | `references/ai-inbox.md` | AI Inbox | `aiProposals:write` |
+| Background AI workers | `references/ai-workers.md` | Settings > AI | `settings.ai:write` |
+| AI tokens and budgets | `references/ai-usage.md` | Settings > AI > Usage | `aiUsage:read` |
 
 Default roles: admin has all permissions, operator has operational read and write without settings or `users:write`, viewer is read only. `references/settings.md` is long: grep it for the tab or setting key.
 
@@ -167,7 +171,6 @@ Confirm: the group Schedule tab, and the station Pricing tab or `GET /v1/station
 
 - Smart charging: Settings > Smart Charging > Create. Pick a purpose, Absolute or Recurring, stack level, periods and a target filter. Check **Matching Stations**, then **Push to Stations**.
 - Load management: Site > Load Mgmt. Add panels and circuits, assign stations to circuits, add unmanaged loads. Toggle **Enable Load Management**, pick Equal Share or Priority Based (1 to 10, default 5). Stations without a circuit are not managed.
-- Load management uses ChargingStationExternalConstraints every 10 seconds. The station applies the lowest limit of all profiles.
 
 Confirm: push history per station (Accepted, Rejected, Failed), the Load Mgmt power bar and allocation history, Station > Charging Profiles > View Composite Schedule.
 
@@ -189,7 +192,6 @@ Confirm: push history per station (Accepted, Rejected, Failed), the Load Mgmt po
 - Users > Create User: first and last name, email, mobile, role. The user gets an invitation email to set a password. Role defaults are copied, then edit on the Permissions tab. Users cannot edit their own permissions.
 - New users see nothing until you grant **All sites** or specific sites under Site Access. Drivers, tokens, fleets, pricing, settings and roaming are not filtered by site access.
 - Settings tab permissions: Company Info, Marketing, Content, Sustainability `settings.system`; Notification `settings.notification`; Payment `settings.payment` (provider actions also `payments:write`); Integrations & Features `settings.integrations`; Security `settings.security`; API Keys `settings.apiKeys`.
-- S3: leave both access key fields blank to use the AWS credential chain (task or instance role). One field alone keeps S3 off.
 - Company currency is one value for the platform. Changing it does not relabel past records. API keys show the token once. Revoking is permanent.
 
 ### Firmware and station configurations (`references/firmware-updates.md`, `references/station-configurations.md`)
@@ -202,9 +204,9 @@ Confirm: push history per station (Accepted, Rejected, Failed), the Load Mgmt po
 - Free vend (`references/free-vend.md`): Site > Free Vend toggle. Any token is accepted, payment is skipped, and config templates go to online stations. Turning it off does not revert station configuration: edit or remove the generated templates.
 - Sessions and refunds (`references/sessions.md`): filters by status (also **Manual billing**), station, site, driver and date. Refund from the Payment tab on captured payments (`POST /v1/sessions/<id>/refund`). A `faulted` session with stopped reason `EndRequestFailed` (Session End Failed alert) is not billed: Details > Billing > **Bill session** (`POST /v1/sessions/<id>/rebill`). Uncharged ones become **Manual billing** (collect outside the platform). Payment provider detail: evtivity-integrations.
 - Access logs (`references/access-logs.md`): tabs CSMS, Portal, API, Workers. Each entity has a History tab, the global audit page is `/audit` (`GET /v1/audit`, `audit:read`). Retention: `logs.*.retentionDays`.
-- Station images (`references/station-images.md`): upload (10 MB max, needs S3 configured), set the main image, tag, caption, mark driver-visible.
+- Station images (`references/station-images.md`): upload (10 MB max, needs S3), main image, tags, captions, driver-visible flag.
 - Support cases (`references/support-cases.md`): public messages reach the driver, internal notes do not. Refund a linked session from the case (`POST /v1/support-cases/<id>/refund`). AI Draft never sends.
-- AI assistant (`references/ai-assistant.md`): enable in Settings > AI (Anthropic, OpenAI or Gemini). It acts with the user's permissions and asks before changes.
+- AI: off until turned on in Settings > AI. A change runs only after a signed-in user confirms it (API keys get `AI_CONFIRMATION_REQUIRES_SESSION`).
 - Conformance testing (`references/conformance-testing.md`): Settings > Conformance > **Run Tests**. Command line runner and results: evtivity-conformance.
 
 ## References
