@@ -45,7 +45,7 @@ EVtivity checks the budgets before each AI request. A request that is already ru
 - The assistant and support drafts show an error: `AI_BUDGET_EXCEEDED` for the user's daily budget, `AI_MONTHLY_BUDGET_EXCEEDED` for a company or site monthly budget.
 - A driver support case goes to the support team without an automatic answer. Its AI state reason is **AI budget reached**.
 - Automatic insights are stored with their rule-based fields only, without an AI-written summary.
-- Background workers store their findings and proposals without the AI-written text.
+- Background workers store their findings and suggested actions without the AI-written text.
 
 ## Usage and Limits Tab
 
@@ -53,10 +53,10 @@ Open **Settings > AI** and select the **Usage and Limits** tab. It starts with t
 
 ![AI usage tab](https://www.evtivity.com/screenshots/csms/settings-ai-usage.png)
 
-- **Month**: the month to show. The **Period** shows its start and end.
+- **Month**: a dropdown of the last 24 months. The **Period** shows the start and end of the month you pick.
 - **Company**: the company's tokens this month against its budget.
-- **Sites**: tokens per site against each site's budget.
-- **Assistant (not site-specific)**: tokens that belong to no site, such as assistant and Explain tokens.
+- **Sites**: tokens per site against each site's budget, 10 sites per page.
+- **Assistant (not site-specific)**: the last row of the **Sites** list, tokens that belong to no site, such as assistant and Explain tokens.
 - **By surface**: tokens per surface (Assistant, Support drafts, Driver support, Insights, Insight translations, Background workers), split into input, cached input, cache writes, output, and reasoning tokens.
 - **Top users**: the users with the most tokens this month. Driver support tokens count in the company, site, and surface totals, but drivers are never listed or named here.
 

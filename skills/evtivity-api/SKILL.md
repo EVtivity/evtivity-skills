@@ -93,7 +93,7 @@ Permissions are `resource:action`, with `read` and `write`. `write` includes `re
 | OCPI roaming, certificates and Plug and Charge, conformance runs | `roaming:*`, `certificates:*`, `conformance:*` |
 | Notifications, support cases, users and roles | `notifications:*`, `support:*`, `users:*` |
 | Audit log, access logs | `audit:*`, `logs:*` |
-| AI assistant, insights, proposals, usage, MCP | `aiAssistant:*`, `aiInsights:*`, `aiProposals:*`, `aiUsage:read`, `aiMcp:*` |
+| AI assistant, insights and insight actions, usage, MCP | `aiAssistant:*`, `aiInsights:*`, `aiUsage:read`, `aiMcp:*` |
 | Settings tabs | `settings.system`, `settings.notification`, `settings.payment`, `settings.integrations`, `settings.security`, `settings.apiKeys`, `settings.firmware`, `settings.stationConfig`, `settings.smartCharging`, `settings.ai`, `settings.conformance` (each `:read` / `:write`) |
 
 `*` stands for `read` and `write`. Give a script's API key only the permissions it needs.
@@ -187,7 +187,7 @@ curl -s "${H[@]}" -X POST "$EVTIVITY_API/v1/sessions/<sessionId>/rebill"
 
 ## AI routes and MCP
 
-The AI routes (tags AI Insights, AI Proposals, AI Usage and the assistant conversations) take API keys like any route. An API key reads proposals and can reject a chat action, but never confirms a chat action or a proposal: 403 `AI_CONFIRMATION_REQUIRES_SESSION`. Confirmation needs a signed-in dashboard session. AI agents connect through the MCP server with an API key that holds `aiMcp:read` (evtivity-integrations skill, MCP server workflow).
+The AI routes (tags AI Insights, AI Usage and the assistant conversations) take API keys like any route. An API key reads insights and their actions and can reject a chat action, but never confirms or rejects an insight action and never confirms a chat action: 403 `AI_CONFIRMATION_REQUIRES_SESSION`. Confirmation needs a signed-in dashboard session. AI agents connect through the MCP server with an API key that holds `aiMcp:read`; MCP writes run under the key only while `ai.mcp.allowWrites` is on (evtivity-integrations skill, MCP server workflow).
 
 ## Real-time events
 

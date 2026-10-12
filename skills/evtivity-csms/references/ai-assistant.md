@@ -10,8 +10,7 @@ The AI assistant answers questions about your charging network in plain language
 
 The assistant is one of the AI features of the CSMS:
 
-- [Automatic insights](https://www.evtivity.com/docs/csms/ai-insights): root-cause notes about offline or faulted stations, failed sessions, refused authorizations, and reservation problems.
-- [AI Inbox](https://www.evtivity.com/docs/csms/ai-inbox): actions proposed by background workers and MCP clients, waiting for your confirmation.
+- [Automatic insights](https://www.evtivity.com/docs/csms/ai-insights): root-cause notes about offline or faulted stations, failed sessions, refused authorizations, and reservation problems, and background worker suggestions with an action you confirm.
 - [Background AI workers](https://www.evtivity.com/docs/csms/ai-workers): optional scheduled jobs that summarize the network and find stuck sessions and tariff anomalies.
 - [AI usage and budgets](https://www.evtivity.com/docs/csms/ai-usage): token usage and budgets.
 - [MCP server](https://www.evtivity.com/docs/integrations/mcp-server): connects AI agents to EVtivity with an API key.
@@ -76,7 +75,7 @@ Example questions:
 | Enter | Send the message |
 | Shift+Enter | Add a line |
 | Up | Put your last message back in the message box (when the box is empty) |
-| Esc | Stop the answer, or close the panel when nothing is streaming |
+| Esc | Stop the answer, or close the panel when nothing is streaming. A click outside the panel also closes it |
 
 ## Confirm Changes
 
@@ -104,13 +103,17 @@ An **Explain** button opens the assistant about one record, with the record's da
 
 The button needs the assistant to be turned on and the `aiAssistant:write` permission.
 
+In a table row, such as the authorize log, the button is an icon. When the record has a current [automatic insight](https://www.evtivity.com/docs/csms/ai-insights), the icon is a light bulb.
+
 1. Click **Explain**.
-2. When a current [automatic insight](https://www.evtivity.com/docs/csms/ai-insights) exists for the record, the panel shows it (**Showing the latest automatic insight**). This uses no tokens. Click **Ask a follow-up** to ask about it.
-3. Without an insight, or after **Ask a follow-up**, the message box holds a prepared question, such as "Why did this session fail, and what should I do?". Edit it if you like, then send it.
+2. The panel opens with a context card for the record. It looks the same for every record type: **About** and the record, such as the station ID, the session's transaction ID, or the reservation number. When the record has a current insight, the card also shows **Latest automatic insight** with the insight's headline, likely cause, and suggested fixes, and a **View insight** link. The card ends with the note: "The assistant reads this record's key facts, recent events and latest insight. Nothing is sent until you send your question."
+3. The message box holds a prepared question, such as "Why did this session fail, and what should I do?". Edit it if you like, then send it. Nothing is sent to the AI provider, and no tokens are used, until you send it.
 
-![Explain with an automatic insight](https://www.evtivity.com/screenshots/csms/ai-explain.png)
+![Explain with its context card](https://www.evtivity.com/screenshots/csms/ai-explain.png)
 
-While the conversation is about a record, the message box shows **About** and the record. Each answer reads the record's current data, its recent events, and its latest insight. **New chat** starts a conversation without the record.
+The context card stays while the conversation is about the record, also when you open the conversation again from the history. Each answer reads the record's key facts, its recent events, and its latest insight. **New chat** starts a conversation without the record.
+
+Press Esc or click outside the panel to close it. Esc first stops an answer that is still streaming. A dialog open above the panel, such as a confirmation, takes Esc and clicks first.
 
 EVtivity checks your access to the record when the conversation starts and before every answer. When you lose access to the record, the conversation keeps its earlier answers but refuses new questions (`AI_CONTEXT_NOT_FOUND`). The same error answers a record that does not exist or that you cannot see.
 

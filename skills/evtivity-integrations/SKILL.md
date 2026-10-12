@@ -192,13 +192,13 @@ Confirm: `GET /v1/sites/$SITE_ID/load-management` and `/load-management/history`
 Connects an MCP client (an AI agent with its own model) to EVtivity. Off by default.
 
 1. Confirm with the user, then turn on **Turn on the MCP server** in Settings > AI > MCP.
-2. Create an API key with `aiMcp:read` plus the read permissions the agent needs. Add `aiMcp:write` and `stations:read` only when the agent may propose OCPP commands.
+2. Create an API key with `aiMcp:read` plus the read permissions the agent needs. For OCPP commands, also turn on **Allow Writes** (off by default) and add `aiMcp:write`, `stations:read` and the command's permission.
 3. Point the client at the endpoint the MCP tab shows, with `Authorization: Bearer <key>`. Pick toolsets with `?toolsets=`.
 
 Rules that trip agents:
 
-- Writes never run over MCP. They become proposals that the key's own user confirms in the CSMS AI Inbox. Clients without URL elicitation get `pending_approval` and poll `get_ai_proposal`.
-- A browser `Origin` must be in **Allowed origins**, else 403. An API key never confirms (`AI_CONFIRMATION_REQUIRES_SESSION`).
+- With **Allow Writes** off, write tools are hidden and calls answer `writes_disabled`; a key without `aiMcp:write` gets `forbidden`. With it on, writes run at once, with no approval, under the key's permissions and sites. Confirm with the user before turning it on.
+- A browser `Origin` must be in **Allowed origins**, else 403. An API key never confirms an assistant or insight action (`AI_CONFIRMATION_REQUIRES_SESSION`).
 - Over the per-key limits: 429 with `AI_MCP_RATE_LIMITED` and `Retry-After`.
 
 ### 12. Troubleshoot a payment failure
@@ -234,4 +234,4 @@ Generated from the website docs. Never edit them. The first line of each file is
 - `references/test-payment-provider.md`: simulated provider, test cards, sync and async modes.
 - `references/webhooks.md`: incoming payment webhooks, outgoing OCPP event webhooks, SSE streams.
 - `references/energy-management.md`: load management, smart charging profiles, carbon tracking.
-- `references/mcp-server.md`: MCP server for AI agents (`POST /v1/mcp`, API key with `aiMcp:*`), off by default. Writes become AI Inbox proposals.
+- `references/mcp-server.md`: MCP server for AI agents (`POST /v1/mcp`, API key with `aiMcp:*`), off by default. Writes run only with **Allow Writes** on, under the key.

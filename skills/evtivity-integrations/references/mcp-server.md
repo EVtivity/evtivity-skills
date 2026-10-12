@@ -2,15 +2,15 @@ Generated from https://www.evtivity.com/docs/integrations/mcp-server. Do not edi
 
 # MCP Server
 
-Connect AI agents to EVtivity over the Model Context Protocol with an API key. Reads run under the key's permissions, and every change waits for your approval in the AI Inbox.
+Connect AI agents to EVtivity over the Model Context Protocol with an API key. Every call runs under the key's permissions and sites. Writes run only when you allow them.
 
 ## Overview
 
-EVtivity includes a Model Context Protocol (MCP) server. An MCP client, such as an AI agent or a desktop assistant, connects to it with an EVtivity API key and uses the same tools as the [AI assistant](https://www.evtivity.com/docs/csms/ai-assistant): it reads stations, sessions, sites, tokens, and automatic insights, and it can ask for OCPP commands.
+EVtivity includes a Model Context Protocol (MCP) server. An MCP client, such as an AI agent or a desktop assistant, connects to it with an EVtivity API key and uses the same tools as the [AI assistant](https://www.evtivity.com/docs/csms/ai-assistant): it reads stations, sessions, sites, tokens, and automatic insights, and, when you allow writes, it can send OCPP commands.
 
 The client brings its own AI model. EVtivity makes no AI requests for MCP calls, so they use no AI tokens.
 
-Writes never run directly. An MCP change becomes a proposal that the same user approves in the CSMS [AI Inbox](https://www.evtivity.com/docs/csms/ai-inbox).
+Clients only read by default. Writes run only while **Allow Writes** is on (see [Writes](#writes)).
 
 The MCP server is off by default.
 
@@ -36,20 +36,20 @@ The server uses the Streamable HTTP transport and is stateless, so any API insta
 
 ### Protocol Versions
 
-- **2026-07-28**: the current MCP version, with URL elicitation for approvals.
-- **2025-11-25** and other 2025 clients: served without sessions. These clients get approvals by polling (see [Approval Without URL Elicitation](#approval-without-url-elicitation)).
+- **2026-07-28**: the current MCP version.
+- **2025-11-25** and other 2025 clients: served without sessions, with the same tools and results.
 
 ### Tested Clients
 
-The official MCP TypeScript client (`@modelcontextprotocol/client` 2.3.1) is tested against the server as a 2026-07-28 client and as a 2025-11-25 client: it lists tools, reads, and asks for a change.
+The official MCP TypeScript client (`@modelcontextprotocol/client` 2.3.1) is tested against the server as a 2026-07-28 client and as a 2025-11-25 client: it lists tools, reads, and runs a write with **Allow Writes** on.
 
 ## Set Up
 
-1. In **Settings > AI > MCP**, turn on **Turn on the MCP server** and click **Save**.
+1. In **Settings > AI > MCP**, turn on **Turn on the MCP server**. Turn on **Allow Writes** only if clients should send station commands. Click **Save**.
 2. In **Settings > API Keys**, create an API key with these permissions:
    - `aiMcp:read` to use the MCP server and its read tools.
-   - `aiMcp:write` and `stations:read` to propose changes. Without them, the client sees no write tools.
-   - `aiProposals:read` for a client that polls `get_ai_proposal` for the result of a change. Without it, the poll answers 403.
+   - `aiMcp:write` to use the write tools while **Allow Writes** is on. Without it, the client sees no write tools.
+   - The permission of each command the client should send, and `stations:read` so EVtivity can match the command to the station's OCPP version.
    - The permissions of the data the client should read, such as `stations:read` and `sessions:read`.
 3. Configure your MCP client with the endpoint URL and the header `Authorization: Bearer <API key>`. The format of the client configuration depends on the client.
 
@@ -69,7 +69,7 @@ The server offers a curated set of the assistant's tools. Users and permissions,
 
 Tools are grouped by API category. By default, the server lists these toolsets:
 
-`ai-insights`, `ai-proposals`, `sessions`, `sites`, `stations`, `tokens`
+`ai-insights`, `sessions`, `sites`, `stations`, `tokens`
 
 Pick other toolsets with the `toolsets` query parameter:
 
@@ -85,37 +85,19 @@ The tool list is the same for every key. A tool the key has no permission for re
 
 A read tool runs the API request as the key's user. Secrets are removed and sensitive values are masked before the result goes to the client. Each result has a text part and a `structuredContent` part with `httpStatus` and `data`.
 
-### Writes Become Proposals
+### Writes
 
-The write tools are the OCPP command tools, such as reset, unlock, or stop a transaction. A write call never runs the command. Instead:
+The write tools are the OCPP command tools, such as reset, unlock, or stop a transaction. Station password and security profile commands are never offered.
+
+Writes are off by default. While **Allow Writes** is off, the client sees no write tools, and a call to one answers `writes_disabled`. A key without `aiMcp:write` sees no write tools either, and a call to one answers `forbidden`.
+
+While **Allow Writes** is on, a write call runs at once, with no approval step:
 
 1. EVtivity checks the arguments and the station. When the tool is for the other OCPP version than the station uses, EVtivity maps it to the station's version. A station outside the user's sites is refused as not found.
-2. EVtivity creates a proposal in the AI Inbox for the same user. Sending the same call again returns the open proposal instead of a second one.
-3. The user opens the proposal in the CSMS and clicks **Confirm** or **Reject**. Only the user whose key made the request can see and approve it.
-4. The command runs only after **Confirm**, as that user.
+2. The command runs as the key's user, with that user's permissions and site access, like an API call with the key. A key without the command's permission gets the API's 403 as an error result.
+3. The result returns to the client. A write keeps running when the client disconnects, so its result and audit entries are complete.
 
-A proposal expires after 30 minutes by default (**Time to approve an MCP change (minutes)**).
-
-### Approval With URL Elicitation
-
-A 2026-07-28 client that supports URL elicitation receives an `input_required` result with:
-
-- a link to the proposal's approval page, `https://<CSMS host>/ai/inbox/<proposalId>`. The link holds no token or personal data.
-- a sealed `requestState`.
-
-After the user confirms or rejects, the client sends the call again with the `requestState`. The server then returns the command's result once. A later retry with the same state returns `AI_PROPOSAL_ALREADY_DECIDED`. A rejected proposal returns `AI_PROPOSAL_ALREADY_DECIDED`, an expired one `AI_PROPOSAL_EXPIRED`, and one whose condition no longer holds `AI_PROPOSAL_STALE`.
-
-A form answer from the client, such as "accept", never confirms a change. Only the user's click in the CSMS does.
-
-### Approval Without URL Elicitation
-
-Other clients receive a normal result:
-
-```json
-{ "status": "pending_approval", "proposalId": "...", "approveIn": "...", "expiresAt": "..." }
-```
-
-The client then polls the `get_ai_proposal` tool (in the `ai-proposals` toolset) until the proposal is decided. The key needs `aiProposals:read` for this tool.
+Turn on **Allow Writes** only for clients you trust to change stations, and give their keys only the permissions and sites they need.
 
 ## Limits
 
@@ -128,20 +110,20 @@ Every request counts once. Over a limit, the server answers 429 with a `Retry-Af
 
 ## Errors
 
-Errors of a tool call appear as an error result with a text and `structuredContent.code`. The code is an [API error code](https://www.evtivity.com/api-reference/error-codes) or a refusal reason such as `invalid_arguments`, `station_not_found`, or `unavailable`.
+Errors of a tool call appear as an error result with a text and `structuredContent.code`. The code is an [API error code](https://www.evtivity.com/api-reference/error-codes) or a refusal reason such as `writes_disabled`, `forbidden`, `invalid_arguments`, `station_not_found`, or `unavailable`.
 
 ## Audit
 
-EVtivity logs every tool call with the key, the user, the client name and version, the tool, the redacted arguments, the status, and the duration. Audit entries written by MCP reads, and by proposals confirmed from MCP, are marked as made through MCP. Call logs are deleted after the conversation retention period of **Settings > AI > Usage and Limits** (30 days by default), and never sooner than 3 days.
+EVtivity logs every tool call with the key, the user, the client name and version, the tool, the redacted arguments, the status, and the duration. Audit entries written by MCP reads and writes are marked as made through MCP, with the API key as the actor. Call logs are deleted after the conversation retention period of **Settings > AI > Usage and Limits** (30 days by default), and never sooner than 3 days.
 
 ## Settings
 
 | Setting | Key | Default |
 |---------|-----|---------|
 | **Turn on the MCP server** | `ai.mcp.enabled` | Off |
+| **Allow Writes** | `ai.mcp.allowWrites` | Off |
 | **Calls per API key per minute** | `ai.mcp.rateLimitPerMinute` | 60 |
 | **Calls per API key per day** | `ai.mcp.dailyCallsPerKey` | 5,000 |
-| **Time to approve an MCP change (minutes)** | `ai.mcp.proposalTtlMinutes` | 30 (5 to 1,440) |
 | **Allowed origins** | `ai.mcp.allowedOrigins` | Empty (up to 50 http or https origins, one per line, without a path) |
 
 When the MCP server is off, `/v1/mcp` answers 404.
@@ -149,5 +131,5 @@ When the MCP server is off, `/v1/mcp` answers 404.
 ## Notes
 
 - Behind a reverse proxy, turn off response buffering for `/v1/mcp` so streamed answers arrive at once. The server sends `X-Accel-Buffering: no`.
-- API keys cannot confirm assistant actions or proposals (`AI_CONFIRMATION_REQUIRES_SESSION`). Approval always needs a signed-in CSMS session.
+- API keys cannot confirm assistant actions or insight actions (`AI_CONFIRMATION_REQUIRES_SESSION`). MCP writes need no confirmation: the key's permissions decide.
 - OAuth sign-in for MCP clients is not available. Use API keys.

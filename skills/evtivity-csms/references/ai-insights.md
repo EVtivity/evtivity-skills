@@ -2,11 +2,13 @@ Generated from https://www.evtivity.com/docs/csms/ai-insights. Do not edit.
 
 # Automatic Insights
 
-Short root-cause notes with suggested fixes for offline or faulted stations, failed sessions, refused authorizations, and reservation problems.
+Short root-cause notes with suggested fixes for offline or faulted stations, failed sessions, refused authorizations, and reservation problems, and background worker suggestions with an action you confirm.
 
 ## Overview
 
 An automatic insight is a short note about a problem on your network: what probably caused it, how sure the analysis is, how far it reaches, and what to do next. EVtivity creates insights on its own when a station goes offline or reports a fault, when a session fails, when a station refuses a token, or when a reservation fails. You do not have to ask.
+
+Some insights also carry an action that a [background AI worker](https://www.evtivity.com/docs/csms/ai-workers) suggests, such as stopping a stuck session. The action runs only when you confirm it (see [Insight Actions](#insight-actions)).
 
 Automatic insights are off by default. An administrator turns them on in **Settings > AI > Automatic Insights** (see [Turn On Automatic Insights](#turn-on-automatic-insights)).
 
@@ -36,6 +38,8 @@ EVtivity checks for new events once a minute. These events start an insight:
 | A reserved station reports a fault during the reservation | Station faulted while reserved |
 
 Reservation events start an insight only while reservations are on (see [Reservation Insights](#reservation-insights)). A station that disconnects because the CSMS itself is restarting does not start an insight. Events from before automatic insights were turned on are never analyzed.
+
+Background workers add insights of their own: **Stuck session** and **Station faulted for hours**, each with an action, and the **Site summary**, **Network summary**, and **Tariff anomaly** insights. See [Background AI Workers](https://www.evtivity.com/docs/csms/ai-workers).
 
 ### Wait, Group, and Skip
 
@@ -105,16 +109,17 @@ Only **Active** insights appear on the dashboard card. Station, session, and res
 
 ![Active Insights Card](https://www.evtivity.com/screenshots/csms/ai-insights-dashboard.png)
 
-The **Active insights** card shows below the stat cards of the dashboard, full width, and lists up to five open insights. Each row shows:
+The **Active insights** card shows below the stat cards of the dashboard, full width. It shows one card per open insight in a row that scrolls sideways: three cards in view on wide screens, two on medium screens, and one on phones. Dots below the row show the scroll position. Click a dot to scroll to it. Each card shows:
 
 - A headline that says what happened and where, such as **3 stations offline at Convention Center** or **CS-1616 is faulted**.
 - The root cause, how many stations or sessions are affected, the site, and how long ago it happened.
 - A confidence badge, such as **High confidence**.
 - The first suggested fix.
+- **Action pending** when the insight carries an action that waits for a decision.
 
-The rows hold no AI-written text. Site incidents come first, then the most severe and newest insights. Insights of the same type and root cause at one site collapse into one row with **+N similar**. Click a row to open the insight page.
+The cards hold no AI-written text. Site incidents come first, then the most severe and newest insights. Insights of the same type and root cause at one site collapse into one card with **+N similar**. Click a card to open the insight page.
 
-The card shows while automatic insights are on, with **No open insights** when none are open. When automatic insights are off, it shows only while insights are still open. Click **View all** to open the AI Insights list with the active insights.
+The card shows only while AI Insights are on, with **No open insights** when none are open. AI Insights are on while **Turn on system-initiated AI** is on and at least one insight type or background worker job is on. When AI Insights are off, the dashboard shows no insights, even ones that are still open. Click **View all** to open the AI Insights list with the active insights.
 
 ## Reservation Insights
 
@@ -140,13 +145,14 @@ The header of the reservation page also has [Explain](https://www.evtivity.com/d
 
 ![AI Insights List](https://www.evtivity.com/screenshots/csms/ai-insights.png)
 
-The AI Insights list, `/ai/insights`, shows every insight of your sites, newest first. Filter by **Status**, **Type**, **Root cause**, **Site**, and **Feedback**. The **Feedback** filter shows **Any feedback**, **Marked wrong**, or **Marked helpful**: the insights at least one user marked that way. The table has these columns: **Insight**, **Status**, **Root cause**, **Confidence**, **Station**, **Site**, and **Created**.
+Open the AI Insights list from **AI Insights** in the navigation. The entry shows while AI Insights are on, with the number of insight actions that wait for a decision. The list, `/ai/insights`, shows every insight of your sites, newest first. Filter by **Status**, **Type**, **Root cause**, **Site**, **Action**, and **Feedback**. The **Action** filter shows **All insights**, **Action pending**, or **With an action**. The **Feedback** filter shows **Any feedback**, **Marked wrong**, or **Marked helpful**: the insights at least one user marked that way. The table has these columns: **Insight**, **Status**, **Root cause**, **Confidence**, **Station**, **Site**, and **Created**. An insight whose action waits shows **Action pending**.
 
-Click a row to open the insight page, `/ai/insights/<id>`. It shows:
+Click a row to open the insight page, `/ai/insights/<id>`. **Prev** and **Next** in the header move to the neighboring insight of the list. It shows:
 
-- The insight card, with its actions (see [Act on an Insight](#act-on-an-insight)).
-- **Details**: the type, station, session, and site, the site incident the insight is part of, when it was created, resolved, or dismissed, and the reason it was skipped.
+- The insight card, with its actions (see [Act on an Insight](#act-on-an-insight)) and the suggested action, if any (see [Insight Actions](#insight-actions)).
+- **Details**: the type, station, session, and site, the site incident the insight is part of, when it was created, resolved, or dismissed, and the reason it was skipped. For an insight with an action, also the **Worker job**, when the action **Expires**, who **Decided** it and when, and when it ran (**Ran at**).
 - **History**: every change to the insight.
+- **Action History**: every change to the action, for an insight with an action.
 
 Both pages need the `aiInsights:read` permission.
 
@@ -154,7 +160,7 @@ Both pages need the `aiInsights:read` permission.
 
 - **AI Insights list**: open it with **View all** on the dashboard card, or at `/ai/insights`. Use the **Status** filter to see active, resolved, dismissed, superseded, skipped, or failed insights, or **All statuses**.
 - **Insight page**: the **History** section lists who dismissed or regenerated the insight, who set, changed, or removed a vote, and when.
-- **Audit**: filter the Audit page by the **Automatic Insight** type.
+- **Audit**: filter the Audit page by the **Automatic Insight** type, or by **AI insight action** for the decisions on insight actions.
 
 You see only the insights of your sites.
 
@@ -182,6 +188,49 @@ When you click **Wrong**, the card opens a panel with **Marked wrong. Generate t
 
 Votes and notes are never sent to an AI provider. They are not part of the insight prompts, and the AI assistant cannot read them. To see how insights rate over time, open the **Insight Quality** card in **Settings > AI > Automatic Insights** (see [Settings](https://www.evtivity.com/docs/csms/settings#automatic-insights)).
 
+## Insight Actions
+
+A [background AI worker](https://www.evtivity.com/docs/csms/ai-workers) can suggest an action. The suggestion is an insight that carries the action:
+
+| Insight | Action | Runs only if |
+|---------|--------|--------------|
+| **Stuck session** | **Stop the session** | **The session is still active** |
+| **Station faulted for hours** | **Soft reset the station** | **The station is still faulted** |
+
+![Insight with a suggested action](https://www.evtivity.com/screenshots/csms/ai-insight-action.png)
+
+The insight card shows the **Suggested Action** section: a sentence that describes the action, its status, when it expires, the **Rationale** with the measured values behind it (such as **Idle time**, **Last activity**, **Faulted since**, and **Transaction ID**), **Runs only if**, the key arguments, and **Arguments** with every argument and a copy button. Once the action ran, it also shows the result. Insight actions show on the insight page and on the station and session pages.
+
+### Confirm or Reject
+
+1. Open the insight from AI Insights, the dashboard card, or the station or session page.
+2. Read the action, the condition, and the arguments.
+3. Click **Confirm** to run the action, or **Reject** to drop it.
+4. Confirm your choice in the dialog. **Run This Action?** runs the action once, now, with your permissions. **Reject This Action?** drops it.
+
+When you confirm, EVtivity checks again that the action has not expired, that the condition still holds, and that the action is still allowed. Then it runs the request with your own permissions and site access, and the result appears on the card. Each action runs at most once: when two users confirm it at the same time, only one confirm runs it. An action that expired shows `AI_PROPOSAL_EXPIRED`. An action whose condition no longer holds shows `AI_PROPOSAL_STALE` and ends as **No longer applies**.
+
+While an action waits, **Regenerate** and **Dismiss** are hidden. A rejected action dismisses its insight. An action that ran, failed, expired, or no longer applies resolves its insight. Insights with an action cannot be regenerated.
+
+Confirm and reject need the `aiInsights:write` permission and a signed-in CSMS session. An API key cannot decide an action (`AI_CONFIRMATION_REQUIRES_SESSION`).
+
+| Status | Meaning |
+|--------|---------|
+| Pending | Waiting for a decision |
+| Executed | Confirmed and the action ran |
+| Failed | Confirmed, but the action did not run, for example because you lack the permission it needs |
+| Rejected | Someone rejected it |
+| Expired | Nobody decided before it expired |
+| No longer applies | The condition no longer held when someone confirmed it |
+
+A suggested soft reset expires after 24 hours by default (**Action lifetime (hours)**). A suggested stop expires after 2 hours.
+
+### Daily Digest Email
+
+Users with the `aiInsights:write` permission can get a daily email with the number of insight actions that wait for a decision at their sites, per job, and a link to AI Insights filtered to pending actions. The email holds counts and site names only, never AI-written text.
+
+To turn it on, open your **Profile**, go to **Notifications**, and turn on **AI insight action digest email**. It is off by default. The email goes out once a day while actions are pending. Edit its template under **Notifications > System Events** (**AI Insight Action Digest**, `ai.ProposalDigest`).
+
 ## Turn On Automatic Insights
 
 1. Add an API key for a provider in **Settings > AI > Providers and Keys**.
@@ -208,13 +257,13 @@ Stored credentials are removed, and card numbers, email addresses, phone numbers
 | Permission | Allows |
 |------------|--------|
 | `aiInsights:read` | See insights on records you can open |
-| `aiInsights:write` | Regenerate, dismiss, and give feedback |
+| `aiInsights:write` | Regenerate, dismiss, give feedback, and confirm or reject insight actions |
 
 By default, operators have both and viewers have `aiInsights:read`. Insights follow site access: you see only insights of your sites.
 
 ## Notes
 
-- Insights never change anything on your network. They only describe and suggest.
+- Insights never change anything on your network on their own. An insight action runs only when a user confirms it, with that user's permissions. Background workers suggest only three actions: stop a session, soft reset a station, and change a station's availability. Payments, pricing, and settings are never suggested.
 - The card never names the AI provider or model.
-- Insights are deleted after 90 days by default (**Keep insights (days)** in **Settings > AI > Automatic Insights**). Their audit entries stay after the insight is deleted.
+- Insights are deleted after 90 days by default (**Keep insights (days)** in **Settings > AI > Automatic Insights**). An insight's action is deleted with it. Their audit entries stay after the insight is deleted.
 - The API lists insights at `GET /v1/ai/insights`. See the [API reference](https://www.evtivity.com/api-reference) and the [error codes](https://www.evtivity.com/api-reference/error-codes).

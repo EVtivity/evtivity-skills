@@ -17,7 +17,6 @@
   "evtivity-csms": [
     "csms/access-logs",
     "csms/ai-assistant",
-    "csms/ai-inbox",
     "csms/ai-insights",
     "csms/ai-usage",
     "csms/ai-workers",

@@ -83,11 +83,11 @@ Users who cannot edit sites do not see the card. See [Electricity Rates](https:/
 
 ## Active Insights
 
-The **Active insights** card shows below the stat cards, full width, on the admin and the operator dashboard. It lists up to five open [automatic insights](https://www.evtivity.com/docs/csms/ai-insights) of your sites, site incidents first. Click a row to open the insight, or **View all** to open the AI Insights list.
+The **Active insights** card shows below the stat cards, full width, on the admin and the operator dashboard. It shows the open [automatic insights](https://www.evtivity.com/docs/csms/ai-insights) of your sites as cards in a row that scrolls sideways: three in view on wide screens, two on medium screens, and one on phones. Dots below the row show the scroll position. Click a dot to scroll to it. Site incidents come first. Click a card to open the insight, or **View all** to open the AI Insights list.
 
 ![Active insights card](https://www.evtivity.com/screenshots/csms/ai-insights-dashboard.png)
 
-The card needs the `aiInsights:read` permission. It shows while automatic insights are on, with **No open insights** when none are open, and while insights are still open after they were turned off. See [Active Insights Card](https://www.evtivity.com/docs/csms/ai-insights#active-insights-card).
+The card needs the `aiInsights:read` permission and shows only while AI Insights are on, with **No open insights** when none are open. When AI Insights are off, the dashboard shows no insights, even ones that are still open. See [Active Insights Card](https://www.evtivity.com/docs/csms/ai-insights#active-insights-card).
 
 ## Charts
 

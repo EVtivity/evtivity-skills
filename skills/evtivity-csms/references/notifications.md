@@ -72,7 +72,7 @@ The **Fleet Invoices** emails go to a fleet's billing contacts with the PDF atta
 
 The **Session End Failed** alert, in the **Session Alerts** group, goes to every active operator with the `sessions:write` permission and access to the session's site when the CSMS gives up ending a session after repeated failed end requests. It names the session and the station, so you can search the session ID on the Sessions page and bill the session. See [Billing a Session the CSMS Could Not End](https://www.evtivity.com/docs/csms/sessions#billing-a-session-the-csms-could-not-end). Each operator receives it in their language and time zone, and the SMS opt-out on their Profile page applies.
 
-The **AI Proposal Digest** (`ai.ProposalDigest`), in the **AI** group, is the exception to always on: it goes only to active users with the `aiProposals:write` permission who turned on **AI Inbox digest email** in their Profile. It goes out once a day while proposals from background workers are pending at their sites, with the counts per job, the site names, and a link to the AI Inbox. See [Daily Digest Email](https://www.evtivity.com/docs/csms/ai-inbox#daily-digest-email).
+The **AI Insight Action Digest** (`ai.ProposalDigest`), in the **AI** group, is the exception to always on: it goes only to active users with the `aiInsights:write` permission who turned on **AI insight action digest email** in their Profile. It goes out once a day while insight actions from background workers wait for a decision at their sites, with the counts per job, the site names, and a link to AI Insights filtered to pending actions. See [Daily Digest Email](https://www.evtivity.com/docs/csms/ai-insights#daily-digest-email).
 
 Channels: email and SMS.
 

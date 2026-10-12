@@ -30,7 +30,7 @@ Ask the user before any destructive or customer-visible action, and say what it 
 - Refunds, cancellation fees, and changes to currency, tax basis or price display.
 - Bill session (charges the saved card or prepaid balance).
 - Notification template, SMTP, Twilio or webhook changes that reach drivers.
-- Confirming AI proposals. Turning on system AI, AI workers, driver AI support or the MCP server.
+- Confirming AI insight actions. Turning on system AI, AI workers, driver AI support, the MCP server or MCP **Allow Writes**.
 
 Never print secrets (API keys, station passwords, SMTP or provider credentials) unless the user asks for that value.
 
@@ -83,9 +83,8 @@ Each row names the reference file for the page (page id `csms/<name>`).
 | Request and worker logs | `references/access-logs.md` | Access Logs | `logs:read` |
 | OCTT conformance runs | `references/conformance-testing.md` | Settings > Conformance | `conformance:write` |
 | Ask AI, Explain a record | `references/ai-assistant.md` | AI button, Explain | `aiAssistant:write` |
-| Automatic insights | `references/ai-insights.md` | AI Insights | `aiInsights:read` |
-| AI proposals | `references/ai-inbox.md` | AI Inbox | `aiProposals:write` |
-| Background AI workers | `references/ai-workers.md` | Settings > AI > Background Workers | `settings.ai:write` |
+| Automatic insights, insight actions | `references/ai-insights.md` | AI Insights | `aiInsights:write` |
+| Background AI workers | `references/ai-workers.md` | Settings > AI > Automatic Insights | `settings.ai:write` |
 | AI tokens and budgets | `references/ai-usage.md` | Settings > AI > Usage and Limits, Site > AI | `aiUsage:read` |
 
 Default roles: admin has all permissions, operator has operational read and write without settings or `users:write`, viewer is read only. `references/settings.md` is long: grep it for the tab or setting key.
@@ -209,7 +208,7 @@ Confirm: push history per station (Accepted, Rejected, Failed), the Load Mgmt po
 - Access logs (`references/access-logs.md`): tabs CSMS, Portal, API, Workers. Each entity has a History tab, the global audit page is `/audit` (`GET /v1/audit`, `audit:read`). Retention: `logs.*.retentionDays`.
 - Station images (`references/station-images.md`): upload needs S3 (10 MB max).
 - Support cases (`references/support-cases.md`): public messages reach the driver, internal notes do not. Refund a linked session from the case (`POST /v1/support-cases/<id>/refund`). AI Draft never sends. Driver AI support (off by default): a case the driver sent to the AI is **With the AI**, hidden from the default list and counts until it reaches the team. Filter by **Status** or **AI State**. The **Driver Consent** card shows what the driver allowed.
-- AI: off until turned on. Settings > AI has 8 tabs: Providers and Keys, Assistant, Support Drafts, Driver Support, Automatic Insights, Background Workers, MCP, Usage and Limits (link: `/settings?tab=ai&sub=<id>`, ids in `references/settings.md`). Per-site budget and the insights switch: Site > AI. The dashboard shows **Active insights** below the stat cards. A change runs only after a signed-in user confirms it (API keys get `AI_CONFIRMATION_REQUIRES_SESSION`).
+- AI: off until turned on. Settings > AI has 7 tabs: Providers and Keys, Assistant, Support Drafts, Driver Support, Automatic Insights (with the workers card), MCP, Usage and Limits (link: `/settings?tab=ai&sub=<id>`, ids in `references/settings.md`). Per-site budget and the insights switch: Site > AI. The dashboard shows **Active insights** below the stat cards while AI Insights are on. Worker suggestions are insights with an action (Confirm, Reject), counted on the AI Insights nav entry. An action runs only after a signed-in user confirms it (API keys get `AI_CONFIRMATION_REQUIRES_SESSION`).
 - Conformance testing (`references/conformance-testing.md`): Settings > Conformance > **Run Tests**. Command line runner and results: evtivity-conformance.
 
 ## References
