@@ -1,6 +1,6 @@
 # EVtivity API routes: AI Insights
 
-Generated from EVtivity CSMS v0.1.45-beta.1 (https://github.com/EVtivity/evtivity-csms, commit efc75f365534) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.45-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 8cbddaf0c6a1) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -17,3 +17,6 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/ai/insights/{id}/dismiss` | aiInsights:write | Dismiss an automatic insight |
 | POST | `/v1/ai/insights/{id}/feedback` | aiInsights:write | Set or change your vote on an automatic insight: helpful or wrong |
 | DELETE | `/v1/ai/insights/{id}/feedback` | aiInsights:write | Remove your vote on an automatic insight |
+| POST | `/v1/ai/insights/{id}/action/confirm` | aiInsights:write | Confirm and run the action an insight carries |
+| POST | `/v1/ai/insights/{id}/action/reject` | aiInsights:write | Reject the action an insight carries |
+| GET | `/v1/ai/insights/{id}/neighbors` | aiInsights:read | Get previous and next entity IDs in default list order |

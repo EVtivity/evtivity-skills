@@ -1,6 +1,6 @@
 # EVtivity API routes: CSS OCPP 2.1 Actions
 
-Generated from EVtivity CSMS v0.1.45-beta.1 (https://github.com/EVtivity/evtivity-csms, commit efc75f365534) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.45-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 8cbddaf0c6a1) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no

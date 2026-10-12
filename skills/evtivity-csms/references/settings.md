@@ -543,9 +543,9 @@ Embeds the Smart Charging Templates page. Create charging profile templates with
 
 **Permission:** `settings.ai:read` / `settings.ai:write`
 
-Configures the [AI assistant](https://www.evtivity.com/docs/csms/ai-assistant), the support case AI draft, driver support, [automatic insights](https://www.evtivity.com/docs/csms/ai-insights), [background AI workers](https://www.evtivity.com/docs/csms/ai-workers), and the [MCP server](https://www.evtivity.com/docs/integrations/mcp-server). The tab has eight tabs, one per function, in this order: **Providers and Keys**, **Assistant**, **Support Drafts**, **Driver Support**, **Automatic Insights**, **Background Workers**, **MCP**, and **Usage and Limits**.
+Configures the [AI assistant](https://www.evtivity.com/docs/csms/ai-assistant), the support case AI draft, driver support, [automatic insights](https://www.evtivity.com/docs/csms/ai-insights), [background AI workers](https://www.evtivity.com/docs/csms/ai-workers), and the [MCP server](https://www.evtivity.com/docs/integrations/mcp-server). The tab has seven tabs, one per function, in this order: **Providers and Keys**, **Assistant**, **Support Drafts**, **Driver Support**, **Automatic Insights**, **MCP**, and **Usage and Limits**.
 
-Each tab has its own link: `/settings?tab=ai&sub=<id>`, where `<id>` is `providers`, `assistant`, `support`, `driver`, `insights`, `workers`, `mcp`, or `usage`. An unknown id opens **Providers and Keys**. Each tab starts with a short description of what it does. Each card has its own **Save** button. Rarely used options, such as base URLs, system prompts, and MCP origins, sit under **Advanced Options**. Unsaved changes stay when you switch to another tab.
+Each tab has its own link: `/settings?tab=ai&sub=<id>`, where `<id>` is `providers`, `assistant`, `support`, `driver`, `insights`, `mcp`, or `usage`. An unknown id opens **Providers and Keys**. Each tab starts with a short description of what it does. Each card has its own **Save** button. Rarely used options, such as base URLs, system prompts, and MCP origins, sit under **Advanced Options**. Unsaved changes stay when you switch to another tab.
 
 **Providers and Keys** and every feature tab, from **Assistant** to **MCP**, show this note:
 
@@ -631,9 +631,9 @@ The consent notice drivers see before they choose is built in and cannot be edit
 
 ### Automatic Insights
 
-This tab holds three cards. The **Automatic Insights and Workers** card sets the model for automatic insights and background workers. They run without a user and use the company provider key, never a personal configuration.
+This tab holds four cards. The **Automatic Insights and Workers** card sets the model for automatic insights and background workers. They run without a user and use the company provider key, never a personal configuration.
 
-- **Turn on system-initiated AI** - off by default (`opsAi.enabled`). Automatic insights and background workers run only while it is on. The card warns: "When this is on, station, session and token status data is sent to the configured provider without a user action."
+- **Turn on system-initiated AI** - off by default (`opsAi.enabled`). Automatic insights and background workers run only while it is on. The card warns: "When this is on, operational data is sent to the configured provider automatically, without a user action."
 - **Provider** (`opsAi.provider`, default Anthropic), **Model (optional)** (`opsAi.model`; blank uses the provider's lowest-cost model), **Effort** (`opsAi.effort`, default Low), and **System prompt (optional)** under **Advanced Options** (`opsAi.systemPrompt`; blank uses the built-in prompt).
 
 The **Automatic Insights** card holds the insight settings. See [Automatic Insights](https://www.evtivity.com/docs/csms/ai-insights).
@@ -659,9 +659,7 @@ The **Insight Quality** card shows how users rated insights in your sites over t
 
 ![Automatic insights tab](https://www.evtivity.com/screenshots/csms/settings-ai-insights.png)
 
-### Background Workers
-
-The **Background AI Workers** card holds the scheduled jobs. See [Background AI Workers](https://www.evtivity.com/docs/csms/ai-workers). Workers use the model of the **Automatic Insights** tab: the **Choose the model they use in Automatic insights** link opens it. Every job is off by default.
+The **Background AI Workers** card holds the scheduled jobs. Their suggestions appear as insights with an action, and nothing runs until an operator confirms it. Workers use the model of the **Automatic Insights and Workers** card. Every job is off by default. See [Background AI Workers](https://www.evtivity.com/docs/csms/ai-workers).
 
 | Field | Setting key | Default | Range |
 |-------|-------------|---------|-------|
@@ -670,20 +668,20 @@ The **Background AI Workers** card holds the scheduled jobs. See [Background AI 
 | **Write the rationale with AI** | `aiWorkers.stuckSessions.useModel` | Off | |
 | **Tariff Anomalies** | `aiWorkers.tariffAnomalies.enabled` | Off | |
 | **Idle time before a session counts as stuck (minutes)** | `aiWorkers.stuckSessions.idleMinutes` | 90 | 15 to 1,440 |
-| **Proposal lifetime (hours)** | `aiWorkers.proposalTtlHours` | 24 | 1 to 168 |
+| **Action lifetime (hours)** | `aiWorkers.proposalTtlHours` | 24 | 1 to 168 |
 
-![Background workers tab](https://www.evtivity.com/screenshots/csms/settings-ai-workers.png)
+![Background AI workers card](https://www.evtivity.com/screenshots/csms/settings-ai-insights-workers.png)
 
 ### MCP
 
-The **MCP Server** card configures the server that lets external AI agents use EVtivity with an API key. See [MCP Server](https://www.evtivity.com/docs/integrations/mcp-server). The card also shows the **Endpoint** URL and the default tool categories.
+The **MCP Server** card configures the server that lets external AI agents use EVtivity with an API key. See [MCP Server](https://www.evtivity.com/docs/integrations/mcp-server). The card also shows the **Endpoint** URL and the default tool categories. With **Allow Writes** off, MCP clients only read. With it on, write tools (station commands) run at once, with the permissions and sites of the API key, and no confirmation.
 
 | Field | Setting key | Default | Range |
 |-------|-------------|---------|-------|
 | **Turn on the MCP server** | `ai.mcp.enabled` | Off | |
+| **Allow Writes** | `ai.mcp.allowWrites` | Off | |
 | **Calls per API key per minute** | `ai.mcp.rateLimitPerMinute` | 60 | 1 to 10,000 |
 | **Calls per API key per day** | `ai.mcp.dailyCallsPerKey` | 5,000 | 1 to 10,000,000 |
-| **Time to approve an MCP change (minutes)** | `ai.mcp.proposalTtlMinutes` | 30 | 5 to 1,440 |
 | **Allowed origins**, under **Advanced Options** | `ai.mcp.allowedOrigins` | Empty | Up to 50 http or https origins without a path, one per line |
 
 ![MCP tab](https://www.evtivity.com/screenshots/csms/settings-ai-mcp.png)
@@ -710,7 +708,7 @@ The maximum attachment size also applies to [support case](https://www.evtivity.
 
 Token budgets count input plus output tokens. Daily budgets run on UTC days, monthly budgets on calendar months in the system timezone.
 
-Below the limits, the tab shows the AI tokens of the company, each site, each surface, and the top users for a month. This part needs the `aiUsage:read` permission and access to every site. See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage#usage-and-limits-tab).
+Below the limits, the tab shows the AI tokens of the company, each site, each surface, and the top users for the month you pick in **Month**. The **Sites** list shows 10 sites per page. This part needs the `aiUsage:read` permission and access to every site. See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage#usage-and-limits-tab).
 
 ![Usage and limits tab](https://www.evtivity.com/screenshots/csms/settings-ai-usage.png)
 

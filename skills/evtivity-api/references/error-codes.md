@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.45-beta.1 (https://github.com/EVtivity/evtivity-csms, commit efc75f365534) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.45-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 8cbddaf0c6a1) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -32,10 +32,10 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `AI_MODEL_UNAVAILABLE` |  | The configured AI model does not exist or is retired |
 | `AI_MONTHLY_BUDGET_EXCEEDED` | 429 | The monthly AI usage limit is reached |
 | `AI_NOT_CONFIGURED` | 400 | AI is not configured |
-| `AI_PROPOSAL_ALREADY_DECIDED` | 409 | This proposal was already decided |
-| `AI_PROPOSAL_EXPIRED` | 409 | This proposal has expired |
-| `AI_PROPOSAL_NOT_FOUND` | 404 | Proposal not found |
-| `AI_PROPOSAL_STALE` | 409 | This proposal no longer applies because the situation changed |
+| `AI_PROPOSAL_ALREADY_DECIDED` | 409 | This action was already decided |
+| `AI_PROPOSAL_EXPIRED` | 409 | This action has expired |
+| `AI_PROPOSAL_NOT_FOUND` | 404 | Action not found |
+| `AI_PROPOSAL_STALE` | 409 | This action no longer applies because the situation changed |
 | `AI_PROVIDER_AUTH_FAILED` |  | The AI provider refused the configured API key |
 | `AI_PROVIDER_RATE_LIMITED` |  | The AI provider is rate limiting requests. Try again shortly |
 | `AI_PROVIDER_UNAVAILABLE` |  | The AI provider is unavailable. Try again later |

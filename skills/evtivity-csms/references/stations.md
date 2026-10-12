@@ -80,7 +80,7 @@ A reboot (`BootNotification`) does not reset availability. A disable or a failed
 
 ### Enable and disable a station
 
-Operators with the `stations:write` permission see an **Enable Station** or **Disable Station** button in the station detail header.
+Operators with the `stations:write` permission see an **Enable Station** or **Disable Station** button in the station detail header. **Disable Station** is a red button, because it stops new charging at the station.
 
 1. Open the station detail page.
 2. Click **Disable Station**. A confirmation dialog explains the effect.
@@ -168,6 +168,8 @@ Click any station in the list to open the detail page. The detail page has the f
 
 The header shows the online badge, the station status badge, and the **Enable Station** or **Disable Station** action. See [Enable and disable a station](#enable-and-disable-a-station).
 
+**Prev** and **Next** in the header open the previous or next station of the list and keep the tab you have open. When that station does not have the tab, its first tab opens.
+
 ### Details
 
 Edit station metadata: name, vendor, model, site assignment, security profile, and password. The station's OCPP connection URL is displayed for configuration reference.
@@ -230,11 +232,17 @@ A connector without a max power shows a **Max power unknown** badge. Load manage
 
 ### Commands
 
-Send OCPP commands to the station and view the real-time OCPP message log. Available commands include Reset, UnlockConnector, ChangeAvailability, TriggerMessage, GetBaseReport (2.1), GetConfiguration (1.6), and more. The message log shows all OCPP messages exchanged between the station and the CSMS.
+Send OCPP commands to the station and view the real-time OCPP message log. Available commands include Reset, UnlockConnector, ChangeAvailability, TriggerMessage, GetBaseReport (2.1), GetConfiguration (1.6), and more.
+
+The **OCPP Message Log** shows all OCPP messages exchanged between the station and the CSMS, and the commands queued for it while it is offline. The **Type** column shows CALL, RESULT, or ERROR. The **Status** column shows **Processed** for a message exchanged with the station and **Queued** for a command that waits in the offline queue. Hover **Queued** to read "Sent when the station reconnects".
+
+![OCPP message log with a queued command](https://www.evtivity.com/screenshots/csms/station-ocpp-log-queued.png)
 
 **Destructive commands require confirmation.** Reset, ChangeAvailability, and ClearCache each open a confirmation dialog before dispatching, since a misclick can wipe runtime state, disable a revenue-generating EVSE, or force every cached idToken to re-authorize.
 
-**Offline stations queue the command.** When the target station is not connected to any OCPP pod, the API returns `202 Accepted` with code `COMMAND_QUEUED` and the UI shows a yellow **Queued** badge on the response card. The command is held in the offline queue and dispatched on the next reconnect.
+**Offline stations queue the command.** When the target station is not connected to any OCPP pod, the API returns `202 Accepted` with code `COMMAND_QUEUED` and the UI shows a yellow **Queued** badge on the response card. The command is held in the offline queue and dispatched on the next reconnect. The command dialog then shows no **Send** button, so the same command cannot be queued twice from it.
+
+![A command queued for an offline station](https://www.evtivity.com/screenshots/csms/station-command-queued.png)
 
 **Every dispatch is audited.** Each command dispatched through the OCPP Commands tab writes a row to the per-station audit log with `action: 'command_dispatched'`, the actor, the OCPP action name, the outcome (`accepted`, `queued (station offline)`, `timeout`, or `error: <msg>`), and a payload snapshot. Payloads are capped at 16 KB to keep audit rows lean. Oversized payloads are replaced with a `_truncated` marker referencing the original size. View the audit trail under the **History** tab on the station detail page or globally at `/audit`.
 
