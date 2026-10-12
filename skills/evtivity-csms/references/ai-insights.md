@@ -263,7 +263,7 @@ By default, operators have both and viewers have `aiInsights:read`. Insights fol
 
 ## Notes
 
-- Insights never change anything on your network on their own. An insight action runs only when a user confirms it, with that user's permissions. Background workers suggest only three actions: stop a session, soft reset a station, and change a station's availability. Payments, pricing, and settings are never suggested.
+- Insights never change anything on your network on their own. An insight action runs only when a user confirms it, with that user's permissions. Background workers suggest two actions today: a stop for a stuck session, and a soft reset for a station faulted for more than 6 hours. The only action kinds a worker may suggest are stop a session, soft reset a station, and change a station's availability. Payments, pricing, and settings are never suggested.
 - The card never names the AI provider or model.
 - Insights are deleted after 90 days by default (**Keep insights (days)** in **Settings > AI > Automatic Insights**). An insight's action is deleted with it. Their audit entries stay after the insight is deleted.
 - The API lists insights at `GET /v1/ai/insights`. See the [API reference](https://www.evtivity.com/api-reference) and the [error codes](https://www.evtivity.com/api-reference/error-codes).
