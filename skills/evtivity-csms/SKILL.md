@@ -30,7 +30,7 @@ Ask the user before any destructive or customer-visible action, and say what it 
 - Refunds, cancellation fees, and changes to currency, tax basis or price display.
 - Bill session (charges the saved card or prepaid balance).
 - Notification template, SMTP, Twilio or webhook changes that reach drivers.
-- Confirming AI proposals. Turning on system AI, AI workers or the MCP server.
+- Confirming AI insight actions. Turning on system AI, AI workers, the MCP server or MCP Allow Writes.
 
 Never print secrets (API keys, station passwords, SMTP or provider credentials) unless the user asks for that value.
 
@@ -83,8 +83,7 @@ Each row names the reference file for the page (page id `csms/<name>`).
 | Request and worker logs | `references/access-logs.md` | Access Logs | `logs:read` |
 | OCTT conformance runs | `references/conformance-testing.md` | Settings > Conformance | `conformance:write` |
 | Ask AI, Explain a record | `references/ai-assistant.md` | AI button, Explain | `aiAssistant:write` |
-| Automatic insights | `references/ai-insights.md` | AI Insights | `aiInsights:read` |
-| AI proposals | `references/ai-inbox.md` | AI Inbox | `aiProposals:write` |
+| Automatic insights, confirming insight actions | `references/ai-insights.md` | AI Insights | `aiInsights:write` |
 | Background AI workers | `references/ai-workers.md` | Settings > AI | `settings.ai:write` |
 | AI tokens and budgets | `references/ai-usage.md` | Settings > AI > Usage | `aiUsage:read` |
 
