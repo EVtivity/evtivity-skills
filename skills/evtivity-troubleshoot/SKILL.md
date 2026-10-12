@@ -4,9 +4,9 @@ description: "Fix EVtivity failures: a station cannot connect or stays offline, 
 license: MIT
 compatibility: Requires bash, Docker with Docker Compose v2 and curl. Written for Docker Compose installs; the symptoms and fixes also apply to Helm and AWS deployments.
 metadata:
-  evtivity-version: "0.1.44"
-  evtivity-release: "v0.1.44"
-  evtivity-commit: "59cadc8eafdb15f260dfebc49b194ab56f42bc7e"
+  evtivity-version: "0.1.45"
+  evtivity-release: "v0.1.45-beta.1"
+  evtivity-commit: "efc75f3655342f17af94bf6fd89434ef813cd83b"
 ---
 
 # EVtivity troubleshooting

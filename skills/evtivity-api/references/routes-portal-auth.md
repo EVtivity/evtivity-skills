@@ -1,6 +1,6 @@
 # EVtivity API routes: Portal Auth
 
-Generated from EVtivity CSMS v0.1.44 (https://github.com/EVtivity/evtivity-csms, commit 59cadc8eafdb) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.45-beta.1 (https://github.com/EVtivity/evtivity-csms, commit efc75f365534) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no

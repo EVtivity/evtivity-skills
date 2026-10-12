@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.44 (https://github.com/EVtivity/evtivity-csms, commit 59cadc8eafdb) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.45-beta.1 (https://github.com/EVtivity/evtivity-csms, commit efc75f365534) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
@@ -51,7 +51,7 @@ A `write` permission includes `read` for the same resource.
 | Portal Vehicles | 5 | `references/routes-portal-vehicles.md` |
 | Portal Tokens | 4 | `references/routes-portal-tokens.md` |
 | Portal Notifications | 5 | `references/routes-portal-notifications.md` |
-| Portal Support | 7 | `references/routes-portal-support.md` |
+| Portal Support | 8 | `references/routes-portal-support.md` |
 | Portal Roaming | 2 | `references/routes-portal-roaming.md` |
 | Portal Events | 1 | `references/routes-portal-events.md` |
 | OCPI | 20 | `references/routes-ocpi.md` |
@@ -61,7 +61,7 @@ A `write` permission includes `read` for the same resource.
 | Event Alert Rules | 4 | `references/routes-event-alert-rules.md` |
 | API Keys | 4 | `references/routes-api-keys.md` |
 | CSS Management | 7 | `references/routes-css-management.md` |
-| CSS Actions | 13 | `references/routes-css-actions.md` |
+| CSS Actions | 14 | `references/routes-css-actions.md` |
 | CSS OCPP 1.6 Actions | 10 | `references/routes-css-ocpp-1-6-actions.md` |
 | CSS OCPP 2.1 Actions | 40 | `references/routes-css-ocpp-2-1-actions.md` |
 | Smart Charging | 12 | `references/routes-smart-charging.md` |
@@ -69,7 +69,7 @@ A `write` permission includes `read` for the same resource.
 | AI Proposals | 4 | `references/routes-ai-proposals.md` |
 | AI | 3 | `references/routes-ai.md` |
 | MCP | 1 | `references/routes-mcp.md` |
-| AI Insights | 5 | `references/routes-ai-insights.md` |
+| AI Insights | 7 | `references/routes-ai-insights.md` |
 | OCTT | 4 | `references/routes-octt.md` |
 | Audit | 2 | `references/routes-audit.md` |
 | Conformance | 1 | `references/routes-conformance.md` |

@@ -93,7 +93,7 @@ Optional, defined in OCPP Security Whitepaper. Configures Basic Auth, TLS, and c
 
 | Key | Type | Mutability | Reboot | Purpose |
 |-----|------|------------|--------|---------|
-| `AuthorizationKey` | string | WO | Yes | Basic Auth password for the station, hex-encoded (16-20 byte password, at most 40 hex characters). Set by the CSMS when you change or rotate the password. |
+| `AuthorizationKey` | string | WO | Yes | Basic Auth password for the station, hex-encoded (16-20 byte password, at most 40 hex characters). Set by the CSMS when you change or rotate the password. Templates and the generic `ChangeConfiguration` command cannot set it. |
 | `CertificateSignedMaxChainSize` | integer | R | - | Max bytes of a signed certificate chain |
 | `CertificateStoreMaxLength` | integer | R | - | Max number of installed certificates |
 | `CpoName` | string | RW | No | CPO name embedded in CSRs |

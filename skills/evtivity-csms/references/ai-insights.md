@@ -2,13 +2,19 @@ Generated from https://www.evtivity.com/docs/csms/ai-insights. Do not edit.
 
 # Automatic Insights
 
-Short root-cause notes with suggested fixes for offline or faulted stations, failed sessions, and refused authorizations.
+Short root-cause notes with suggested fixes for offline or faulted stations, failed sessions, refused authorizations, and reservation problems.
 
 ## Overview
 
-An automatic insight is a short note about a problem on your network: what probably caused it, how sure the analysis is, how far it reaches, and what to do next. EVtivity creates insights on its own when a station goes offline or reports a fault, when a session fails, or when a station refuses a token. You do not have to ask.
+An automatic insight is a short note about a problem on your network: what probably caused it, how sure the analysis is, how far it reaches, and what to do next. EVtivity creates insights on its own when a station goes offline or reports a fault, when a session fails, when a station refuses a token, or when a reservation fails. You do not have to ask.
 
-Automatic insights are off by default. An administrator turns them on in **Settings > AI** (see [Turn On Automatic Insights](#turn-on-automatic-insights)).
+Automatic insights are off by default. An administrator turns them on in **Settings > AI > Automatic Insights** (see [Turn On Automatic Insights](#turn-on-automatic-insights)).
+
+> **Note:**
+>
+> **What the AI Provider Receives**
+>
+> The AI provider never receives stored credentials, such as passwords, API keys, secrets and station passwords. Card numbers and IBANs are cut to their last 4 characters. Support drafts, automatic insights, background workers and driver support also mask email addresses and phone numbers, and hash or shorten driver token ids. The assistant sends driver contact details as stored, only to users allowed to read them. Text you type and text files you attach are checked for keys and card numbers. Images and PDFs you attach are sent as they are.
 
 ![Automatic insight on a station](https://www.evtivity.com/screenshots/csms/ai-insight-station.png)
 
@@ -23,56 +29,61 @@ EVtivity checks for new events once a minute. These events start an insight:
 | A station reports a critical event (an event alert) | Station alert |
 | A session ends as failed or faulted | Session failed |
 | A station refuses a token | Authorization refused (one per token, station, and hour) |
+| A station rejects or does not answer a reservation, or cannot take it at activation | Reservation rejected |
+| A reservation expires unused although the station accepted it for a driver | Reservation no-show |
+| A station does not cancel a reservation | Reservation cancel failed |
+| A reservation fee cannot be charged | Reservation fee failed |
+| A reserved station reports a fault during the reservation | Station faulted while reserved |
 
-A station that disconnects because the CSMS itself is restarting does not start an insight. Events from before automatic insights were turned on are never analyzed.
+Reservation events start an insight only while reservations are on (see [Reservation Insights](#reservation-insights)). A station that disconnects because the CSMS itself is restarting does not start an insight. Events from before automatic insights were turned on are never analyzed.
 
 ### Wait, Group, and Skip
 
 EVtivity does not analyze every event right away:
 
 1. It waits 2 minutes by default. When the problem clears in that time, for example the station comes back online, the insight ends as **Resolved before the analysis** and no AI request is made.
-2. When 3 or more stations of one site go offline or fault within that wait, they become one **Site incident** instead of one insight per station. Sessions at a site that fail for the same reason within an hour are grouped the same way.
+2. When 3 or more stations of one site go offline or fault within that wait, they become one **Site incident** instead of one insight per station. Sessions at a site that fail for the same reason within an hour are grouped the same way, and so are reservation no-shows at a site within an hour. A station faulted while reserved joins the open site incident of its station.
 3. When the cause is already known from the data, such as a stop reason or a refusal reason with a fixed meaning, EVtivity writes the insight from its own rules. It is marked **Known cause** and uses no tokens.
 4. A station, session, or token analyzed in the last 60 minutes is not analyzed again (**Analyzed recently**).
 5. Each site gets at most 50 AI-written insights per day.
 6. When an AI budget is used up, the insight is stored with the rule-based fields only (see [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage)).
 
-Each of these values is a setting. See [Settings > AI](https://www.evtivity.com/docs/csms/settings#automatic-insights).
+Each of these values is a setting in **Settings > AI > Automatic Insights**. See [Settings](https://www.evtivity.com/docs/csms/settings#automatic-insights).
 
 An insight usually appears 2 to 3 minutes after the event: the scan runs every minute and the analysis waits 2 minutes (**Wait before analyzing (seconds)**, 120 by default). Stations of one site that fail within that wait become one site incident.
 
 ## Read an Insight
 
-An insight card is labeled **Automatic insight**. It shows:
+An insight card is labeled **Automatic Insight**. It shows:
 
 - A headline that says what happened and where, the same as on the dashboard card, such as **CS-1616 is faulted**.
 - **Likely cause**: one of Connectivity, Power supply, Hardware, Firmware, Configuration, Token, Payment, Tariff, Vehicle, Backend, or Unknown.
 - **Confidence**: Low, Medium, or High.
 - **Suggested fixes**: from a fixed list, such as **Check the station's network connection**, **Reboot the station**, or **Review the token status**.
-- **Scope**: counts from the database, such as how many stations at this site are offline or how many sessions failed for the same reason in 24 hours. Users with access to every site also see counts **Across all sites**.
+- **Site Context**: counts from the database for the site of the insight, such as how many stations at this site are offline or how many sessions failed for the same reason in 24 hours.
 - A short summary written by the AI.
 
 A suggested fix that is done on a station tab, such as **Reboot the station**, links to that tab. An insight that is out of date, skipped, or failed shows one line with the reason and **Regenerate**.
 
-The likely cause, confidence, fixes, and scope appear in your CSMS language. The summary is written once in the summary language set in Settings (English by default). When you open an insight in another language, EVtivity translates the summary once and keeps the translation for everyone who reads that language. Until it is ready, the card shows the original with **Translating…** next to it, and the translation replaces it in place when it arrives, with no reload. When no translation can be made (no provider or a used-up budget), the card shows **No translation is available. The original is shown.** Click **Show original** to read the summary in its original language.
+The likely cause, confidence, fixes, and site context appear in your CSMS language. The summary is written once in the summary language set in Settings (English by default). When you open an insight in another language, EVtivity translates the summary once and keeps the translation for everyone who reads that language. Until it is ready, the card shows the original with **Translating…** next to it, and the translation replaces it in place when it arrives, with no reload. When no translation can be made (no provider or a used-up budget), the card shows **No translation is available. The original is shown.** Click **Show original** to read the summary in its original language.
 
 The summary is shown as plain text. Links and formatting in it are not rendered.
 
 An insight that no longer matches the data shows **Out of date**. When the problem clears, EVtivity marks the insight **Resolved**.
 
-### Scope at Detection and Now
+### Site Context
 
-The **Scope** row is collapsed by default and names the main measure at detection, for example **3 stations offline at detection**. Click it to open the table. It lists each measure with two values. **At detection** is counted when the insight is detected and stored with it. Most measures cover the last 24 hours, and these are the figures the analysis used. **Now** is counted when you open the table, with no AI request. Hover the **Now** header to see when it was counted. A value that changed is shown in a heavier weight. The dashboard card shows only the value at detection. Rows for all sites are visible only to users with access to every site.
+The **Site Context** section is collapsed by default and names the main measure at detection, for example **3 stations offline at detection**. Click it to open the table. It lists each measure with two values. **At detection** is counted when the insight is detected and stored with it. Most measures cover the last 24 hours, and these are the figures the analysis used. **Now** is counted when you open the table, with no AI request. Hover the **Now** header to see when it was counted. A value that changed is shown in a heavier weight. The dashboard card shows only the value at detection. Every count covers the site of the insight only. An insight without a site has no site context.
 
 ## Statuses
 
-Only **Active** insights appear on the dashboard card. Station and session pages show the active or analyzing insight, or one resolved within the last day. All other insights stay in the AI Insights list.
+Only **Active** insights appear on the dashboard card. Station, session, and reservation pages show the active or analyzing insight, or one resolved within the last day. All other insights stay in the AI Insights list.
 
 | Status | Meaning |
 |--------|---------|
 | Analyzing | Waiting for the analysis or being analyzed |
 | Active | Open. Shown on the dashboard card and the record pages |
-| Resolved | The condition cleared on its own: the station came back online or is no longer faulted, or every station of a site incident recovered. Session, authorization and alert insights are not resolved automatically |
+| Resolved | The condition cleared on its own: the station came back online or is no longer faulted, or every station of a site incident recovered. A station faulted while reserved resolves when the station is online and no longer faulted, and a reservation fee failure resolves when the fee is captured later. Session, authorization, alert, and other reservation insights are not resolved automatically |
 | Dismissed | A user with the `aiInsights:write` permission dismissed it |
 | Superseded | A newer insight replaced it after **Regenerate**, or it was merged into a site incident or a group of failed sessions |
 | Skipped | It was not analyzed. The card shows the reason, such as **Resolved before the analysis**, **Analyzed recently**, the daily limit of the site, insights turned off for the site or in Settings, or a used-up AI budget |
@@ -84,16 +95,17 @@ Only **Active** insights appear on the dashboard card. Station and session pages
 
 - **Station detail**: the active insight of the station, or one resolved within the last day.
 - **Session detail**: the insight of a failed or faulted session.
+- **Reservation detail**: the insight of the reservation (see [Reservation Insights](#reservation-insights)).
 - **Support case detail**: up to three insights about the case's station and linked sessions. Support AI drafts also read these insights.
 - **Authorize log** (on the token, driver, and station pages): an AI column on refused attempts. Click it to open the insight, or to [Explain](https://www.evtivity.com/docs/csms/ai-assistant#explain) the attempt when it has none.
-- **Dashboard**: the **Active insights** card (see below).
+- **Dashboard**: the **Active insights** card, below the stat cards (see below).
 - **AI Insights**: the list of all insights (see [AI Insights List](#ai-insights-list)).
 
 ### Active Insights Card
 
 ![Active Insights Card](https://www.evtivity.com/screenshots/csms/ai-insights-dashboard.png)
 
-The **Active insights** card on the dashboard shows up to five open insights. Each row shows:
+The **Active insights** card shows below the stat cards of the dashboard, full width, and lists up to five open insights. Each row shows:
 
 - A headline that says what happened and where, such as **3 stations offline at Convention Center** or **CS-1616 is faulted**.
 - The root cause, how many stations or sessions are affected, the site, and how long ago it happened.
@@ -104,11 +116,31 @@ The rows hold no AI-written text. Site incidents come first, then the most sever
 
 The card shows while automatic insights are on, with **No open insights** when none are open. When automatic insights are off, it shows only while insights are still open. Click **View all** to open the AI Insights list with the active insights.
 
+## Reservation Insights
+
+Reservation insights describe a reservation that went wrong. They exist only while two switches are on. Reservations must be on in **Settings > Integrations & Features > Reservation**. **Reservation insights** must be on in **Settings > AI > Automatic Insights**. While reservations are off, EVtivity creates no reservation insights and hides the stored ones and **Explain** on the reservation page. They show again when you turn reservations back on.
+
+![Reservation detail with its insight](https://www.evtivity.com/screenshots/csms/reservation-insight.png)
+
+| Insight | Known cause (rule, no tokens) | Analyzed by the AI |
+|---------|-------------------------------|--------------------|
+| **Reservation rejected** | The EVSE was occupied or in use, or the station was offline or faulted at activation | The station rejected it for another reason, or did not answer |
+| **Reservation no-show** | Always | Never |
+| **Reservation cancel failed** | The station was offline | The station rejected the cancellation or did not answer |
+| **Reservation fee failed** | The payment was declined, or the driver has no payment method | The payment provider failed |
+| **Station faulted while reserved** | Never | Always, with the station's data |
+
+A reservation that expires because it never reached the station, because another driver used the EVSE, or because it was an operator hold without a driver is not a no-show and starts no insight.
+
+The reservation detail page shows the reservation's insight card below the header. Reservation insights do not show on the station page. Suggested fixes include **Check the reserved EVSE's status**, **Cancel the reservation on the station again**, which links to the reservation's commands, and **Review the reservation fee payment**, which links to the fee payments.
+
+The header of the reservation page also has [Explain](https://www.evtivity.com/docs/csms/ai-assistant#explain) when the reservation was cancelled because of the station (rejected, not answered, or unavailable during the hold), when it expired, or when its fee failed. Like every Explain button, it needs the assistant turned on and the `aiAssistant:write` permission. Explain on a reservation also needs the `reservations:read` permission.
+
 ## AI Insights List
 
 ![AI Insights List](https://www.evtivity.com/screenshots/csms/ai-insights.png)
 
-The AI Insights list, `/ai/insights`, shows every insight of your sites, newest first. Filter by **Status**, **Type**, **Root cause**, and **Site**. The table has these columns: **Insight**, **Status**, **Root cause**, **Confidence**, **Station**, **Site**, and **Created**.
+The AI Insights list, `/ai/insights`, shows every insight of your sites, newest first. Filter by **Status**, **Type**, **Root cause**, **Site**, and **Feedback**. The **Feedback** filter shows **Any feedback**, **Marked wrong**, or **Marked helpful**: the insights at least one user marked that way. The table has these columns: **Insight**, **Status**, **Root cause**, **Confidence**, **Station**, **Site**, and **Created**.
 
 Click a row to open the insight page, `/ai/insights/<id>`. It shows:
 
@@ -121,8 +153,8 @@ Both pages need the `aiInsights:read` permission.
 ## History
 
 - **AI Insights list**: open it with **View all** on the dashboard card, or at `/ai/insights`. Use the **Status** filter to see active, resolved, dismissed, superseded, skipped, or failed insights, or **All statuses**.
-- **Insight page**: the **History** section lists who dismissed, regenerated, or rated the insight, and when.
-- **Audit**: filter the Audit page by the **Automatic insight** type.
+- **Insight page**: the **History** section lists who dismissed or regenerated the insight, who set, changed, or removed a vote, and when.
+- **Audit**: filter the Audit page by the **Automatic Insight** type.
 
 You see only the insights of your sites.
 
@@ -132,16 +164,32 @@ These actions need the `aiInsights:write` permission:
 
 - **Regenerate**: analyze again, for an insight that is out of date, resolved, skipped, or failed. EVtivity refuses it while another analysis of the same record is running (`AI_INSIGHT_COOLDOWN`), when insights are turned off (`AI_INSIGHTS_DISABLED`), or when a budget is used up.
 - **Dismiss**: hide an insight you do not need.
-- **Helpful** or **Wrong**: tell EVtivity whether the insight was right. Feedback and dismissals are recorded in the audit log.
+- **Helpful** or **Wrong**: tell EVtivity whether the insight was right (see [Feedback](#feedback)).
+
+Dismissals and vote changes are recorded in the audit log.
+
+### Feedback
+
+Each user has one vote per insight: **Helpful** or **Wrong**. The thumb you chose shows as pressed. Click another thumb to change your vote. Click the pressed thumb again to remove your vote: its tooltip reads **Remove your vote**. The vote buttons appear on active and resolved insights, not while an insight is analyzing, skipped, failed, or out of date.
+
+Every reader sees how many users found the insight helpful in the card footer, such as "3 found this helpful".
+
+When you click **Wrong**, the card opens a panel with **Marked wrong. Generate the insight again from fresh data, or dismiss it.** It holds:
+
+- **What is wrong? (optional)**: a note of up to 500 characters. Click **Save Note** to store it. The note is stored with your vote only.
+- **Regenerate**, unless the insight is dismissed.
+- **Dismiss**, while the insight is active.
+
+Votes and notes are never sent to an AI provider. They are not part of the insight prompts, and the AI assistant cannot read them. To see how insights rate over time, open the **Insight Quality** card in **Settings > AI > Automatic Insights** (see [Settings](https://www.evtivity.com/docs/csms/settings#automatic-insights)).
 
 ## Turn On Automatic Insights
 
-1. Add an API key for a provider in **Settings > AI > AI providers**.
-2. Under **Automatic insights and workers**, select the **Provider** and click **Turn on system-initiated AI**.
-3. Under **Automatic insights**, keep or turn off **Station insights**, **Session insights**, and **Authorization insights**. All three are on by default once system-initiated AI is on.
+1. Add an API key for a provider in **Settings > AI > Providers and Keys**.
+2. Open **Settings > AI > Automatic Insights**. In the **Automatic Insights and Workers** card, select the **Provider** and turn on **Turn on system-initiated AI**.
+3. In the **Automatic Insights** card, keep or turn off **Station insights**, **Session insights**, **Authorization insights**, and **Reservation insights**. All four are on by default once system-initiated AI is on. **Reservation insights** shows only while reservations are on.
 4. Click **Save**.
 
-To stop insights for one site, open the site and turn off **Automatic insights** in the **AI usage** card of the **Details** tab. Only users with access to every site and the `sites:write` permission can change it.
+To stop insights for one site, open the site's **AI** tab and turn off **Automatic Insights** (see [Sites](https://www.evtivity.com/docs/csms/sites#ai)). Only users with access to every site and the `sites:write` permission can change it.
 
 ## Data Sent to the AI Provider
 
@@ -150,9 +198,10 @@ Automatic insights run without a user action. When system-initiated AI is on, EV
 - Station data: identity, vendor, model, firmware, OCPP version, online state and heartbeat, availability and status, recent status changes, connections, boot reason, and the error codes, alerts, and information texts the station reported.
 - Session data: status, stop reason, start and end times, energy, costs, currency, roaming, and payment failure reasons.
 - Authorization data: the refusal outcome, the token type and state, prepaid credit, fleet credit limit state, and local list state. The token value itself is never sent: EVtivity sends a hash.
-- Site data: counts of affected stations and sessions.
+- Reservation data: status, times, cancel reason, fee state, the reservation's history entries, the reservation messages of its station (action and status only), the EVSE status changes during the hold, and the fee payment status and amounts. The driver is sent only as a hashed reference.
+- Site data: counts of affected stations and sessions at the insight's site.
 
-Secrets are removed and email addresses are masked before anything is sent. Text a station reported is marked as untrusted, so the AI does not follow instructions in it. This data leaves your deployment. Check the provider's data retention terms before you turn automatic insights on.
+Stored credentials are removed, and card numbers, email addresses, phone numbers, and token ids are masked before anything is sent. Text a station reported is marked as untrusted, so the AI does not follow instructions in it. This data leaves your deployment. Check the provider's data retention terms before you turn automatic insights on.
 
 ## Permissions
 
@@ -167,5 +216,5 @@ By default, operators have both and viewers have `aiInsights:read`. Insights fol
 
 - Insights never change anything on your network. They only describe and suggest.
 - The card never names the AI provider or model.
-- Insights are deleted after 90 days by default (**Keep insights (days)** under **Automatic insights** in **Settings > AI**). Their audit entries stay after the insight is deleted.
+- Insights are deleted after 90 days by default (**Keep insights (days)** in **Settings > AI > Automatic Insights**). Their audit entries stay after the insight is deleted.
 - The API lists insights at `GET /v1/ai/insights`. See the [API reference](https://www.evtivity.com/api-reference) and the [error codes](https://www.evtivity.com/api-reference/error-codes).

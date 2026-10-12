@@ -46,7 +46,7 @@ Reference: [Portal Auth](https://www.evtivity.com/api-reference/portal-auth).
 What it powers: the operator's name, logo, and feature flags, fetched at startup so the app reflects the network it points at.
 
 - `GET /v1/portal/branding` - company name, logo, colors, portal URL (public).
-- `GET /v1/portal/features` - which features are enabled (reservations, support, roaming, Plug and Charge, fleet, guest charging, AI assistant) and related settings (public).
+- `GET /v1/portal/features` - which features are enabled (reservations, support, roaming, Plug and Charge, fleet, guest charging, AI assistant) and related settings (public). `driverAiSupport` says whether a new support case offers the AI analysis, and `driverAiNoticeVersion` names the consent notice the app must show. The app offers the choice only for a notice version it has text for.
 
 Reference: [Settings](https://www.evtivity.com/api-reference/settings).
 
@@ -113,6 +113,8 @@ Reference: [Portal Tokens](https://www.evtivity.com/api-reference/portal-tokens)
 What it powers: the Support tab and the case chat.
 
 - List and create support cases, post messages, and upload and download attachments.
+- `POST /v1/portal/support-cases` takes an optional `aiConsent` (`decision` `granted` or `declined`, `noticeVersion`, `language`), sent only after the driver chose. An outdated `noticeVersion` answers 409 `DRIVER_AI_NOTICE_OUTDATED`: the app loads the features again and shows the new notice. Without `aiConsent` the case goes to the support team.
+- `POST /v1/portal/support-cases/:id/ai-feedback` with `{ satisfied }` answers the question under the automatic answer: `true` resolves the case, `false` sends it to the support team. It answers 409 `SUPPORT_CASE_AI_NOT_AWAITING_FEEDBACK` when the case no longer waits for feedback, and 404 for a case of another driver.
 
 Reference: [Portal Support](https://www.evtivity.com/api-reference/portal-support).
 

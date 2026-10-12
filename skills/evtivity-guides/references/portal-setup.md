@@ -40,7 +40,7 @@ OCPP 2.1 stations whose firmware implements `WebPaymentsCtrlr` and that have a d
 /qr/:stationId/:evseId/:password/v1
 ```
 
-The password is a time-based one-time password that the station renews every validity period. The portal checks it and then opens the same `/charge/:stationId/:evseId` page. An expired or copied code shows **QR code not valid**. Check support, then enable, rotate, or disable dynamic QR codes on the station QR Codes tab (see [Stations](https://www.evtivity.com/docs/csms/stations)).
+The password is a time-based one-time password that the station renews every validity period. The portal checks it and then opens the same `/charge/:stationId/:evseId` page. An expired or copied code shows **QR Code Not Valid**. Check support, then enable, rotate, or disable dynamic QR codes on the station QR Codes tab (see [Stations](https://www.evtivity.com/docs/csms/stations)).
 
 Both QR code types accept the limits a station adds to the URL: `maxcost`, `maxenergy` (Wh), and `maxtime` (seconds).
 

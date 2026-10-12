@@ -72,7 +72,7 @@ The EVSE grid shows all connectors at the station. Each tile displays:
 | Occupied     | Blue   | Active charging session in progress        |
 | Preparing    | Cyan   | Cable connected, waiting for authorization |
 | EV Connected | Cyan   | Cable connected to the vehicle             |
-| Reserved     | Orange | Reserved for another driver                |
+| Reserved     | Orange | Held by a reservation until the time shown |
 | Suspended    | Yellow | Session paused by vehicle or station       |
 | Faulted      | Red    | Hardware or communication error            |
 | Unavailable  | Red    | Taken out of service by operator           |
@@ -84,7 +84,7 @@ When the whole station is unavailable, the page shows "This station is unavailab
 ## Select a Connector
 
 1. On the station detail page, tap an available connector tile.
-2. Only connectors with a startable status (available, occupied, preparing, or ev_connected) can be selected. No connector can be selected while the station is unavailable.
+2. Only connectors with a startable status (available, occupied, preparing, or ev_connected) can be selected. A connector you reserved can also be selected. A connector reserved by another driver cannot. No connector can be selected while the station is unavailable.
 3. The selected connector is highlighted with a border.
 
 ## Pre-Start Status Check
@@ -116,6 +116,23 @@ If your fleet bills your sessions on account, the station page shows **Billed to
 1. Tap **Start Charging**.
 2. The Portal sends a `RequestStartTransaction` command to the station.
 3. The session detail page opens automatically.
+
+### Start on Your Reservation
+
+When you hold a reservation on the station, start as usual on the reserved connector. The session is linked to your reservation, so no no-show fee applies. Starting with the RFID card you last used works the same way. Another driver cannot use your reservation: if someone else starts on the connector, you are notified and no no-show fee applies.
+
+## Reserve a Connector
+
+When the operator has turned on reservations, you can hold a connector before you arrive.
+
+1. Tap the **Reserve** tab, then **New reservation**.
+2. Search for the station and select it.
+3. Optionally select a connector, then set **Starts at** and **Expires at**.
+4. Tap **Reserve Connector**.
+
+A reservation that starts now is sent to the station, and the Portal waits for the station to confirm the hold. If the station refuses or does not answer, the Portal shows an error and the reservation is cancelled with no fee. A reservation that starts later is sent to the station at its start time.
+
+A no-show fee applies only when the station confirmed the hold, you did not charge, and the station stayed available. If the station goes offline or reports a fault during your reservation, the reservation is cancelled, no fee is charged, and you get a notification. A cancellation fee applies only when you cancel inside the operator's cancellation window. The Portal shows the no-show fee before you reserve, and the cancellation policy on the reservation.
 
 ## Active Session
 

@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.44 (https://github.com/EVtivity/evtivity-csms, commit 59cadc8eafdb) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.45-beta.1 (https://github.com/EVtivity/evtivity-csms, commit efc75f365534) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -71,6 +71,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `CSS_ACTION_REJECTED` | 400 | Charging Station Simulator rejected the action |
 | `CSS_ACTION_TIMEOUT` | 504 | Simulator did not respond within 5s |
 | `DOWNTIME_NOT_FOUND` | 404 | Excluded downtime record not found |
+| `DRIVER_AI_NOTICE_OUTDATED` | 409 | The AI notice has changed. Read it and choose again |
 | `DRIVER_ALREADY_IN_FLEET` | 409 | Driver is already in this fleet |
 | `DRIVER_CREATE_FAILED` |  | Failed to create driver |
 | `DRIVER_INACTIVE` | 409 | Driver is inactive |
@@ -239,10 +240,10 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `RESERVATION_BUFFER_ACTIVE` | 409 | This connector has an upcoming reservation and cannot start a new session |
 | `RESERVATION_CONFLICT` | 409 | An active reservation already exists for this station |
 | `RESERVATION_CREATE_FAILED` | 500 | Failed to create reservation |
-| `RESERVATION_DISABLED` |  | Reservations are disabled |
+| `RESERVATION_DISABLED` | 403 | Reservations are disabled |
 | `RESERVATION_DURING_MAINTENANCE` | 409 | Reservation falls within a scheduled maintenance window |
 | `RESERVATION_EXPIRES_TOO_SOON` | 400 | Reservation must end at least 60 seconds in the future |
-| `RESERVATION_NOT_ACTIVE` | 400 | Reservation is not active |
+| `RESERVATION_NOT_ACTIVE` | 400, 409 | Reservation is not active |
 | `RESERVATION_NOT_FOUND` | 404 | Reservation not found |
 | `RESERVATION_REJECTED` | 400, 502 | Station rejected reservation: ... |
 | `RESERVATION_STARTS_IN_PAST` | 400 | Reservation start time cannot be in the past |
@@ -275,6 +276,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `START_REJECTED` | 502 | Station rejected start request: ... |
 | `STATION_ALREADY_AVAILABLE` | 409 | Station already has an available connector |
 | `STATION_ALREADY_IN_FLEET` | 409 | Station is already in this fleet |
+| `STATION_CREDENTIALS_ROUTE_REQUIRED` | 400 | Station passwords are changed with POST /v1/stations/:id/credentials, not with a generic OCPP command |
 | `STATION_ID_EXISTS` | 409 | A station with this name already exists. Please choose a different name. |
 | `STATION_NOT_FOUND` | 400, 404 | Station not found |
 | `STATION_OFFLINE` | 400, 403, 409 | Station is offline |
@@ -289,6 +291,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `STORAGE_CONNECTION_FAILED` | 400 | Storage connection test failed |
 | `STORAGE_NOT_CONFIGURED` | 400, 404 | Attachment storage not configured |
 | `SUPPORT_AI_NOT_CONFIGURED` | 400 | Support AI is not configured |
+| `SUPPORT_CASE_AI_NOT_AWAITING_FEEDBACK` | 409 | This support case is not waiting for feedback on an automatic answer |
 | `SUPPORT_CASE_NOT_FOUND` | 404 | Support case not found |
 | `SUPPORT_DISABLED` |  | Support is disabled |
 | `TARIFF_DEFAULT_REQUIRED` | 409 | A pricing group with tariffs needs one active default tariff without restrictions |

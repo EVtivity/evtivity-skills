@@ -1,6 +1,6 @@
 # EVtivity API routes: Portal Support
 
-Generated from EVtivity CSMS v0.1.44 (https://github.com/EVtivity/evtivity-csms, commit 59cadc8eafdb) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.45-beta.1 (https://github.com/EVtivity/evtivity-csms, commit efc75f365534) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -14,6 +14,7 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/portal/support-cases` | driver | Create a new support case |
 | GET | `/v1/portal/support-cases/{id}` | driver | Get support case details with messages |
 | POST | `/v1/portal/support-cases/{id}/messages` | driver | Reply to a support case |
+| POST | `/v1/portal/support-cases/{id}/ai-feedback` | driver | Answer whether the automatic answer solved the issue |
 | POST | `/v1/portal/support-cases/{id}/messages/{messageId}/attachments/upload-url` | driver | Request a presigned S3 upload URL for an attachment |
 | POST | `/v1/portal/support-cases/{id}/messages/{messageId}/attachments` | driver | Confirm an attachment after S3 upload |
 | GET | `/v1/portal/support-cases/{id}/messages/{messageId}/attachments/{attachmentId}/download-url` | driver | Get a presigned download URL for an attachment |

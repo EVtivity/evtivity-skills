@@ -9,7 +9,7 @@ The app code for push is already in place. Live delivery needs three things tied
 ## How push works
 
 1. On launch the app requests permission, gets an Expo push token, and registers it with the CSMS at `/v1/portal/notifications/push-token`.
-2. When a driver event fires (session, payment, reservation, support reply), the CSMS sends a native push through Expo Push, which relays to APNs on iOS and FCM on Android.
+2. When a driver event fires (session, payment, reservation, support reply, automatic support answer), the CSMS sends a native push through Expo Push, which relays to APNs on iOS and FCM on Android.
 3. Delivery only happens when the driver's `push_enabled` preference is true. The Push toggle sets that flag.
 4. The in-app notification drawer is separate and always works, regardless of this setup.
 

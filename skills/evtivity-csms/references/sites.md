@@ -34,8 +34,6 @@ Edit the site's name, address, coordinates, contact information, and hours of op
 
 Contact information has a **Make contact info public** toggle. When off (the default) the contact name, email, and phone are visible only to operators and never to drivers. When on, the same three fields appear on the driver portal's charger and location detail pages, and the operator name is published to OCPI roaming partners. The toggle change is captured in the site audit log so a later compliance query can find when each site started or stopped publishing contact details.
 
-The **AI usage** card shows the site's AI tokens this month against its budget. Users with access to every site can set the site's **Monthly token budget** and turn its **Automatic insights** off. See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage#site-budget).
-
 ### Metrics
 
 Site performance metrics including total stations, uptime percentage, utilization, total sessions, and energy delivered, plus **Total Revenue (incl. tax)**, **Revenue (excl. tax)**, **Tax Collected**, electricity cost, and **Profit** (revenue excluding tax minus electricity cost). Revenue follows the [dashboard definition](https://www.evtivity.com/docs/csms/dashboard): final costs of ended sessions and reservation fees charged at the site, minus refunds.
@@ -97,7 +95,7 @@ Profit counts only sessions with an electricity cost. A session that delivered e
 
 #### Recalculate Electricity Cost
 
-Sessions that ended before a site had rates, or outside every period before you added an Always period, keep no electricity cost. To fill them, click **Recalculate electricity cost** on the Electricity Rates tab and confirm. The same action is on the dashboard **Electricity cost missing** card and on the sessions list filtered to sessions without an electricity cost.
+Sessions that ended before a site had rates, or outside every period before you added an Always period, keep no electricity cost. To fill them, click **Recalculate electricity cost** on the Electricity Rates tab and confirm. The same action is on the dashboard **Electricity Cost Missing** card and on the sessions list filtered to sessions without an electricity cost.
 
 - Each billed session of the site that delivered energy and has no electricity cost gets one from the site's current rate periods, at the period in force when that session ended in the site's timezone, the same way as at session end.
 - Existing costs never change. Sessions billed in another currency and sessions of other sites are left alone. Running it again changes nothing.
@@ -114,6 +112,18 @@ Sessions that ended before a site had rates, or outside every period before you 
 Available when reservations are enabled in settings. View and manage reservations across all stations at this site.
 
 ![Site reservations tab](https://www.evtivity.com/screenshots/csms/site-reservations-tab.png)
+
+### AI
+
+The **AI** tab holds the site's **AI Usage** card:
+
+- **Used** and **Budget**: the site's AI tokens this month against its monthly budget, with the percentage used. When the company currency is USD, the card also shows the cost.
+- **Automatic Insights**: turn it off to stop [automatic insights](https://www.evtivity.com/docs/csms/ai-insights) for this site.
+- **Monthly token budget**: leave it empty to use the default site budget from **Settings > AI > Usage and Limits**. 0 means no limit.
+
+![Site AI tab](https://www.evtivity.com/screenshots/csms/site-ai-tab.png)
+
+The tab shows to users with the `aiUsage:read` permission, and to users with access to every site and the `sites:write` permission. The token figures need `aiUsage:read`. Only users with access to every site and `sites:write` can change the switch and the budget. Users without access to every site see **Only users with access to every site can change this.** See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage#site-budget).
 
 ### Free Vend
 

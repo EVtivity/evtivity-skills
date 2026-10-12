@@ -19,7 +19,7 @@ The AI Inbox lists proposals in a table with these columns:
 - **Status**: see [Statuses](#statuses).
 - **Action**: such as **Stop the session**, **Soft reset the station**, or **Change the station availability**.
 - **Station** and **Site**: the records the action acts on. Click one to open it.
-- **Source**: the job that made the proposal, such as **Stuck sessions**, or the name of the MCP client. The line below it shows **Background worker** or **MCP client**.
+- **Source**: the job that made the proposal, such as **Stuck Sessions**, or the name of the MCP client. The line below it shows **Background worker** or **MCP client**.
 - **Created**: when the proposal was made.
 - **Expires**: when a pending proposal stops being valid.
 
@@ -57,7 +57,7 @@ The proposal page, `/ai/inbox/<id>`, shows the action as its title with the stat
 1. Open the proposal from the AI Inbox.
 2. Read the action, the condition, and the arguments.
 3. Click **Confirm** to run the action, or **Reject** to drop it.
-4. Confirm your choice in the dialog. **Run this action?** runs the action once, now, with your permissions. **Reject this proposal?** drops the proposal.
+4. Confirm your choice in the dialog. **Run This Action?** runs the action once, now, with your permissions. **Reject This Proposal?** drops the proposal.
 
 When you confirm, EVtivity checks again that the proposal has not expired, that the condition still holds, and that the action is still allowed. Then it runs the request with your own permissions and site access. The result appears in the **Summary** card. Each proposal runs at most once: when two users confirm it at the same time, only one confirm runs it.
 

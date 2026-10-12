@@ -104,7 +104,7 @@ The CSMS records the time of the conflict and writes the event `simulator_confli
 A station with a conflict shows a warning on its detail page: "On *time* a connection that did not come from the simulator reached this station." If a real charging station uses this station ID:
 
 1. Click **This is a real station**.
-2. Confirm in the **Confirm a real station** dialog.
+2. Confirm in the **Confirm a Real Station** dialog.
 
 The CSMS clears the simulator flag and the conflict, disables the paired simulator, and writes a `simulator_toggled` audit row with your user. The button needs the `stations:write` permission. To use the simulator again later, edit the station and turn the simulator back on. Changing the simulator setting on the station also clears a conflict.
 

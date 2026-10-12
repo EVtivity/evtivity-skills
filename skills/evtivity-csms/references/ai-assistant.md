@@ -10,15 +10,21 @@ The AI assistant answers questions about your charging network in plain language
 
 The assistant is one of the AI features of the CSMS:
 
-- [Automatic insights](https://www.evtivity.com/docs/csms/ai-insights): root-cause notes about offline or faulted stations, failed sessions, and refused authorizations.
+- [Automatic insights](https://www.evtivity.com/docs/csms/ai-insights): root-cause notes about offline or faulted stations, failed sessions, refused authorizations, and reservation problems.
 - [AI Inbox](https://www.evtivity.com/docs/csms/ai-inbox): actions proposed by background workers and MCP clients, waiting for your confirmation.
 - [Background AI workers](https://www.evtivity.com/docs/csms/ai-workers): optional scheduled jobs that summarize the network and find stuck sessions and tariff anomalies.
 - [AI usage and budgets](https://www.evtivity.com/docs/csms/ai-usage): token usage and budgets.
 - [MCP server](https://www.evtivity.com/docs/integrations/mcp-server): connects AI agents to EVtivity with an API key.
 
-The assistant works with four AI providers: Anthropic, OpenAI, Google Gemini, and DeepSeek. An administrator sets it up under **Settings > AI** (see [Settings](https://www.evtivity.com/docs/csms/settings#ai)).
+The assistant works with four AI providers: Anthropic, OpenAI, Google Gemini, and DeepSeek. An administrator adds the provider keys in **Settings > AI > Providers and Keys**. The assistant itself is set up in **Settings > AI > Assistant** (see [Settings](https://www.evtivity.com/docs/csms/settings#ai)).
 
-The conversation text, the data the assistant reads (with secrets removed), and attached files are sent to the selected AI provider. This data leaves your deployment. Check the provider's data retention terms before you turn the assistant on.
+The conversation text, the data the assistant reads, and attached files are sent to the selected AI provider. This data leaves your deployment. Check the provider's data retention terms before you turn the assistant on.
+
+> **Note:**
+>
+> **What the AI Provider Receives**
+>
+> The AI provider never receives stored credentials, such as passwords, API keys, secrets and station passwords. Card numbers and IBANs are cut to their last 4 characters. Support drafts, automatic insights, background workers and driver support also mask email addresses and phone numbers, and hash or shorten driver token ids. The assistant sends driver contact details as stored, only to users allowed to read them. Text you type and text files you attach are checked for keys and card numbers. Images and PDFs you attach are sent as they are.
 
 ## Permissions
 
@@ -43,7 +49,7 @@ On a wide screen the panel opens on the right side of the page. On a phone it fi
 2. Press Enter or click **Send**.
 3. The answer streams in as the model writes it. Click **Stop** to end it early. The partial answer is saved.
 
-The assistant answers in your CSMS language unless you ask for another language. A new chat shows suggested prompts under **Try asking**, chosen for the page you are on. Click one to send it.
+The assistant answers in your CSMS language unless you ask for another language. A new chat shows suggested prompts under **Try Asking**, chosen for the page you are on. Click one to send it.
 
 Example questions:
 
@@ -74,7 +80,7 @@ Example questions:
 
 ## Confirm Changes
 
-The assistant reads data without asking. Any change, such as creating, updating, or deleting a record, stops the answer and shows a **Confirm this change** card. The card shows what the change does and its **Details**.
+The assistant reads data without asking. Any change, such as creating, updating, or deleting a record, stops the answer and shows a **Confirm This Change** card. The card shows what the change does and its **Details**.
 
 - Click **Confirm** to run the change. The assistant then continues its answer.
 - Click **Reject** to cancel it.
@@ -94,6 +100,7 @@ An **Explain** button opens the assistant about one record, with the record's da
 - a station that is offline or faulted, in the station header
 - a session that failed or faulted
 - a refused attempt in the authorize log, on the token, driver, and station pages
+- a reservation cancelled because of the station, expired, or with a failed fee, in the reservation header (see [Reservation Insights](https://www.evtivity.com/docs/csms/ai-insights#reservation-insights))
 
 The button needs the assistant to be turned on and the `aiAssistant:write` permission.
 
@@ -107,7 +114,7 @@ While the conversation is about a record, the message box shows **About** and th
 
 EVtivity checks your access to the record when the conversation starts and before every answer. When you lose access to the record, the conversation keeps its earlier answers but refuses new questions (`AI_CONTEXT_NOT_FOUND`). The same error answers a record that does not exist or that you cannot see.
 
-Explain sends the record's data, its recent events, and its latest insight to the AI provider, with secrets removed and email addresses masked. A change the assistant suggests still needs your confirmation.
+Explain sends the record's data, its recent events, and its latest insight to the AI provider, with stored credentials removed and card numbers, email addresses, phone numbers, and token ids masked. A change the assistant suggests still needs your confirmation.
 
 ## Conversation History
 
@@ -118,7 +125,7 @@ Your conversations are saved and private to you. Open **Conversation history** i
 - Rename a conversation.
 - Delete a conversation and its attachments. This cannot be undone.
 
-Click **New chat** to start over. Conversations are deleted automatically once they have had no activity for the retention period set in **Settings > AI** (30 days by default).
+Click **New chat** to start over. Conversations are deleted automatically once they have had no activity for the retention period set in **Settings > AI > Usage and Limits** (30 days by default).
 
 ## Attachments
 
@@ -147,11 +154,11 @@ You can use your own provider and API key instead of the system settings.
 
 Your configuration applies only to you and takes priority over the system settings. An empty model uses the provider's default model. Click **Remove configuration** to go back to the system settings.
 
-The tab appears only while the assistant is turned on in Settings. When an administrator turns the assistant off in **Settings > AI**, the AI button disappears and every assistant request is refused, including requests that use a personal configuration.
+The tab appears only while the assistant is turned on in Settings. When an administrator turns the assistant off in **Settings > AI > Assistant**, the AI button disappears and every assistant request is refused, including requests that use a personal configuration.
 
 ## Limits
 
-An administrator sets these in **Settings > AI**. They apply to every user and provider.
+An administrator sets these in **Settings > AI > Usage and Limits**. They apply to every user and provider.
 
 - **Requests per user per minute**: default 10.
 - **Tokens per user per day**: default 2,000,000. 0 means no daily limit. The day runs from midnight to midnight UTC.
@@ -166,7 +173,7 @@ The panel footer shows your tokens today against your daily budget.
 
 ## Support Case AI Draft
 
-The AI drafts replies to support cases. It needs the `support:write` permission and **Enable support AI** in **Settings > AI**.
+The AI drafts replies to support cases. It needs the `support:write` permission and **Enable support AI** in **Settings > AI > Support Drafts**.
 
 1. Open a support case.
 2. Check **Internal note** for a note to your team. Leave it unchecked for a reply to the customer.
@@ -182,4 +189,4 @@ If the message box already holds text, the CSMS asks before it replaces it. A **
 - The AI reads only the case and its linked data. It cannot read other cases or other drivers.
 - It never changes anything and never sends a message. You decide what to send.
 
-Support AI has its own configuration with a **Reply tone** (Professional, Friendly, or Formal). Set it in **Settings > AI** or, for yourself, on the **Support AI** tab of your **Profile**. Support AI requests also count against **Support AI requests per site per minute** (default 60).
+Support AI has its own configuration with a **Reply tone** (Professional, Friendly, or Formal). Set it in **Settings > AI > Support Drafts** or, for yourself, on the **Support AI** tab of your **Profile**. Support AI requests also count against **Support AI requests per site per minute** (default 60).

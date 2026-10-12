@@ -20,7 +20,7 @@ EVtivity is an AI-powered, open-source charging station management system (CSMS)
 - **OCPI roaming** (2.2.1 and 2.3.0) for interoperability with roaming networks
 - **Plug and Charge** (ISO 15118) with certificate management
 - **Carbon footprint tracking** per session and per driver
-- **AI assistant** with Anthropic, OpenAI, Gemini, or DeepSeek: answers questions in plain language, proposes changes that run only after you confirm, drafts support replies in the driver's language, and redacts secrets and personal data before they reach the model
+- **AI Assistant** with Anthropic, OpenAI, Gemini, or DeepSeek: answers questions in plain language, proposes changes that run only after you confirm, drafts support replies in the driver's language, and redacts secrets and personal data before they reach the model
 
 ## Architecture
 

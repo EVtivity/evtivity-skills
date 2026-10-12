@@ -1,6 +1,6 @@
 # EVtivity API routes: CSS Actions
 
-Generated from EVtivity CSMS v0.1.44 (https://github.com/EVtivity/evtivity-csms, commit 59cadc8eafdb) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.45-beta.1 (https://github.com/EVtivity/evtivity-csms, commit efc75f365534) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -23,3 +23,4 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/css/actions/powerCycle` | stations:write | Power cycle the station |
 | POST | `/v1/css/actions/goOffline` | stations:write | Disconnect station from OCPP server, keeping its transactions and queueing their messages |
 | POST | `/v1/css/actions/comeOnline` | stations:write | Reconnect station to OCPP server without a reboot: reports connector statuses and replays queued transaction messages |
+| POST | `/v1/css/actions/reservationReply` | stations:write | Force the answer of the next ReserveNow (test control) |

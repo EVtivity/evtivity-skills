@@ -150,7 +150,7 @@ In-session pricing display.
 
 | Variable | Type | Mutability | Purpose |
 |----------|------|------------|---------|
-| `BasicAuthPassword` | string | WO | Basic Auth password (returned write-only to avoid leaking) |
+| `BasicAuthPassword` | string | WO | Basic Auth password (returned write-only to avoid leaking). Set by the CSMS when you change or rotate the password. Templates and the generic `SetVariables` command cannot set it. |
 | `CertificateEntries` | integer | R | Number of installed certificates |
 | `Identity` | string | RW | Station's identity string used in Basic Auth |
 | `OrganizationName` | string | RW | Used in CSRs |
