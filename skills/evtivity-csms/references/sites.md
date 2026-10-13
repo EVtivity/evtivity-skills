@@ -95,7 +95,7 @@ Profit counts only sessions with an electricity cost. A session that delivered e
 
 #### Recalculate Electricity Cost
 
-Sessions that ended before a site had rates, or outside every period before you added an Always period, keep no electricity cost. To fill them, click **Recalculate electricity cost** on the Electricity Rates tab and confirm. The same action is on the dashboard **Electricity Cost Missing** card and on the sessions list filtered to sessions without an electricity cost.
+Sessions that ended before a site had rates, or outside every period before you added an Always period, keep no electricity cost. To fill them, click **Recalculate electricity cost** on the Electricity Rates tab and confirm. The same action is on the sessions list filtered to sessions without an electricity cost.
 
 - Each billed session of the site that delivered energy and has no electricity cost gets one from the site's current rate periods, at the period in force when that session ended in the site's timezone, the same way as at session end.
 - Existing costs never change. Sessions billed in another currency and sessions of other sites are left alone. Running it again changes nothing.
@@ -113,9 +113,9 @@ Available when reservations are enabled in settings. View and manage reservation
 
 ![Site reservations tab](https://www.evtivity.com/screenshots/csms/site-reservations-tab.png)
 
-### AI
+### AI Usage
 
-The **AI** tab holds the site's **AI Usage** card:
+The **AI Usage** tab holds the site's **AI Usage** card:
 
 - **Used** and **Budget**: the site's AI tokens this month against its monthly budget, with the percentage used. When the company currency is USD, the card also shows the cost.
 - **Automatic Insights**: turn it off to stop [automatic insights](https://www.evtivity.com/docs/csms/ai-insights) for this site.
@@ -124,6 +124,10 @@ The **AI** tab holds the site's **AI Usage** card:
 ![Site AI tab](https://www.evtivity.com/screenshots/csms/site-ai-tab.png)
 
 The tab shows to users with the `aiUsage:read` permission, and to users with access to every site and the `sites:write` permission. The token figures need `aiUsage:read`. Only users with access to every site and `sites:write` can change the switch and the budget. Users without access to every site see **Only users with access to every site can change this.** See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage#site-budget).
+
+### AI Insights
+
+The **AI Insights** tab lists every [automatic insight](https://www.evtivity.com/docs/csms/ai-insights#ai-insights-tab) of the site, newest first, with its status: site incidents, site summaries, and the insights about its stations, sessions, and reservations. Click a row to open the insight. The tab shows to users with the `aiInsights:read` permission while AI Insights are on. The light bulb button above the assistant button opens this tab.
 
 ### Free Vend
 

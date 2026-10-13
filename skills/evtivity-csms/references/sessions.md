@@ -18,7 +18,7 @@ Free vend sessions show a "Free Vend" label in the driver column instead of a dr
 
 Select **Manual billing** in the status filter to list the sessions that wait for billing outside the platform. See [Billing a Session the CSMS Could Not End](#billing-a-session-the-csms-could-not-end).
 
-Select **Missing** in the electricity cost filter to list the billed sessions that delivered energy but have no electricity cost, so profit leaves them out. The dashboard **Electricity Cost Missing** card opens this view for a site. With a site selected, **Recalculate electricity cost** fills their cost from the site's current rates. See [Recalculate Electricity Cost](https://www.evtivity.com/docs/csms/sites#recalculate-electricity-cost).
+Select **Missing** in the electricity cost filter to list the billed sessions that delivered energy but have no electricity cost, so profit leaves them out. A notice above the table reads **These sessions have no electricity cost and are left out of profit.** With a site selected, **Recalculate electricity cost** fills their cost from the site's current rates. See [Recalculate Electricity Cost](https://www.evtivity.com/docs/csms/sites#recalculate-electricity-cost).
 
 ## Session Statuses
 
@@ -32,7 +32,7 @@ Select **Missing** in the electricity cost filter to list the billed sessions th
 
 ## Session Detail
 
-Click any session to view its full detail page. The detail page has three tabs. Users with the `audit:read` permission also see a **History** tab that lists the audited changes to the session, such as a billing by an operator.
+Click any session to view its full detail page. The detail page has three tabs. Users with the `audit:read` permission also see a **History** tab that lists the audited changes to the session, such as a billing by an operator. Users with the `aiInsights:read` permission see an **AI Insights** tab while AI Insights are on.
 
 ![Session detail](https://www.evtivity.com/screenshots/csms/session-detail.png)
 
@@ -77,6 +77,10 @@ With a provider that confirms operations by webhook (Adyen, or the test provider
 See [Adyen captures and refunds](https://www.evtivity.com/docs/integrations/adyen#captures-and-cancellations).
 
 ![Session payment](https://www.evtivity.com/screenshots/csms/session-payment-tab.png)
+
+### AI Insights
+
+Lists the [automatic insights](https://www.evtivity.com/docs/csms/ai-insights#ai-insights-tab) about the session, newest first, such as a failed session or a stuck session with a suggested stop. Click a row to open the insight. The light bulb button above the assistant button opens this tab and pulses while an insight is open or its action waits for a decision.
 
 ## Billing a Session the CSMS Could Not End
 

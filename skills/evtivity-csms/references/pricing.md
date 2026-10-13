@@ -43,7 +43,7 @@ A pricing group with active tariffs needs exactly one active default tariff, and
 - Create the default tariff first. A tariff with restrictions in a group without a default is refused.
 - While other tariffs of the group are active, you cannot deactivate the default, add restrictions to it, or delete it. Deactivate or delete the other tariffs first.
 
-These changes are refused with `409 TARIFF_DEFAULT_REQUIRED`. The tariff form explains the rule below the **Tariff type** field.
+These changes are refused with `409 TARIFF_DEFAULT_REQUIRED`. The tariff form explains the rule below the **Tariff Type** field.
 
 ## Prices and Tax
 

@@ -653,7 +653,7 @@ The **Automatic Insights** card holds the insight settings. See [Automatic Insig
 
 **Reservation insights** shows only while reservations are on. While they are off, the card shows **Reservation insights are off while reservations are turned off.** with a **Turn on reservations** link to [Reservation](#reservation).
 
-Each site also has its own **Automatic Insights** switch on its **AI** tab (see [Sites](https://www.evtivity.com/docs/csms/sites#ai)).
+Each site also has its own **Automatic Insights** switch on its **AI Usage** tab (see [Sites](https://www.evtivity.com/docs/csms/sites#ai-usage)).
 
 The **Insight Quality** card shows how users rated insights in your sites over the last 30 days. It lists each insight type that has a vote, with the **Helpful** and **Wrong** vote counts and the **Helpful Rate**. With no votes, it shows "No votes in the last 30 days." When an insight has a **Wrong** vote, the **View Insights Marked Wrong** link opens the AI Insights list filtered to them. The card needs the `aiInsights:read` permission. See [Feedback](https://www.evtivity.com/docs/csms/ai-insights#feedback).
 

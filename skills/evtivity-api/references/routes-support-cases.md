@@ -1,6 +1,6 @@
 # EVtivity API routes: Support Cases
 
-Generated from EVtivity CSMS v0.1.45-beta.3 (https://github.com/EVtivity/evtivity-csms, commit 5154e2c014e3) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.45 (https://github.com/EVtivity/evtivity-csms, commit a241f5536239) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -13,6 +13,7 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/support-cases` | support:read | List support cases |
 | POST | `/v1/support-cases` | support:write | Create a support case |
 | GET | `/v1/support-cases/unread-count` | support:read | Get unread support case count for the current operator |
+| GET | `/v1/support-cases/unassigned-count` | support:read | Get the open, unassigned support case count in the current operator sites |
 | GET | `/v1/support-cases/attachment-storage` | support:read | Get whether support case attachment storage is configured |
 | GET | `/v1/support-cases/{id}` | support:read | Get support case detail |
 | PATCH | `/v1/support-cases/{id}` | support:write | Update a support case |

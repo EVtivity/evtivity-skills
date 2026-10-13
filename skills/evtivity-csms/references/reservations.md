@@ -53,7 +53,7 @@ Click any reservation in the list to view its detail page.
 
 ### Insight and Explain
 
-When an [AI insight](https://www.evtivity.com/docs/csms/ai-insights) covers the reservation, its card shows above the tabs. Reservation insights cover a station that refused or never confirmed the hold, a no-show, a station cancel that failed, a failed fee, and a station that faulted during the hold. **Explain** opens the AI assistant about this reservation. It shows for an expired reservation, a reservation cancelled for a station reason, and a reservation with a failed fee. The card and **Explain** show only while reservations are turned on.
+The **AI Insights** tab lists the [AI insights](https://www.evtivity.com/docs/csms/ai-insights#reservation-insights) about the reservation. The light bulb button above the assistant button opens it and pulses while an insight is open. Reservation insights cover a station that refused or never confirmed the hold, a no-show, a station cancel that failed, a failed fee, and a station that faulted during the hold. **Explain** opens the AI assistant about this reservation. It shows for an expired reservation, a reservation cancelled for a station reason, and a reservation with a failed fee. The tab, the button, and **Explain** show only while reservations are turned on.
 
 ![Reservation insight](https://www.evtivity.com/screenshots/csms/reservation-insight.png)
 
@@ -65,6 +65,7 @@ The detail page has the following tabs:
 - **Session** - the linked charging session when one exists (status `in_use` or `used`).
 - **History** - paginated `reservation_audit_log` with the action (see the table below), the actor name (operator or driver, linked to their detail page), and a field-by-field diff of `driverId`, `tokenId`, `evseId`, `expiresAt`, and `status`.
 - **OCPP Logs** - the OCPP ReserveNow / CancelReservation commands the CSMS dispatched for this reservation, with their results.
+- **AI Insights** - the AI insights about the reservation, for users with the `aiInsights:read` permission while AI Insights are on.
 
 ## Audit Trail
 

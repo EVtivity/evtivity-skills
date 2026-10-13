@@ -60,7 +60,7 @@ Example questions:
 ### Answers
 
 - **Steps**: each API call the assistant made appears as a collapsible step with its status and duration.
-- **Documentation**: when the answer draws on the EVtivity documentation, links to the pages it used appear below the answer. Answers without such sources show no list.
+- **Sources**: when the answer draws on the EVtivity documentation, a **Sources** list below the answer links to the documentation pages and sections it cited, in your language when the page has a translation. Answers without such sources show no list.
 - **Copy**: click **Copy** to copy an answer. Code blocks have their own copy button.
 - Answers render tables, lists, and code. Links open in a new tab and only trusted hosts are clickable. Images in answers are not loaded.
 - Each answer shows the number of tokens it used.
@@ -94,7 +94,7 @@ Some actions are never available to the assistant, even with confirmation: setti
 
 ## Explain
 
-An **Explain** button opens the assistant about one record, with the record's data already loaded. It appears on:
+An **Explain** button opens the assistant about one record. It appears on:
 
 - a station that is offline or faulted, in the station header
 - a session that failed or faulted
@@ -106,18 +106,20 @@ The button needs the assistant to be turned on and the `aiAssistant:write` permi
 In a table row, such as the authorize log, the button is an icon. When the record has a current [automatic insight](https://www.evtivity.com/docs/csms/ai-insights), the icon is a light bulb.
 
 1. Click **Explain**.
-2. The panel opens with a context card for the record. It looks the same for every record type: **About** and the record, such as the station ID, the session's transaction ID, or the reservation number. When the record has a current insight, the card also shows **Latest automatic insight** with the insight's headline, likely cause, and suggested fixes, and a **View insight** link. The card ends with the note: "The assistant reads this record's key facts, recent events and latest insight. Nothing is sent until you send your question."
+2. The panel opens with a context card for the record: the record type and the identifier you know it by, such as **Session CS-0954**. A station, session, or authorization attempt shows the OCPP station ID, a reservation its number, such as **Reservation #12**, and an insight its ID.
 3. The message box holds a prepared question, such as "Why did this session fail, and what should I do?". Edit it if you like, then send it. Nothing is sent to the AI provider, and no tokens are used, until you send it.
 
 ![Explain with its context card](https://www.evtivity.com/screenshots/csms/ai-explain.png)
 
-The context card stays while the conversation is about the record, also when you open the conversation again from the history. Each answer reads the record's key facts, its recent events, and its latest insight. **New chat** starts a conversation without the record.
+**Ask a follow-up** on an insight page or on a support case insight opens the assistant about that insight the same way.
+
+The context card stays while the conversation is about the record, also when you open the conversation again from the history. To answer, the assistant reads the record, its events, and its insights with its read tools, under your permissions and site access. **New chat** starts a conversation without the record.
 
 Press Esc or click outside the panel to close it. Esc first stops an answer that is still streaming. A dialog open above the panel, such as a confirmation, takes Esc and clicks first.
 
 EVtivity checks your access to the record when the conversation starts and before every answer. When you lose access to the record, the conversation keeps its earlier answers but refuses new questions (`AI_CONTEXT_NOT_FOUND`). The same error answers a record that does not exist or that you cannot see.
 
-Explain sends the record's data, its recent events, and its latest insight to the AI provider, with stored credentials removed and card numbers, email addresses, phone numbers, and token ids masked. A change the assistant suggests still needs your confirmation.
+What the assistant reads about the record goes to the AI provider, with stored credentials removed and card numbers, email addresses, phone numbers, and token ids masked. A change the assistant suggests still needs your confirmation.
 
 ## Conversation History
 

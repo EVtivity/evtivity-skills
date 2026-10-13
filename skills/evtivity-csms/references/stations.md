@@ -365,6 +365,10 @@ Available when reservations are enabled in settings. View reservations for this 
 
 ![Station reservations tab](https://www.evtivity.com/screenshots/csms/station-reservations-tab.png)
 
+### AI Insights
+
+Lists the [automatic insights](https://www.evtivity.com/docs/csms/ai-insights#ai-insights-tab) about the station and its sessions, newest first, with their status. Click a row to open the insight. The tab shows to users with the `aiInsights:read` permission while AI Insights are on. The light bulb button above the assistant button opens this tab and pulses while an insight is open or its action waits for a decision.
+
 ### History
 
 Per-station audit trail. Every operator-initiated change to the station (edits, command dispatches, approval changes) is recorded with the actor, the before/after state, and a timestamp.

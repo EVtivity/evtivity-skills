@@ -68,7 +68,7 @@ The tab shows the cost of the tokens only when the company currency is US dollar
 
 ## Site Budget
 
-The **AI** tab of a site shows the **AI Usage** card: the site's tokens this month against its budget. The tab shows for users with the `aiUsage:read` permission, and for users with access to every site and the `sites:write` permission.
+The **AI Usage** tab of a site shows the **AI Usage** card: the site's tokens this month against its budget. The tab shows for users with the `aiUsage:read` permission, and for users with access to every site and the `sites:write` permission.
 
 ![Site AI tab](https://www.evtivity.com/screenshots/csms/site-ai-tab.png)
 

@@ -16,7 +16,7 @@ Use it for planned electrical work, firmware rollouts, software upgrades, networ
 
 1. **Create an event**
 
-   From the Site Detail page Maintenance tab, click **Schedule maintenance**. Choose **Now** for an immediate window or **Scheduled** with a future start time. Pick the end time and (optionally) a custom display message and reason.
+   From the Site Detail page Maintenance tab, click **Schedule Maintenance**. Choose **Now** for an immediate window or **Scheduled** with a future start time. Pick the end time and (optionally) a custom display message and reason.
 
 2. **Worker activates the window**
 
