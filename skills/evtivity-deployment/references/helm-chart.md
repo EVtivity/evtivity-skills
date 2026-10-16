@@ -46,6 +46,8 @@ Supported env var overrides: `POSTGRES_PASSWORD`, `REDIS_PASSWORD` (the Redis ad
 
 After installation, the script prints the default admin credentials. The admin user is created with `mustResetPassword: true`, forcing a password change on first login.
 
+The script installs the chart with `--wait --timeout 15m` (set `CSMS_WAIT_TIMEOUT` to change it) and returns once every Deployment is ready. Helm also waits for the address of the OCPP TLS LoadBalancer, so on a cluster without a LoadBalancer provider (kind, or minikube without `minikube tunnel`) set `CSMS_WAIT=false`.
+
 ## Services
 
 The chart deploys six microservices, each with an independent enable toggle:
@@ -258,8 +260,11 @@ Non-sensitive environment variables are stored in a shared ConfigMap mounted by 
 | `RATE_LIMIT_WINDOW` | `api.env.rateLimitWindow` | Rate limit window |
 | `OCPI_COUNTRY_CODE` | `ocpi.env.countryCode` | OCPI country code |
 | `OCPI_PARTY_ID` | `ocpi.env.partyId` | OCPI party ID |
+| `TRUST_PROXY` | `api.env.trustProxy` | Proxy IPs or CIDRs whose `X-Forwarded-For` the API and OCPI trust (empty by default) |
 
 `CORS_ORIGIN` is automatically derived from gateway route hostnames. No manual configuration needed.
+
+`api.env.trustProxy` applies to the API and the OCPI server. Set it to the addresses or CIDR ranges of your gateway or load balancer pods, for example `10.0.0.0/8`, so rate limits, the guest charging limits per IP address, and audit and access logs see the real client address. Empty trusts no proxy, and the guest charging limits per IP address are then off. A hop count or `true` is refused when the chart renders.
 
 ## Runtime Config
 
@@ -282,12 +287,15 @@ Values are derived automatically from the gateway configuration. No separate val
 
 Database migrations run as a Helm hook job with the migrate image:
 
-- Hook annotations: `pre-upgrade`, `post-install` (weight 0)
+- Hook annotations: `pre-install`, `pre-upgrade` (weight 0)
+- Hook order: Redis ACL sync (weight -15), credentials init (weight -10), migration (weight 0), settings seed (weight 1). The ACL sync and credentials init run only when enabled.
 - Deletion policy: `before-hook-creation`
 - Init container waits for PostgreSQL
 - `backoffLimit: 1`
 
-On `helm upgrade`, the job runs before Helm updates the Deployments, so new pods never start against the old schema. If a migration fails, the upgrade stops and the old pods keep running. On upgrade the job reads `DATABASE_URL` from the Secret of the installed release. To change the database URL, upgrade with the new `secrets.databaseUrl` first, then upgrade the image. On `helm install`, the job runs after the Secret and ConfigMap exist. The settings seed job (`post-install`, `post-upgrade`, weight 1) runs after the migration in both cases.
+The job runs on both `helm install` and `helm upgrade` before Helm creates or updates the Deployments, so pods never start against an empty or old schema. If a migration fails, the release fails and the old pods keep running. During an install the chart ConfigMap and Secret do not exist yet, so the job reads `DATABASE_URL` from a short-lived hook Secret rendered from `secrets.databaseUrl` and removed after the hooks succeed, from `secrets.existingSecret`, or, with credential rotation, from the owner connection in `<fullname>-credentials`. The settings seed job (`post-install`, `post-upgrade`, weight 1) runs after the migration.
+
+Helm waits for the job up to the `--timeout` of the `helm` command (default 5 minutes). Some migrations build indexes concurrently, which can take a long time on a large database, so run `helm upgrade` on a large database with a longer timeout, for example `--timeout 60m`. If Helm times out, the release fails while the job keeps working. The next `helm upgrade` runs the job again, which waits for a migration still in progress and skips the work already done.
 
 ## Initial Admin User
 
@@ -431,6 +439,8 @@ These `appSettings` keys seed the matching dashboard settings. Leave a key empty
 | `appSettings.company.taxBasis` | `net` or `gross` | `net` | Settings > Company Info > Tariff prices are entered. Whether tariff prices exclude or include tax. See [Settings](https://www.evtivity.com/docs/csms/settings). |
 | `appSettings.company.priceDisplay` | `gross` or `net` | `net` | Settings > Company Info > Prices in the driver portal. Whether drivers see prices including or excluding tax. See [Settings](https://www.evtivity.com/docs/csms/settings). |
 | `appSettings.stationMessage.language` | `en`, `de`, `es`, `ko`, `zh`, `zh-TW` | `en` | Settings > Integrations & Features > Messages > Display Language. The language of every station screen. |
+| `appSettings.guest.startsPerIpPerHour` | Whole number, 0 to 10000 (0 means no limit) | empty (30 on a fresh install) | Settings > Integrations & Features > Guest Charging > Guest Starts per IP per Hour. Needs `api.env.trustProxy` behind a gateway or load balancer. |
+| `appSettings.guest.declinesPerIpPerHour` | Whole number, 0 to 10000 (0 means no limit) | empty (5 on a fresh install) | Settings > Integrations & Features > Guest Charging > Declined Cards per IP per Hour. Needs `api.env.trustProxy` behind a gateway or load balancer. |
 
 ```yaml
 appSettings:

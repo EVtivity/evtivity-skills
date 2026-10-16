@@ -315,7 +315,7 @@ ISO 15118 Plug and Charge configuration.
 - **Enable Plug & Charge (ISO 15118)** - feature toggle for Plug and Charge.
 - **PKI Provider** - select between the `Hubject`, `Manual`, and `Local` (local contract CA) PKI providers.
 - **eMAID country code** and **eMAID provider ID** - prefix of the eMAIDs the local contract CA issues (Local provider).
-- **Create contract CA** button - creates the local contract CA once (Local provider). See [Certificates](https://www.evtivity.com/docs/csms/certificates#local-contract-ca).
+- **Create Contract CA** button - creates the local contract CA once (Local provider). See [Certificates](https://www.evtivity.com/docs/csms/certificates#local-contract-ca).
 - **Hubject API Base URL** - OPCP API base URL.
 - **OAuth2 Client ID** - OAuth2 client ID.
 - **OAuth2 Client Secret** - OAuth2 client secret (stored encrypted).
@@ -374,9 +374,13 @@ Fleet management feature toggle and the credit reservation of account sessions.
 
 ### Guest Charging
 
-Guest charging feature toggle.
+Guest charging feature toggle and card testing limits.
 
 - **Enable Guest Charging** - toggle for guest (unauthenticated) charging via the portal. When disabled, the guest checkout flow is hidden.
+- **Guest Starts per IP per Hour** - guest starts one client IP address may make in an hour (default 30). Setting `guest.startsPerIpPerHour`.
+- **Declined Cards per IP per Hour** - after this many declined cards in an hour, the address can place no new payment hold (default 5). Setting `guest.declinesPerIpPerHour`.
+
+0 means no limit. The limits apply only when the server knows the guest's real IP address: set `TRUST_PROXY` behind a load balancer or ingress. A public address reaching the API directly is limited as is. See [Guest Charging](https://www.evtivity.com/docs/portal/guest-charging#start-protection).
 
 ### Idling
 
@@ -408,7 +412,7 @@ Station display message configuration. Drives the all-state push pipeline that w
 
 Saving these settings, a state template, or the company name, support phone, currency, price display, or tax basis updates the screens of every online station within a few seconds. Screens whose text did not change are not sent again.
 
-The Messages tab also includes a per-state template editor. Each state has a template per language, chosen with **Template Language** (defaults to the display language). Each of the eight state templates is a Handlebars body with a click-to-insert variable picker filtered by state (e.g., `{{energyKwh}}`, `{{powerKw}}`, `{{costFormatted}}` show up only for Charging, Suspended, and Discharging). A live preview renders the compiled template with sample values in the company currency, the price display, and the chosen language. Save persists to the `station_message_templates` table. Reset reverts that language's template to the default.
+The Messages tab also includes a per-state template editor. Each state has a template per language, chosen with **Template Language** (defaults to the display language). Each of the eight state templates is a Handlebars body with a click-to-insert variable picker filtered by state (e.g., `{{energyKwh}}`, `{{powerKw}}`, `{{costFormatted}}` show up only for Charging, Suspended, and Discharging). A live preview renders the compiled template with sample values in the company currency, the price display, and the chosen language. Save persists to the `station_message_templates` table. Reset reverts that language's template to the default. Templates accept only variables, comments, and `{{#if}}` / `{{#unless}}` blocks on one variable with an optional `{{else}}`. Save refuses a template that uses any other Handlebars feature.
 
 OCPP 1.6 stations have no native equivalent. They receive the Idle screen (Available, Occupied, Reserved) as a vendor `DataTransfer`.
 
@@ -468,7 +472,7 @@ Google reCAPTCHA v3 bot protection for login pages.
 - **Secret Key** - reCAPTCHA v3 secret key (stored encrypted). Shows `********` when already configured.
 - **Score Threshold** - minimum score to pass (0-1, default 0.5). Higher values are stricter.
 
-When enabled, login pages require a passing reCAPTCHA score before authenticating.
+When enabled, login pages and guest charging starts require a passing reCAPTCHA score.
 
 While reCAPTCHA is off, the tab shows a warning: driver portal sign-up, sign-in and password reset are protected only by IP rate limits. Turn it on when anyone can register in the portal.
 
@@ -499,6 +503,13 @@ SAML-based Single Sign-On for operator accounts.
   - First name attribute name (default `firstName`)
   - Last name attribute name (default `lastName`)
 
+Notes:
+
+- Accounts created through SSO have no password. They cannot sign in with a password, reset it, or change it.
+- The allowed email domains (`sso.allowedDomains`, a comma-separated list) apply to existing accounts as well as new ones. An empty list allows every domain.
+- A SAML reply is accepted only when it answers a sign-in request the CSMS made, and only once.
+- A user with MFA completes the second factor after the SSO sign-in.
+
 ## API Keys
 
 **Permission:** `settings.apiKeys:read` / `settings.apiKeys:write`
@@ -519,7 +530,7 @@ Manage API keys for programmatic access to the REST API.
 - **Token display dialog** - shown once after creation with a copy button. The raw token is only visible at creation time.
 - **Quick Start** card - code examples in cURL, JavaScript, and Python showing how to use the API key with Bearer authentication.
 
-API keys inherit the creating user's site access at request time. Revoking a key is permanent.
+API keys inherit the creating user's site access at request time. Revoking a key is permanent. API keys cannot use the account routes of the signed-in user (profile, password, MFA, notification preferences, and personal AI configuration). Deactivating or deleting a user revokes the user's API keys, and the user page shows them on its [Security tab](https://www.evtivity.com/docs/csms/users#security-tab).
 
 ## Firmware Campaign
 
@@ -650,12 +661,15 @@ The **Automatic Insights** card holds the insight settings. See [Automatic Insig
 | **Stations down at one site that make one site incident** | `aiInsights.siteIncidentThreshold` | 3 | 2 to 1,000 |
 | **Insights per site per day** | `aiInsights.maxPerSitePerDay` | 50 | 1 to 10,000 |
 | **Keep insights (days)** | `aiInsights.retentionDays` | 90 | 1 to 3,650 |
+| **Close one-off insights after (days)** | `aiInsights.expireAfterDays` | 7 | 1 to 365 |
+
+![Automatic Insights card](https://www.evtivity.com/screenshots/csms/settings-ai-insights-card.png)
 
 **Reservation insights** shows only while reservations are on. While they are off, the card shows **Reservation insights are off while reservations are turned off.** with a **Turn on reservations** link to [Reservation](#reservation).
 
 Each site also has its own **Automatic Insights** switch on its **AI Usage** tab (see [Sites](https://www.evtivity.com/docs/csms/sites#ai-usage)).
 
-The **Insight Quality** card shows how users rated insights in your sites over the last 30 days. It lists each insight type that has a vote, with the **Helpful** and **Wrong** vote counts and the **Helpful Rate**. With no votes, it shows "No votes in the last 30 days." When an insight has a **Wrong** vote, the **View Insights Marked Wrong** link opens the AI Insights list filtered to them. The card needs the `aiInsights:read` permission. See [Feedback](https://www.evtivity.com/docs/csms/ai-insights#feedback).
+The **Insight Quality** card shows how users rated insights in your sites over the last 30 days. It lists each insight type that has a vote, with the **Helpful** and **Wrong** vote counts and the **Helpful Rate**. With no votes, it shows "No votes in the last 30 days." Each insight type with a **Wrong** vote links to its insights marked wrong, and the **View Insights Marked Wrong** link opens all of them. The notes show in **Marked Wrong** on each insight page. The card needs the `aiInsights:read` permission. See [Feedback](https://www.evtivity.com/docs/csms/ai-insights#feedback).
 
 ![Automatic insights tab](https://www.evtivity.com/screenshots/csms/settings-ai-insights.png)
 
@@ -668,6 +682,7 @@ The **Background AI Workers** card holds the scheduled jobs. Their suggestions a
 | **Write the rationale with AI** | `aiWorkers.stuckSessions.useModel` | Off | |
 | **Tariff Anomalies** | `aiWorkers.tariffAnomalies.enabled` | Off | |
 | **Idle time before a session counts as stuck (minutes)** | `aiWorkers.stuckSessions.idleMinutes` | 90 | 15 to 1,440 |
+| **Offline time before the AI suggests ending a stuck session in the CSMS (hours)** | `aiWorkers.stuckSessions.offlineEndAfterHours` | 24 | 1 to 720 |
 | **Action lifetime (hours)** | `aiWorkers.proposalTtlHours` | 24 | 1 to 168 |
 
 ![Background AI workers card](https://www.evtivity.com/screenshots/csms/settings-ai-insights-workers.png)
@@ -711,6 +726,17 @@ Token budgets count input plus output tokens. Daily budgets run on UTC days, mon
 Below the limits, the tab shows the AI tokens of the company, each site, each surface, and the top users for the month you pick in **Month**. The **Sites** list shows 10 sites per page. This part needs the `aiUsage:read` permission and access to every site. See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage#usage-and-limits-tab).
 
 ![Usage and limits tab](https://www.evtivity.com/screenshots/csms/settings-ai-usage.png)
+
+### AI Alerts
+
+The CSMS shows a banner at the top of every page to users with the `settings.ai:write` permission and access to every site. **Settings > AI** shows the same alerts at its top to everyone who can open it.
+
+- **Out of credit or quota** (red), titled with the provider name, for example **DeepSeek Is Out of Credit or Quota**: the provider refused a request made with the company key because the account is out of credit, over a spend limit, or over its daily quota. The banner says since when. The AI features that use this provider are paused: automatic insights and their translations, background workers, driver support, and support drafts. The assistant keeps trying and shows the `AI_PROVIDER_QUOTA_EXCEEDED` error. Add credit or raise the quota at the provider. While the alert lasts, EVtivity tries one background request every 15 minutes, and the alert clears with the next successful request, so the features resume on their own. **Open AI Settings** opens **Providers and Keys**.
+- **AI Budget Warning** (yellow) or **AI Budget Used Up** (red): the company monthly token budget is at or past **Warn at (% of a budget)**, or used up. **View AI Usage** opens **Usage and Limits**.
+
+A rate limit does not raise an alert: it ends by waiting. A personal key from a user's profile belongs to another provider account and never raises it.
+
+The same users also get these alerts as system notifications by email and SMS: **AI Provider Out of Credit or Quota**, **AI Budget Warning**, and **AI Budget Used Up**. See [Notifications](https://www.evtivity.com/docs/csms/notifications). The API returns the active alerts at `GET /v1/ai/alerts`.
 
 ## Conformance
 

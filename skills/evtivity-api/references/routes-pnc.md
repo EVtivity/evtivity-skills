@@ -1,6 +1,6 @@
 # EVtivity API routes: PnC
 
-Generated from EVtivity CSMS v0.1.45 (https://github.com/EVtivity/evtivity-csms, commit a241f5536239) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -23,3 +23,4 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/pnc/refresh-root-certificates` | certificates:write | Refresh root certificates from provider |
 | GET | `/v1/pnc/settings/local-ca` | settings.integrations:read | Get the local contract CA |
 | POST | `/v1/pnc/settings/local-ca` | settings.integrations:write | Create the local contract CA |
+| POST | `/v1/pnc/settings/local-ca/cpo-sub-ca` | settings.integrations:write | Add the CPO Sub-CAs to the local contract CA |

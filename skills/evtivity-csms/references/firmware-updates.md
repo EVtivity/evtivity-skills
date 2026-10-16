@@ -6,7 +6,7 @@ Create firmware update campaigns to roll out new firmware versions to groups of 
 
 ## Overview
 
-Firmware campaigns let you update charging station firmware across your network. Create a campaign targeting specific stations by site, vendor, or model, then track per-station progress as the update rolls out.
+Firmware campaigns let you update charging station firmware across your network. Create a campaign targeting specific stations by site, vendor, model, or station, then track per-station progress as the update rolls out.
 
 ![Firmware campaigns list](https://www.evtivity.com/screenshots/csms/firmware-campaigns.png)
 
@@ -16,8 +16,8 @@ Firmware campaigns follow a draft-to-completion lifecycle:
 
 | Status | Description |
 |--------|-------------|
-| Draft | Campaign created but not started. You can edit the target filter, the firmware URL, and the signing fields. |
-| Active | Campaign started. OCPP `UpdateFirmware` commands sent to matching stations. |
+| Draft | Campaign created but not started. You can edit the target filter, the firmware URL, the download and install settings, and the signing fields. |
+| Active | Campaign started. OCPP `UpdateFirmware` commands sent to the matching online stations. Matching stations that are offline get the update when they connect. |
 | Completed | All target stations have finished (installed or failed). |
 | Cancelled | Campaign stopped before completion. |
 
@@ -32,10 +32,13 @@ Firmware campaigns follow a draft-to-completion lifecycle:
 | Name | Descriptive name for the campaign (e.g., "ABB v3.2.1 Rollout") |
 | Firmware URL | HTTPS URL where stations download the firmware file |
 | Version | Target firmware version string (optional, for tracking) |
-| Signing certificate (PEM) | Firmware Signing certificate for a signed update. See [Signed Firmware Updates](#signed-firmware-updates). |
-| Firmware signature (base64) | Signature of the firmware file. Set together with the signing certificate. |
+| Download Retries | How often a station retries a failed download, from 0 to 100. 0 means no retries. Empty lets the station decide. |
+| Retry Interval (Seconds) | Seconds between download retries, from 1 to 86400. Empty lets the station decide. |
+| Install Time | When the station installs the firmware. It downloads first and installs at this time. Must be in the future. Empty installs right after the download. |
+| Signing Certificate (PEM) | Firmware Signing certificate for a signed update. See [Signed Firmware Updates](#signed-firmware-updates). |
+| Firmware Signature (base64) | Signature of the firmware file. Set together with the signing certificate. |
 
-Leave both signing fields empty for an unsigned update.
+Leave both signing fields empty for an unsigned update. See [Download Retries and Install Time](#download-retries-and-install-time) for how each OCPP version receives these settings.
 
 ![Create firmware campaign](https://www.evtivity.com/screenshots/csms/firmware-campaigns-create.png)
 
@@ -46,8 +49,9 @@ Define which stations receive the update:
 - **Site**: Target all stations at a specific site.
 - **Vendor**: Filter by station vendor/manufacturer.
 - **Model**: Filter by station model.
+- **Station**: Target one station.
 
-Filters can be combined. The matching stations count updates as you change filters.
+Filters can be combined. Leave them empty to target all stations. The **Matching Stations** tab lists every matching station, online and offline. Through the API, `targetFilter.firmwareVersion` also limits the campaign to stations that run that firmware version.
 
 ## Start the Campaign
 
@@ -55,6 +59,7 @@ Filters can be combined. The matching stations count updates as you change filte
 2. Review the list of matching stations.
 3. Click **Start Campaign**.
 4. The system sends OCPP `UpdateFirmware` commands to each matching online station.
+5. Each matching station that is offline gets the same update the next time it connects. The CSMS sends it once per station, also when the station reconnects several times.
 
 The campaign status changes from **Draft** to **Active**.
 
@@ -64,16 +69,45 @@ Each station in the campaign progresses through these statuses:
 
 | Station Status | Description |
 |----------------|-------------|
-| Pending | Command not yet sent or awaiting response |
+| Pending | The station has not reported yet, or it is offline and gets the update when it connects |
 | Downloading | Station is downloading the firmware file |
-| Downloaded | Download complete, awaiting installation |
-| Installing | Station is installing the firmware |
+| Downloaded | Download complete (and signature verified), awaiting installation |
+| Installing | Station is installing the firmware or rebooting to install it |
 | Installed | Firmware update completed |
-| Failed | Update failed (check error info for details) |
+| Failed | Update failed or never started (check error info for details) |
 
-The campaign detail page shows a summary of station statuses and a per-station breakdown. Station status updates arrive via OCPP `FirmwareStatusNotification` messages from the stations.
+The campaign detail page shows a summary of station statuses and a per-station breakdown. Station status updates arrive via OCPP `FirmwareStatusNotification` messages from the stations. Installed and Failed are final: a late or repeated status report does not change them.
 
-When all stations reach a terminal state (installed or failed), the campaign status changes to **Completed**.
+When all stations reach a terminal state (installed or failed), the campaign status changes to **Completed**. A station that never connects keeps the campaign **Active**. Cancel the campaign to stop waiting for it.
+
+Cancelling cannot stop an update a station already received, because OCPP has no firmware cancel. Updates still queued for an offline station are dropped: they are never sent, and their stations show Failed.
+
+### Updates a Station Never Starts
+
+Some updates end before the station downloads anything. The station row shows **Failed** with the reason as error info, and the station's **Firmware Updates** tab shows the update as `Rejected` with the same reason:
+
+| Reason | Meaning |
+|--------|---------|
+| `Rejected` | The station refused the update. |
+| `InvalidCertificate` | The signing certificate is not valid for the station. See [Signature Failures](#signature-failures). |
+| `RevokedCertificate` | The signing certificate was revoked. |
+| `CommandFailed` | The station answered the command with an error, or the CSMS could not send it. |
+| `QueueExpired` | The station went offline before the command reached it and stayed offline until the queued command expired. |
+| `AcceptedCanceled` | A newer firmware update replaced this one on the station, so this one never finishes. |
+
+The campaign completes once every other station has finished.
+
+## Download Retries and Install Time
+
+The campaign sends the same settings to every station:
+
+| OCPP Version | Download Retries and Retry Interval | Install Time |
+|--------------|-------------------------------------|--------------|
+| 2.1 | `retries` and `retryInterval` in `UpdateFirmware` | `firmware.installDateTime` |
+| 1.6 signed update | `retries` and `retryInterval` in `SignedUpdateFirmware` | `firmware.installDateTime` |
+| 1.6 unsigned update | `retries` and `retryInterval` in `UpdateFirmware` | Not supported: the station installs right after the download |
+
+A station with an install time reports `InstallScheduled` after the download and installs at that time. The campaign shows the station as **Downloaded** until it installs.
 
 ## Signed Firmware Updates
 
@@ -83,7 +117,7 @@ OCPP 2.1 requires the CSMS to include the signing certificate in every `UpdateFi
 
 ### Send a Signed Update
 
-- **Campaign**: fill in **Signing certificate (PEM)** and **Firmware signature (base64)** when you create the campaign, or edit them while the campaign is a draft. The campaign detail page shows **Signature** as **Signed** or **Unsigned**. Every station in the campaign gets the same certificate and signature.
+- **Campaign**: fill in **Signing Certificate (PEM)** and **Firmware Signature (base64)** when you create the campaign, or edit them while the campaign is a draft. The campaign detail page shows **Signature** as **Signed** or **Unsigned**. Every station in the campaign gets the same certificate and signature.
 - **Single station**: open the station detail page, go to the **OCPP Commands** tab, and choose **Update Firmware**. Enter the **Firmware Location URL**, the **Retrieve Date/Time**, and the two signing fields.
 
 ### OCPP Messages
@@ -93,7 +127,7 @@ OCPP 2.1 requires the CSMS to include the signing certificate in every `UpdateFi
 | 2.1 | `UpdateFirmware` with `firmware.signingCertificate` and `firmware.signature` | `UpdateFirmware` without the signing fields | `FirmwareStatusNotification` |
 | 1.6 | `SignedUpdateFirmware` (OCPP 1.6 Security Whitepaper) | `UpdateFirmware` (`location`, `retrieveDate`) | `SignedFirmwareStatusNotification` for a signed update, `FirmwareStatusNotification` for an unsigned one |
 
-You do not pick the message. The CSMS sends `SignedUpdateFirmware` to an OCPP 1.6 station when both signing fields are set, and the plain `UpdateFirmware` when they are empty. The CSMS records the status reports in the station's **Firmware History** tab and in the campaign.
+You do not pick the message. The CSMS sends `SignedUpdateFirmware` to an OCPP 1.6 station when both signing fields are set, and the plain `UpdateFirmware` when they are empty. The CSMS records the status reports in the station's **Firmware Updates** tab and in the campaign.
 
 ### Certificate and Signature Requirements
 
@@ -117,7 +151,7 @@ Stations usually ship with the manufacturer root certificate. To install one on 
 
 | Station Result | Meaning |
 |----------------|---------|
-| `InvalidCertificate` response | The signing certificate does not chain to an installed manufacturer root, or it expired. The station does not download the firmware and reports the security event `InvalidFirmwareSigningCertificate`. |
+| `InvalidCertificate` response | The signing certificate does not chain to an installed manufacturer root, or it expired. The station does not download the firmware and reports the security event `InvalidFirmwareSigningCertificate`. The campaign marks the station **Failed**. |
 | `InvalidSignature` status | The downloaded file does not match the signature. The station does not install it and reports the security event `InvalidFirmwareSignature`. |
 | `SignatureVerified` status | The signature is valid. Installation follows. |
 
@@ -125,7 +159,7 @@ An `InvalidSignature` status marks the station faulted, the same as any failed i
 
 ## Considerations
 
-- Stations must be online to receive the update command. Offline stations show as **Pending**.
+- Online stations get the update when the campaign starts. Offline stations stay **Pending** until they connect.
 - Firmware updates may cause stations to reboot. Active charging sessions could be interrupted.
 - While a station installs firmware, its status is unavailable and drivers cannot start charging.
 - A failed install (`InstallationFailed`, `InvalidSignature`, or `InstallVerificationFailed`) marks the station faulted. It stays faulted after a reboot. The next install clears it, or an operator clicks **Enable Station** on the station detail page.

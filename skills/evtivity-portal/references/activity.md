@@ -73,11 +73,12 @@ The statement table includes the following columns:
 - **Miles** - estimated miles driven (based on vehicle efficiency)
 - **Cost** - total cost of the session. The column reads **Cost (incl. tax)** when a session cost includes tax.
 
-A totals row at the bottom sums each column for the month.
+A totals row at the bottom sums each column for the month. Sessions your fleet pays on account show "Billed to" and the fleet name instead of a cost and are left out of the total. Sessions billed in an earlier currency are left out of the total, and a note below the table counts them.
 
 ## Notes
 
 - Activity data is only available for authenticated drivers. Guest sessions do not appear here.
 - Distance calculations depend on your vehicle efficiency setting. See [Vehicles](https://www.evtivity.com/docs/portal/vehicles).
-- Sessions are grouped by the month in which they started.
+- Sessions are grouped by the month in which they started, in your timezone.
+- A faulted or failed session at no cost shows **Not Charged**.
 - The Activity page loads session data for the selected month on each navigation.

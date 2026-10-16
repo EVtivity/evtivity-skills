@@ -1,6 +1,6 @@
 # EVtivity API routes: AI Insights
 
-Generated from EVtivity CSMS v0.1.45 (https://github.com/EVtivity/evtivity-csms, commit a241f5536239) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -15,6 +15,7 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/ai/insights/{id}` | aiInsights:read | Get an automatic insight; asks for a translation into your language when missing |
 | POST | `/v1/ai/insights/{id}/regenerate` | aiInsights:write | Generate an automatic insight again from fresh evidence |
 | POST | `/v1/ai/insights/{id}/dismiss` | aiInsights:write | Dismiss an automatic insight |
+| GET | `/v1/ai/insights/{id}/feedback` | aiInsights:read | List the wrong votes on an automatic insight, with their notes |
 | POST | `/v1/ai/insights/{id}/feedback` | aiInsights:write | Set or change your vote on an automatic insight: helpful or wrong |
 | DELETE | `/v1/ai/insights/{id}/feedback` | aiInsights:write | Remove your vote on an automatic insight |
 | POST | `/v1/ai/insights/{id}/action/confirm` | aiInsights:write | Confirm and run the action an insight carries |

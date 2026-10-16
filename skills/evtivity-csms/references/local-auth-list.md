@@ -14,7 +14,7 @@ Local authorization lists manage which driver tokens are stored on each station 
 
 1. **Add tokens**
 
-   The operator adds tokens from the system to a station's local auth list. This is a database-only operation - no OCPP command is sent to the station.
+   The operator adds tokens from the system to a station's local auth list. This is a database-only operation - no OCPP command is sent to the station. Only active tokens that are not prepaid cards can be added: a station checks a prepaid card's balance online, so prepaid cards never go on a local list.
 
 2. **Remove tokens**
 
@@ -28,12 +28,17 @@ The CSMS is the source of truth. Every push sends the complete list to the stati
 
 ## Pre-Push Reconciliation
 
-Before pushing the list to a station, the system runs two reconciliation steps:
+Before pushing the list to a station, the system brings every entry in line with its token:
 
 | Check | Action |
 |-------|--------|
 | Orphaned entries | Tokens whose backing record has been deleted are removed from the list |
-| Deactivated tokens | Tokens that have been deactivated get their `authStatus` set to `Blocked` so the station actively rejects them |
+| Prepaid cards | Entries of tokens that are now prepaid cards are removed from the list |
+| Deactivated tokens | Tokens that are deactivated, or whose driver is deactivated, are pushed as `Blocked` so the station actively rejects them |
+| Expired tokens | Tokens past their expiry are pushed as `Expired`; an active token carries its expiry to the station |
+| Changed tokens | Each entry takes the token's current value and type, and a reactivated token is pushed as `Accepted` again |
+
+The sync time moves only when the station accepts the list, so a rejected or failed push keeps the unpushed changes banner. A change to a token on a list, such as deactivation, a new value or expiry, deletion, or switching it to prepaid, shows the banner.
 
 ## UI Elements
 

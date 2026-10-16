@@ -106,7 +106,7 @@ Turn on **Allow Writes** only for clients you trust to change stations, and give
 | **Calls per API key per minute** (`ai.mcp.rateLimitPerMinute`) | 60 | 1 to 10,000 |
 | **Calls per API key per day** (`ai.mcp.dailyCallsPerKey`) | 5,000 | 1 to 10,000,000 |
 
-Every request counts once. Over a limit, the server answers 429 with a `Retry-After` header and a JSON-RPC error whose `data.code` is `AI_MCP_RATE_LIMITED`. The day is a UTC day.
+Every request counts once. A request carries one JSON-RPC message: a batch (an array body) is refused with 400 and a JSON-RPC error `-32600` whose `data.code` is `VALIDATION_ERROR`, and nothing in it runs. Over a limit, the server answers 429 with a `Retry-After` header and a JSON-RPC error whose `data.code` is `AI_MCP_RATE_LIMITED`. The day is a UTC day.
 
 ## Errors
 

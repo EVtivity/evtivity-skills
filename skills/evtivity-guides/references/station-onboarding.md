@@ -42,7 +42,7 @@ Three ways to do this:
    EVSEs and connectors are auto-created from the first StatusNotification. To pre-define them (type, max power), open the station's **Connectors** tab and click **Create EVSE**. Do this when you want the dashboard populated immediately or when the firmware doesn't emit a StatusNotification per connector at boot.
 4. Click **Create**.
 
-The station now exists in `charging_stations` with `onboarding_status = pending` (or `accepted`, depending on the registration policy — see Step 4).
+The station now exists in `charging_stations` with `onboarding_status = pending`. With the `open` registration policy it becomes `accepted` at its first BootNotification (see Step 4).
 
 ### REST API
 
@@ -124,7 +124,7 @@ In Kubernetes deployments the OCPP service exposes:
 The CSMS has an `ocpp.registrationPolicy` setting with two values:
 
 - `approval-required` **(default)**: new stations land in `pending`. The first BootNotification returns `Pending` and the station polls (per OCPP spec) until you approve it. Recommended for production so unfamiliar hardware doesn't auto-onboard itself.
-- `open`: new stations go straight to `onboarding_status = accepted` on creation. The first BootNotification gets `Accepted` and the station is online without operator approval. Convenient for dev/lab; use cautiously in production.
+- `open`: a pending station is accepted at its first BootNotification. The CSMS answers `Accepted`, sets `onboarding_status = accepted` and records the change in the station's **History** tab. The station is online and drivers can charge there without operator approval. A blocked station stays blocked. Convenient for dev/lab; use cautiously in production.
 
 You can change the policy via the dashboard (Settings > Integrations & Features > OCPP), the API (`PUT /v1/settings/ocpp.registrationPolicy`), the Helm chart (`appSettings.ocpp.registrationPolicy` in `values.yaml`), or — at first install — the `REGISTRATION_POLICY` environment variable read by the seed step.
 
@@ -132,9 +132,11 @@ To approve a pending station:
 
 1. Go to **Stations**, filter by **Pending** status.
 2. Click the station, review the BootNotification metadata (vendor, model, serial, firmware) reported by the station.
-3. Click **Approve**. The CSMS sets `onboarding_status = accepted` and triggers an immediate `BootNotification` cycle so the station goes online without waiting for its next poll.
+3. Click **Approve**. The CSMS sets `onboarding_status = accepted`. A connected station gets `TriggerMessage(BootNotification)`, so it boots again and goes online without waiting for its next poll.
 
-You can also click **Reject** to set `onboarding_status = blocked` — a stronger reject than denying credentials. A blocked station cannot connect at all: its WebSocket upgrade request is rejected with HTTP 403, even with valid credentials.
+You can also click **Reject** to set `onboarding_status = blocked` — a stronger reject than denying credentials. The CSMS asks you to confirm, then closes the station's connection. A blocked station cannot connect at all: its WebSocket upgrade request is rejected with HTTP 403, even with valid credentials.
+
+If another operator changed the station first (for example rejected it while you approve), the second action fails with `409 NOT_PENDING` and the page shows the current status.
 
 ## Step 5: Verify it's online
 

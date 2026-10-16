@@ -115,6 +115,8 @@ You can preview the matching station count before pushing.
 
 A template cannot hold a station password. Creating, editing, or pushing a template with a credential variable, such as `SecurityCtrlr.BasicAuthPassword` (2.1) or `AuthorizationKey` (1.6), fails with `400 STATION_CREDENTIALS_ROUTE_REQUIRED`. Change passwords on the station's **Security** tab instead (see [Station passwords](https://www.evtivity.com/docs/csms/stations#station-passwords)).
 
+A template cannot change how a station connects either. A template with a security profile or network profile variable, such as `SecurityProfile` (1.6), `SecurityCtrlr.SecurityProfile`, `OCPPCommCtrlr.NetworkConfigurationPriority` or a `NetworkConfiguration` variable (2.1), fails with `400 STATION_SECURITY_ROUTE_REQUIRED`, because a push to many stations can lock them out. Change the security profile on the station instead (see [Changing the security profile](https://www.evtivity.com/docs/csms/stations#changing-the-security-profile)).
+
 ![Create configuration template](https://www.evtivity.com/screenshots/csms/station-configurations-create.png)
 
 Once a template is created, the detail page shows the variables and the target filter, and gives you the matching-station preview and push action.
@@ -132,9 +134,9 @@ Pushing a template fans out an OCPP `SetVariables` (2.1) or `ChangeConfiguration
 | Rejected | Station refused one or more variables; the rejection reason is captured |
 | Failed | Communication failure or station offline before timeout |
 
-The Push History tab on the template detail lists every push that has been initiated against this template.
+The Pushes tab on the template detail lists every push that has been initiated against this template.
 
-![Push history](https://www.evtivity.com/screenshots/csms/station-configurations-push-history.png)
+![Pushes tab](https://www.evtivity.com/screenshots/csms/station-configurations-push-history.png)
 
 Click into any push record to see per-station progress with error details for any rejected or failed station.
 
@@ -174,7 +176,7 @@ Configuration management is one of three independent OCPP write paths in the CSM
 | Smart Charging | `SetChargingProfile` | Power delivery schedules |
 | Firmware Campaigns | `UpdateFirmware` | Station software image |
 
-A station can have all three pushed at once. They don't interact at the protocol level, and each tracks its own push history.
+A station can have all three pushed at once. They don't interact at the protocol level, and each tracks its own pushes.
 
 ## Reference Pages
 

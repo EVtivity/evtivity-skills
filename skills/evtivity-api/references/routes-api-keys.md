@@ -1,6 +1,6 @@
 # EVtivity API routes: API Keys
 
-Generated from EVtivity CSMS v0.1.45 (https://github.com/EVtivity/evtivity-csms, commit a241f5536239) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -14,3 +14,5 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/api-keys` | settings.apiKeys:write | Create a new API key |
 | PATCH | `/v1/api-keys/{id}` | settings.apiKeys:write | Update API key permissions |
 | DELETE | `/v1/api-keys/{id}` | settings.apiKeys:write | Revoke an API key |
+| GET | `/v1/users/{id}/api-keys` | users:read | List the active API keys of a user |
+| DELETE | `/v1/users/{id}/api-keys/{keyId}` | users:write | Revoke an API key of a user |

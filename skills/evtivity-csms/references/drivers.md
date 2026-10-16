@@ -24,6 +24,8 @@ Drivers are EV owners who charge at your stations. Each driver has an account wi
 
 Click any driver in the list to open the detail page. The default Details view edits the driver's name, email, phone, and language.
 
+Clear the email or phone field to remove it. A driver with portal access keeps an email address, because they sign in with it. Changing the email cancels any open invitation, password reset, and email verification link sent to the old address. The new address counts as unverified: a driver with portal access gets a verification link at the new address and can still sign in. A change of letter case only keeps the address verified.
+
 ![Driver detail](https://www.evtivity.com/screenshots/csms/driver-detail.png)
 
 ### Tokens
@@ -54,7 +56,7 @@ View all charging sessions for this driver with the same filters available on th
 
 ### Invoices
 
-Monthly invoices for the driver's charging sessions. Click **Generate Invoice** to aggregate the driver's completed, uninvoiced sessions over a date range into one invoice. The invoice has one line per session and tax rate, plus one line for each reservation cancellation or no-show fee charged in the range. Statuses: draft, issued, paid, void, credited. An invoice is created as paid when every session on it was already charged in full to the driver's card or prepaid balance (or cost nothing), and as issued when an amount is still open. Sessions billed to a fleet (charge on account) are left out: the fleet invoice bills them. See [Fleets](https://www.evtivity.com/docs/csms/fleets).
+Monthly invoices for the driver's charging sessions. Click **Generate Invoice** to aggregate the driver's completed, uninvoiced sessions over a date range into one invoice. The invoice has one line per session and tax rate, plus one line for each reservation cancellation or no-show fee charged in the range. Statuses: draft, issued, paid, void, credited. An invoice is created as paid when every session on it was already charged in full to the driver's card or prepaid balance (or cost nothing), and as issued when an amount is still open. Sessions billed to a fleet (charge on account) are left out: the fleet invoice bills them. See [Fleets](https://www.evtivity.com/docs/csms/fleets). When the fleet invoices each member, the tab also lists the driver's member invoices, each with a "Via" badge that names the fleet. See [Member Invoices](https://www.evtivity.com/docs/csms/fleets#member-invoices).
 
 ![Driver invoices](https://www.evtivity.com/screenshots/csms/driver-invoices-tab.png)
 
@@ -127,13 +129,33 @@ A driver without a password cannot register a new account with the same email, s
 
 ![Driver portal access](https://www.evtivity.com/screenshots/csms/driver-portal-access.png)
 
+### Billing Address
+
+The **Billing Address** card on the Details view holds the bill-to block of the invoices a fleet addresses to this driver. See [Member Invoices](https://www.evtivity.com/docs/csms/fleets#member-invoices).
+
+1. Click **Edit** on the card.
+2. Enter **Name on Invoice**, **Street**, **City**, **State or Region**, **Postal Code** and **Country**. Leave **Name on Invoice** empty to use the driver's first and last name. An empty field clears the stored value.
+3. Click **Save**.
+
+Drivers edit the same address in the portal and the mobile app. Editing it needs the `drivers:write` permission, and each change is recorded in the driver history with the fields that changed.
+
+A driver without a billing address shows "No billing address. Invoices show the name and email." A missing address never blocks an invoice. The fleet's **Driver Invoices** table marks the driver with a **No Address** badge, and the portal and the app ask the driver to add one.
+
 ## Deactivating or Deleting a Driver
 
-Deactivating a driver (toggling **Active** off on the Details tab) blocks the account from new charging activity but preserves all historical sessions, tokens, and audit rows. Deleting a driver from the list performs a soft delete with the same effect: the row is marked inactive rather than removed.
+Deactivating a driver (toggling **Active** off on the Details tab) blocks the account from new charging activity but preserves all historical sessions, tokens, and audit rows. `DELETE /v1/drivers/:id` in the API performs a soft delete with the same effect: the driver is marked inactive, not removed.
 
-Both actions cascade to the driver's tokens. Every RFID card or app token the driver owns is also deactivated, because OCPP Authorize handlers gate on the token's active flag, not the driver's. Without the cascade a deactivated driver could still charge by tapping a previously-issued card.
+Both actions deactivate every active RFID card or app token of the driver, because charging stations are authorized by the token's own status, not the driver's. Without this a deactivated driver could still charge by tapping a card issued earlier. Both actions also sign the driver out of the driver portal and the mobile app, and cancel any open invitation, password reset, and email verification link. An inactive driver cannot get a new token.
 
 Reactivating the driver does **not** auto-reactivate the tokens. Tokens may have been deliberately revoked (stolen card, lost fob) before the driver was deactivated, and reactivating them blindly would override that intent. Reactivate individual tokens from the [Tokens](https://www.evtivity.com/docs/csms/tokens) page after reactivating the driver.
+
+## Erasing a Driver's Personal Data
+
+To honor a request to erase personal data (GDPR right to erasure), open the driver and click **Erase Driver** on the Details tab. Type the driver ID to confirm. The action cannot be undone and needs the `drivers:write` permission and access to every site.
+
+The erasure removes the driver's name, email, phone, billing address, password, MFA, notification preferences, vehicles and saved payment methods (detached from the payment provider), and deactivates the tokens. The driver can no longer sign in. Sessions, payments, invoices and credit notes stay for accounting with the details they were issued with, and earlier audit entries are kept. The page then shows **Erased Driver**, and the driver can no longer be edited.
+
+A driver with an active charging session cannot be erased until the session ends.
 
 ## Email Uniqueness
 

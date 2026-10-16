@@ -60,6 +60,7 @@ Created by the migrate container's seed steps on first `docker compose up -d`. I
 | `CSMS_URL` | `http://localhost:7100` | Public URL of the CSMS frontend |
 | `PORTAL_URL` | `http://localhost:7101` | Public URL of the driver portal |
 | `COOKIE_DOMAIN` | - | Domain for auth cookies. Set for cross-subdomain cookies. |
+| `TRUST_PROXY` | - | API and OCPI. Comma-separated IP addresses or CIDR ranges of the proxies or load balancers in front of the service. The service then takes the client address from their `X-Forwarded-For` (and the scheme from `X-Forwarded-Proto`), so rate limits, the guest charging limits per IP address, and audit and access logs see the real client behind a load balancer or ingress. Empty trusts no proxy, and behind a proxy the guest charging limits per IP address are then off. A hop count or `true` is refused at startup. Leave it empty when the ports are published directly, as in Docker Compose. |
 | `OCPP_STATION_TLS_URL` | - | Public `wss://` address of the OCPP TLS endpoint, without the station ID. Used when upgrading a connected OCPP 2.1 station from `ws://` to TLS (TLS + Basic Auth or Mutual TLS). Unset: those upgrades are refused. |
 
 ## Worker
@@ -99,6 +100,7 @@ Created by the migrate container's seed steps on first `docker compose up -d`. I
 | `OCPI_PARTY_ID` | `EVT` | Three-character party identifier |
 | `OCPI_BUSINESS_NAME` | `EVtivity` | Business name sent in OCPI credentials |
 | `OCPI_WEBSITE` | - | Website URL sent in OCPI credentials |
+| `TRUST_PROXY` | - | Proxies whose `X-Forwarded-For` the OCPI server trusts. Same format as `TRUST_PROXY` of the API. |
 
 ## OCPI Simulator
 
@@ -114,7 +116,7 @@ A standalone eMSP/CPO partner simulator for testing OCPI roaming.
 | `OCPI_SIM_PARTY_ID` | `SIM` | Three-character party identifier |
 | `OCPI_SIM_NAME` | `OCPI Simulator` | Display name sent in credentials |
 | `OCPI_TARGET_URL` | - | OCPI server URL to auto-register against on startup |
-| `OCPI_REGISTRATION_TOKEN` | - | Registration token for auto-registration. Must match a seeded or API-created partner. |
+| `OCPI_REGISTRATION_TOKEN` | - | Registration token for auto-registration, commented out in `.env.example`. Use the registration token of the partner with the simulator's country code and party ID: the one the seed prints, or a new one from **Roaming > Partners > New Registration Token**. |
 | `OCPI_SIM_INCOMING_REG_TOKEN` | - | Restrict inbound registration to a specific token |
 | `OCPI_SIM_AUTO_SESSION` | `false` | CPO role only. Automatically generate charging sessions. |
 | `OCPI_SIM_SESSION_INTERVAL` | `60` | Seconds between auto-generated sessions |

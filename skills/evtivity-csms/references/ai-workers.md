@@ -17,7 +17,7 @@ Every worker is off by default.
 | Job | Runs | What it does | Suggests |
 |-----|------|--------------|----------|
 | **Nightly Network Summary** | Daily at 05:30 | For each site with activity, compares the last 24 hours with the daily average of the 7 days before: stations online, offline, and faulted, sessions, failed sessions, refused authorizations, and alerts. Writes a short summary per site and one summary of the whole network. | A soft reset for up to 3 online stations per site that have been faulted for more than 6 hours, each as a **Station faulted for hours** insight |
-| **Stuck Sessions** | Every 15 minutes | Finds active sessions that stopped reporting: no meter values or transaction events for the idle time, or on a station that is offline or a connector that reports Available, silent for 15 minutes. | A stop of the session, in the OCPP version of the station, as a **Stuck session** insight |
+| **Stuck Sessions** | Every 15 minutes | Finds active sessions that stopped reporting: no meter values or transaction events for the idle time, or on a station that is offline or a connector that reports Available, silent for 15 minutes. | At an online station, a stop of the session. At a station offline for longer than the offline time setting, an end of the session in the CSMS. Each as a **Stuck session** insight |
 | **Tariff Anomalies** | Daily at 06:00 | Finds sessions billed nothing on a priced tariff, station costs that differ from the CSMS cost, prices per kWh more than 3 times the site's 30-day median, and sessions priced with an inactive tariff. | Nothing. Findings only |
 
 Times follow the system timezone. Summaries and findings appear as [automatic insights](https://www.evtivity.com/docs/csms/ai-insights): **Site summary**, **Network summary**, and **Tariff anomaly**. The network summary is visible only to users with access to every site.
@@ -25,9 +25,12 @@ Times follow the system timezone. Summaries and findings appear as [automatic in
 ### Stuck Sessions
 
 - The idle time is 90 minutes by default (**Idle time before a session counts as stuck (minutes)**). It always stays at least 60 minutes below the stale session timeout, so a suggestion comes before the CSMS ends the session on its own.
-- A session that already has a pending or rejected stop action gets no new suggestion.
-- The rationale is a fixed sentence, such as "No meter values or transaction events for 90 minutes". Turn on **Write the rationale with AI** to have AI write it instead. The AI rationale becomes the text of the insight.
-- A stop action expires after 2 hours and runs only if the session is still active.
+- A session that already has a pending or rejected action gets no new suggestion.
+- At an online station, the action is the same stop as **Stop Session** on the session page. Before it, the worker asks an OCPP 2.1 station whether it still runs the transaction. The insight then says how the stop bills the session: from its final meter reading while the station runs the transaction, or at its last metered energy when the station no longer knows it and the CSMS ends the session.
+- At an offline station, the insight first advises getting the station back online: how long it has been offline, a **Connection History** link, and what to check (power, network or SIM, the site). When the station reconnects, it sends its stored transaction messages, so the session ends with its real final meter reading and exact billing. This insight has no action.
+- Once the station has been offline for **Offline time before the AI suggests ending a stuck session in the CSMS (hours)** (24 hours by default), the insight suggests **End Session**: the CSMS closes the session without the station and bills it at its last metered energy. A later report from the station does not bill it again.
+- The rationale is a fixed sentence, such as "No meter values or transaction events for 90 minutes". Turn on **Write the rationale with AI** to have AI write it instead. The AI rationale becomes the text of the insight. AI only explains the step the worker chose, from the measured facts; it never chooses the step.
+- An action expires after 2 hours. It runs only if the session is still active and the station is still online (a stop) or still offline (an end).
 
 ### Tariff Anomalies
 

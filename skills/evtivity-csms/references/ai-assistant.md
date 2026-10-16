@@ -176,6 +176,8 @@ When you reach a limit, the assistant shows an error. Try again later.
 
 The panel footer shows your tokens today against your daily budget.
 
+When the AI provider account of the company is out of credit or quota, the assistant shows the `AI_PROVIDER_QUOTA_EXCEEDED` error until an administrator adds credit or raises the quota at the provider. Administrators see a banner and get a notification. See [AI Alerts](https://www.evtivity.com/docs/csms/settings#ai-alerts).
+
 ## Support Case AI Draft
 
 The AI drafts replies to support cases. It needs the `support:write` permission and **Enable support AI** in **Settings > AI > Support Drafts**.

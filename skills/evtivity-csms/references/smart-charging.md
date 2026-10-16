@@ -21,7 +21,7 @@ Smart charging lets you define charging profile templates with time-based power 
 | PriorityCharging | Per EVSE (2.1 only) | Priority override for specific EVSEs |
 | LocalGeneration | Station (2.1 only) | Limits based on local energy generation |
 
-Two purposes are excluded from templates: `TxProfile` (requires an active transaction ID per station) and `ChargingStationExternalConstraints` (reserved for the load management control loop).
+Two purposes are excluded from templates: `TxProfile` (requires an active transaction ID per station) and `ChargingStationExternalConstraints` (only a station or an external energy management system sets it; a CSMS never sends it).
 
 ### Schedule Kinds
 
@@ -35,6 +35,8 @@ Two purposes are excluded from templates: `TxProfile` (requires an active transa
 ### Profile Stacking
 
 A station can have multiple active profiles simultaneously. Different purposes coexist (e.g., a station max profile plus a default transaction profile). Within the same purpose, higher stack levels take precedence. The station computes a composite schedule from all profiles and applies the most restrictive limit.
+
+On a station under [load management](https://www.evtivity.com/docs/csms/load-management), the CSMS refuses a `ChargingStationMaxProfile` at stack level 1 or higher, and any profile that uses the load management profile ID (1000000000), so nothing lifts the breaker limit. A station push or a `SetChargingProfile` command returns `CHARGING_PROFILE_LOAD_MANAGED`, and a template push marks the station Failed.
 
 ## Create a Charging Profile Template
 
@@ -52,6 +54,18 @@ A station can have multiple active profiles simultaneously. Different purposes c
 | Recurrence | Daily or Weekly (Recurring kind only) |
 
 ![Create smart charging template](https://www.evtivity.com/screenshots/csms/smart-charging-create.png)
+
+### Template Rules
+
+The CSMS checks every template when you create or edit it and again before each push:
+
+- **Start Schedule** is required for both Absolute and Recurring templates. Enter it in your own timezone (your profile setting); the CSMS stores it as an exact point in time.
+- The first schedule period starts at 0, and later periods start strictly later.
+- A Recurring template needs a recurrence (Daily or Weekly).
+- **Valid From** must be before **Valid To**.
+- An OCPP 1.6 template uses ChargingStationMaxProfile or TxDefaultProfile only.
+
+A template that breaks a rule is refused with a message that names it, so a station never receives a profile it must reject.
 
 ### Define Schedule Periods
 
@@ -83,9 +97,11 @@ Filters can be combined. Leave all filters empty to target all stations.
    - `ClearChargingProfile` (same purpose and stack level) to remove existing profiles
    - `SetChargingProfile` with the template payload
 
+One push or clear runs per template at a time. Pushing or clearing again while one is still running opens the running one instead of starting a second. A push whose stations stopped reporting progress for 10 minutes is closed, and its remaining stations show Failed with the reason Interrupted.
+
 ### Track Push Results
 
-After pushing, the push history shows:
+After pushing, the Pushes list shows:
 
 | Status | Meaning |
 |--------|---------|
@@ -113,5 +129,29 @@ On the station detail page, the **Charging Profiles** tab provides:
 
 - **Refresh from Station**: Pull current profiles from the station via `GetChargingProfiles` (2.1 only).
 - **View Composite Schedule**: Request the station's composite schedule showing the merged result of all active profiles.
-- **Clear All Profiles**: Remove profiles from the station.
+- **Clear All Profiles**: Remove every profile the CSMS may clear from the station. External constraints and local generation profiles stay on the station.
 - **Push Charging Profile**: Push a single template to this specific station.
+
+## EV Charging Needs and Variable Monitors
+
+On the station detail page of an OCPP 2.1 station, the **Charging Needs and Monitors** tab shows what EVs ask for over ISO 15118 and the variable monitors set on the station. OCPP 1.6 stations do not show the tab.
+
+### EV Charging Needs
+
+When an EV sends its charging needs during a session, the CSMS computes a charging schedule and sends it to the station as a transaction profile for that session, when the ISO 15118 smart charging setting is on and the EV asks for scheduled control. The limit is the lowest of what the EV accepts, the connector maximum and the free capacity of the site power limit. With a departure time and an energy amount, it is also capped at the rate that delivers that energy by the departure time. Without an active session, or for dynamic control, the CSMS sends no schedule and the station uses its default profile.
+
+The **EV Charging Needs** card shows, per EVSE: the energy transfer, control mode, requested energy, departure time and the **CSMS Limit** sent, or **No Profile Sent**. The needs end with the session.
+
+### EV Charging Schedules
+
+The EV answers with the schedule it plans to follow. The CSMS checks it against the schedule it sent: **Within Limits** is accepted. **Exceeds Limits** is rejected, and the CSMS sends its schedule again once so the station renegotiates with the EV. **Not Checked** means the CSMS had no schedule to compare with. A schedule in amperes is not compared with a schedule in watts; the station checks it.
+
+### Variable Monitors
+
+A variable monitor makes the station report an event when a device model variable crosses a threshold, changes by a delta, or on a period.
+
+1. Click **Add Monitor** (the station must be online).
+2. Enter the **Component** and **Variable** (for example `EVSE` and `Power`), the **Monitor Type**, the **Value** and the **Severity** (0 to 9).
+3. Click **Create**.
+
+The CSMS sends the monitor to the station and stores its answer: Active with the station's **Monitor ID**, or Error with the reason. Delta and periodic monitors need a value above 0. **Clear Monitor** removes an active monitor from the station first; the station must be online, and a monitor the station refuses to clear stays Active. Adding and clearing monitors needs the stations write permission.

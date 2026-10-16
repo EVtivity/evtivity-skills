@@ -165,10 +165,12 @@ Re-issues BootNotification and re-reports connector status. Lighter than `Reset`
 
 - `TransactionEvent` carries `chargingState` (Charging, EVConnected, SuspendedEV, SuspendedEVSE, Idle, Discharging). The CSMS enriches `connectors.status` from this field.
 - `GetBaseReport` returns the full set of OCPP 2.1 configuration variables.
-- `SignCertificate` triggers CSR generation for certificate renewal.
+- `SignCertificate` triggers CSR generation for certificate renewal, with a request ID the CertificateSigned answer must carry.
+- Plug and Charge (ISO 15118): `v21/createPncEv`, `v21/installPncContract`, `v21/updatePncContract` (ISO 15118-2), `v21/authorizePnc` (Authorize with the contract, returns the CSMS status and certificate status) and `v21/startPncCharging` drive the simulator's ISO 15118 test EV. See [Certificates](https://www.evtivity.com/docs/csms/certificates).
 
 ### OCPP 1.6 specifics
 
+- Plug and Charge: the EV actions (`createPncEv`, `installPncContract`, `updatePncContract`, `authorizePnc`, `startPncCharging`) also exist under `v16/` for ISO 15118-2 EVs. The simulator sends the ISO 15118 messages in `DataTransfer`, as the Open Charge Alliance application note for OCPP 1.6 describes, and starts with the eMAID as ID tag.
 - `StartTransaction` and `StopTransaction` use the 1.6 message format with `connectorId` (the simulator passes its `evseId` as `connectorId`).
 - `StatusNotification` reports 9 granular statuses directly: Available, Preparing, Charging, SuspendedEV, SuspendedEVSE, Finishing, Reserved, Unavailable, Faulted.
 - `ChangeConfiguration` and `GetConfiguration` use key/value pairs instead of the 2.1 variable model.

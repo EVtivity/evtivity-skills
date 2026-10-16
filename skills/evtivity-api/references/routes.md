@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.45 (https://github.com/EVtivity/evtivity-csms, commit a241f5536239) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
@@ -13,31 +13,31 @@ A `write` permission includes `read` for the same resource.
 | Tag | Routes | File |
 |---|---|---|
 | Health | 2 | `references/routes-health.md` |
-| Sites | 30 | `references/routes-sites.md` |
-| Stations | 69 | `references/routes-stations.md` |
-| Sessions | 6 | `references/routes-sessions.md` |
-| Users | 37 | `references/routes-users.md` |
-| Drivers | 23 | `references/routes-drivers.md` |
+| Sites | 32 | `references/routes-sites.md` |
+| Stations | 76 | `references/routes-stations.md` |
+| Sessions | 8 | `references/routes-sessions.md` |
+| Users | 38 | `references/routes-users.md` |
+| Drivers | 28 | `references/routes-drivers.md` |
 | Pricing | 19 | `references/routes-pricing.md` |
 | OCPP 2.1 Commands | 57 | `references/routes-ocpp-2-1-commands.md` |
 | OCPP 1.6 Commands | 27 | `references/routes-ocpp-1-6-commands.md` |
 | OCPP | 1 | `references/routes-ocpp.md` |
 | Transactions | 3 | `references/routes-transactions.md` |
-| Fleets | 31 | `references/routes-fleets.md` |
+| Fleets | 33 | `references/routes-fleets.md` |
 | Tokens | 12 | `references/routes-tokens.md` |
-| Dashboard | 16 | `references/routes-dashboard.md` |
+| Dashboard | 17 | `references/routes-dashboard.md` |
 | Settings | 29 | `references/routes-settings.md` |
 | Documentation | 1 | `references/routes-documentation.md` |
 | Payments | 38 | `references/routes-payments.md` |
 | Events | 1 | `references/routes-events.md` |
-| Load Management | 18 | `references/routes-load-management.md` |
+| Load Management | 19 | `references/routes-load-management.md` |
 | Notifications | 13 | `references/routes-notifications.md` |
 | Reservations | 9 | `references/routes-reservations.md` |
 | Maintenance | 11 | `references/routes-maintenance.md` |
 | Portal Auth | 14 | `references/routes-portal-auth.md` |
-| Portal Driver | 16 | `references/routes-portal-driver.md` |
+| Portal Driver | 17 | `references/routes-portal-driver.md` |
 | Portal Payments | 9 | `references/routes-portal-payments.md` |
-| Portal Sessions | 7 | `references/routes-portal-sessions.md` |
+| Portal Sessions | 8 | `references/routes-portal-sessions.md` |
 | Portal Chargers | 19 | `references/routes-portal-chargers.md` |
 | Portal Guest | 9 | `references/routes-portal-guest.md` |
 | Portal Payout Onboarding | 2 | `references/routes-portal-payout-onboarding.md` |
@@ -49,27 +49,28 @@ A `write` permission includes `read` for the same resource.
 | Webhooks | 2 | `references/routes-webhooks.md` |
 | Invoices | 12 | `references/routes-invoices.md` |
 | Support Cases | 16 | `references/routes-support-cases.md` |
-| Portal Vehicles | 5 | `references/routes-portal-vehicles.md` |
+| Portal Vehicles | 6 | `references/routes-portal-vehicles.md` |
+| Portal Invoices | 3 | `references/routes-portal-invoices.md` |
 | Portal Tokens | 4 | `references/routes-portal-tokens.md` |
 | Portal Notifications | 5 | `references/routes-portal-notifications.md` |
 | Portal Support | 8 | `references/routes-portal-support.md` |
 | Portal Roaming | 2 | `references/routes-portal-roaming.md` |
 | Portal Events | 1 | `references/routes-portal-events.md` |
-| OCPI | 20 | `references/routes-ocpi.md` |
-| PnC | 13 | `references/routes-pnc.md` |
+| OCPI | 23 | `references/routes-ocpi.md` |
+| PnC | 14 | `references/routes-pnc.md` |
 | Local Auth List | 5 | `references/routes-local-auth-list.md` |
 | Fleet Operations | 21 | `references/routes-fleet-operations.md` |
 | Event Alert Rules | 4 | `references/routes-event-alert-rules.md` |
-| API Keys | 4 | `references/routes-api-keys.md` |
+| API Keys | 6 | `references/routes-api-keys.md` |
 | CSS Management | 7 | `references/routes-css-management.md` |
 | CSS Actions | 14 | `references/routes-css-actions.md` |
-| CSS OCPP 1.6 Actions | 10 | `references/routes-css-ocpp-1-6-actions.md` |
-| CSS OCPP 2.1 Actions | 40 | `references/routes-css-ocpp-2-1-actions.md` |
+| CSS OCPP 1.6 Actions | 15 | `references/routes-css-ocpp-1-6-actions.md` |
+| CSS OCPP 2.1 Actions | 42 | `references/routes-css-ocpp-2-1-actions.md` |
 | Smart Charging | 12 | `references/routes-smart-charging.md` |
 | AI Assistant | 13 | `references/routes-ai-assistant.md` |
-| AI | 3 | `references/routes-ai.md` |
+| AI | 4 | `references/routes-ai.md` |
 | MCP | 1 | `references/routes-mcp.md` |
-| AI Insights | 10 | `references/routes-ai-insights.md` |
+| AI Insights | 11 | `references/routes-ai-insights.md` |
 | OCTT | 4 | `references/routes-octt.md` |
 | Audit | 2 | `references/routes-audit.md` |
 | Conformance | 1 | `references/routes-conformance.md` |

@@ -2,7 +2,7 @@ Generated from https://www.evtivity.com/docs/mobile-app/guide/payments. Do not e
 
 # Payments
 
-Add a card with Stripe, Adyen, or the test provider, confirm it with your bank, set a default, and manage your saved payment methods.
+Add a card with Stripe, Adyen, or the test provider, confirm it with your bank, set a default, manage your saved payment methods, and view your invoices.
 
 ## Overview
 
@@ -58,6 +58,22 @@ When you start a session, the station shows **Billed to** and your fleet in plac
 Each session billed to your fleet shows its billing state in [Activity](https://www.evtivity.com/docs/mobile-app/guide/activity-and-statements): Not invoiced yet, Invoiced to the fleet, or Paid by the fleet.
 
 If you are opted out of your fleet's account billing, the note does not show and you pay with a card like any other driver.
+
+## Invoiced to you by your fleet
+
+Some fleets invoice each member for their own sessions instead of paying the sessions themselves. You still charge without a card. The note on the Payment Methods screen then reads "Your charging is invoiced to you monthly via (your fleet). You need no payment method to charge." The station shows "Billed to you via" and your fleet, and your sessions show the state Not invoiced yet, Invoiced to you, or Paid.
+
+Once a month you receive your invoice by email with the PDF attached and as a push notification. Tap the notification to open the invoice. A credit note or a reminder for an overdue invoice arrives the same way. These messages are always sent, whatever your notification settings.
+
+## Invoices
+
+Open the **Account** tab and tap **Invoices** to see your invoices and credit notes. Your monthly member invoices show the fleet they come through. Invoices the operator issued to you directly show too. Tap an invoice to see its period, dates, bill-to block, items and total. Tap **Download PDF** to open the PDF in the share sheet, where you can save or send it. See [Invoices](https://www.evtivity.com/docs/portal/invoices) for what each field means.
+
+## Billing address
+
+Your member invoices print your billing address. Add it on the billing address screen in the **Account** tab: **Name on Invoice**, **Street**, **City**, **State or Region**, **Postal Code** and **Country**. Leave **Name on Invoice** empty to use your first and last name. When your fleet invoices you and the address is empty, the app asks you to add it. Without an address, your invoices show your name and email. The driver portal shows and edits the same address.
+
+Older versions of the app show only "Billed to" and your fleet for these sessions and have no invoices list. You still receive each invoice by email.
 
 > **Note:**
 >

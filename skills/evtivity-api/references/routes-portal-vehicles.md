@@ -1,6 +1,6 @@
 # EVtivity API routes: Portal Vehicles
 
-Generated from EVtivity CSMS v0.1.45 (https://github.com/EVtivity/evtivity-csms, commit a241f5536239) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -12,6 +12,7 @@ A `write` permission includes `read` for the same resource.
 |---|---|---|---|
 | GET | `/v1/portal/vehicles` | driver | List driver vehicles |
 | POST | `/v1/portal/vehicles` | driver | Add a vehicle |
+| PATCH | `/v1/portal/vehicles/{id}` | driver | Update a vehicle, its VIN or EVCCID, or turn Autocharge on or off |
 | DELETE | `/v1/portal/vehicles/{id}` | driver | Delete a vehicle |
 | GET | `/v1/portal/vehicles/efficiency` | driver | Get vehicle efficiency for miles estimation |
 | GET | `/v1/portal/vehicles/lookup` | driver | List known vehicle makes and models for autocomplete |

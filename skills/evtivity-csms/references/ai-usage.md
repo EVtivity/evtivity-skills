@@ -47,6 +47,8 @@ EVtivity checks the budgets before each AI request. A request that is already ru
 - Automatic insights are stored with their rule-based fields only, without an AI-written summary.
 - Background workers store their findings and suggested actions without the AI-written text.
 
+Users with the `settings.ai:write` permission and access to every site get an email and SMS when the company or a site reaches the warning percent of its monthly budget (**AI Budget Warning**) and when it uses the budget up (**AI Budget Used Up**), once per budget and month. A company budget at or past the warning percent also shows a banner at the top of every CSMS page. See [AI Alerts](https://www.evtivity.com/docs/csms/settings#ai-alerts).
+
 ## Usage and Limits Tab
 
 Open **Settings > AI** and select the **Usage and Limits** tab. It starts with the **AI Limits** card. The usage below it needs the `aiUsage:read` permission and access to every site.

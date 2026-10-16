@@ -16,9 +16,14 @@ A site represents a physical location (parking garage, office building, retail c
 2. Click **Create Site**.
 3. Fill in the required fields: name and address.
 4. Optionally add coordinates (latitude/longitude) for map display, contact information, and hours of operation.
+   The **Country** field takes an ISO 3166-1 code (for example `US` or `DE`) or an English country name (for example `Germany`).
 5. Click **Create**.
 
 ![Create site](https://www.evtivity.com/screenshots/csms/sites-create.png)
+
+## Import and Export
+
+**Export CSV** downloads the sites that match the current search and filters, with their stations, EVSEs, and connectors. **Template** downloads an example file. **Import CSV** creates sites by name and, from rows with a station ID, creates stations with their EVSEs and connectors. Turn on **Update existing records** to change sites and stations that already exist. Rows with a station ID need the `stations:write` permission as well as `sites:write`.
 
 ## Site Detail
 
@@ -33,6 +38,24 @@ Edit the site's name, address, coordinates, contact information, and hours of op
 **Station Display Language** sets the language of the station screens at this site. **Company default** follows the display language under Settings > Integrations & Features > Messages. A change updates the screens of the site's online stations. See [Station display messages](https://www.evtivity.com/docs/guides/station-display-messages).
 
 Contact information has a **Make contact info public** toggle. When off (the default) the contact name, email, and phone are visible only to operators and never to drivers. When on, the same three fields appear on the driver portal's charger and location detail pages, and the operator name is published to OCPI roaming partners. The toggle change is captured in the site audit log so a later compliance query can find when each site started or stopped publishing contact details.
+
+To remove an address, coordinate, or contact detail, empty the field and save. A removed contact email or phone no longer appears to drivers. Changes to the name, address, coordinates, timezone, hours, or public contact reach roaming partners right away.
+
+**Delete** asks for confirmation. A site with stations cannot be deleted. This includes stations deleted from the site, which keep their site for their history: move them to another site first. A site whose payment configuration has payments cannot be deleted either.
+
+The **AI Insights** row shows whether [automatic AI insights](https://www.evtivity.com/docs/csms/ai-insights) watch the site: **In Scope**, or **Suppressed** with **Until** and the end date or **Until resumed**, who suppressed them and why. Users with the `sites:write` permission click **Suppress**, enter a reason and an optional end date, and confirm. While the site is suppressed:
+
+- Every station of the site counts as suppressed, also stations added to the site later.
+- The site gets no site-level insight: no site incident, site summary, or tariff anomaly.
+- When you suppress, the open insights of the site and its stations are dismissed and their waiting actions expire.
+
+When the end date passes, insights resume on their own. **Resume** brings each station back to its own state: in scope, or still suppressed when the station has its own suppression (see [Stations](https://www.evtivity.com/docs/csms/stations#details)). An active maintenance event still suppresses the stations it covers, or every station of the site when it names no stations. The sites list filters by **AI Insights** (**All**, **In Scope**, **Suppressed**) and marks suppressed sites with the **AI Insights Suppressed** badge.
+
+Only operators suppress or resume insights. The AI assistant cannot. The API is `POST /v1/sites/:id/ai-insights/suppress` with a `reason` and an optional `until`, `POST /v1/sites/:id/ai-insights/resume`, and `GET /v1/sites?aiInsights=in_scope` or `suppressed` to filter the list.
+
+![Site with suppressed AI insights](https://www.evtivity.com/screenshots/csms/site-ai-insights-suppressed.png)
+
+![Sites list filtered to suppressed AI insights](https://www.evtivity.com/screenshots/csms/sites-ai-insights-filter.png)
 
 ### Metrics
 
@@ -139,7 +162,9 @@ Toggle free vend mode to allow charging without driver identification or payment
 
 Stations that support OCPP 2.1 receive `AuthCtrlr.Enabled=false` and `TxCtrlr.TxStartPoint=EVConnected`. OCPP 1.6 stations receive best-effort configuration keys. You can edit the generated config templates to add vendor-specific keys.
 
-Disabling free vend sets the database flag to false but does not push configuration changes to stations.
+Turning free vend off pushes authorization back to the online stations. The **Authorization Restore Templates** card links the templates, which hold the values the stations reported when free vend was turned on. See [Free Vend](https://www.evtivity.com/docs/csms/free-vend).
+
+Turning free vend on or off asks for confirmation first.
 
 ![Site free vend tab](https://www.evtivity.com/screenshots/csms/site-free-vend-tab.png)
 

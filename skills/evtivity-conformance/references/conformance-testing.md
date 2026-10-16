@@ -10,6 +10,10 @@ EVtivity includes a built-in OCPP conformance test runner based on the Open Char
 
 Tests run from the CSMS dashboard or the command line. Results are stored in the database and displayed with per-module pass/fail/skip/error counts.
 
+> **Warning:**
+>
+> Run conformance tests in a test environment, not production: a run creates temporary stations, a test driver and tokens, and changes PnC and payment settings while it runs.
+
 ![Conformance Testing](https://www.evtivity.com/screenshots/csms/conformance.png)
 
 ## How It Works
@@ -30,6 +34,8 @@ The conformance section lists every OCTT test case EVtivity runs, by OCPP versio
 ### From the Dashboard
 
 Navigate to **Settings** and select the **Conformance** tab. Choose **OCPP 2.1**, **OCPP 1.6**, or **Run All Tests**, then click **Run Tests** to start a conformance test run.
+
+![Start Conformance Run confirmation](https://www.evtivity.com/screenshots/csms/conformance-start-run.png)
 
 The results page shows:
 

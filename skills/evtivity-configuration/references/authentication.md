@@ -33,6 +33,8 @@ API keys provide programmatic access to the REST API.
 - Sent as a Bearer token in the `Authorization` header.
 - Inherits the creating user's role and permissions.
 - Supports optional permission scoping to restrict access below the creator's level.
+- Cannot use the account routes of the signed-in user: profile, password, MFA, notification preferences, and personal AI configuration. These answer 403 `SESSION_REQUIRED`.
+- Revoked when the user is deactivated or deleted.
 
 ## Role-Based Access Control
 
@@ -68,6 +70,14 @@ The email/SMS challenge row stores `(user_id | driver_id, code_hash, expires_at,
 
 A challenge is single-use: a successful verify stamps `used_at`, and subsequent attempts return `MFA_CODE_INVALID`. Per-challenge rate limiting caps failed attempts at five before returning `MFA_CHALLENGE_EXHAUSTED` and forcing the user to request a new code.
 
+Operator MFA codes can be resent at most 5 times in 15 minutes. Over the limit, the API returns `MFA_RESEND_LIMITED`.
+
+### Sign-In Lockout
+
+Repeated failed operator sign-ins lock the account for a growing delay, on top of the per-IP rate limits. The first lock comes after 5 failures in a row and lasts 30 seconds. Each further failure doubles it, up to 15 minutes. A successful sign-in resets the count. While the account is locked, a password sign-in answers as for a wrong password.
+
+Wrong MFA codes after the password step follow the same rule with their own count. While locked, the API returns 429 `MFA_LOCKED`.
+
 ### TOTP Configuration
 
 - Algorithm: SHA1
@@ -85,7 +95,7 @@ EVtivity uses Google reCAPTCHA v3 for bot protection.
 - Score-based with a configurable threshold (default 0.5).
 - Enable and configure in Settings > Security.
 - The site key, secret key, and threshold are dashboard settings, not environment variables. The secret key is stored encrypted.
-- Turn it on when anyone can sign up in the driver portal. It protects the portal sign-in, sign-up, forgot password and reset password forms. The mobile apps prove themselves with device attestation instead.
+- Turn it on when anyone can sign up in the driver portal. It protects the portal sign-in, sign-up, forgot password and reset password forms, and the guest charging start. The mobile apps prove themselves with device attestation instead.
 - While it is off, those forms are protected only by IP rate limits, and Settings > Security shows a warning.
 
 ### Driver sign-up limits
@@ -108,5 +118,8 @@ API key and Bearer token authentication are not subject to CSRF protection.
 - Refresh tokens enable long-lived sessions without storing credentials (30 days for operators, 7 days for drivers).
 - Token rotation: each refresh token is single-use. Using a refresh token issues a new access token and a new refresh token.
 - Rotation is enforced atomically. Two concurrent refresh attempts with the same token race on `UPDATE refresh_tokens SET revoked_at = NOW() WHERE id = X AND revoked_at IS NULL RETURNING id`; only one caller's update returns a row. The loser receives `401 INVALID_REFRESH_TOKEN` rather than silently minting a parallel session.
+- Signing out ends the operator session at once. A password change, an MFA change, a role or permission change, and deactivation end every session of the user at once.
+- Deactivating or deleting an operator also revokes the user's API keys and emailed links. A password reset link works once.
+- Operator accounts created through SSO have no password. They cannot sign in with a password, reset it, or change it. A password reset or invitation sent by an operator for such a user returns 409 `USER_SSO_MANAGED`.
 - A replayed (already-revoked) refresh token is rejected on the SELECT (`WHERE revoked_at IS NULL`) and returns `401 INVALID_REFRESH_TOKEN`. The legitimate session, having rotated to a new token, continues until natural expiry.
 - Logging out revokes the current refresh token immediately and clears the auth cookies. The portal and CSMS frontends both await the logout response before clearing local state so a tab-close race cannot leave the revocation un-applied.

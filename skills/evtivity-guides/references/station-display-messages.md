@@ -77,6 +77,8 @@ Each state has a template per language: English, German, Spanish, Korean, Simpli
 
 Every default state template starts with `{{brandLine}}`: the brand line setting, or the company name when it is empty. Variables include `{{brandLine}}`, `{{companyName}}`, `{{stationOcppId}}`, `{{energyKwh}}`, `{{powerKw}}`, `{{costFormatted}}`, and `{{elapsedFormatted}}`, plus computed helpers like `{{pricingDisplay}}`, which renders the active tariff in compact (`€0.30/kWh + €0.02/min`) or standard (`Energy: €0.30/kWh | Time: €0.02/min | Session: €2.00`) format depending on `stationMessage.pricingFormat`. Amounts are formatted in the company currency and the display language before they reach the template, so the body just references the variable. `{{elapsedFormatted}}` is the charging time in the display language: `1h 5m` in English, `1 Std., 5 Min.` in German, `1시간 5분` in Korean.
 
+Templates accept a limited set of Handlebars features: variables such as `{{energyKwh}}`, comments, and `{{#if}}` and `{{#unless}}` blocks on a single variable with an optional `{{else}}`. Helpers with arguments, partials, other blocks such as `{{#each}}`, parent paths (`../`) and `@` variables are not allowed. Saving a template that uses anything else is refused with the reason, and the preview stays empty for it.
+
 The same tab surfaces these system-wide settings:
 
 - `stationMessage.enabled` - master toggle for the pipeline. When off, no slots are pushed.

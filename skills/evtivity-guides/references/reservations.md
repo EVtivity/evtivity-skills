@@ -77,7 +77,7 @@ Operators manage reservations from the dashboard, drivers manage their own from 
 
 ### Bulk reservations
 
-Fleet operators sometimes want to reserve a row of stations for a yard or a delivery hub. EVtivity exposes a bulk reservation endpoint on a Fleet that accepts a list of `(stationId, evseId, driverId)` slots and the same `startsAt` / `expiresAt` window. Each slot is processed independently - failures in one slot don't roll back the others - and the bulk row stays alive carrying whichever slots succeeded.
+Fleet operators sometimes want to reserve a row of stations for a yard or a delivery hub. EVtivity exposes a bulk reservation endpoint on a Fleet that accepts a list of up to 100 `(stationId, evseId, driverId)` slots and the same `startsAt` / `expiresAt` window. Each slot is processed independently - failures in one slot don't roll back the others - and the bulk row stays alive carrying whichever slots succeeded. The response lists each rejected slot with its reason.
 
 ### The scheduler
 

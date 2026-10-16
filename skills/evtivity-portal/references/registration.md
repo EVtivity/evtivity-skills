@@ -20,6 +20,8 @@ The EVtivity Portal requires a driver account for authenticated charging, sessio
 
 ![Registration form](https://www.evtivity.com/screenshots/portal/register.png)
 
+The portal then asks you to check your inbox. Open the verification link, then sign in. If the email address already has an account, the portal shows the same message and the email tells you that someone tried to register with your address, with links to sign in and to reset your password. Nothing on the existing account changes.
+
 A phone number can be used for at most three new accounts in 24 hours.
 
 If the operator has disabled portal self-registration (`portal.registrationEnabled = false`), the endpoint returns `PORTAL_REGISTRATION_DISABLED` and the form shows a "contact your operator to be invited" message. In that case, the operator creates your account and sends you an invitation. See [Accept an Invitation](#accept-an-invitation).
@@ -73,6 +75,8 @@ If MFA is enabled on your account, you will be prompted for a verification code 
 
 Completing the reset revokes every existing session on your account, so any device you previously signed in on will be logged out and require re-authentication.
 
+The reset link also confirms your email address.
+
 ## Multi-Factor Authentication (MFA)
 
 MFA adds a second verification step to your login. Three methods are available (the operator controls which methods are enabled system-wide).
@@ -104,6 +108,8 @@ On your next login, open your authenticator app and enter the current code.
 
 On your next login, a code is sent via SMS after you enter your password.
 
+**SMS** is offered only when your profile has a phone number. While SMS codes are on, you cannot remove the phone number from your profile. Disable MFA first.
+
 ### Disable MFA
 
 1. Go to **Account** and tap **Security**.
@@ -117,3 +123,4 @@ To switch methods (for example from SMS to authenticator app), disable MFA first
 - Verification codes expire after 5 minutes.
 - TOTP codes use a 30-second rotation window with a 1-step tolerance.
 - The operator can enable or disable each MFA method from the CSMS Settings page.
+- A code goes only to the channel of your method: an email code by email, an SMS code by SMS.

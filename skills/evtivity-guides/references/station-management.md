@@ -68,6 +68,12 @@ A failed firmware install clears on the next install or when an operator enables
 
 Each station has one or more EVSEs, and each EVSE has one or more connectors. You can add, update, or delete EVSEs and connectors from the station detail page. EVSE numbers are unique per station, and connector numbers are unique per EVSE.
 
+The CSMS keeps an EVSE or connector that has charging history. Deleting one that sessions, reservations or meter values refer to fails with `409 EVSE_HAS_HISTORY`: retire it instead. Deleting one that is in use fails with `409 CONNECTOR_OCCUPIED`. The page shows the reason.
+
+Retiring an EVSE or connector takes it out of service and keeps its history. Drivers and roaming partners no longer see it (OCPI reports a retired EVSE as `REMOVED`), it takes no new sessions or reservations, and the station status, availability and uptime leave it out. The CSMS tells the station it is Inoperative. Restoring puts it back in service. See [Connectors](https://www.evtivity.com/docs/csms/stations#connectors).
+
+On a simulator station, the paired simulator follows these changes: an added, edited or deleted EVSE or connector is changed in the simulator too, so a deleted plug does not come back with the simulator's next status report.
+
 An OCPP 1.6 station has no EVSEs. The CSMS stores connector N as EVSE N with exactly one connector N. The **Create EVSE** dialog locks the connector number to the EVSE number, and you cannot add a second connector to a 1.6 EVSE.
 
 Supported connector types:

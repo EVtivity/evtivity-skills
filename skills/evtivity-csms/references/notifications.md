@@ -6,7 +6,7 @@ Configure notification templates, channels, and delivery settings for OCPP, driv
 
 ## Overview
 
-The notification system dispatches messages to operators and drivers via email, SMS, and webhooks. You configure which events trigger notifications, customize message templates with a WYSIWYG editor, and review delivery history. The notification page has four tabs: Driver Events, System Events, OCPP Events, and History.
+The notification system dispatches messages to operators and drivers via email, SMS, and webhooks. You configure which events trigger notifications, customize message templates with a WYSIWYG editor, and review sent notifications. The notification page has five tabs: Driver Events, System Events, OCPP Events, Sent Notifications, and History. The History tab lists notification template changes.
 
 ![Notifications](https://www.evtivity.com/screenshots/csms/notifications.png)
 
@@ -17,10 +17,10 @@ Driver events are notifications sent to drivers about their sessions, account, p
 The **Driver Events** tab groups them:
 
 - **Sessions**: `session.Started`, `session.Updated`, `session.Completed`, `session.Faulted`, `session.PaymentReceived`, `session.IdlingStarted`, `session.Receipt`
-- **Driver Account**: `driver.Welcome`, `driver.ForgotPassword`, `driver.PasswordChanged`, `driver.AccountVerification`, `driver.MfaDisabled`, `driver.PortalInvite`
+- **Driver Account**: `driver.Welcome`, `driver.ForgotPassword`, `driver.PasswordChanged`, `driver.AccountVerification`, `driver.MfaDisabled`, `driver.PortalInvite`, `driver.RegistrationAttempt`
 - **Payments**: `payment.Complete`, `payment.Refunded`, `payment.FeeRefunded`, `payment.PreAuthFailed`, `payment.CaptureFailed`, `payment.MissingPaymentMethod`, `payment.AccountCreditLimit`
 - **Reservations**: `reservation.Created`, `reservation.Cancelled`, `reservation.CancelledForMaintenance`, `reservation.Expiring`, `reservation.Expired`, `reservation.StationFaulted`
-- **Invoice Events**: `invoice.Sent`, `invoice.CreditNote`
+- **Invoice Events**: `invoice.Sent`, `invoice.CreditNote`, `invoice.MemberInvoice`, `invoice.MemberCreditNote`, `invoice.MemberOverdue`
 - **Support Cases**: `supportCase.Created`, `supportCase.OperatorReply`, `supportCase.Resolved`, `supportCase.AiAnswered`
 - **Multi-Factor Auth**: `mfa.VerificationCode`
 - **Tokens**: `token.Added`, `token.Removed`, `token.Deactivated`, `token.Reactivated`
@@ -32,7 +32,17 @@ The **Driver Events** tab groups them:
 
 `session.IdlingStarted` goes out once per idle period, when the EV has been idle for at least 60 seconds, on OCPP 1.6 and 2.1 alike. A shorter pause, such as an EV that reports full and ends the session a moment later, sends no idling notification. Idle fees follow the idling grace period in Settings.
 
-These event types are always on, because drivers need them to get into their account: `driver.ForgotPassword`, `driver.AccountVerification`, `driver.PortalInvite` and `mfa.VerificationCode`. Their switch is locked on, and they are sent even when the driver turned a channel off. The API refuses to turn one off with the error code `NOTIFICATION_EVENT_REQUIRED`.
+These event types are always on, because drivers need them to get into their account, to receive their invoices, to learn of a session an Autocharge vehicle started on their account, or to learn of a security change they may not have made: `driver.ForgotPassword`, `driver.AccountVerification`, `driver.PortalInvite`, `driver.RegistrationAttempt`, `driver.PasswordChanged`, `driver.MfaDisabled`, `mfa.VerificationCode`, `invoice.MemberInvoice`, `invoice.MemberCreditNote`, `invoice.MemberOverdue` and `session.AutochargeStarted`. Their switch is locked on, and they are sent even when the driver turned a channel off. The API refuses to turn one off with the error code `NOTIFICATION_EVENT_REQUIRED`.
+
+`driver.ForgotPassword`, `driver.AccountVerification` and `driver.RegistrationAttempt` go by email only, so a password reset link never goes to a phone number.
+
+The three member invoice events go to the driver when a fleet invoices each member (see [Member Invoices](https://www.evtivity.com/docs/csms/fleets#member-invoices)):
+
+- **Member Invoice Issued** (`invoice.MemberInvoice`): a member invoice is issued or sent again.
+- **Member Credit Note Issued** (`invoice.MemberCreditNote`): a member invoice is credited.
+- **Member Invoice Overdue** (`invoice.MemberOverdue`): an issued member invoice passed its due date unpaid. It goes out once.
+
+They are sent by email with the invoice or credit note PDF attached, and as a push notification to the portal and the mobile app. The push uses the text of the SMS template. They are never sent by SMS. The fleet's billing contacts receive no copy.
 
 ![Driver event with a locked Active switch](https://www.evtivity.com/screenshots/csms/notifications-driver-event-detail.png)
 
@@ -47,6 +57,10 @@ Channels: email and SMS.
 5. Use the variable panel to insert template variables. Click a variable to insert it at the cursor position, or drag and drop it into the editor.
 6. Click **Save** to store the custom template.
 7. Click **Reset Template** to revert to the default file-based template.
+
+SMS texts, push messages and email subjects are plain text: variables are inserted as is, without HTML escaping, so a link or an apostrophe arrives unchanged. Email bodies escape variables as HTML.
+
+Dates in a notification use the recipient's time zone. An operator's profile accepts only a valid time zone. A recipient without one gets the system time zone.
 
 Template variables use Handlebars syntax (e.g., `{{firstName}}`, `{{stationId}}`, `{{costFormatted}}`). Available variables are shown in the click-to-insert panel and vary by event type. Money variables such as `costFormatted` and `amountFormatted` are formatted in the recipient's language and the record's currency. See [Notifications](https://www.evtivity.com/docs/guides/notifications) for the full list.
 
@@ -73,6 +87,14 @@ The **Fleet Invoices** emails go to a fleet's billing contacts with the PDF atta
 The **Session End Failed** alert, in the **Session Alerts** group, goes to every active operator with the `sessions:write` permission and access to the session's site when the CSMS gives up ending a session after repeated failed end requests. It names the session and the station, so you can search the session ID on the Sessions page and bill the session. See [Billing a Session the CSMS Could Not End](https://www.evtivity.com/docs/csms/sessions#billing-a-session-the-csms-could-not-end). Each operator receives it in their language and time zone, and the SMS opt-out on their Profile page applies.
 
 The **AI Insight Action Digest** (`ai.ProposalDigest`), in the **AI** group, is the exception to always on: it goes only to active users with the `aiInsights:write` permission who turned on **AI insight action digest email** in their Profile. It goes out once a day while insight actions from background workers wait for a decision at their sites, with the counts per job, the site names, and a link to AI Insights filtered to pending actions. See [Daily Digest Email](https://www.evtivity.com/docs/csms/ai-insights#daily-digest-email).
+
+Three more events in the **AI** group go to active users with the `settings.ai:write` permission and access to every site. See [AI Alerts](https://www.evtivity.com/docs/csms/settings#ai-alerts).
+
+- **AI Provider Out of Credit or Quota** (`ai.ProviderQuotaExceeded`): an AI provider refused a request because its account is out of credit or over its quota. Sent when the alert starts, then at most once a day while it lasts.
+- **AI Budget Warning** (`ai.BudgetWarning`): the company or a site reached the warning percent of its monthly token budget. Sent once per budget and month.
+- **AI Budget Used Up** (`ai.BudgetExhausted`): the company or a site used up its monthly token budget. Sent once per budget and month.
+
+![AI provider quota event template](https://www.evtivity.com/screenshots/csms/notifications-ai-events.png)
 
 Channels: email and SMS.
 
@@ -104,9 +126,9 @@ Channels: email and webhook.
 
 ![OCPP events](https://www.evtivity.com/screenshots/csms/notifications-ocpp-events-tab.png)
 
-## History
+## Sent Notifications
 
-The History tab shows a log of all sent notifications with three sub-tabs:
+The Sent Notifications tab shows a log of all sent notifications with three sub-tabs:
 
 - **Email** - Sent email notifications with delivery status.
 - **SMS** - Sent SMS notifications with delivery status.
@@ -114,7 +136,7 @@ The History tab shows a log of all sent notifications with three sub-tabs:
 
 Each sub-tab supports filtering by category, event type, and delivery status.
 
-The dispatcher writes a history row for every dispatch attempt, including the ones it has to skip. When the row's status is `failed`, the Email and SMS tabs show a short reason below the badge so you can tell at a glance whether the issue is the configuration, the recipient, or the upstream provider:
+The dispatcher writes a row for every dispatch attempt, including the ones it has to skip. When the row's status is `failed`, the Email and SMS tabs show a short reason below the badge so you can tell at a glance whether the issue is the configuration, the recipient, or the upstream provider:
 
 | Reason | What it means |
 |--------|----------------|
@@ -130,7 +152,7 @@ The dispatcher writes a history row for every dispatch attempt, including the on
 | Webhook timed out | The webhook didn't respond within 10 seconds. Investigate the receiver's latency. |
 | Webhook delivery failed | Legacy catch-all for older rows. New failures use one of the four specific reasons above. |
 
-![Notification history](https://www.evtivity.com/screenshots/csms/notifications-history-tab.png)
+![Sent notifications](https://www.evtivity.com/screenshots/csms/notifications-history-tab.png)
 
 ## Email Wrapper Template
 

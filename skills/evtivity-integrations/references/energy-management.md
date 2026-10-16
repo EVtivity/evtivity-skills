@@ -29,7 +29,7 @@ The load management system distributes available power across stations connected
 
 The load management worker runs every 10 seconds via BullMQ. Each site is processed with a concurrency limit of 5 to prevent overloading the OCPP message pipeline.
 
-When the worker recalculates limits, it sends OCPP charging profiles to each station using the `ChargingStationExternalConstraints` purpose. This purpose is reserved exclusively for load management. Smart charging templates use separate purposes to avoid conflicts.
+When the worker recalculates limits, it sends each station a `ChargingStationMaxProfile` on EVSE 0 with its own profile ID (1000000000) at stack level 1. See [Load Management](https://www.evtivity.com/docs/csms/load-management).
 
 ## Smart Charging Profiles
 
@@ -41,7 +41,7 @@ Smart charging profiles are managed through templates and pushed to stations in 
 |---|---|
 | `ChargingStationMaxProfile` | Sets the maximum power for the entire station |
 | `TxDefaultProfile` | Sets the default power limit for new transactions |
-| `ChargingStationExternalConstraints` | Reserved for load management (not used by templates) |
+| `ChargingStationExternalConstraints` | Set only by a station or an external energy management system, never by the CSMS (not used by templates) |
 
 ### Schedule Kinds
 
@@ -58,7 +58,7 @@ Use `GetCompositeSchedule` to query a station for its merged result across all a
 
 ### Interaction with Load Management
 
-Load management writes profiles with `ChargingStationExternalConstraints`. Smart charging templates write profiles with `ChargingStationMaxProfile` or `TxDefaultProfile`. The station composes limits from both sources, applying the most restrictive constraint at any given time.
+Load management writes a `ChargingStationMaxProfile` at stack level 1. Smart charging templates write profiles with `ChargingStationMaxProfile` or `TxDefaultProfile`. Across purposes the station applies the most restrictive limit. Within `ChargingStationMaxProfile` the higher stack level wins, so on a load-managed station the load management limit replaces a template at stack level 0.
 
 ## Carbon Footprint Tracking
 

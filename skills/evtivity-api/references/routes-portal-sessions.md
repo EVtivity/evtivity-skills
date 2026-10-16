@@ -1,6 +1,6 @@
 # EVtivity API routes: Portal Sessions
 
-Generated from EVtivity CSMS v0.1.45 (https://github.com/EVtivity/evtivity-csms, commit a241f5536239) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -14,6 +14,7 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/portal/sessions/monthly-summary` | driver | Get monthly charging summary |
 | GET | `/v1/portal/sessions/monthly-statement` | driver | Get monthly statement with itemized sessions |
 | GET | `/v1/portal/sessions/{id}` | driver | Get charging session details with payment info |
+| POST | `/v1/portal/sessions/{id}/vehicle-claim` | driver | Use the vehicle id the charger sent for this session on a vehicle |
 | PATCH | `/v1/portal/sessions/{id}/vehicle` | driver | Set or clear the vehicle linked to a session |
 | GET | `/v1/portal/sessions/{id}/power-history` | driver | Get power meter value history for a session |
 | GET | `/v1/portal/sessions/{id}/energy-history` | driver | Get energy meter value history for a session |

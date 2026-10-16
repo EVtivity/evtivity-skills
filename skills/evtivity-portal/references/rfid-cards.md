@@ -31,14 +31,16 @@ With app-based charging, you select a specific connector, choose a payment metho
 
 1. Open **Account** > **RFID Cards**, or tap the **RFID Cards** card on the Home page.
 2. Tap **Add RFID Card**.
-3. Enter the card number printed on your RFID card. The number is alphanumeric and between 4 and 20 characters. Tap **Add**.
+3. Enter the card number printed on your RFID card. The number has 4 to 64 letters, digits or dashes. Choose the **Token type** (ISO14443 for most cards) and tap **Add**.
 4. The card is added in an active state and ready to use.
 
-Duplicate card numbers are rejected. Each card number can only be linked to one account.
+Duplicate card numbers are rejected. Each card number can only be linked to one account. Adding a card you turned off earlier turns it back on.
 
 ## Managing Cards
 
-- **Toggle active/inactive** - turn a card's toggle off and confirm with **Deactivate** to disable it, or turn it on to reactivate it. When a card is deactivated, the station rejects authorization attempts with that card. Reactivate it at any time.
+- **Toggle active/inactive** - turn a card's toggle off and confirm with **Deactivate** to disable it, or turn it on to reactivate it. When a card is deactivated, the station rejects authorization attempts with that card. You can reactivate a card you turned off at any time.
+- **Deactivated by the operator** - a card the operator deactivated shows this note and its toggle is locked. Contact the operator to reactivate it.
+- **Expired** - a card past the expiry the operator set shows **Expired**. Stations reject it.
 - **Masked display** - card numbers are displayed with partial masking for security.
 - **No delete** - the Portal does not delete cards. Deactivate a card you no longer use.
 
@@ -48,4 +50,4 @@ When you tap a deactivated card on a station reader, the station sends an author
 
 ## System Integration
 
-Added cards appear as driver tokens with type RFID in the system. Operators can also see and manage these tokens from the CSMS Tokens page. Cards are shared between portal self-service and operator management - changes made by either side take effect immediately.
+Added cards appear as driver tokens with the type you chose. Operators can also see and manage these tokens from the CSMS Tokens page. Cards are shared between portal self-service and operator management - changes made by either side take effect immediately.

@@ -1,0 +1,15 @@
+# EVtivity API routes: Portal Invoices
+
+Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Index of all tags: `references/routes.md`.
+
+Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
+token. `driver` needs a driver portal token. Empty means the route needs a signed-in
+operator and no single permission was found; check Swagger at `<api>/docs`.
+A `write` permission includes `read` for the same resource.
+
+| Method | Path | Permission | Summary |
+|---|---|---|---|
+| GET | `/v1/portal/invoices` | driver | List the driver's invoices |
+| GET | `/v1/portal/invoices/{id}` | driver | Get one of the driver invoices |
+| GET | `/v1/portal/invoices/{id}/pdf` | driver | Download one of the driver invoices as a PDF |

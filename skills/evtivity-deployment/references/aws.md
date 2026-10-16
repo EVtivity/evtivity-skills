@@ -110,6 +110,10 @@ The WAF lets Stripe webhooks through only on `/v1/webhooks/payments/stripe` and 
 
 See [Payment Providers](https://www.evtivity.com/docs/integrations/payment-providers).
 
+### Client Addresses
+
+The API and OCPI services run behind the Application Load Balancer. The stacks set `TRUST_PROXY` on both to the VPC range, so rate limits, the guest charging limits per IP address, and audit and access logs see the real client address from `X-Forwarded-For`. See [Environment Variables](https://www.evtivity.com/docs/configuration/environment-variables#api-server).
+
 ### Observability
 
 Every environment runs the Helm chart's dashboards and alert rules:

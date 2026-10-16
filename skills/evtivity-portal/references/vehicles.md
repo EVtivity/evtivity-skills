@@ -2,7 +2,7 @@ Generated from https://www.evtivity.com/docs/portal/vehicles. Do not edit.
 
 # Vehicles
 
-Add vehicles to your account for estimated miles driven from energy consumed.
+Add vehicles to your account for estimated miles driven, and charge by plugging in with Autocharge.
 
 ## Overview
 
@@ -43,6 +43,16 @@ If you have more than one vehicle on your account, the Portal uses the most-rece
 - **Activity donut chart** - select the Distance metric to see total estimated miles for the month
 - **Session list** - each row shows miles alongside duration and cost
 - **Monthly Statement** - the itemized table includes a Miles column, and the totals row sums all miles for the month
+
+## Autocharge
+
+Autocharge (charge by plugging in) starts charging on your account when you plug the vehicle in, without a card or the app. It is available where the operator turned it on.
+
+1. Charge once with your card or the app at a charger that reads the vehicle id. The session detail then shows the **Vehicle ID** card with the id and "Captured from the charger".
+2. Tap **Use This Vehicle for Plug-In Charging**, choose one of your vehicles or a new one, and keep **Autocharge** on.
+3. The next time you plug in, charging starts on its own. You get a notice each time, with a link to the Vehicles page.
+
+The Vehicles page shows each vehicle's VIN and EVCCID, where a charger last read them (**Last Seen**), and the **Autocharge** switch. Turn it off to stop charging by plugging in. If the operator blocked Autocharge for a vehicle, the switch cannot be turned on; contact the operator.
 
 ## Deleting a Vehicle
 

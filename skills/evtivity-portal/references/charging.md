@@ -107,7 +107,7 @@ On an OCPP 2.1 station, you can also start from the Portal when your cable is al
 
 ### Charge on Account
 
-If your fleet bills your sessions on account, the station page shows **Billed to** and your fleet in place of the payment methods. You start without a card, no amount is held, and your fleet pays the session on its invoice. At a free vend site nothing is billed. See [Fleets](https://www.evtivity.com/docs/csms/fleets).
+If your fleet bills your sessions on account, the station page shows **Billed to** and your fleet in place of the payment methods. You start without a card, no amount is held, and your fleet pays the session on its invoice. At a free vend site nothing is billed. See [Fleets](https://www.evtivity.com/docs/csms/fleets). When your fleet invoices each member, the page shows "Billed to you via" and your fleet, and the session goes on your monthly invoice. See [Invoices](https://www.evtivity.com/docs/portal/invoices).
 
 ![Station page billed to the fleet](https://www.evtivity.com/screenshots/portal/charger-detail-billed-to.png)
 
@@ -146,6 +146,8 @@ After starting, the Portal shows the session detail page with live charging data
 The session detail page updates via polling to show the latest data from the station. The polling interval is a few seconds during active charging.
 
 When the session completes (either by tapping Stop or when the vehicle stops drawing power), the page shows the final session summary with total energy, duration, and cost.
+
+When the station refuses the stop, the page shows "The station rejected the stop request. The session is still charging." When the station is offline, the page reports that too, and the session keeps running until the station ends it.
 
 ### Ghost Transaction Recovery
 

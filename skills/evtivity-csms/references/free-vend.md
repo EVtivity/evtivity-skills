@@ -58,7 +58,7 @@ The site lookup behind the first two layers is cached in-process for 60 seconds,
 
 ## Disabling Free Vend
 
-Disabling free vend sets the database flag to `false` but does not modify station OCPP configuration. Operators should manually update or remove the generated config templates if they want stations to require authorization again.
+Turning free vend off pushes authorization back to the online stations through two restore config templates (**Free Vend Off - site name (OCPP 2.1)** and **(OCPP 1.6)**), with push results like any config push. OCPP 2.1 stations get `AuthCtrlr.Enabled = true` and the `TxCtrlr.TxStartPoint` most of the site's stations reported when free vend was turned on. OCPP 1.6 stations get `AllowOfflineTxForUnknownId = false` and the `LocalPreAuthorize` and `LocalAuthorizeOffline` values they reported then. OCPP defines no defaults for these values, so a value no station reported restores to `PowerPathClosed` (2.1), `LocalPreAuthorize = false` and `LocalAuthorizeOffline = true` (1.6). A station that was offline at the switch keeps the free vend configuration until you push the restore template again from its template page.
 
 ## Customization
 

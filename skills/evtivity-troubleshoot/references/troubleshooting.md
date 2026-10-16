@@ -112,7 +112,7 @@ It also fires when the station offers less power than the EV will accept, includ
 
 Open the station detail page and go to the **Charging Profiles** tab. You have two options:
 
-1. **Clear all profiles.** Click **Clear All Profiles** and confirm. The CSMS sends an OCPP `ClearChargingProfile` to the station that removes every profile across every purpose and stack level. Use this when you don't need any profiles active and want a clean slate.
+1. **Clear all profiles.** Click **Clear All Profiles** and confirm. The CSMS sends OCPP `ClearChargingProfile` to remove every profile it may clear, across every purpose and stack level (one clear per purpose on OCPP 2.1). External constraints and local generation profiles stay, because a CSMS may not clear them. If one of them caps the offer, it shows in **View Composite Schedule**. Use this when you don't need any CSMS profiles active and want a clean slate.
 2. **Identify and fix the offending profile.** Click **Refresh from Station** to pull the station's current profile list. Inspect each entry's `chargingSchedule` periods and look for `limit` values that are 0 or unreasonably low for the connector type (for example, a 32 A AC connector with a 6 A or lower limit). Either edit the offending profile to a sensible limit and re-push, or click the trash icon on that row to delete it.
 
 After clearing, ask the driver to unplug and replug. Some EVs cache the previous offer and won't retry until the session restarts.
@@ -120,7 +120,7 @@ After clearing, ask the driver to unplug and replug. Some EVs cache the previous
 ### If it doesn't work
 
 - **Profiles stack.** A station can have several active profiles at once and applies the most restrictive limit at each point in time. Clearing one isn't enough if a second profile still caps the offer. Click **View Composite Schedule** to see the merged schedule the station is actually using; that is the offer the EV is reacting to.
-- **Load management is the source.** EVtivity load management uses `ChargingStationExternalConstraints`. If the site is over its power budget, the allocation can drop the per-EVSE limit low enough to trigger `SuspendedEV`. Check the site's load management status.
+- **Load management is the source.** EVtivity load management sets a `ChargingStationMaxProfile` on the whole station. If the site is over its power budget, the allocation can drop the per-EVSE limit low enough to trigger `SuspendedEV`. Check the site's load management status.
 - **Power offer below EV minimum.** Some EVs refuse to charge below 6 A or have a higher minimum on DC. If your tariff floor or load-management settings cap the offer that low, the car will sit in `SuspendedEV` indefinitely. Raise the floor.
 - **Real EV-side cause.** If no profile is restricting the offer and load management is not active, the cause is on the vehicle: battery full or near the configured charge limit, a scheduled-charging feature is on (Tesla Scheduled Departure, Ford or GM off-peak schedule), or the EV needs to be woken up by opening a door or touching the manufacturer app.
 - **Cable not fully latched.** A loose CP signal can present the same way to the CSMS. Re-seat the connector and listen for the contactor click.
@@ -143,15 +143,15 @@ The CSMS ends some sessions itself, for example when a new transaction starts on
 Bill the session from the session detail page:
 
 1. Open the session from the Sessions page.
-2. On the **Details** tab, click **Bill session** in the **Billing** card.
+2. On the **Details** tab, click **Bill Session** in the **Billing** card.
 3. Confirm in the **Bill This Session?** dialog.
 
 The CSMS recomputes the cost from the tariff up to the last meter value of the session. It then debits the balance of a prepaid token, or charges the driver's default saved card without the driver present. The session becomes completed and the driver receives a session receipt. See [Billing a Session the CSMS Could Not End](https://www.evtivity.com/docs/csms/sessions#billing-a-session-the-csms-could-not-end).
 
 ### If it doesn't work
 
-- **The card cannot be charged.** When the card is declined or needs 3D Secure, the driver has no saved card, the session is a guest session, or the prepaid balance cannot be debited, the CSMS marks the session for manual billing. The session becomes completed with its recomputed cost and shows the **Manual billing** badge. Collect the amount shown in the **Billing** card outside the platform, for example by invoice or bank transfer. Select **Manual billing** in the status filter of the Sessions page to list these sessions.
-- **No Bill session button.** The button requires both the `sessions:write` and `payments:write` permissions.
+- **The card cannot be charged.** When the card is declined or needs 3D Secure, the driver has no saved card, the session is a guest session, or the prepaid balance cannot be debited, the CSMS marks the session for manual billing. The session becomes completed with its recomputed cost and shows the **Manual Billing** badge. Collect the amount shown in the **Billing** card outside the platform, for example by invoice or bank transfer. Select **Manual Billing** in the status filter of the Sessions page to list these sessions.
+- **No Bill Session button.** The button requires both the `sessions:write` and `payments:write` permissions.
 - **The button is disabled.** Its tooltip gives the reason, for example a payment the provider has not settled yet or another billing of the session in progress. Roaming sessions, free vend sessions, sessions without a tariff, and sessions already paid cannot be billed.
 
 ## Drivers do not see the AI option on a new support case

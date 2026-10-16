@@ -18,7 +18,7 @@ Open the Portal and tap the **Activity** tab in the bottom navigation.
 
 The top of the page displays a donut chart with your selected metric for the current month.
 
-1. Use the left and right arrows to navigate between months.
+1. Use the left and right arrows to navigate between months. Months follow your timezone setting.
 2. Tap the metric toggle to switch between **Cost**, **Energy**, and **Distance**.
 
 | Metric   | Unit  | Source |
@@ -46,7 +46,7 @@ Below the dashboard, your sessions for the selected month are listed with:
 - Estimated miles driven
 - Session duration
 - Total cost, followed by "incl. tax" when the session's tariff has tax
-- The fleet and the billing state, when the session is billed to your fleet
+- The fleet and the billing state, when the session is billed to your fleet. When your fleet invoices you, the line reads "Billed to you via" and the fleet name, then the state.
 
 Tap a session to open the session detail page.
 
@@ -56,7 +56,7 @@ Tap a session to open the session detail page.
 
 1. Tap the monthly statement banner on the Activity page, or navigate to it directly.
 2. The statement shows an itemized table with columns for date, location, energy, duration, estimated miles, and cost. The cost column reads **Cost (incl. tax)** when a session cost includes tax.
-3. A footer row shows totals for the month.
+3. A footer row shows totals for the month. Sessions your fleet pays on account show "Billed to" and the fleet name in the cost column and are left out of the total. Sessions billed in an earlier currency are left out of the total too, and a note below the table counts them.
 4. If carbon tracking is enabled, a CO₂ avoided column appears.
 
 ## Session Detail Receipt
@@ -68,12 +68,13 @@ The session detail page shows:
 - **Status badge** - Active, Completed, Failed, or Pending
 - **Duration** - Total charging time in hours and minutes
 - **Energy delivered** - Total energy in kWh
-- **Total cost** - Final cost in the session currency. While the session is active, the row shows the estimated cost. See Cost and tax below.
+- **Total cost** - Final cost in the session currency. While the session is active, the row shows the estimated cost. Faulted and failed sessions show their final cost, and a faulted or failed session at no cost shows **Not Charged**. See Cost and tax below.
 - **CO₂ avoided** - Carbon savings in kg (when available)
 - **Station details** - Station ID, location, connector type
 - **Start and end timestamps**
 - **Report Issue button** - Opens a new support case pre-filled with the session details (see [Support Cases](https://www.evtivity.com/docs/portal/support-cases))
 - **Fleet Billing** - For a session billed to your fleet: the fleet and the state (Not invoiced yet, Invoiced to the fleet, or Paid by the fleet). The fleet invoice goes to the fleet, not to you.
+- **Fleet Billing** for a session your fleet invoices to you - "Billed to you via" and the fleet name, the state (Not invoiced yet, Invoiced to you, or Paid), and once the session is on an invoice, the **Invoice** row with a link to it. See [Invoices](https://www.evtivity.com/docs/portal/invoices).
 
 ![Session detail with fleet billing](https://www.evtivity.com/screenshots/portal/session-detail-account-billing.png)
 

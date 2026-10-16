@@ -1,6 +1,6 @@
 # EVtivity API routes: Drivers
 
-Generated from EVtivity CSMS v0.1.45 (https://github.com/EVtivity/evtivity-csms, commit a241f5536239) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -16,6 +16,8 @@ A `write` permission includes `read` for the same resource.
 | PATCH | `/v1/drivers/{id}` | drivers:write | Update a driver by ID |
 | DELETE | `/v1/drivers/{id}` | drivers:write | Deactivate a driver by ID |
 | POST | `/v1/drivers/{id}/portal-invite` | drivers:write | Invite a driver to the driver portal |
+| GET | `/v1/drivers/{id}/billing-address` | drivers:read | Get the driver billing address |
+| PATCH | `/v1/drivers/{id}/billing-address` | drivers:write | Update the driver billing address |
 | GET | `/v1/drivers/{id}/tokens` | drivers:read | List tokens for a driver |
 | POST | `/v1/drivers/{id}/tokens` | drivers:write | Create a token for a driver |
 | GET | `/v1/drivers/{id}/vehicles` | drivers:read | List vehicles for a driver |
@@ -23,7 +25,10 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/drivers/{id}/vehicles/{vehicleId}` | drivers:read | Get a single vehicle for a driver |
 | PATCH | `/v1/drivers/{id}/vehicles/{vehicleId}` | drivers:write | Update a vehicle |
 | DELETE | `/v1/drivers/{id}/vehicles/{vehicleId}` | drivers:write | Delete a vehicle |
+| POST | `/v1/drivers/{id}/vehicles/{vehicleId}/block` | drivers:write | Block a vehicle: its VIN and EVCCID are refused at every start |
+| POST | `/v1/drivers/{id}/vehicles/{vehicleId}/unblock` | drivers:write | Unblock a vehicle |
 | GET | `/v1/vehicles/lookup` | drivers:read | List known vehicle makes and models for autocomplete |
+| POST | `/v1/drivers/{id}/erase` | drivers:write | Erase a driver (GDPR right to erasure) |
 | GET | `/v1/drivers/{id}/sessions` | drivers:read | List charging sessions for a driver |
 | GET | `/v1/drivers/{id}/reservations` | drivers:read | List reservations for a driver, with cancel metadata |
 | GET | `/v1/drivers/{id}/pricing-groups` | drivers:read | Get the pricing group for a driver |

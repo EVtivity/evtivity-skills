@@ -85,6 +85,7 @@ Money variables are formatted in the recipient's language and the record's curre
 | `reservation.Cancelled` | `cancellationFeeFormatted` (includes tax, empty without a fee) | `cancellationFeeCents`, `currency` |
 | `invoice.Sent` | `total` | `totalCents`, `currency` |
 | `invoice.CreditNote` | `total` (the amount credited) | `totalCents`, `currency` |
+| `invoice.MemberInvoice`, `invoice.MemberCreditNote`, `invoice.MemberOverdue` | `total` (the invoice total or the amount credited) | `totalCents`, `currency` |
 | `fleet.CreditLimitWarning`, `fleet.CreditLimitReached` | `exposureFormatted` (open amount on account), `limitFormatted` | `exposureCents`, `limitCents`, `currency` |
 | `invoice.FleetInvoice`, `invoice.FleetCreditNote`, `invoice.FleetOverdue` | `total` (the invoice total or the amount credited) | `totalCents`, `currency` |
 

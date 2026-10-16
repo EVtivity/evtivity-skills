@@ -29,6 +29,8 @@ When a driver scans a dynamic QR code, the portal opens `/qr/...` and checks the
 - **Valid code**: the portal continues to the landing page of that connector, the same page a static QR code opens.
 - **Expired or invalid code**: the portal shows **QR Code Not Valid** and does not start a session. Scan the QR code shown on the station again.
 
+A valid scan gives the browser a scan token for that connector, valid for 10 minutes. At a station with dynamic QR codes, a guest start needs it: a printed or bookmarked `/charge/...` link, or a start more than 10 minutes after the scan, is refused with "Scan the QR code shown on the charger to start charging." (`QR_SCAN_REQUIRED`). Scan the code on the charger again.
+
 ![QR code not valid page](https://www.evtivity.com/screenshots/portal/qr-invalid.png)
 
 If the station let the driver enter a maximum cost, energy, or time before it showed the code, the code URL carries them as `maxcost`, `maxenergy` (Wh), and `maxtime` (seconds). They limit the session the same way for static and dynamic QR codes.
@@ -84,6 +86,16 @@ The system places a pre-authorization hold on your card. The final charge is cap
 
 If the card is refused, the session does not start and the page shows the reason, for example "Your card was declined. Try a different card." Try another card.
 
+### Start Protection
+
+Every guest start, free or paid, is checked before the station is asked to start:
+
+- **reCAPTCHA**: when the operator turns reCAPTCHA on, the guest start needs a passing reCAPTCHA score, as the sign-in pages do.
+- **Starts per address**: one client IP address can start at most **Guest Starts per IP per Hour** guest sessions in an hour (default 30).
+- **Declined cards per address**: after **Declined Cards per IP per Hour** declined cards from one IP address in an hour (default 5), that address can place no new payment hold.
+
+Over a limit, the start returns `RATE_LIMITED`. The operator sets both limits under Settings > Integrations & Features > Guest Charging, where 0 means no limit. They apply only when the server knows the guest's real IP address: behind a load balancer or ingress, set `TRUST_PROXY` (see [Environment Variables](https://www.evtivity.com/docs/configuration/environment-variables)). When the API is reached directly on a public address, they apply as is.
+
 ### Card Verification (3D Secure)
 
 With Adyen, your bank can ask you to confirm the payment. The page shows "Complete the verification from your bank to continue." and opens your bank's page. After you confirm, the browser returns to the Card Verification page (`/payments/return`), which finishes the verification, starts the session, and opens the session tracking page. If the card is refused or the verification fails, the session does not start, no money stays held, and the page shows the reason with **View charging session**.
@@ -118,6 +130,8 @@ The page shows:
 | Failed              | Session could not start or encountered an error        |
 | Expired             | Session token expired before charging began            |
 
+A session that ends with a fault shows as Failed with "This session ended with a fault and was not billed." Its card hold is cancelled.
+
 ## Session Token Expiry
 
 Each guest session has a 15-minute token that starts when you initiate the session. If the charging station does not begin the transaction within 15 minutes, the session expires automatically. Any pre-authorization hold on your card is cancelled.
@@ -137,5 +151,6 @@ If you provided an email address during checkout, a receipt is sent to that emai
 - Guest sessions do not appear in the Activity tab or monthly statements. Those features require a driver account.
 - The guest checkout page is not protected by CSRF tokens since no session cookies are involved.
 - Idling notifications are sent to the guest email if one was provided.
+- The receipt, idling and payment failure notices go out in the language the guest used at checkout, else in the company language.
 - Expired guest sessions with pending card holds are cleaned up automatically every 5 minutes.
 - No account creation is required at any point in the guest flow.

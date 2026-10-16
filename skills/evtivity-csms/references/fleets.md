@@ -65,7 +65,7 @@ Assign a pricing group to the fleet. Fleet-level pricing applies to all fleet dr
 
 ### Billing
 
-Turn charge on account on or off for the fleet and set its billing profile. See the Charge on Account section below.
+Turn charge on account on or off for the fleet, choose who receives its invoices, and set its billing profile. See the Charge on Account section below.
 
 ![Fleet billing tab](https://www.evtivity.com/screenshots/csms/fleet-billing-tab.png)
 
@@ -82,7 +82,7 @@ Create and manage batch reservations for fleet vehicles across multiple stations
    - Search for a station (search-as-you-type).
    - Pick a connector from the dropdown that appears once a station is chosen.
    - Optionally assign a driver (search-as-you-type).
-5. Click **Add Station** to add more slots. Stations already chosen in another slot are filtered out so you cannot pick the same one twice.
+5. Click **Add Station** to add more slots, up to 100 per bulk reservation. Stations already chosen in another slot are filtered out so you cannot pick the same one twice.
 6. Click **Create**.
 
 #### Validation
@@ -91,16 +91,20 @@ The same date checks as the single-reservation flow apply: start cannot be in th
 
 #### Result
 
-Each slot is processed independently. The result toast reports the count of confirmed and failed slots. A failed slot does not roll back the others - the bulk reservation lives on with whichever slots succeeded, and the row's status reflects partial success when applicable.
+Each slot is processed independently. The result toast reports the count of confirmed and failed slots. When a slot fails, the **Bulk Reservation Result** dialog lists each slot that was not reserved with its station and reason. A failed slot does not roll back the others. The bulk reservation keeps the slots that succeeded. A slot rejected at create is not stored.
 
 #### Status
 
 | Status | Meaning |
 |---|---|
-| active | At least one slot is currently reserved |
-| partial | Some slots failed at create time; the remainder are active |
-| completed | The expires-at time has passed |
-| cancelled | An operator cancelled the bulk reservation |
+| scheduled | Every live slot waits for its start |
+| active | At least one slot is on its station or in use, and no slot was lost |
+| partial | A slot is still live, and another slot was cancelled or expired |
+| completed | Every slot ended, and at least one was used |
+| expired | Every slot ended, none was used, and at least one expired |
+| cancelled | Every slot was cancelled, or an operator cancelled the bulk reservation |
+
+The status follows the slots. `completed`, `expired` and `cancelled` are final: a later slot change does not move the bulk reservation.
 
 #### Cancellation
 
@@ -120,7 +124,7 @@ See [Pricing](https://www.evtivity.com/docs/csms/pricing) for full details on ta
 
 ## Charge on Account
 
-Charge on account lets the drivers of a fleet charge without a card. Their sessions are billed to the fleet instead of their own card, and the fleet pays for them on the fleet invoice.
+Charge on account lets the drivers of a fleet charge without a card. Their sessions are billed to the fleet instead of their own card, and the fleet pays for them on the fleet invoice. A fleet can also invoice each member for their own sessions. See [Member Invoices](https://www.evtivity.com/docs/csms/fleets#member-invoices).
 
 ### Turn It On
 
@@ -160,7 +164,7 @@ A driver can belong to several fleets. The oldest membership in a fleet with cha
 
 The fleet that bills a driver and the fleet that prices a driver can differ. The **Billing** card on the driver page shows both: **Billing fleet** and **Pricing fleet**.
 
-When a driver pricing group applies, the card shows it instead of a pricing fleet, because driver pricing overrides fleet pricing.
+When a driver pricing group applies, the card shows it instead of a pricing fleet, because driver pricing overrides fleet pricing. When the billing fleet invoices each member, the card also shows **Invoiced to**: The driver.
 
 ![Driver billing card](https://www.evtivity.com/screenshots/csms/driver-billing-card.png)
 
@@ -192,7 +196,7 @@ Driver invoices leave account sessions out, so the CSMS never bills a session tw
 
 A session that was paid by card, for example through a hold an operator placed, shows no badge and is not billed to the fleet.
 
-Drivers see the fleet and the billing state of their account sessions in the portal and the mobile app. They never see the fleet invoice. Earlier versions of the mobile app show the driver's saved card instead of the fleet for an account session, and do not charge it.
+Drivers see the fleet and the billing state of their account sessions in the portal and the mobile app. They never see the fleet invoice. A driver whose fleet invoices each member sees their own member invoices. See [Invoices](https://www.evtivity.com/docs/portal/invoices). Earlier versions of the mobile app show the driver's saved card instead of the fleet for an account session, and do not charge it.
 
 ### Revenue
 
@@ -212,7 +216,7 @@ The open amount is what the fleet owes or will owe on account, in the company cu
 - Sessions on an issued, unpaid invoice.
 - Running sessions, at their current cost.
 
-Sessions paid by card do not count. A paid invoice, or a higher limit, lets drivers start again.
+Sessions paid by card do not count. A paid invoice, or a higher limit, lets drivers start again. The limit applies to the whole fleet when it invoices each member too: member sessions and unpaid member invoices count toward it.
 
 The credit left is the limit minus the ended sessions that are not paid yet and minus what the running sessions reserve.
 
@@ -283,10 +287,59 @@ The run retries a failing fleet for about two and a half hours. Every active ope
 
 When an issued fleet invoice passes its due date unpaid, the billing contacts receive one payment reminder with the PDF attached (`invoice.FleetOverdue`). A fleet without billing contacts gets the reminder once a contact is added. The invoice page shows when the reminder was sent.
 
+### Member Invoices
+
+A fleet that charges on account can invoice each member instead of the fleet. Each driver then gets a monthly invoice for their own account sessions. Members keep everything else: they charge without a card, the fleet's pricing and credit limit apply, and members who pay by card keep paying by card. Only the invoice recipient changes.
+
+To choose the recipient:
+
+1. Open the fleet and select the **Billing** tab.
+2. In **Invoice To**, select **Each Driver**, or **Fleet** to go back to one fleet invoice.
+3. Click **Change** to confirm.
+
+Sessions that start after the change are invoiced to each driver. Sessions that started before it stay on the fleet invoice. Switching back to **Fleet** works the same way: sessions already started stay on each driver's invoice. Each affected driver receives `fleet.AccountBillingChanged`. The change needs the `fleets:write` permission and is recorded in the fleet history.
+
+Invoicing each driver cannot be turned on while services of an earlier release are still connected. The CSMS then answers `FLEET_BILLING_OLD_PODS_CONNECTED`.
+
+#### Driver Invoices
+
+The **Unbilled Sessions** card on the **Billing** tab shows a **Driver Invoices** table for the **Month** you pick. It lists each driver with unbilled sessions billed to them on account: the driver, the number of sessions, the total, and the member invoice the month already has. A **No Email** badge marks a driver without an email address. A **No Address** badge marks a driver without a billing address (street and city).
+
+- Click **Generate** on a row to issue the invoice of that driver and send it to the driver.
+- Click **Invoice All Members** to issue the invoices of every driver with unbilled sessions. The CSMS issues them in the background and sends each to its driver. The table updates as the invoices are issued.
+
+Issuing member invoices needs the `payments:write` permission. A member invoice bills every unbilled session of the driver that ended before the end of the month, including older ones. Each driver gets one invoice per fleet and month: a second one is refused with `FLEET_INVOICE_PERIOD_EXISTS`, and a driver with nothing to bill with `FLEET_INVOICE_NOTHING_TO_BILL`. A driver who left the fleet still gets their unbilled sessions invoiced.
+
+#### Member Invoice Content
+
+A member invoice is issued at once, with no draft, and is due after the fleet's payment terms. It is in the driver's language and lists the driver's sessions without driver groups. The PDF bill-to block prints the driver's billing name and address, then the driver's email, and below it "Charged on account of" and the fleet name. A driver without a billing address still gets the invoice, with the name and email. The CSMS flags the missing address and never blocks the invoice. Drivers enter their address in the portal and the mobile app, and you can edit it on the driver page. See [Billing Address](https://www.evtivity.com/docs/csms/drivers#billing-address).
+
+The invoice page shows the fleet as **Via Fleet** and links the driver. The driver's **Invoices** tab lists member invoices with a "Via" badge that names the fleet, and the session page reads "On account: (fleet) (driver invoice)".
+
+#### Sending and Corrections
+
+The CSMS sends each member invoice once to the driver only, by email with the PDF attached and as a push notification (`invoice.MemberInvoice`). The fleet's billing contacts receive no copy. A driver without an email address gets no email: add the address on the driver page, then click **Send**. A send to a driver without an email address is refused with `INVOICE_NO_DRIVER_EMAIL`.
+
+The **Fleet Invoices** card lists member invoices beside the fleet invoices. The **Billed To** column shows the fleet or the driver. The **Invoice To** filter shows **All** invoices, only **Fleet** invoices, or only **Driver** invoices.
+
+- **Send** emails the invoice again to the driver.
+- **Mark Paid** records the payment of the driver.
+- **Issue Credit Note** cancels the invoice. The driver receives the credit note (`invoice.MemberCreditNote`), and its sessions are billed again on the next invoice you generate for the driver for that month or a later one.
+
+When an issued member invoice passes its due date unpaid, the driver receives one reminder with the PDF attached (`invoice.MemberOverdue`). A driver without an email address gets the reminder once an address is added.
+
+#### Monthly Run for Members
+
+With **Automatic monthly invoice** on, the monthly run also issues the member invoices of the previous month, one for each driver with sessions to bill, and sends each to its driver. It follows the same rules as the fleet invoice: one invoice per driver and month, the oldest missed month first, and no new invoice for a month that was credited. A member invoice the run could not finish appears in the same `fleet.InvoiceRunFailed` notice, with the fleet and the driver.
+
 ### Deleting a Fleet
+
+**Delete** asks for confirmation. When the CSMS refuses the delete, the dialog shows why.
 
 The CSMS refuses to delete a fleet with sessions billed to it and answers `FLEET_HAS_OPEN_BILLING`. Turn off charge on account instead.
 
+The CSMS also refuses to delete a fleet that has bulk reservations, in any status and cancelled ones included, and answers `FLEET_HAS_RESERVATIONS`. They stay as the fleet's history.
+
 ### Notifications
 
-Drivers receive `fleet.AccountBillingChanged` when their billing changes: when the fleet turns charge on account on or off, when they opt out or back in, and when they join or leave a fleet that bills on account. The session receipt of an account session names the fleet and says that no card was charged.
+Drivers receive `fleet.AccountBillingChanged` when their billing changes: when the fleet turns charge on account on or off, when it changes who receives the invoices, when they opt out or back in, and when they join or leave a fleet that bills on account. The session receipt of an account session names the fleet and says that no card was charged. For a session invoiced to the driver, it says that the session is invoiced to the driver monthly via the fleet.

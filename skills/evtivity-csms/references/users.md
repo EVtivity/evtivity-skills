@@ -91,6 +91,22 @@ Users cannot edit their own permissions. Another user with the `users:write` per
 
 Operators can manage their SMS notification preferences from the **Notifications** tab on their Profile page.
 
+## Security Tab
+
+The **Security** tab of a user page shows the user's second factor and API keys. It appears only when you hold every permission of that user. Changes need the `users:write` permission.
+
+- **Multi-Factor Authentication** - shows whether the user signs in with a second factor. **Reset MFA** turns the second factor off and signs the user out everywhere, after a confirmation. The user then signs in with the password alone and can set up MFA again.
+- **API Keys** - lists the user's active API keys with their name, key suffix, created, last used, and expiry dates. **Revoke** ends a key the user no longer needs or that may have leaked, after a confirmation.
+
+## Sessions and Sign-In
+
+- Signing out ends the session at once. A password change, an MFA change, a role or permission change, and deactivation also end every session of the user at once.
+- Deactivating or deleting a user also revokes the user's API keys and every emailed link (invitation and password reset).
+- A password reset link works once.
+- Repeated failed sign-ins lock the account for a growing delay: 30 seconds after 5 failures in a row, doubling with each further failure up to 15 minutes. Repeated wrong MFA codes lock the same way. A successful sign-in resets the count.
+- MFA codes can be resent at most 5 times in 15 minutes.
+- With [Single Sign-On](https://www.evtivity.com/docs/csms/settings#single-sign-on) enabled, accounts created through SSO have no password. They cannot sign in with a password, reset it, or change it.
+
 ## Site Access Control
 
 Site access decides which sites a user can view and manage, along with everything at those sites.
@@ -184,3 +200,5 @@ API keys authenticate programmatic access to the CSMS API. Each key inherits the
 4. Copy the generated key. It is shown only once.
 
 API keys use the same permission and site access model as the user who created them. Revoking a user's permissions or site access immediately affects their API keys.
+
+API keys cannot use the account routes of the signed-in user: profile, password, MFA, notification preferences, and personal AI configuration. These answer 403 `SESSION_REQUIRED`.

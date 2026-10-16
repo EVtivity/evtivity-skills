@@ -14,7 +14,9 @@ Reports require admin-level access.
 
 ## Report Types
 
-The **Generate** tab builds a report as CSV, PDF, or Excel (XLSX) for a date range and an optional site or station. The **History** tab lists past runs, and the **Schedules** tab sends a report by email daily, weekly, or monthly. Report types: Revenue, Utilization, Energy, Station Health, Sessions, Sustainability, Driver Activity, and NEVI Compliance.
+The **Generate** tab builds a report as CSV, PDF, or Excel (XLSX) for a date range and an optional site or station. The **Generated Reports** tab lists past runs, and the **Schedules** tab sends a report by email daily, weekly, or monthly. The **History** tab lists schedule changes and the reports generated, downloaded, and deleted, with who did it. Report types: Revenue, Utilization, Energy, Station Health, Sessions, Sustainability, Driver Activity, and NEVI Compliance.
+
+![Reports History tab](https://www.evtivity.com/screenshots/csms/reports-history-tab.png)
 
 ### Money columns
 

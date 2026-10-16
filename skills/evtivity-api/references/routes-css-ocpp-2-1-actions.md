@@ -1,6 +1,6 @@
 # EVtivity API routes: CSS OCPP 2.1 Actions
 
-Generated from EVtivity CSMS v0.1.45 (https://github.com/EVtivity/evtivity-csms, commit a241f5536239) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -22,6 +22,8 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/css/actions/v21/sendSecurityEventNotification` | stations:write | Send SecurityEventNotification |
 | POST | `/v1/css/actions/v21/createPncEv` | stations:write | Plug and Charge: create an EV with an OEM provisioning certificate (returns pcid and oemRootCertificate) |
 | POST | `/v1/css/actions/v21/installPncContract` | stations:write | Plug and Charge: the EV installs a contract through Get15118EVCertificate (returns emaid) |
+| POST | `/v1/css/actions/v21/updatePncContract` | stations:write | Plug and Charge: the EV updates its contract through Get15118EVCertificate Update (ISO 15118-2, returns emaid) |
+| POST | `/v1/css/actions/v21/authorizePnc` | stations:write | Plug and Charge: Authorize with the eMAID and certificate hash data without starting (returns status and certificateStatus) |
 | POST | `/v1/css/actions/v21/startPncCharging` | stations:write | Plug and Charge: Authorize with the eMAID and certificate hash data, then start |
 | POST | `/v1/css/actions/v21/sendNotifyEvent` | stations:write | Send NotifyEvent |
 | POST | `/v1/css/actions/v21/sendNotifyReport` | stations:write | Send NotifyReport |

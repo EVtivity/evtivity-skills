@@ -1,6 +1,6 @@
 # EVtivity API routes: Users
 
-Generated from EVtivity CSMS v0.1.45 (https://github.com/EVtivity/evtivity-csms, commit a241f5536239) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -16,7 +16,7 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/auth/forgot-password` | public | Request a password reset email |
 | POST | `/v1/auth/reset-password` | public | Reset password using a token from the reset email |
 | POST | `/v1/auth/force-change-password` | public | Change password for a user that has mustResetPassword set |
-| GET | `/v1/users/me` | users:read | Get the currently authenticated user |
+| GET | `/v1/users/me` |  | Get the currently authenticated user |
 | PATCH | `/v1/users/me` |  | Update the authenticated user's own profile fields |
 | GET | `/v1/users` | users:read | List all users with pagination |
 | POST | `/v1/users` | users:write | Create a new user |
@@ -29,7 +29,8 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/roles` | users:read | List all available roles |
 | POST | `/v1/auth/mfa/verify` | public | Verify MFA code and complete login |
 | POST | `/v1/auth/mfa/resend` | public | Resend MFA verification code |
-| GET | `/v1/users/me/mfa` | users:read | Get current MFA status |
+| POST | `/v1/users/{id}/mfa/reset` | users:write | Turn off the MFA of a user |
+| GET | `/v1/users/me/mfa` |  | Get current MFA status |
 | DELETE | `/v1/users/me/mfa` |  | Disable MFA |
 | POST | `/v1/users/me/mfa/setup` |  | Start MFA setup |
 | POST | `/v1/users/me/mfa/confirm` |  | Confirm MFA setup with verification code |
@@ -42,7 +43,7 @@ A `write` permission includes `read` for the same resource.
 | PUT | `/v1/users/me/support-ai-config` |  | Create or update personal support AI configuration |
 | DELETE | `/v1/users/me/support-ai-config` |  | Delete personal support AI configuration |
 | GET | `/v1/permissions` | users:read | Get the permission catalog with groups |
-| GET | `/v1/users/me/permissions` | users:read | Get current user permissions |
+| GET | `/v1/users/me/permissions` |  | Get current user permissions |
 | GET | `/v1/users/{id}/permissions` | users:read | Get a user permissions by user ID |
 | PUT | `/v1/users/{id}/permissions` | users:write | Replace a user permissions |
 | GET | `/v1/users/me/ai-defaults` |  | Get the built-in AI prompts and models for personal AI configuration |

@@ -1,6 +1,6 @@
 # EVtivity API routes: OCPI
 
-Generated from EVtivity CSMS v0.1.45 (https://github.com/EVtivity/evtivity-csms, commit a241f5536239) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -16,6 +16,7 @@ A `write` permission includes `read` for the same resource.
 | PATCH | `/v1/ocpi/partners/{id}` | roaming:write | Update OCPI partner |
 | DELETE | `/v1/ocpi/partners/{id}` | roaming:write | Disconnect OCPI partner |
 | POST | `/v1/ocpi/partners/{id}/register` | roaming:write | Initiate outbound OCPI registration |
+| POST | `/v1/ocpi/partners/{id}/registration-token` | roaming:write | Issue a new OCPI registration token |
 | POST | `/v1/ocpi/partners/{id}/sync/{module}` | roaming:write | Trigger manual OCPI module sync |
 | GET | `/v1/ocpi/sync-log` | roaming:read | List OCPI sync log entries |
 | GET | `/v1/ocpi/locations` | roaming:read | List all sites with OCPI publish status |
@@ -24,6 +25,8 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/ocpi/sessions` | roaming:read | List OCPI roaming sessions |
 | GET | `/v1/ocpi/cdrs` | roaming:read | List OCPI charge detail records |
 | POST | `/v1/ocpi/cdrs/credit` | roaming:write | Create a credit CDR |
+| POST | `/v1/ocpi/cdrs/{id}/reissue` | roaming:write | Reissue the CDR of a credited roaming session |
+| POST | `/v1/ocpi/cdrs/{id}/push` | roaming:write | Push a failed CDR to its partner again |
 | GET | `/v1/ocpi/tariff-mappings` | roaming:read | List OCPI tariff mappings |
 | POST | `/v1/ocpi/tariff-mappings` | roaming:write | Create OCPI tariff mapping |
 | GET | `/v1/ocpi/tariff-mappings/{id}` | roaming:read | Get a single OCPI tariff mapping |

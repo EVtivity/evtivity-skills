@@ -23,6 +23,10 @@ Tap **Personal Info** to edit your first and last name and your phone number. Yo
 
 Save to apply your changes.
 
+## Invoices and billing address
+
+Tap **Invoices** to see your invoices and credit notes and share their PDFs. When your fleet invoices you for your sessions, add your billing address so it prints on your invoices. See [Payments](https://www.evtivity.com/docs/mobile-app/guide/payments#invoices).
+
 ## Security
 
 ![Security screen](https://www.evtivity.com/screenshots/mobile/security.png)

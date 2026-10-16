@@ -21,6 +21,8 @@ Stations represent physical charging hardware that communicates with the CSMS ov
 7. Add EVSEs and connectors with their power ratings and connector types.
 8. Click **Create**.
 
+Each new station gets an empty configuration template bound to it, also when the station comes from a site CSV import.
+
 ![Create station](https://www.evtivity.com/screenshots/csms/stations-create.png)
 
 ## Onboarding Status
@@ -41,13 +43,15 @@ New stations start with a **pending** onboarding status. Operators can approve o
 
 ### Approving and blocking
 
-- To approve a pending station, click **Approve** on the station detail page.
-- To block a pending station, click **Reject**. The station's OCPP connection is terminated immediately.
+- To approve a pending station, click **Approve** on the station detail page. A connected station is asked to boot again at once.
+- To block a pending station, click **Reject** and confirm. The station's OCPP connection is terminated immediately.
 - To unblock a blocked station, click **Unblock**. This sets the status back to pending. The station can reconnect but still requires approval before it can start charging sessions.
 
 ### Deleting a station
 
-Stations cannot be permanently deleted. The **Delete** button blocks the station instead of deleting it from the database. This preserves all historical data (sessions, meter values, logs). You can unblock it later to restore it to pending status.
+Stations cannot be permanently deleted. The **Delete** button blocks the station instead of deleting it from the database and closes its OCPP connection. This preserves all historical data (sessions, meter values, logs). You can unblock it later to restore it to pending status. While a charging session is active at the station, **Delete** is refused with `409 STATION_HAS_ACTIVE_SESSION`: stop the session first (**Connectors** tab, **Stop Active Session**).
+
+Approve, Reject, Unblock and Delete need the `stations:write` permission. Without it, the station page shows the onboarding notice without the buttons.
 
 ## Station Status
 
@@ -174,6 +178,20 @@ The header shows the online badge, the station status badge, and the **Enable St
 
 Edit station metadata: name, vendor, model, site assignment, security profile, and password. The station's OCPP connection URL is displayed for configuration reference.
 
+When you move a station to another site, an active maintenance window at the old site releases it (the station is told it is Operative again unless you disabled it, and the maintenance message is cleared from its screen), and an active window at the new site applies to it at once. Sessions keep the site where they happened, so the revenue, metrics and reports of each site keep their history.
+
+The **AI Insights** row shows whether automatic AI insights watch the station: **In Scope**, or **Suppressed** with the end date, who suppressed them and why. Users with the `stations:write` permission click **Suppress**, enter a reason and an optional end date, and confirm. Until the end date, or until **Resume**, no new insight or suggested action is created for the station, its open insights are dismissed, and its waiting actions expire. An active maintenance event that covers the station suppresses them too. The stations list filters by **AI Insights** and marks suppressed stations with a badge.
+
+A station also counts as suppressed while its site is suppressed (see [Sites](https://www.evtivity.com/docs/csms/sites#details)). The row then shows **Suppressed with its site** with a link to the site, and **Resume** is hidden until the site resumes. **Suppress** on the station still works: the station's own suppression stays in effect after the site resumes. Resuming a station while its site is suppressed is refused (`STATION_SITE_SUPPRESSED`).
+
+![Suppress AI insights dialog](https://www.evtivity.com/screenshots/csms/station-ai-insights-suppress.png)
+
+![Station with suppressed AI insights](https://www.evtivity.com/screenshots/csms/station-ai-insights-suppressed.png)
+
+![Stations list filtered to suppressed AI insights](https://www.evtivity.com/screenshots/csms/stations-ai-insights-filter.png)
+
+![Station suppressed with its site](https://www.evtivity.com/screenshots/csms/station-ai-insights-site-suppressed.png)
+
 ### Images
 
 Upload and manage station photos. Set a main image that displays in the station header. Tag images and mark them as driver-visible for display in the driver portal. Images are stored in S3 with presigned URLs for upload and download.
@@ -195,6 +213,8 @@ Paginated list of all charging sessions for this station. Filterable by status a
 ### Connectors
 
 View and manage EVSEs and connectors. Each connector shows its current status with a color-coded badge. Add new EVSEs and connectors, edit connector types and power ratings, or delete unused ones (blocked if in use).
+
+**Retire EVSE** and **Retire Connector** take hardware out of service and keep its history. Drivers and roaming partners no longer see it, it takes no new sessions or reservations, the station status and uptime leave it out, and the station is told it is Inoperative. A retired EVSE or connector shows a **Retired** badge, and **Restore EVSE** or **Restore Connector** puts it back in service. Retire is refused while the hardware is in use or holds an active or upcoming reservation. Delete is only for hardware without history: retire an EVSE or connector that sessions, reservations or meter values refer to. A status report the station sends for a retired connector is stored, and the connector stays retired until you restore it.
 
 EVSE numbers are unique per station, and connector numbers are unique per EVSE.
 
@@ -256,9 +276,11 @@ Available for simulator stations only. Trigger physical actions on the simulated
 
 ### Security
 
-Manage the station's authentication credentials. Change the security profile, set or rotate the Basic Auth password (Basic Auth and TLS + Basic Auth), and cancel a pending profile upgrade. View security event logs (connection attempts, password changes, profile changes). For Mutual TLS stations, the password section is hidden and a note directs to the Certificates tab. See [Security Profiles](#security-profiles) for how changes reach the station.
+Manage the station's authentication credentials. Change the security profile, set or rotate the Basic Auth password (Basic Auth and TLS + Basic Auth), and cancel a pending profile upgrade. View the security event log: connection attempts, password changes, profile changes and the security events the station reports. Filter it by source, event, severity and date range, and click a row to see its details as formatted JSON. For Mutual TLS stations, the password section is hidden and a note directs to the Certificates tab. See [Security Profiles](#security-profiles) for how changes reach the station.
 
 ![Station security tab](https://www.evtivity.com/screenshots/csms/station-security-tab.png)
+
+![Security event log with an expanded row](https://www.evtivity.com/screenshots/csms/station-security-log.png)
 
 ### Certificates
 
@@ -280,9 +302,11 @@ View standalone meter value readings from the station outside of transaction con
 
 ### Events
 
-Available for OCPP 2.1 stations. View station-generated events such as security events, component status changes, and monitoring alerts.
+Available for OCPP 2.1 stations. View the monitoring events the station reports through `NotifyEvent`, such as threshold breaches, periodic readings and component status changes. Click a row to see its event data as formatted JSON. Security events are in the security event log on the **Security** tab.
 
 ![Station events tab](https://www.evtivity.com/screenshots/csms/station-events-tab.png)
+
+![Event row expanded to its JSON](https://www.evtivity.com/screenshots/csms/station-events-expanded.png)
 
 ### Configurations
 
@@ -290,11 +314,11 @@ View the station's current OCPP configuration as a read-only table. Click **Refr
 
 ![Station configurations tab](https://www.evtivity.com/screenshots/csms/station-configurations-tab.png)
 
-### Firmware History
+### Firmware Updates
 
-View the history of firmware update operations for this station, including status (downloading, downloaded, installing, installed, failed) and timestamps. A station that is installing firmware is unavailable. A failed install marks the station faulted until the next install or until an operator enables the station.
+View the firmware update operations for this station, including status (downloading, downloaded, installing, installed, failed) and timestamps. A station that is installing firmware is unavailable. A failed install marks the station faulted until the next install or until an operator enables the station.
 
-![Station firmware history tab](https://www.evtivity.com/screenshots/csms/station-firmware-history-tab.png)
+![Station Firmware Updates tab](https://www.evtivity.com/screenshots/csms/station-firmware-history-tab.png)
 
 ### Charging Profiles
 

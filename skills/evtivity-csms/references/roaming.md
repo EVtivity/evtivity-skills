@@ -31,6 +31,12 @@ Registration uses the OCPI credentials handshake:
 
 You can also initiate outbound registration by clicking **Register** on a partner record and providing their versions URL.
 
+A partner becomes **Connected** only through the credentials handshake. A registration token reaches only the OCPI versions and credentials endpoints, and it stops working once the handshake completes. To issue a new one, open the partner and click **New Registration Token**, shown until the partner is connected. Registration tokens issued before stop working.
+
+### Accept Unencoded Tokens
+
+OCPI 2.1.1 and 2.2 partners can send their credentials token without Base64 encoding. Turn on **Accept Unencoded Tokens** when you create the partner, or on the partner detail page, to accept them. Your token is then sent to that partner the same way. It is off by default. Leave it off for OCPI 2.2.1 and 2.3.0 partners.
+
 ### Private Network
 
 By default the CSMS sends OCPI requests and command results to a partner only on public addresses. A partner URL that is, or resolves to, a private or internal address is blocked, so a partner cannot use your CSMS to reach your internal network.
@@ -45,6 +51,8 @@ Select **Allow private network** when you create the partner, or on the partner 
 | Connected | Registration complete, actively exchanging data |
 | Disconnected | Partner disconnected or credentials revoked |
 
+Pending, suspended, and disconnected partners cannot use the OCPI modules.
+
 ## Location Publishing
 
 Control which sites are visible to roaming partners.
@@ -56,6 +64,10 @@ Control which sites are visible to roaming partners.
 ![Roaming locations](https://www.evtivity.com/screenshots/csms/roaming-locations.png)
 
 Published locations include all EVSE and connector details, transformed to OCPI format. Location data updates are pushed to partners automatically when station status changes. When you delete a station or an EVSE, unpublish a site, or remove a partner from its visibility, the partners that saw it receive the affected EVSEs with status `REMOVED`, as OCPI requires (OCPI has no delete). Moving a station to another site does the same at the site it left, and the EVSEs appear at the new site. Pulls also return these EVSEs as `REMOVED` for 90 days.
+
+- EVSEs of an offline station are published with status `UNKNOWN`.
+- Stations that are still pending (not yet accepted) are not published.
+- Location and tariff IDs accept letters, digits, and `.`, `_`, `~`, and `-`.
 
 ### EVSE Identifiers
 
@@ -99,13 +111,13 @@ Example: a tariff of 0.30 per kWh, 0.02 per minute, and 0.10 per idle minute at 
 
 ![Roaming CDRs](https://www.evtivity.com/screenshots/csms/roaming-cdrs.png)
 
-### Credit CDRs
+### Credit, Reissue, and Retry Push
 
-To issue a refund for a roaming session:
+A CDR sent to a partner never changes. Each row of **Roaming > CDRs** offers the actions that apply to it, each after a confirmation, with the `roaming:write` permission:
 
-1. Find the ID of the original CDR.
-2. Call `POST /v1/ocpi/cdrs/credit` with the `originalCdrId` and a `reason` for the credit. The CSMS has no button for this.
-3. The system generates a credit CDR and pushes it to the partner.
+- **Credit CDR** - sends the partner a credit CDR with the negative total cost. The original CDR does not change. Use it to refund a roaming session. The API offers the same with `POST /v1/ocpi/cdrs/credit` (`originalCdrId` and a `reason`).
+- **Reissue CDR** - after a CDR was credited, issues a new CDR from the session as it is now and sends it to the partner. The credited CDR stays as it was.
+- **Retry Push** - for a CDR whose push failed, sends the same CDR to the partner again.
 
 As OCPI requires, only the `total_cost` of a credit CDR is negative: both its amount excluding tax and its amount including tax (2.2.1) or its amount before taxes and its taxes (2.3.0). Every other field keeps the original values. Only your own CDRs can be credited, a credit CDR cannot be credited again, and crediting a CDR twice returns the existing credit.
 
@@ -166,19 +178,21 @@ When acting as CPO, your system receives remote commands from eMSP partners:
 |---------|-------------|
 | START_SESSION | Partner requests a charging session start at your station |
 | STOP_SESSION | Partner requests to stop an active roaming session |
-| RESERVE_NOW | Partner reserves a connector at your station |
-| CANCEL_RESERVATION | Partner cancels a reservation |
 | UNLOCK_CONNECTOR | Partner requests connector unlock |
 
 Commands are translated to OCPP messages (`RequestStartTransaction`, `RequestStopTransaction`, etc.) and dispatched to the station that holds the EVSE `uid`. Results are sent back to the partner asynchronously.
 
-`START_SESSION` returns `REJECTED` when the station is disabled, is installing firmware, has a failed firmware install, or reports a fault for itself. See [Station Status](https://www.evtivity.com/docs/csms/stations#station-status).
+`RESERVE_NOW` and `CANCEL_RESERVATION` are rejected. A command to an offline station is rejected. `START_SESSION` may carry the partner's own token.
+
+`START_SESSION` also returns `REJECTED` when the station is disabled, is installing firmware, has a failed firmware install, or reports a fault for itself. See [Station Status](https://www.evtivity.com/docs/csms/stations#station-status).
 
 ## Data Synchronization
 
 ### Push (Real-Time)
 
 Location status changes, removed EVSEs, session updates, tariff changes, and CDRs are pushed to partner receiver endpoints automatically via the OCPI push service.
+
+Driver token changes are pushed to partners that receive Tokens: a new or changed token, and a deleted or renamed token value as `valid: false` (OCPI cannot delete a Token). Partners that pull `GET /ocpi/{version}/emsp/tokens` see the same: deleted and renamed values stay in the list as invalid, and a token whose expiry passed gets a new `last_updated` within the hour.
 
 ### Pull (On-Demand)
 

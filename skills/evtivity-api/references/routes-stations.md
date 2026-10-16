@@ -1,6 +1,6 @@
 # EVtivity API routes: Stations
 
-Generated from EVtivity CSMS v0.1.45 (https://github.com/EVtivity/evtivity-csms, commit a241f5536239) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -15,6 +15,8 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/stations/{id}` | stations:read | Get a station by ID |
 | PATCH | `/v1/stations/{id}` | stations:write | Update a station |
 | DELETE | `/v1/stations/{id}` | stations:write | Delete a station (marks as removed) |
+| POST | `/v1/stations/{id}/ai-insights/suppress` | stations:write | Suppress the AI insights of a station |
+| POST | `/v1/stations/{id}/ai-insights/resume` | stations:write | Resume the AI insights of a station |
 | POST | `/v1/stations/{id}/configurations/refresh` | stations:write | Refresh station configurations from the station via OCPP |
 | GET | `/v1/stations/{id}/connectors` | stations:read | List EVSEs and connectors for a station |
 | POST | `/v1/stations/{id}/evses` | stations:write | Add an EVSE with connectors to a station |
@@ -24,6 +26,10 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/stations/{id}/evses/{evseId}/stop-active-session` | stations:write | Force-stop the active charging session on this EVSE |
 | POST | `/v1/stations/{id}/evses/{evseId}/connectors` | stations:write | Add a connector to an EVSE |
 | DELETE | `/v1/stations/{id}/evses/{evseId}/connectors/{connectorId}` | stations:write | Delete a connector from an EVSE |
+| POST | `/v1/stations/{id}/evses/{evseId}/retire` | stations:write | Retire an EVSE |
+| POST | `/v1/stations/{id}/evses/{evseId}/restore` | stations:write | Restore a retired EVSE |
+| POST | `/v1/stations/{id}/evses/{evseId}/connectors/{connectorId}/retire` | stations:write | Retire a connector |
+| POST | `/v1/stations/{id}/evses/{evseId}/connectors/{connectorId}/restore` | stations:write | Restore a retired connector |
 | GET | `/v1/stations/{id}/meter-values` | stations:read | Get meter value time series for a station |
 | GET | `/v1/stations/{id}/energy-history` | stations:read | Get daily energy delivery history for a station |
 | GET | `/v1/stations/{id}/revenue-history` | stations:read | Get daily revenue history for a station |
@@ -57,9 +63,10 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/stations/{id}/charging-profiles/push` | stations:write | Push a charging profile template to this station |
 | POST | `/v1/stations/{id}/configurations/push` | stations:write | Push a configuration template to this station |
 | GET | `/v1/stations/{id}/ev-charging-needs` | stations:read | List EV charging needs for a station |
+| GET | `/v1/stations/{id}/ev-charging-schedules` | stations:read | List the charging schedules EVs reported for a station |
 | GET | `/v1/stations/{id}/monitoring-rules` | stations:read | List variable monitoring rules for a station |
-| POST | `/v1/stations/{id}/monitoring-rules` | stations:write | Create a variable monitoring rule and dispatch SetVariableMonitoring |
-| DELETE | `/v1/stations/{id}/monitoring-rules/{ruleId}` | stations:write | Delete a variable monitoring rule and dispatch ClearVariableMonitoring |
+| POST | `/v1/stations/{id}/monitoring-rules` | stations:write | Create a variable monitoring rule and send SetVariableMonitoring |
+| DELETE | `/v1/stations/{id}/monitoring-rules/{ruleId}` | stations:write | Clear a variable monitoring rule and send ClearVariableMonitoring |
 | GET | `/v1/stations/{id}/event-alerts` | stations:read | List event alerts for a station |
 | POST | `/v1/stations/{id}/event-alerts/{alertId}/acknowledge` | stations:write | Acknowledge an event alert |
 | GET | `/v1/stations/{id}/standalone-meter-values` | stations:read | List standalone meter values for a station |

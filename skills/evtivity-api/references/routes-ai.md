@@ -1,6 +1,6 @@
 # EVtivity API routes: AI
 
-Generated from EVtivity CSMS v0.1.45 (https://github.com/EVtivity/evtivity-csms, commit a241f5536239) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -13,3 +13,4 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/ai/usage` |  | AI usage and budgets of a month |
 | GET | `/v1/ai/usage/sites/{siteId}` |  | A site's AI usage and monthly budget |
 | GET | `/v1/users/me/ai-usage` |  | My AI usage |
+| GET | `/v1/ai/alerts` | settings.ai:read | Active AI alerts |

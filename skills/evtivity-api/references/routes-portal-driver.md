@@ -1,6 +1,6 @@
 # EVtivity API routes: Portal Driver
 
-Generated from EVtivity CSMS v0.1.45 (https://github.com/EVtivity/evtivity-csms, commit a241f5536239) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -11,6 +11,7 @@ A `write` permission includes `read` for the same resource.
 | Method | Path | Permission | Summary |
 |---|---|---|---|
 | PATCH | `/v1/portal/driver/profile` | driver | Update the authenticated driver profile |
+| PATCH | `/v1/portal/driver/billing-address` | driver | Update the authenticated driver billing address |
 | PATCH | `/v1/portal/driver/password` | driver | Change the authenticated driver password |
 | GET | `/v1/portal/driver/notification-preferences` | driver | Get driver notification preferences |
 | PUT | `/v1/portal/driver/notification-preferences` | driver | Update driver notification preferences |

@@ -26,6 +26,16 @@ The Personal Info page holds your profile and display settings.
    - **Show prices** (**Operator default**, **Including tax (gross)**, or **Excluding tax (net)**)
 3. Tap **Save** to apply changes. All fields persist in one request, and the language bundle reloads in place if you switched it.
 
+### Billing Address
+
+The **Billing Address** section on the Personal Info page holds the address printed on the invoices your fleet addresses to you. See [Invoices](https://www.evtivity.com/docs/portal/invoices).
+
+1. Tap **Personal Info**.
+2. In **Billing Address**, enter **Name on Invoice**, **Street**, **City**, **State or Region**, **Postal Code**, and **Country**. Leave **Name on Invoice** empty to use your first and last name.
+3. Tap **Save** in the section.
+
+When your fleet invoices your sessions to you and you have no billing address yet, the section shows "Your fleet invoices your sessions to you. Add your billing address so it appears on your invoices." Without an address, your invoices show your name and email. The operator can also edit the address, and the mobile app shows the same one.
+
 ### Show prices
 
 **Show prices** sets how the Portal shows charger prices and session costs:
@@ -61,6 +71,10 @@ Control how you receive notifications from the charging network.
 4. Tap **Save** to apply changes.
 
 Notification preferences apply to session events (started, completed, idling, payment received) and system events (receipts, support case updates). Language, timezone, theme, and distance unit live under **Personal Info**, not here.
+
+## Invoices
+
+Tap **Invoices** to see your invoices and credit notes and download them as PDFs. See [Invoices](https://www.evtivity.com/docs/portal/invoices).
 
 ## Favorites
 

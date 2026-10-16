@@ -16,7 +16,11 @@ The sessions list shows all charging sessions with filters for site, station, st
 
 Free vend sessions show a "Free Vend" label in the driver column instead of a driver name.
 
-Select **Manual billing** in the status filter to list the sessions that wait for billing outside the platform. See [Billing a Session the CSMS Could Not End](#billing-a-session-the-csms-could-not-end).
+The list keeps its filters and search in the page address, so a copied link, a reload, or the back button opens the same view.
+
+A session belongs to the site where it happened, even after its station moves to another site. Site-restricted users of the new site do not see the sessions from before the move.
+
+Select **Manual Billing** in the status filter to list the sessions that wait for billing outside the platform. See [Billing a Session the CSMS Could Not End](#billing-a-session-the-csms-could-not-end).
 
 Select **Missing** in the electricity cost filter to list the billed sessions that delivered energy but have no electricity cost, so profit leaves them out. A notice above the table reads **These sessions have no electricity cost and are left out of profit.** With a site selected, **Recalculate electricity cost** fills their cost from the site's current rates. See [Recalculate Electricity Cost](https://www.evtivity.com/docs/csms/sites#recalculate-electricity-cost).
 
@@ -28,17 +32,24 @@ Select **Missing** in the electricity cost filter to list the billed sessions th
 | active (idle) | Warning (yellow) | Transaction active but no energy flowing |
 | completed | Secondary (gray) | Session finished normally |
 | failed | Destructive (red) | Session ended with an error |
+| faulted | Destructive (red) | Session ended by a failure the system detected during charging |
 | pending | Warning (yellow) | Session awaiting confirmation |
 
 ## Session Detail
 
-Click any session to view its full detail page. The detail page has three tabs. Users with the `audit:read` permission also see a **History** tab that lists the audited changes to the session, such as a billing by an operator. Users with the `aiInsights:read` permission see an **AI Insights** tab while AI Insights are on.
+Click any session to view its full detail page. While the session is active and its station is online, users with the `stations:write` permission see a **Stop Session** button. It asks the station to stop the transaction after the **Stop This Session?** confirmation, and the driver is billed for the energy delivered so far. A stop sent to an offline station waits until the station reconnects, and the CSMS says the station is offline. While the station is offline, users with the `sessions:write` permission see an **End Session** button instead. After the **End This Session Without the Station?** confirmation, the CSMS closes the session without the station and bills it at its last metered energy. A stop or end message the station sends after it reconnects does not reopen or bill the session again. The detail page has three tabs. Users with the `audit:read` permission also see a **History** tab that lists the audited changes to the session, such as a billing by an operator. Users with the `aiInsights:read` permission see an **AI Insights** tab while AI Insights are on.
 
 ![Session detail](https://www.evtivity.com/screenshots/csms/session-detail.png)
+
+![Active session on an offline station with End Session](https://www.evtivity.com/screenshots/csms/session-end-offline.png)
+
+![End session confirmation](https://www.evtivity.com/screenshots/csms/session-end-offline-confirm.png)
 
 ### Details
 
 The overview of the session including station, EVSE, driver, start/end times, energy delivered, duration, idle time, cost, and CO₂ avoided (when the site has a carbon region configured).
+
+Faulted and failed sessions show their final cost.
 
 Contains a transaction events timeline showing OCPP events (Started, Updated, Ended) with trigger reasons and charging state (OCPP 2.1).
 
@@ -68,6 +79,8 @@ A table of meter value readings received during the session. Includes energy (kW
 
 Payment record for the session showing the payment status, source, pre-auth amount, captured amount, refunded amount, and failure reason. Operators can issue refunds (full or partial) from this tab for captured payments.
 
+A session without a payment record shows why: free vend, a roaming session, billed to a fleet account (with a link to the invoice), a guest session (paid on its Guest Session tab), no driver or guest checkout, stopped for a missing payment method or a failed payment check, still running, no cost, no active payment provider (with a link to the payment settings), a prepaid balance not debited, or no card hold placed at the start.
+
 With a provider that confirms operations by webhook (Adyen, or the test provider in async mode), the tab also shows:
 
 - **Provider confirmation** - **Capture awaiting confirmation**, **Cancellation awaiting confirmation**, or **Hold increase awaiting confirmation** until the provider's event arrives.
@@ -78,20 +91,22 @@ See [Adyen captures and refunds](https://www.evtivity.com/docs/integrations/adye
 
 ![Session payment](https://www.evtivity.com/screenshots/csms/session-payment-tab.png)
 
+![Session without a payment record and the reason](https://www.evtivity.com/screenshots/csms/session-payment-no-record.png)
+
 ### AI Insights
 
 Lists the [automatic insights](https://www.evtivity.com/docs/csms/ai-insights#ai-insights-tab) about the session, newest first, such as a failed session or a stuck session with a suggested stop. Click a row to open the insight. The light bulb button above the assistant button opens this tab and pulses while an insight is open or its action waits for a decision.
 
 ## Billing a Session the CSMS Could Not End
 
-The CSMS ends some sessions itself, for example when a new transaction starts on the same EVSE or the station no longer knows the transaction. When ending such a session fails 5 times, the CSMS gives up and sends operators a session end failed alert. The session gets the status faulted and the stopped reason `EndRequestFailed`. Its cost is set to 0 and any pre-authorization hold is cancelled, so the driver is not charged. The **Details** tab of the session shows a **Billing** card with the **Not billed** badge.
+The CSMS ends some sessions itself, for example when a new transaction starts on the same EVSE or the station no longer knows the transaction. When ending such a session fails 5 times, the CSMS gives up and sends operators a session end failed alert. The session gets the status faulted and the stopped reason `EndRequestFailed`. Its cost is set to 0 and any pre-authorization hold is cancelled, so the driver is not charged. The **Details** tab of the session shows a **Billing** card with the **Not Billed** badge.
 
 ![Session not billed](https://www.evtivity.com/screenshots/csms/session-rebill-detail.png)
 
 To bill the session:
 
 1. Open the session from the Sessions page.
-2. On the **Details** tab, click **Bill session** in the **Billing** card.
+2. On the **Details** tab, click **Bill Session** in the **Billing** card.
 3. Confirm in the **Bill This Session?** dialog.
 
 The CSMS recomputes the cost from the tariff up to the last meter value of the session. It then debits the balance of a prepaid token, or charges the driver's default saved card without the driver present. The session becomes completed, the card shows **Billed by an operator**, and the driver receives a session receipt.
@@ -106,18 +121,19 @@ A session that cannot be charged automatically is marked for manual billing. Thi
 - The prepaid balance could not be debited.
 - The session uses a prepaid token but already has a payment record, such as the cancelled pre-authorization hold. The card shows **The session already has a payment record, so the prepaid balance was not debited.**
 
-The session becomes completed with its recomputed cost and shows a **Manual billing** badge on the detail page and in the session list. Collect the amount shown in the **Billing** card outside the platform, for example by invoice or bank transfer. The driver receives no receipt.
+The session becomes completed with its recomputed cost and shows a **Manual Billing** badge on the detail page and in the session list. Collect the amount shown in the **Billing** card outside the platform, for example by invoice or bank transfer. The driver receives no receipt.
 
 ![Session marked for manual billing](https://www.evtivity.com/screenshots/csms/session-manual-billing-detail.png)
 
 ### Notes
 
-- The **Bill session** button requires both the `sessions:write` and `payments:write` permissions. Without them the card shows no button.
+- The **Bill Session** button requires both the `sessions:write` and `payments:write` permissions. Without them the card shows no button.
 - Each session is billed once. A billed session or one marked for manual billing cannot be billed again.
-- Roaming sessions (billed by the roaming partner), free vend sessions, sessions without a tariff, and sessions already paid cannot be billed.
+- A faulted roaming session that delivered energy can be billed: it is completed without a payment and the roaming partner receives a CDR. A roaming session without energy cannot be billed.
+- Free vend sessions, sessions without a tariff, and sessions already paid cannot be billed.
 - The button is disabled while the session cannot be billed, and its tooltip gives the reason: a payment the provider has not settled yet, another billing of the session in progress, or one of the cases above. When a billing request stopped before it finished, the button is available again 5 minutes later.
 - A billing whose card charge got no answer from the payment provider can be run again. The retry sends the same charge with the same idempotency key, so the driver is charged once, and the session is billed at the amount first charged or requested, not a newly computed one.
-- After 23 hours without an answer the CSMS no longer retries the charge, because the provider may no longer recognize its idempotency key (Stripe keeps it 24 hours). **Bill session** then returns `SESSION_REBILL_PAYMENT_PENDING`, and the daily payment reconciliation lists the payment as a discrepancy of kind `rebill_pending`. Check the payment provider for a payment with the idempotency key `rebill_<sessionId>`.
+- After 23 hours without an answer the CSMS no longer retries the charge, because the provider may no longer recognize its idempotency key (Stripe keeps it 24 hours). **Bill Session** then returns `SESSION_REBILL_PAYMENT_PENDING`, and the daily payment reconciliation lists the payment as a discrepancy of kind `rebill_pending`. Check the payment provider for a payment with the idempotency key `rebill_<sessionId>`.
 - Each billing is recorded in the **History** tab of the session.
 
 ## Reservation Token Mismatch

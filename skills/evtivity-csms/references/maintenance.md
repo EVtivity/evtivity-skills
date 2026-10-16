@@ -10,7 +10,7 @@ Maintenance mode lets an operator take a whole site (or a subset of stations) of
 
 Use it for planned electrical work, firmware rollouts, software upgrades, network changes, or any other event where the site cannot serve drivers.
 
-![Site Maintenance tab with an active window and rollout history](https://www.evtivity.com/screenshots/csms/site-maintenance.png)
+![Site Maintenance tab with an active window and the Maintenance Windows table](https://www.evtivity.com/screenshots/csms/site-maintenance.png)
 
 ## How It Works
 
@@ -48,7 +48,7 @@ Each action is its own run: starting the window, adding stations, removing stati
 
 ## Tracking the Rollout
 
-The Maintenance History table shows three rollout columns. Each counts stations by their most recent command result, so a station that failed initially but succeeded on a retry counts once, as a success:
+The Maintenance Windows table shows three rollout columns. Each counts stations by their most recent command result, so a station that failed initially but succeeded on a retry counts once, as a success:
 
 | Column | Meaning |
 | --- | --- |
@@ -62,7 +62,7 @@ A green badge (for example "96 of 96") means every commanded station accepted. A
 
 ![Station Results page with per-station command outcomes](https://www.evtivity.com/screenshots/csms/maintenance-station-results.png)
 
-Clicking a Maintenance History row opens the Station Results page: one row per station per run, with the OCPP command sent, the result, the error reason when it failed, the station status before and after the run, and the station's live current status. A phase filter narrows the view to a single run.
+Clicking a Maintenance Windows row opens the Station Results page: one row per station per run, with the OCPP command sent, the result, the error reason when it failed, the station status before and after the run, and the station's live current status. A phase filter narrows the view to a single run.
 
 | Result | Meaning |
 | --- | --- |
@@ -134,7 +134,7 @@ A maintenance window covers a site or a subset of its stations for a planned per
 
 | Key | Default | Description |
 | --- | --- | --- |
-| `maintenance.defaultMessageTemplate` | `This site is temporarily unavailable for maintenance. {{reason}}` | Handlebars template rendered on station displays during a window. Variables: `companyName`, `siteName`, `endTime`, `durationMinutes`, `reason`. |
+| `maintenance.defaultMessageTemplate` | `This site is temporarily unavailable for maintenance. {{reason}}` | Handlebars template rendered on station displays during a window. Variables: `companyName`, `siteName`, `endTime`, `durationMinutes`, `reason`. Only variables, comments, and `{{#if}}` / `{{#unless}}` blocks on one variable are allowed, here and in an event's custom message. |
 
 ## Audit Trail
 

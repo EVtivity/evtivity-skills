@@ -33,7 +33,7 @@ Use this when you have a fleet (a site, a vendor, a model) and want them all to 
 5. EVtivity sends two OCPP commands per matching station:
    - `ClearChargingProfile` to remove any existing profile at the same `(purpose, stack level, EVSE)` slot.
    - `SetChargingProfile` with your template payload.
-6. The push history pane shows per-station results: Accepted, Rejected, or Failed (with error info).
+6. The Pushes list shows per-station results: Accepted, Rejected, or Failed (with error info).
 
 ![Create or edit a charging profile template](https://www.evtivity.com/screenshots/csms/smart-charging-create.png)
 
@@ -68,7 +68,7 @@ EVtivity sends `ClearChargingProfile` with the row's OCPP profile id. After Acce
 
 ### Clear all profiles on a station
 
-Click **Clear All Profiles** at the top of the tab to send `ClearChargingProfile` with no filter. The station removes every profile of every purpose. Use carefully on production stations — this also removes any factory or local profiles.
+Click **Clear All Profiles** at the top of the tab to remove every profile the CSMS may clear. On an OCPP 2.1 station the CSMS sends one `ClearChargingProfile` per purpose it may clear, because a 2.1 clear must name a profile or a criterion. On an OCPP 1.6 station it sends one `ClearChargingProfile` with no filter. The station keeps its `ChargingStationExternalConstraints` and `LocalGeneration` profiles, which a CSMS may not clear (OCPP 2.1 K10). Use this carefully on production stations: it also removes factory or locally set profiles of the other purposes.
 
 ### Refresh from station
 

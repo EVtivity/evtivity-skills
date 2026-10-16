@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.45 (https://github.com/EVtivity/evtivity-csms, commit a241f5536239) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -37,6 +37,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `AI_PROPOSAL_NOT_FOUND` | 404 | Action not found |
 | `AI_PROPOSAL_STALE` | 409 | This action no longer applies because the situation changed |
 | `AI_PROVIDER_AUTH_FAILED` |  | The AI provider refused the configured API key |
+| `AI_PROVIDER_QUOTA_EXCEEDED` |  | The AI provider account is out of credit or quota. An administrator must add credit or raise the quota |
 | `AI_PROVIDER_RATE_LIMITED` |  | The AI provider is rate limiting requests. Try again shortly |
 | `AI_PROVIDER_UNAVAILABLE` |  | The AI provider is unavailable. Try again later |
 | `AI_RATE_LIMITED` | 429 | Too many AI requests. Try again in a minute |
@@ -54,12 +55,16 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `CAMPAIGN_NOT_FOUND` | 404 | Campaign not found |
 | `CASE_NOT_FOUND` | 404 | Case not found |
 | `CA_CERT_NOT_FOUND` | 404 | CA certificate not found |
+| `CDR_NOT_CREDITED` | 409 | Credit every CDR of the session before reissuing it |
 | `CDR_NOT_FOUND` | 404 | CDR not found |
+| `CDR_PUSH_NOT_FAILED` | 409 | Only a CDR whose push failed can be pushed again |
+| `CHARGING_PROFILE_ID_RESERVED` | 400 | The charging profile ID must be above the station's MaxExternalConstraintsId. |
+| `CHARGING_PROFILE_LOAD_MANAGED` | 400 | Load management sets the limit of this station. Use a ChargingStationMaxProfile with stack level 0 and an ID other than the load management profile ID. |
 | `CIRCUIT_NOT_FOUND` | 404 | Circuit not found |
 | `COMMAND_ERROR` |  | Command failed |
-| `COMMAND_FAILED` |  | Command failed |
+| `COMMAND_FAILED` | 502 | Command failed |
 | `COMMAND_QUEUED` |  | Station offline, command queued |
-| `COMMAND_TIMEOUT` |  | No response from station |
+| `COMMAND_TIMEOUT` | 504 | No response from station |
 | `CONNECTOR_ID_MISMATCH` | 400 | On an OCPP 1.6 station each EVSE has one connector with the same number. |
 | `CONNECTOR_NOT_AVAILABLE` | 400 | Connector is not available for charging |
 | `CONNECTOR_NOT_FOUND` | 404 | Connector not found |
@@ -73,7 +78,9 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `DOWNTIME_NOT_FOUND` | 404 | Excluded downtime record not found |
 | `DRIVER_AI_NOTICE_OUTDATED` | 409 | The AI notice has changed. Read it and choose again |
 | `DRIVER_ALREADY_IN_FLEET` | 409 | Driver is already in this fleet |
-| `DRIVER_CREATE_FAILED` |  | Failed to create driver |
+| `DRIVER_CREATE_FAILED` | 500 | Failed to create driver |
+| `DRIVER_ERASED` | 409 | The driver was erased |
+| `DRIVER_HAS_ACTIVE_SESSION` | 409 | The driver has an active charging session |
 | `DRIVER_INACTIVE` | 409 | Driver is inactive |
 | `DRIVER_NOT_FOUND` | 400, 404 | Driver not found |
 | `DUPLICATE_ALERT_RULE` | 409 | An alert rule for this component and variable already exists |
@@ -87,20 +94,23 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `DUPLICATE_STATION_ID` | 409 | Station ID already exists |
 | `ELECTRICITY_RATE_NOT_FOUND` | 404 | Electricity rate not found |
 | `EMAID_PREFIX_NOT_CONFIGURED` | 409 | Set the eMAID country code and provider ID first |
-| `EMAIL_EXISTS` | 409 | Email already registered |
 | `EMAIL_NOT_CONFIGURED` | 400 | Email provider not configured |
 | `EMAIL_NOT_VERIFIED` |  | Email not verified |
 | `EMAIL_REQUIRED` | 400 | Email required for paid charging |
 | `EMAIL_SEND_FAILED` | 500 | Failed to send email |
 | `ENCRYPTION_KEY_MISSING` | 500 | SETTINGS_ENCRYPTION_KEY not configured on server |
+| `EVSE_HAS_HISTORY` | 409 | The EVSE or connector has charging history and cannot be deleted. Retire it instead. |
 | `EVSE_IN_USE` | 409 | Another session is already active on this connector |
 | `EVSE_NOT_FOUND` | 404 | EVSE not found on this station |
+| `EVSE_RESERVED` | 409 | The EVSE has an active or upcoming reservation. Cancel it before retiring the EVSE. |
 | `FAVORITE_NOT_FOUND` | 404 | Favorite not found |
 | `FLEET_BILLING_CONTACT_REQUIRED` | 400 | The fleet needs at least one billing contact for automatic invoicing and invoice emails. |
-| `FLEET_BILLING_OLD_PODS_CONNECTED` | 409 | A process older than v0.1.41 is still connected. Finish the upgrade, then turn on account billing. |
+| `FLEET_BILLING_OLD_PODS_CONNECTED` | 409 | A process of an older release is still connected. Finish the upgrade, then change the fleet billing. |
+| `FLEET_BILLING_VERSION_CHECK_STALE` | 409 | The worker's version check has not run recently, so the upgrade cannot be confirmed. Check that the worker is running, then change the fleet billing. |
 | `FLEET_CREDIT_LIMIT_REACHED` | 402 | The credit limit of the fleet your sessions are billed to is reached. Contact your fleet manager. |
 | `FLEET_DISABLED` |  | Fleet is disabled |
 | `FLEET_HAS_OPEN_BILLING` | 409 | The fleet has sessions billed to its account and cannot be deleted. Turn off account billing instead. |
+| `FLEET_HAS_RESERVATIONS` | 409 | The fleet has fleet reservations and cannot be deleted. Reservations are kept as history. |
 | `FLEET_INVOICE_NOTHING_TO_BILL` | 409 | The fleet has no unbilled sessions with a cost to invoice for this period. |
 | `FLEET_INVOICE_PERIOD_EXISTS` | 409 | The fleet already has an invoice for this period. Credit it to bill the period again. |
 | `FLEET_NOT_FOUND` | 404 | Fleet not found |
@@ -136,10 +146,12 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `INVOICE_NOT_ISSUED` | 409 | The invoice must be issued for this action |
 | `INVOICE_NOT_VOIDABLE` | 409 | Only a draft invoice can be voided. Correct an issued invoice with a credit note |
 | `INVOICE_NO_DRIVER` | 400 | This invoice has no driver to send to |
+| `INVOICE_NO_DRIVER_EMAIL` | 400 | The driver of this invoice has no email address |
 | `INVOICE_NO_SESSIONS` | 400 | No uninvoiced sessions in the selected date range |
 | `LOAD_NOT_FOUND` | 404 | Load not found |
 | `LOCAL_CA_EXISTS` | 409 | A local contract CA already exists |
 | `LOCAL_CA_NOT_CONFIGURED` | 409 | Create the local contract CA first |
+| `LOCAL_CPO_SUB_CA_EXISTS` | 409 | The local contract CA already has its CPO Sub-CAs |
 | `LOCATION_NOT_FOUND` | 404 | Location not found |
 | `MAINTENANCE_ACTIVE` | 409 | Site is currently under maintenance |
 | `MAINTENANCE_ALREADY_ACTIVE` | 409 | Maintenance event is already active |
@@ -155,12 +167,14 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `MESSAGE_REFRESH_FAILED` | 502 | Failed to refresh display messages |
 | `MESSAGE_SEND_FAILED` | 502 | Failed to send display message |
 | `MESSAGE_TIMEOUT` | 504 | Display message command timed out |
-| `MFA_ALREADY_ENABLED` |  | MFA is already enabled. Disable it first before setting up a new method. |
+| `MFA_ALREADY_ENABLED` | 409 | MFA is already enabled. Disable it first before setting up a new method. |
 | `MFA_CHALLENGE_EXHAUSTED` | 400 | Too many failed attempts. Request a new code. |
 | `MFA_CODE_INVALID` | 400 | Invalid verification code |
+| `MFA_LOCKED` | 429 | Too many wrong codes. Wait before you try again. |
 | `MFA_METHOD_DISABLED` | 403 | MFA method is disabled |
 | `MFA_NOT_CONFIGURED` | 400 | MFA not configured |
 | `MFA_REQUIRED` |  | MFA verification required |
+| `MFA_RESEND_LIMITED` | 429 | Too many codes sent. Wait before you request another one. |
 | `MFA_TOKEN_EXPIRED` | 401 | Invalid or expired MFA token |
 | `MFA_TOKEN_INVALID` | 400 | Invalid MFA token |
 | `MFA_TOTP_NO_RESEND` | 400 | Cannot resend TOTP codes |
@@ -171,7 +185,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `NOT_CHARGING` | 400 | Session is not currently charging |
 | `NOT_DRAFT` |  | Only draft campaigns can be updated |
 | `NOT_IMPLEMENTED` | 501 | Remote start on partner networks requires the OCPI Commands module |
-| `NOT_PENDING` |  | Station is not pending approval |
+| `NOT_PENDING` | 409 | Station is not pending approval |
 | `NOT_SUPPORTED` | 400 | Not supported for OCPP 1.6 |
 | `NO_ACTIVE_SESSION` |  | No active session on this EVSE |
 | `NO_CAPTURED_PAYMENT` | 400 | No captured payment to refund |
@@ -189,8 +203,10 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `OCTT_RUN_NOT_FOUND` | 404 | Conformance run not found |
 | `OVERSUBSCRIPTION_EXCEEDED` | 400 | Total connected capacity (... kW) exceeds panel effective capacity (... kW) |
 | `PANEL_NOT_FOUND` | 404 | Panel not found |
+| `PARTNER_ALREADY_CONNECTED` | 409 | Partner is already connected |
 | `PARTNER_NOT_CONNECTED` | 400 | Partner must be connected to sync |
 | `PARTNER_NOT_FOUND` | 404 | Partner not found |
+| `PARTNER_NOT_REGISTERED` | 409 | A partner becomes connected through the OCPI credentials handshake |
 | `PASSWORD_REQUIRED` | 400 | Password required when upgrading to Basic Auth or TLS + Basic Auth |
 | `PAYMENT_CONFIG_NOT_FOUND` | 404 | No payment config for this site |
 | `PAYMENT_FAILED` | 400 | Payment failed |
@@ -214,6 +230,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `PHONE_REGISTRATION_LIMITED` | 429 | Too many accounts were registered with this phone number. Try again later. |
 | `PKI_ROOT_REFRESH_FAILED` | 502 | Root certificate refresh from the PKI provider failed |
 | `PNC_CONTRACT_NOT_FOUND` | 404 | Plug & Charge contract not found |
+| `PNC_CONTRACT_TOKEN_LOCKED` | 409 | This token belongs to a Plug & Charge contract. Manage it through the driver's contracts. |
 | `PNC_DISABLED` |  | Plug & Charge is disabled |
 | `PORTAL_ALREADY_ACTIVE` | 409 | Driver already has portal access |
 | `PORTAL_REGISTRATION_DISABLED` | 403 | Driver self-registration is disabled. Contact your operator to be invited. |
@@ -229,6 +246,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `PROVIDER_TEST_FAILED` |  | Provider returned ... |
 | `PUSH_NOT_FOUND` | 404 | Push not found |
 | `PUSH_REJECTED` | 502 | Station rejected push: ... |
+| `QR_SCAN_REQUIRED` | 403 | Scan the QR code shown on the charger to start charging. |
 | `RATE_LIMITED` | 429 | Too many requests. Wait a moment and try again. |
 | `RECAPTCHA_FAILED` | 403 | reCAPTCHA verification failed |
 | `RECAPTCHA_REQUIRED` | 400 | reCAPTCHA token is required |
@@ -243,6 +261,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `RESERVATION_DISABLED` | 403 | Reservations are disabled |
 | `RESERVATION_DURING_MAINTENANCE` | 409 | Reservation falls within a scheduled maintenance window |
 | `RESERVATION_EXPIRES_TOO_SOON` | 400 | Reservation must end at least 60 seconds in the future |
+| `RESERVATION_FEE_ALREADY_INVOICED` | 409 | The reservation fee is already invoiced |
 | `RESERVATION_NOT_ACTIVE` | 400, 409 | Reservation is not active |
 | `RESERVATION_NOT_FOUND` | 404 | Reservation not found |
 | `RESERVATION_REJECTED` | 400, 502 | Station rejected reservation: ... |
@@ -250,7 +269,6 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `RESERVATION_TIMEOUT` | 504 | Reservation command timed out |
 | `RESERVATION_TOO_LONG` | 400 | Reservation cannot exceed ... hours |
 | `RESERVATION_WINDOW_TOO_SHORT` | 400 | Reservation must end at least 60 seconds after it starts |
-| `RESET_NOT_REQUIRED` |  | Password reset is not required |
 | `ROAMING_DISABLED` |  | Roaming is disabled |
 | `ROLE_NOT_FOUND` |  | Role does not exist |
 | `ROTATION_NOT_APPLICABLE` | 400 | Credential rotation only applies to security profiles 1 and 2 |
@@ -260,12 +278,17 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `SECURITY_PROFILE_DOWNGRADE` | 400 | A connected station cannot be moved to a lower security profile |
 | `SELF_EDIT_FORBIDDEN` | 403 | Cannot edit your own role, status, or site access |
 | `SESSION_ALREADY_ACTIVE` | 400 | You already have an active charging session |
+| `SESSION_ALREADY_INVOICED` | 409 | The session is already invoiced |
 | `SESSION_CREATE_FAILED` | 500 | Failed to create session |
+| `SESSION_NOT_ACTIVE` | 409 | The session is not active |
 | `SESSION_NOT_FOUND` | 400, 404 | Session not found |
 | `SESSION_NOT_LINKED` | 400 | Session not linked to this case |
+| `SESSION_NO_VEHICLE_ID` | 409 | The charger sent no vehicle id for this session. |
 | `SESSION_REBILL_IN_PROGRESS` | 409 | The session is being billed. Try again in a few minutes. |
 | `SESSION_REBILL_NOT_ELIGIBLE` | 409 | This session cannot be billed |
 | `SESSION_REBILL_PAYMENT_PENDING` | 409 | The session has a payment the provider has not settled yet. Try again later. |
+| `SESSION_REQUIRED` | 403 | This action needs a signed-in session. API keys cannot use it. |
+| `SESSION_STOP_REJECTED` | 409 | The station rejected the stop request. The session is still charging. |
 | `SETTING_NOT_FOUND` | 404 | Setting not found |
 | `SITE_HAS_STATIONS` | 409 | Cannot delete site with stations. Remove or reassign stations first. |
 | `SITE_NOT_FOUND` | 404 | Site not found |
@@ -277,11 +300,15 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `STATION_ALREADY_AVAILABLE` | 409 | Station already has an available connector |
 | `STATION_ALREADY_IN_FLEET` | 409 | Station is already in this fleet |
 | `STATION_CREDENTIALS_ROUTE_REQUIRED` | 400 | Station passwords are changed with POST /v1/stations/:id/credentials, not with a generic OCPP command |
+| `STATION_HAS_ACTIVE_SESSION` | 409 | The station has an active charging session. Stop it before deleting the station. |
 | `STATION_ID_EXISTS` | 409 | A station with this name already exists. Please choose a different name. |
 | `STATION_NOT_FOUND` | 400, 404 | Station not found |
 | `STATION_OFFLINE` | 400, 403, 409 | Station is offline |
+| `STATION_ONLINE` | 409 | The station is online. Stop the session at the station instead. |
 | `STATION_REJECTED` | 502 | Station rejected start: ... |
 | `STATION_SECURITY_CHANGE_REJECTED` | 502 | The station did not accept the security change; its current settings are unchanged |
+| `STATION_SECURITY_ROUTE_REQUIRED` |  | Station security profiles and network profiles are changed with PATCH /v1/stations/:id, not with a configuration template |
+| `STATION_SITE_SUPPRESSED` | 409 | The AI insights of the station's site are suppressed. Resume the site to resume its stations |
 | `STATION_TIMEOUT` | 504 | Station did not respond |
 | `STATION_TLS_URL_NOT_CONFIGURED` | 400 | The public TLS address for stations (OCPP_STATION_TLS_URL) is not configured |
 | `STATION_UNAVAILABLE` | 409 | This station is unavailable right now. Try another station. |
@@ -299,6 +326,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `TARIFF_NOT_FOUND` | 404 | Tariff not found |
 | `TARIFF_OVERLAP` | 409 | Tariff overlaps with an existing tariff |
 | `TEMPLATE_NOT_FOUND` | 404 | Template not found |
+| `TOKEN_BLOCKED_BY_OPERATOR` | 403 | This card was deactivated by the operator. Contact the operator to reactivate it. |
 | `TOKEN_DUPLICATE` | 409 | Token already registered |
 | `TOKEN_IN_USE` | 409 | Token is currently in use by an active charging session |
 | `TOKEN_NOT_FOUND` | 404 | Token not found |
@@ -308,7 +336,11 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `UNAUTHORIZED` | 401 | Unauthorized |
 | `UNKNOWN_ACTION` | 404 | Unknown OCPP action |
 | `USER_NOT_FOUND` | 400, 404 | User not found |
+| `USER_SSO_MANAGED` | 409 | This user signs in with SSO and has no password to set. |
 | `VALIDATION_ERROR` | 400 | Validation error |
+| `VEHICLE_BLOCKED_BY_OPERATOR` | 403 | The operator blocked Autocharge for this vehicle. Contact the operator to unblock it. |
+| `VEHICLE_ID_IN_USE` | 409 | Another vehicle already uses this VIN or EVCCID for Autocharge. |
+| `VEHICLE_ID_REQUIRED` | 400 | Autocharge needs a VIN or an EVCCID on the vehicle. |
 | `VEHICLE_NOT_FOUND` | 404 | Vehicle not found |
 | `VENDOR_NOT_FOUND` | 404 | Vendor not found |
 | `VERIFICATION_RESEND_LIMITED` | 429 | Too many verification emails. Wait before you request another one. |

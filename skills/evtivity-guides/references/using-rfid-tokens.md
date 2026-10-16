@@ -12,7 +12,7 @@ An RFID card is just an `idToken` string. When a driver taps the card, the stati
 
 - **Found and active** &rarr; returns `Accepted`, station starts the session, costs and history attribute to the assigned driver.
 - **Found but inactive** &rarr; returns `Blocked`, station refuses to start.
-- **Not found** &rarr; returns `Invalid` (with one fallback for OCPI roaming and an unconditional accept for free-vend sites).
+- **Not found** &rarr; returns `Invalid` (with one fallback for OCPI roaming and an unconditional accept for free-vend sites). On OCPP 2.1 an unknown Central token is also `Invalid`, unless the CSMS issued it to that station for a start or a reservation.
 
 So the entire job of "make my RFID card work" is: get the right `idToken` value into the table.
 
