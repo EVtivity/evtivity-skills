@@ -80,10 +80,11 @@ Account > Payment Methods > **Create Payment Method**, enter the card, **Add Car
 
 Account > RFID Cards > **Add RFID Card**, enter the printed number (alphanumeric, 4 to 20 characters). It is active at once. Toggle off and confirm **Deactivate** to block a card. The portal never deletes cards. A number linked to another account is rejected.
 
-## Workflow 7: history, receipts and statements (`references/activity.md`, `references/sessions.md`)
+## Workflow 7: history, receipts, statements and invoices (`references/activity.md`, `references/sessions.md`, `references/invoices.md`)
 
 - Activity tab: pick the month, switch Cost, Energy or Distance, tap a session for its receipt. Monthly statement: `/activity/statement?month=YYYY-MM`. Report Issue on a receipt opens a support case with the session attached.
 - API: `GET /v1/portal/sessions?month=YYYY-MM`, `GET /v1/portal/sessions/monthly-summary?month=YYYY-MM`, `GET /v1/portal/sessions/monthly-statement?month=YYYY-MM`, `GET /v1/portal/sessions/{id}`.
+- Invoices (Account > Invoices): the driver's invoices and credit notes, including member invoices a fleet addresses to the driver, each with a PDF. API: `GET /v1/portal/invoices`, `GET /v1/portal/invoices/{id}`, `GET /v1/portal/invoices/{id}/pdf`.
 
 ## Workflow 8: vehicles, favorites and station watches (`references/vehicles.md`, `references/favorites.md`, `references/station-watches.md`)
 

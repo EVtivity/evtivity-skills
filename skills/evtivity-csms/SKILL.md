@@ -69,6 +69,7 @@ Each row names the reference file for the page (page id `csms/<name>`).
 | Session status, cost, refunds, Bill session | `references/sessions.md` | Sessions > session | `sessions:read`, refunds `payments:write`, Bill session `sessions:write` + `payments:write` |
 | Driver accounts, portal invite, invoices | `references/drivers.md` | Drivers > driver | `drivers:write` |
 | RFID cards and app tokens | `references/tokens.md` | Tokens | `drivers:write` |
+| Charge by plugging in (vehicle id) | `references/autocharge.md` | Settings > Integrations & Features > Autocharge, Site > Details | `settings.integrations:write`, site `sites:write` |
 | Fleets and bulk reservations | `references/fleets.md` | Fleets > fleet | `fleets:write`, `reservations:write` |
 | Pricing groups, tariffs, holidays | `references/pricing.md` | Pricing | `pricing:write` |
 | Reservations and fees | `references/reservations.md` | Reservations | `reservations:write` |
