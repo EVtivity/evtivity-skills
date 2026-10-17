@@ -56,7 +56,7 @@ Prerequisites: Kubernetes 1.27+, Helm 3, kubectl and a Gateway API implementatio
 3. Without the script, pass secrets with `--set secrets.*` (`databaseUrl`, `redisUrls.api`, `.ocpp`, `.ocpi`, `.worker`, `.css`, `jwtSecret`, `settingsEncryptionKey`), or point `secrets.existingSecret` at a Secret you manage. Never commit secrets to `values.yaml`.
 4. External Redis 7+: create the five ACL users from the chart's `redis/acl-rules.conf` before you install or upgrade.
 5. Point DNS for each hostname (default `csms`, `portal`, `api`, `ocpp`, `ocpi` under `evtivity.local`) at the gateway LoadBalancer IP.
-6. OCPP TLS: stations use the separate LoadBalancer on 8443. Set `api.env.stationTlsUrl` so the API can move connected OCPP 2.1 stations to TLS.
+6. OCPP TLS: stations use the separate LoadBalancer on 8443. Set `api.env.stationTlsUrl` so the API can move connected OCPP 2.x stations to TLS. For OCPP 2.0.1 the operator also picks the station's network interface (Wired 0 by default).
 7. Sign in with the admin credentials the script prints. The admin must change the password at first sign-in.
 8. Confirm: `kubectl get pods -n evtivity`, `helm status evtivity -n evtivity` shows `deployed`, and the dashboard loads.
 

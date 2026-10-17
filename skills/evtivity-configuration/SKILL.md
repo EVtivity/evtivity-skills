@@ -98,7 +98,7 @@ Redis carries pub/sub, BullMQ job queues and caches. Each service connects as it
 | 3 | Mutual TLS | 8443 | Server certificate and a client certificate signed by the CA |
 
 4. Profiles 2 and 3: the TLS listener on `OCPP_TLS_PORT` (8443) with `OCPP_TLS_CERT`, `OCPP_TLS_KEY` and `OCPP_TLS_CA` (file paths) or the `*_PEM` variants. One port serves both profiles.
-5. To move a connected OCPP 2.1 station from `ws://` to TLS, set `OCPP_STATION_TLS_URL` on the API to the public `wss://` address without the station ID. Unset, the API refuses those upgrades.
+5. To move a connected OCPP 2.x station from `ws://` to TLS, set `OCPP_STATION_TLS_URL` on the API to the public `wss://` address without the station ID. Unset, the API refuses those upgrades. An OCPP 2.0.1 upgrade also needs the station's network interface (`ocppInterface`, `Wired0` to `Wireless3`; the CSMS dialog defaults to Wired 0).
 6. Confirm: the station shows as connected, and `docker compose logs ocpp` shows the connection.
 
 Limits: `OCPP_MAX_CONNECTIONS_PER_IP` and `OCPP_MAX_MESSAGES_PER_IP_PER_SECOND`. Raise them when many stations share one NAT address. Heartbeat interval and offline command queue TTL are dashboard settings. Horizontal scaling: a unique `OCPP_INSTANCE_ID` per instance (the pod name in Kubernetes).
