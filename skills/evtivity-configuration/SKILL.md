@@ -87,7 +87,7 @@ Redis carries pub/sub, BullMQ job queues and caches. Each service connects as it
 ## Workflow: OCPP server and security profiles (`references/ocpp-settings.md`)
 
 1. Create the station in the dashboard first. The station ID in the URL must match.
-2. Station URL: `ws://<host>:7103/<stationId>` or `wss://<host>:8443/<stationId>`. OCPP 1.6 and 2.1 use the same server. The subprotocol header selects the version.
+2. Station URL: `ws://<host>:7103/<stationId>` or `wss://<host>:8443/<stationId>`. OCPP 1.6, 2.0.1 and 2.1 use the same server. The subprotocol header selects the version (2.1 over 2.0.1 over 1.6 when a station offers several).
 3. Security profile:
 
 | Profile | Name | Port | Needs |

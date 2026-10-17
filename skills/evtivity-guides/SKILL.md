@@ -36,7 +36,7 @@ Ask the user before any of these, and say what drivers will notice:
 
 ## 1. Onboard a station (`references/station-onboarding.md`)
 
-1. Collect: OCPP identity, OCPP version (1.6 or 2.1), security profile (No Auth, Basic Auth, TLS + Basic Auth, Mutual TLS), password or client certificate, target site.
+1. Collect: OCPP identity, OCPP version (1.6, 2.0.1 or 2.1), security profile (No Auth, Basic Auth, TLS + Basic Auth, Mutual TLS), password or client certificate, target site.
 2. Create the record. Dashboard: Stations > Create Station. API (`stations:write`):
 
    ```bash

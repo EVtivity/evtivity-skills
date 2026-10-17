@@ -37,7 +37,7 @@ Ask for what you cannot find yourself:
 
 - Version: `curl -s http://<api-host>:7102/v1/version`, or `git describe --tags` in the checkout, or the image tag in the Helm values or CDK config.
 - Deployment: Docker Compose (local or server), Helm on Kubernetes, AWS CDK, or development with `npm run dev:*`. Add OS, Docker version and architecture for Compose.
-- Area: dashboard, driver portal, REST API, OCPP (version 1.6 or 2.1, station vendor and model, security profile), OCPI, payments (provider), worker jobs, other.
+- Area: dashboard, driver portal, REST API, OCPP (version 1.6, 2.0.1 or 2.1, station vendor and model, security profile), OCPI, payments (provider), worker jobs, other.
 - Steps to reproduce, numbered, from a known state.
 - Expected behavior and actual behavior. Exact error codes (`code` in the API response, such as `EVSE_IN_USE`) and HTTP statuses help most.
 - Since when: a new install, after an upgrade (from which version), or after a configuration change.

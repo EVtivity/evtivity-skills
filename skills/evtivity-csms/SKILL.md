@@ -96,7 +96,7 @@ Default roles: admin has all permissions, operator has operational read and writ
 
 1. Sites > Create Site. Enter name and address, optionally coordinates, contact info and hours.
 2. On the site: set the carbon region (CO2 tracking), the Electricity Rates periods (cost and profit), and the Pricing tab.
-3. Stations > Create Station. The station ID must equal the identity the charger uses on its OCPP connection. Pick OCPP 1.6 or 2.1, site, vendor, model and security profile. Add EVSEs and connectors with power ratings.
+3. Stations > Create Station. The station ID must equal the identity the charger uses on its OCPP connection. Pick OCPP 1.6, 2.0.1 or 2.1, site, vendor, model and security profile. Add EVSEs and connectors with power ratings.
 4. Configure the charger with the OCPP URL shown on the station Details tab (and the password for Basic Auth profiles).
 
 ```bash
@@ -180,7 +180,7 @@ Confirm: push history per station (Accepted, Rejected, Failed), the Load Mgmt po
 - Set up SMTP and Twilio first (Settings > Notification) and use **Send Test**.
 - Notifications page: edit Driver and System event templates (Handlebars). Driver events have an **Active** switch per type; four access types are locked on (400 `NOTIFICATION_EVENT_REQUIRED`). System events are always on. OCPP events are off until you set a channel (email or webhook) and recipient. Webhooks to private addresses are blocked unless listed in **Allowed private webhook hosts**.
 - History tab: a `failed` row shows the reason.
-- Display messages (OCPP 2.1 only): Station > Display Messages. Per-state screens: **Enable Station Messages** (Settings > Integrations & Features > Messages).
+- Display messages (OCPP 2.0.1 and 2.1): Station > Display Messages. Per-state screens: **Enable Station Messages** (Settings > Integrations & Features > Messages).
 
 ### Roaming, certificates, reports (`references/roaming.md`, `references/certificates.md`, `references/reports.md`, `references/nevi-compliance.md`)
 
@@ -198,7 +198,7 @@ Confirm: push history per station (Accepted, Rejected, Failed), the Load Mgmt po
 ### Firmware and station configurations (`references/firmware-updates.md`, `references/station-configurations.md`)
 
 - Firmware: Settings > Firmware Campaign > Create (name, HTTPS firmware URL, version, optional signing certificate and signature, set both or neither). Start Campaign sends UpdateFirmware to online stations. A failed install marks the station faulted until the next install or **Enable Station**.
-- Configuration templates are bound to one OCPP version: 1.6 keys (ChangeConfiguration), 2.1 component and variable (SetVariables). Push, then the CSMS refreshes and checks drift. Station > Configurations > **Refresh from Station** reads the live values. The 1.6 and 2.1 reference files are long: grep them for the key or variable.
+- Configuration templates are bound to one OCPP version: 1.6 keys (ChangeConfiguration), 2.1 component and variable (SetVariables, also pushed to OCPP 2.0.1 stations). Push, then the CSMS refreshes and checks drift. Station > Configurations > **Refresh from Station** reads the live values. The 1.6 and 2.1 reference files are long: grep them for the key or variable.
 
 ### More pages
 

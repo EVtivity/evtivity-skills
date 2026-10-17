@@ -14,7 +14,7 @@ metadata:
 
 Not for: production installs (use evtivity-deployment), a stack that fails or a station that cannot connect (use evtivity-troubleshoot), changing settings (use evtivity-configuration).
 
-EVtivity CSMS manages EV charging stations over OCPP 1.6 and 2.1. One Docker Compose file runs the whole stack: PostgreSQL, Redis, a migrate job, the REST API, the OCPP server, the worker, the operator dashboard (CSMS), the driver portal and a charging station simulator.
+EVtivity CSMS manages EV charging stations over OCPP 1.6, 2.0.1 and 2.1. One Docker Compose file runs the whole stack: PostgreSQL, Redis, a migrate job, the REST API, the OCPP server, the worker, the operator dashboard (CSMS), the driver portal and a charging station simulator.
 
 Which path to take:
 

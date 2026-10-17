@@ -27,7 +27,7 @@
     },
     {
       "name": "evtivity-conformance",
-      "description": "Test OCPP on EVtivity: send OCPP 1.6 or 2.1 commands such as TriggerMessage, Reset or RequestStartTransaction and read the result, message and security logs, OCTT conformance tests and published results, 1.6 vs 2.1 differences. Not for simulated stations (evtivity-simulator) or a station that cannot connect (evtivity-troubleshoot).",
+      "description": "Test OCPP on EVtivity: send OCPP 1.6, 2.0.1 or 2.1 commands such as TriggerMessage, Reset or RequestStartTransaction and read the result, message and security logs, OCTT conformance tests and published results, 1.6 vs 2.1 differences. Not for simulated stations (evtivity-simulator) or a station that cannot connect (evtivity-troubleshoot).",
       "source": "./",
       "strict": false,
       "skills": [
@@ -108,7 +108,7 @@
     },
     {
       "name": "evtivity-simulator",
-      "description": "Run the EVtivity charging station simulator: create simulated OCPP 1.6 and 2.1 stations, standby and chaos modes, plug in, authorize, start and stop charging, faults, offline, and full test sessions without hardware. Use for a test or demo charging session or load testing. Not for OCTT conformance runs (evtivity-conformance).",
+      "description": "Run the EVtivity charging station simulator: create simulated OCPP 1.6, 2.0.1 and 2.1 stations, standby and chaos modes, plug in, authorize, start and stop charging, faults, offline, and full test sessions without hardware. Use for a test or demo charging session or load testing. Not for OCTT conformance runs (evtivity-conformance).",
       "source": "./",
       "strict": false,
       "skills": [

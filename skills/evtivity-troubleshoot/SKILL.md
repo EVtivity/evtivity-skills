@@ -76,7 +76,7 @@ Check in this order:
 1. Station exists: it is listed under Stations, with the exact OCPP identity. The URL path is case-sensitive.
 2. URL: profile 0 or 1 uses `ws://<host>:7103/<stationId>`. Profile 2 or 3 uses `wss://<host>:8443/<stationId>`. The `/<stationId>` suffix is required. Behind a load balancer, use the public host and port.
 3. Security profile: the station's profile equals the profile on the station record.
-4. Basic Auth: the username is the station identity, the password is the one set on the Security tab. 16 to 40 characters for OCPP 2.1, 16 to 20 for OCPP 1.6, letters, digits and `* - _ = : + | @ .`. Set a new one with Change Password and enter the same value on the station.
+4. Basic Auth: the username is the station identity, the password is the one set on the Security tab. 16 to 40 characters for OCPP 2.0.1 and 2.1, 16 to 20 for OCPP 1.6, letters, digits and `* - _ = : + | @ .`. Set a new one with Change Password and enter the same value on the station.
 5. TLS (profile 2 and 3): the station must trust the CA that signed the server certificate, and the certificate must name the host the station dials. The Compose certificate is a self-signed test certificate for `localhost` and `ocpp` only. For a real station, set `OCPP_TLS_CERT`, `OCPP_TLS_KEY` and `OCPP_TLS_CA` to your own files and install your CA on the station. Profile 3 also needs a client certificate signed by the CA the server trusts. Check the server with `openssl s_client -connect <host>:8443 -servername <host> </dev/null | head -n 20`.
 6. HTTP 403 at connect: the station was rejected (blocked). Unblock it on the station page.
 7. Connects but stays Pending: `approval-required` registration policy. Approve the station under Stations, filter Pending.

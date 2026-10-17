@@ -1,6 +1,6 @@
 ---
 name: evtivity-simulator
-description: "Run the EVtivity charging station simulator: create simulated OCPP 1.6 and 2.1 stations, standby and chaos modes, plug in, authorize, start and stop charging, faults, offline, and full test sessions without hardware. Use for a test or demo charging session or load testing. Not for OCTT conformance runs (evtivity-conformance)."
+description: "Run the EVtivity charging station simulator: create simulated OCPP 1.6, 2.0.1 and 2.1 stations, standby and chaos modes, plug in, authorize, start and stop charging, faults, offline, and full test sessions without hardware. Use for a test or demo charging session or load testing. Not for OCTT conformance runs (evtivity-conformance)."
 license: MIT
 compatibility: Needs a running EVtivity CSMS with the simulator service (Docker Compose service "simulator"), curl and jq for the API examples.
 metadata:
@@ -14,7 +14,7 @@ metadata:
 
 Not for: OCTT conformance runs and raw OCPP command testing (use evtivity-conformance), a real station that cannot connect (use evtivity-troubleshoot), installing the stack (use evtivity-getting-started).
 
-The simulator (CSS) runs virtual OCPP 1.6 and 2.1 stations that connect to the OCPP server like real hardware. You create simulated stations, then trigger physical events (plug in, tap a card, fault, go offline) from the dashboard or the API. The CSMS treats the result exactly like a real station.
+The simulator (CSS) runs virtual OCPP 1.6, 2.0.1 and 2.1 stations that connect to the OCPP server like real hardware. You create simulated stations, then trigger physical events (plug in, tap a card, fault, go offline) from the dashboard or the API. The CSMS treats the result exactly like a real station.
 
 ## API basics
 
@@ -56,6 +56,7 @@ curl -s "$EVTIVITY_API/v1/stations" "${H[@]}" -d '{
 }' | jq '{id, stationId, onboardingStatus}'
 ```
 
+- `ocppProtocol`: `ocpp1.6`, `ocpp2.0.1` or `ocpp2.1`. A 2.0.1 station runs the 2.1 flow and sends only what OCPP 2.0.1 defines. A `/v1/css/actions/v21/...` action whose message exists only in OCPP 2.1 answers 400 `OCPP_VERSION_MISMATCH` for it.
 - Password: 16 to 40 characters (16 to 20 for OCPP 1.6) from `a-z A-Z 0-9 * - _ = : + | @ .`.
 - The CSMS stores the hash and creates the simulator row with the same password. Profiles 0 and 1 get the plain URL (Compose `ws://ocpp:7103`), profiles 2 and 3 the TLS URL (`wss://ocpp:8443`). Without EVSEs it adds one EVSE at 22 kW.
 - Keep the returned `id` (`sta_...`). Station routes and session filters need it.

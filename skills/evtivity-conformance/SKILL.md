@@ -1,6 +1,6 @@
 ---
 name: evtivity-conformance
-description: "Test OCPP on EVtivity: send OCPP 1.6 or 2.1 commands such as TriggerMessage, Reset or RequestStartTransaction and read the result, message and security logs, OCTT conformance tests and published results, 1.6 vs 2.1 differences. Not for simulated stations (evtivity-simulator) or a station that cannot connect (evtivity-troubleshoot)."
+description: "Test OCPP on EVtivity: send OCPP 1.6, 2.0.1 or 2.1 commands such as TriggerMessage, Reset or RequestStartTransaction and read the result, message and security logs, OCTT conformance tests and published results, 1.6 vs 2.1 differences. Not for simulated stations (evtivity-simulator) or a station that cannot connect (evtivity-troubleshoot)."
 license: MIT
 compatibility: API examples use curl and jq against a running EVtivity API (default http://localhost:7102 with Docker Compose). Command-line conformance runs need a CSMS source checkout with Node.js.
 metadata:
@@ -14,7 +14,7 @@ metadata:
 
 Not for: creating simulated stations or driving test sessions (use evtivity-simulator), a station that cannot connect (use evtivity-troubleshoot), API keys and the route catalog (use evtivity-api).
 
-EVtivity speaks OCPP 1.6 and OCPP 2.1 on one WebSocket server. You test it two ways:
+EVtivity speaks OCPP 1.6, 2.0.1 and 2.1 on one WebSocket server. The OCTT suites cover OCPP 1.6 and 2.1. An OCPP 2.0.1 station gets only the commands and values OCPP 2.0.1 defines; anything else answers 400 `OCPP_VERSION_MISMATCH` and nothing is sent. You test it two ways:
 
 - Manual: send single OCPP commands to a station and read the answer and the message log.
 - Automated: run the built-in OCTT conformance runner, which follows the Open Charge Alliance OCTT test cases. Its results are not an OCA certification.
