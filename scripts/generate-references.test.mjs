@@ -10,6 +10,7 @@ import {
   convertMdx,
   parseAttrs,
   referenceName,
+  renderOctt,
   renderPage,
   splitFrontmatter,
 } from './generate-references.mjs';
@@ -91,6 +92,47 @@ test('fails on unbalanced blocks and fences', () => {
 
 test('OCTT components need the results data', () => {
   assert.throws(() => convertMdx('<OcttSummary />\n', { page: 'x/y' }), /needs the OCTT results data/);
+});
+
+test('renders the certification profile summary of an OCPP 2.0.1 suite', () => {
+  const labels = {
+    ...octt.labels,
+    profile: 'Certification profile',
+    requirement: 'Requirement',
+    mandatory: 'Mandatory',
+    conditional: 'Conditional',
+    informative: 'Informative (no profile)',
+    profiles: { Core: 'Core', AdvancedSecurity: 'Advanced Security' },
+  };
+  const data = {
+    pics: {},
+    suites: [
+      {
+        sut: 'csms',
+        version: 'ocpp2.0.1',
+        runDate: '2026-10-20',
+        modules: [],
+        profileSummary: [
+          { profile: 'Core', requirement: 'mandatory', total: 3, counts: { passed: 2, failed: 1 } },
+          { profile: 'AdvancedSecurity', requirement: 'conditional', total: 1, counts: { passed: 1 } },
+          { profile: null, requirement: null, total: 2, counts: { passed: 2 } },
+        ],
+      },
+    ],
+  };
+  const out = renderOctt('OcttProfileSummary', { version: 'ocpp2.0.1', sut: 'csms' }, { data, labels });
+  assert.deepEqual(out, [
+    '',
+    '| Certification profile | Requirement | Total | Passed | Failed |',
+    '|---|---|---|---|---|',
+    '| Core | Mandatory | 3 | 2 | 1 |',
+    '| Advanced Security | Conditional | 1 | 1 | 0 |',
+    '| Informative (no profile) | - | 2 | 2 | 0 |',
+    '',
+  ]);
+  const summary = renderOctt('OcttSummary', {}, { data, labels });
+  assert.match(summary.join('\n'), /\| OCPP 2\.0\.1 \|/);
+  assert.match(summary.join('\n'), /csms-ocpp201/);
 });
 
 test('helpers', () => {

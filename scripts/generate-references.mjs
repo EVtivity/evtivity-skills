@@ -30,6 +30,7 @@ const KNOWN_BLOCKS = new Set(['Callout', 'Steps', 'Step', 'Tabs', 'Tab', 'CodeBl
 const OCTT = new Set([
   'OcttSummary',
   'OcttModuleSummary',
+  'OcttProfileSummary',
   'OcttResults',
   'OcttNotApplicable',
   'OcttPics',
@@ -254,10 +255,13 @@ function collapseBlank(lines) {
 const STATUS_ORDER = ['passed', 'notApplicable', 'pending', 'failed', 'error', 'skipped'];
 const SUITE_PAGES = {
   'csms-ocpp2.1': '/docs/conformance/csms-ocpp21',
+  'csms-ocpp2.0.1': '/docs/conformance/csms-ocpp201',
   'csms-ocpp1.6': '/docs/conformance/csms-ocpp16',
   'cs-ocpp2.1': '/docs/conformance/charging-station-ocpp21',
+  'cs-ocpp2.0.1': '/docs/conformance/charging-station-ocpp201',
   'cs-ocpp1.6': '/docs/conformance/charging-station-ocpp16',
 };
+const VERSION_LABELS = { 'ocpp2.1': 'OCPP 2.1', 'ocpp2.0.1': 'OCPP 2.0.1', 'ocpp1.6': 'OCPP 1.6' };
 
 function cell(text) {
   return String(text ?? '').replace(/\|/g, '\\|').replace(/\n/g, ' ');
@@ -297,7 +301,7 @@ export function renderOctt(name, attrs, { data, labels }) {
           const label = s.sut === 'csms' ? L.sutCsms : L.sutCs;
           return [
             `[${label}](${SITE}${SUITE_PAGES[`${s.sut}-${s.version}`]})`,
-            s.version === 'ocpp2.1' ? 'OCPP 2.1' : 'OCPP 1.6',
+            VERSION_LABELS[s.version] ?? s.version,
             total,
             c.passed,
             c.notApplicable,
@@ -319,6 +323,19 @@ export function renderOctt(name, attrs, { data, labels }) {
           }),
           [`**${L.total}**`, `**${all.length}**`, ...shown.map((s) => `**${totals[s]}**`)],
         ],
+      );
+    }
+    case 'OcttProfileSummary': {
+      const rows = suite(version, sut)?.profileSummary ?? [];
+      const shown = STATUS_ORDER.filter((s) => rows.some((r) => (r.counts[s] ?? 0) > 0));
+      return table(
+        [L.profile, L.requirement, L.total, ...shown.map(status)],
+        rows.map((r) => [
+          r.profile == null ? L.informative : (L.profiles?.[r.profile] ?? r.profile),
+          r.requirement == null ? '-' : (L[r.requirement] ?? r.requirement),
+          r.total,
+          ...shown.map((s) => r.counts[s] ?? 0),
+        ]),
       );
     }
     case 'OcttResults': {
