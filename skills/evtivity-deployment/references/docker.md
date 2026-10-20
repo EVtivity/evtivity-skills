@@ -49,7 +49,7 @@ The OCPP image exposes two ports:
 - **7103** for WebSocket (ws://) connections
 - **8443** for secure WebSocket (wss://) connections with TLS
 
-Both ports accept OCPP 1.6 and 2.1 connections. Configure TLS certificates via environment variables for port 8443.
+Both ports accept OCPP 1.6, 2.0.1 and 2.1 connections. Configure TLS certificates via environment variables for port 8443.
 
 ## Worker Image
 

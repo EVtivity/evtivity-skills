@@ -13,7 +13,7 @@ EVtivity is a monorepo managed with npm workspaces. All packages use the `@evtiv
 | Package      | Path                    | Purpose                                              |
 |--------------|-------------------------|------------------------------------------------------|
 | `api`        | `packages/api`          | Fastify REST API (port 7102)                         |
-| `ocpp`       | `packages/ocpp`         | WebSocket server for OCPP 1.6 and 2.1 (port 7103)   |
+| `ocpp`       | `packages/ocpp`         | WebSocket server for OCPP 1.6, 2.0.1 and 2.1 (port 7103)|
 | `csms`       | `packages/csms`         | React operator dashboard                             |
 | `portal`     | `packages/portal`       | React driver portal                                  |
 | `database`   | `packages/database`     | Drizzle ORM schema, migrations, and seeds            |

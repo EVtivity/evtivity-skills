@@ -6,7 +6,26 @@ OCPP protocol configuration, security profiles, TLS, and horizontal scaling.
 
 ## Protocol Support
 
-EVtivity supports OCPP 1.6 and OCPP 2.1. Both subprotocols are accepted on the same WebSocket server. The server detects the protocol version from the subprotocol header during the WebSocket handshake.
+EVtivity supports OCPP 1.6, OCPP 2.0.1 and OCPP 2.1. All three subprotocols (`ocpp1.6`, `ocpp2.0.1`, `ocpp2.1`) are accepted on the same WebSocket server. The server picks the protocol version from the subprotocol header during the WebSocket handshake. When a station offers more than one, the server prefers 2.1, then 2.0.1, then 1.6.
+
+### OCPP 2.0.1 stations
+
+OCPP 2.0.1 stations share the OCPP 2.x model with 2.1 stations: EVSEs, `TransactionEvent`, the device model, display messages, monitoring, certificates and smart charging work the same way. Every message the CSMS sends to a 2.0.1 station is checked against the OCPP 2.0.1 schema before it is sent.
+
+These OCPP 2.1 features are not available on OCPP 2.0.1 stations:
+
+- Tariffs and cost calculation on the station, including the tariff in the `Authorize` response
+- Transaction limits sent to the station (maximum cost, energy or time)
+- DER control
+- Bidirectional charging (V2X)
+- Battery swap
+- Priority charging
+- Periodic event streams
+- Web payments (dynamic QR codes) and ad hoc payments
+- ISO 15118-20 certificates
+- The CALLRESULTERROR and SEND message types
+
+A command that uses one of these features, or a value OCPP 2.0.1 does not define, is refused with `400 OCPP_VERSION_MISMATCH` and nothing is sent to the station.
 
 ## Connection URL
 

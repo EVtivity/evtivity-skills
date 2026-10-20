@@ -21,7 +21,7 @@ Six stacks per environment. Supported environments: `dev`, `qa`, `prod`.
 | Alb     | Application Load Balancer, WAF web ACL, Grafana allowlist |
 | App     | ECS cluster, database job, services, DNS records, observability, alarms, scheduled redeploys |
 
-All public services share one ALB and are routed by hostname: `csms`, `portal`, `api`, `ocpp` (WebSockets), `ocpi`, and `grafana`. An optional NLB passes OCPP security profile 3 (mutual TLS) straight through to the OCPP server. The API gets the `ocpp` host as `OCPP_STATION_TLS_URL`, the address it gives OCPP 2.1 stations upgraded from `ws://` to TLS.
+All public services share one ALB and are routed by hostname: `csms`, `portal`, `api`, `ocpp` (WebSockets), `ocpi`, and `grafana`. An optional NLB passes OCPP security profile 3 (mutual TLS) straight through to the OCPP server. The API gets the `ocpp` host as `OCPP_STATION_TLS_URL`, the address it gives OCPP 2.0.1 and 2.1 stations upgraded from `ws://` to TLS.
 
 ### Per-Environment Sizing
 

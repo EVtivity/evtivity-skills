@@ -10,7 +10,7 @@ These are the OCTT test cases for the Central System role in OCPP 1.6, run again
 
 OCPP 1.6 test cases use numeric IDs such as `TC_003_CSMS`. A suffix such as `_1` or `_2` marks a variant of the same test case.
 
-Results as of 2026-10-05.
+Results as of 2026-10-20.
 
 ## Results by module
 

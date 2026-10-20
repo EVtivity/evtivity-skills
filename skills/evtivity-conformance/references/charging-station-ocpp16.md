@@ -10,7 +10,7 @@ These are the OCTT test cases for the charge point role in OCPP 1.6. The test ru
 
 Modules follow the numbered sections of the OCPP 1.6 test case document. A suffix such as `_1` or `_2` on a test ID marks a variant of the same test case.
 
-Results as of 2026-10-05.
+Results as of 2026-10-20.
 
 ## Results by module
 

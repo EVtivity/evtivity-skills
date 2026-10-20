@@ -164,4 +164,4 @@ An `InvalidSignature` status marks the station faulted, the same as any failed i
 - While a station installs firmware, its status is unavailable and drivers cannot start charging.
 - A failed install (`InstallationFailed`, `InvalidSignature`, or `InstallVerificationFailed`) marks the station faulted. It stays faulted after a reboot. The next install clears it, or an operator clicks **Enable Station** on the station detail page.
 - The firmware URL must be accessible from the station's network. The station downloads the file. The CSMS never fetches it.
-- Both OCPP 1.6 and 2.1 stations are supported. Command translation handles version differences.
+- OCPP 1.6, 2.0.1 and 2.1 stations are supported. Command translation handles version differences.

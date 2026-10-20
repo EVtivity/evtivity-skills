@@ -57,8 +57,10 @@ Slots 9004 and 9005 are pushed once at boot and persist on the station. Slots 90
 
 EVtivity reacts to two kinds of OCPP triggers and renders a Handlebars template against live context (cost so far, energy delivered, elapsed time, station name, etc.) before pushing the result to the charger.
 
-1. **Connector status change.** The OCPP server publishes to the `station_message_refresh` Redis channel on every `StatusNotification`, for OCPP 1.6 and 2.1 stations. The API listener picks it up, re-renders the Idle slot, and pushes a fresh `SetDisplayMessage` if the content changed.
-2. **Transaction event.** The OCPP server publishes to the `station_message_transaction` channel on `TransactionEvent.Started`, `Updated`, and `Ended`. The listener renders slot 9001/9002/9003 with current cost and energy.
+1. **Connector status change.** On every `StatusNotification`, for OCPP 1.6 and 2.1 stations, the OCPP server adds a refresh job to the worker's `station-messages` job queue. The worker re-renders the Idle, Faulted, and Unavailable slots and pushes a fresh `SetDisplayMessage` if the content changed.
+2. **Transaction event.** On `TransactionEvent.Started`, `Updated`, and `Ended`, the OCPP server adds a transaction job to the same queue. The worker renders slot 9001/9002/9003 with current cost and energy.
+
+Events for the same station or session within half a second become one job. The jobs wait in the queue while the worker is down.
 
 A worker cron (`station-message-charging-refresh`) fires every 30 seconds and re-renders the Charging slot for every active session, so the displayed cost and energy keep climbing while the EV charges. The interval is configurable via `stationMessage.charging.refreshSeconds`. Suspended, Discharging, Idle, Faulted, and Unavailable slots are event-driven and dispatch immediately - no cron involved.
 

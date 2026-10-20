@@ -118,7 +118,7 @@ OCPP has two external paths:
 
 Station WebSocket URL format: `ws://ocpp.evtivity.local/STATION-001` or `wss://<tls-lb-ip>:8443/STATION-001`.
 
-The API needs the public TLS address to move a connected OCPP 2.1 station from `ws://` to TLS. Set `api.env.stationTlsUrl` (for example `wss://<tls-lb-ip>:8443`). When it is empty and the gateway serves HTTPS, the chart uses `wss://<ocpp route host>`. Otherwise those upgrades are refused.
+The API needs the public TLS address to move a connected OCPP 2.0.1 or 2.1 station from `ws://` to TLS. Set `api.env.stationTlsUrl` (for example `wss://<tls-lb-ip>:8443`). When it is empty and the gateway serves HTTPS, the chart uses `wss://<ocpp route host>`. Otherwise those upgrades are refused.
 
 ## Secrets
 

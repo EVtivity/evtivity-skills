@@ -12,7 +12,7 @@ EVtivity has three categories of notification events. OCPP events have a switch 
 
 Station-level events from OCPP messages. Delivered via email and webhook.
 
-The **OCPP Events** tab groups them as **Common (1.6 and 2.1)** and **OCPP 2.1 Only**. Examples: `BootNotification`, `StatusNotification`, `FirmwareStatusNotification`, `SecurityEventNotification`. See [OCPP Events](https://www.evtivity.com/docs/csms/notifications#ocpp-events).
+The **OCPP Events** tab groups them as **Common (1.6, 2.0.1 and 2.1)**, **OCPP 1.6 Only**, **OCPP 2.x (2.0.1 and 2.1)** and **OCPP 2.1 Only**. Examples: `BootNotification`, `StatusNotification`, `FirmwareStatusNotification`, `SecurityEventNotification`. See [OCPP Events](https://www.evtivity.com/docs/csms/notifications#ocpp-events).
 
 ### Driver Events
 

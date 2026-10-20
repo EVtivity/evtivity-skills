@@ -6,7 +6,7 @@ Register charging stations, manage connectors, and configure OCPP settings.
 
 ## Overview
 
-Stations represent physical charging hardware that communicates with the CSMS over OCPP 1.6 or 2.1. Each station has one or more EVSEs (Electric Vehicle Supply Equipment), and each EVSE has one or more connectors. The CSMS manages the full lifecycle: registration, real-time monitoring, configuration, security, and certificate management.
+Stations represent physical charging hardware that communicates with the CSMS over OCPP 1.6, 2.0.1 or 2.1. Each station has one or more EVSEs (Electric Vehicle Supply Equipment), and each EVSE has one or more connectors. The CSMS manages the full lifecycle: registration, real-time monitoring, configuration, security, and certificate management.
 
 ![Stations list](https://www.evtivity.com/screenshots/csms/stations-list.png)
 
@@ -15,7 +15,7 @@ Stations represent physical charging hardware that communicates with the CSMS ov
 1. Navigate to **Stations** in the sidebar.
 2. Click **Create Station**.
 3. Enter the station ID (must match the identity the station uses when connecting via OCPP).
-4. Select the OCPP protocol version (1.6 or 2.1).
+4. Select the OCPP protocol version (1.6, 2.0.1 or 2.1). It must match the version the station offers when it connects. See [OCPP Settings](https://www.evtivity.com/docs/configuration/ocpp-settings#ocpp-201-stations) for what OCPP 2.0.1 stations do not support.
 5. Assign a site, vendor, and model.
 6. Set the security profile (No Auth through Mutual TLS).
 7. Add EVSEs and connectors with their power ratings and connector types.
@@ -121,9 +121,9 @@ Mutual TLS stations do not require a password. The station presents a client cer
 
 ### Station passwords
 
-Basic Auth passwords are 16 to 40 characters for OCPP 2.1 and 16 to 20 characters for OCPP 1.6. Allowed characters are letters, digits, and `* - _ = : + | @ .`. **Rotate Credentials** on the **Security** tab sets a new random 20-character password that works for both versions.
+Basic Auth passwords are 16 to 40 characters for OCPP 2.0.1 and 2.1 and 16 to 20 characters for OCPP 1.6. Allowed characters are letters, digits, and `* - _ = : + | @ .`. **Rotate Credentials** on the **Security** tab sets a new random 20-character password that works for every version.
 
-When the station is online on Basic Auth or TLS + Basic Auth, the CSMS sends the new password to the station: `SetVariables(SecurityCtrlr.BasicAuthPassword)` for OCPP 2.1, `ChangeConfiguration(AuthorizationKey)` with the hex-encoded password for OCPP 1.6. The CSMS saves the new password only after the station accepts it. If the station rejects it or does not answer, the old password stays valid. When the station is offline, the CSMS saves the password and you configure the station to match on site. A password command is never queued: if the station disconnects before the command reaches it, the change fails and the old password stays valid.
+When the station is online on Basic Auth or TLS + Basic Auth, the CSMS sends the new password to the station: `SetVariables(SecurityCtrlr.BasicAuthPassword)` for OCPP 2.0.1 and 2.1, `ChangeConfiguration(AuthorizationKey)` with the hex-encoded password for OCPP 1.6. The CSMS saves the new password only after the station accepts it. If the station rejects it or does not answer, the old password stays valid. When the station is offline, the CSMS saves the password and you configure the station to match on site. A password command is never queued: if the station disconnects before the command reaches it, the change fails and the old password stays valid.
 
 Change a station password only with **Change Password** or **Rotate Credentials** on the **Security** tab, or through the API with `POST /v1/stations/{id}/credentials`. Change the security profile on the same tab or with `PATCH /v1/stations/{id}`. The generic OCPP command routes refuse a password write with `400 STATION_CREDENTIALS_ROUTE_REQUIRED` (see [Error Codes](https://www.evtivity.com/api-reference/error-codes#sites-stations)):
 
@@ -146,9 +146,12 @@ For an offline station, the new profile is saved directly. Configure the station
 For an online station, the CSMS upgrades the station over OCPP:
 
 - **OCPP 2.1:** the CSMS writes a new network connection profile with the higher profile (`SetNetworkProfile`), puts it first in `NetworkConfigurationPriority`, and resets the station when idle. Moving from `ws://` to TLS uses the CSMS TLS address in `OCPP_STATION_TLS_URL`. The station must already trust the CSMS server certificate, and for Mutual TLS it must hold a client certificate, or it rejects the change.
+- **OCPP 2.0.1:** the CSMS asks for the **Network Interface** the station uses for the new profile: **Wired 0** (the default) to **Wired 3**, or **Wireless 0** to **Wireless 3**. It then writes a new network connection profile (`SetNetworkProfile`) with the address the station connects on now, or with `OCPP_STATION_TLS_URL` when moving from `ws://` to TLS, and with the station's message timeout (30 seconds when the station does not report one). From No Auth, the CSMS first sets the station password. It puts the new profile first in `NetworkConfigurationPriority` and resets the station when idle. The same certificate requirements as for OCPP 2.1 apply.
 - **OCPP 1.6:** the CSMS sets `SecurityProfile` with `ChangeConfiguration` and resets the station.
 
-The new profile shows as pending until the station reconnects with it. Until then the station can still connect with its current profile, so a failed upgrade does not lock it out. After the station connects with the new profile, the CSMS rejects the old one. Select the current profile to cancel a pending upgrade.
+The new profile shows as pending until the station reconnects with it. Until then the station can still connect with its current profile, so a failed upgrade does not lock it out. A station that cannot connect with the new settings falls back to its previous connection, and the upgrade stays pending. After the station connects with the new profile, the CSMS rejects the old one. Select the current profile to cancel a pending upgrade.
+
+Through the API, an upgrade of a connected OCPP 2.0.1 station needs `ocppInterface` (`Wired0` to `Wired3`, `Wireless0` to `Wireless3`) in `PATCH /v1/stations/{id}` or `PATCH /v1/css/stations/{stationId}`. Without it the API answers `400 VALIDATION_ERROR`. The CSMS records the address a station connects on at each connection. Until it has one, the upgrade answers `400 STATION_ENDPOINT_URL_UNKNOWN` (see [Error Codes](https://www.evtivity.com/api-reference/error-codes#sites-stations)).
 
 OCPP does not allow lowering the security profile of a connected station. Lower profiles are disabled while the station is online. To downgrade, take the station offline, change the profile, and reconfigure the station on site.
 
@@ -228,7 +231,7 @@ An OCPP 1.6 station has no EVSEs. The CSMS stores connector N as EVSE N with a s
 
 #### Max power
 
-A connector the CSMS creates automatically, because the station reported a connector it did not know, starts without a max power. OCPP 2.1 stations fill it in from their configuration report (`NotifyReport`, the `maxLimit` of the `EVSE` component's `Power` variable). The report never replaces a value an operator set. OCPP 1.6 has no equivalent report.
+A connector the CSMS creates automatically, because the station reported a connector it did not know, starts without a max power. OCPP 2.0.1 and 2.1 stations fill it in from their configuration report (`NotifyReport`, the `maxLimit` of the `EVSE` component's `Power` variable). The report never replaces a value an operator set. OCPP 1.6 has no equivalent report.
 
 A connector without a max power shows a **Max power unknown** badge. Load management cannot cap the connector at its rating until you set it, so it caps the connector at its equal share of the circuit. Click **Edit EVSE** to set the max power.
 
@@ -236,9 +239,9 @@ A connector without a max power shows a **Max power unknown** badge. Load manage
 |--------|-------|-------------|
 | available | Green | Ready for use |
 | charging | Blue | Actively charging |
-| occupied | Blue | In use (OCPP 2.1) |
+| occupied | Blue | In use (OCPP 2.0.1 and 2.1) |
 | preparing | Cyan | Cable plugged in, not yet charging |
-| ev_connected | Cyan | EV connected (OCPP 2.1) |
+| ev_connected | Cyan | EV connected (OCPP 2.0.1 and 2.1) |
 | reserved | Orange | Reserved for a driver |
 | suspended_ev | Yellow | Paused by vehicle |
 | suspended_evse | Yellow | Paused by station |
@@ -252,7 +255,9 @@ A connector without a max power shows a **Max power unknown** badge. Load manage
 
 ### Commands
 
-Send OCPP commands to the station and view the real-time OCPP message log. Available commands include Reset, UnlockConnector, ChangeAvailability, TriggerMessage, GetBaseReport (2.1), GetConfiguration (1.6), and more.
+Send OCPP commands to the station and view the real-time OCPP message log. Available commands include Reset, UnlockConnector, ChangeAvailability, TriggerMessage, GetBaseReport (2.0.1 and 2.1), GetConfiguration (1.6), and more.
+
+The tab offers only the commands the station's OCPP version defines. For an OCPP 2.0.1 station it hides the commands that exist only in OCPP 2.1, and the command forms follow the OCPP 2.0.1 schema. A command with a value OCPP 2.0.1 cannot carry, such as a 2.1-only charging profile purpose or display message format, is refused with `400 OCPP_VERSION_MISMATCH` and nothing is sent to the station.
 
 The **OCPP Message Log** shows all OCPP messages exchanged between the station and the CSMS, and the commands queued for it while it is offline. The **Type** column shows CALL, RESULT, or ERROR. The **Status** column shows **Processed** for a message exchanged with the station and **Queued** for a command that waits in the offline queue. Hover **Queued** to read "Sent when the station reconnects".
 
@@ -284,13 +289,13 @@ Manage the station's authentication credentials. Change the security profile, se
 
 ### Certificates
 
-Available for OCPP 2.1 stations when Plug and Charge is enabled. View installed certificates, install new CA certificates, query the station for its certificate inventory, and delete certificates. See [Certificates](https://www.evtivity.com/docs/csms/certificates) for details.
+Available for OCPP 2.0.1 and 2.1 stations when Plug and Charge is enabled. View installed certificates, install new CA certificates, query the station for its certificate inventory, and delete certificates. See [Certificates](https://www.evtivity.com/docs/csms/certificates) for details.
 
 ![Station certificates tab](https://www.evtivity.com/screenshots/csms/station-certificates-tab.png)
 
 ### Display Messages
 
-Available for OCPP 2.1 stations. Send display messages to the station screen via OCPP SetDisplayMessage. View active messages, clear them, and refresh the list from the station via GetDisplayMessages.
+Available for OCPP 2.0.1 and 2.1 stations. Send display messages to the station screen via OCPP SetDisplayMessage. View active messages, clear them, and refresh the list from the station via GetDisplayMessages.
 
 ![Station display messages tab](https://www.evtivity.com/screenshots/csms/station-messages-tab.png)
 
@@ -302,7 +307,7 @@ View standalone meter value readings from the station outside of transaction con
 
 ### Events
 
-Available for OCPP 2.1 stations. View the monitoring events the station reports through `NotifyEvent`, such as threshold breaches, periodic readings and component status changes. Click a row to see its event data as formatted JSON. Security events are in the security event log on the **Security** tab.
+Available for OCPP 2.0.1 and 2.1 stations. View the monitoring events the station reports through `NotifyEvent`, such as threshold breaches, periodic readings and component status changes. Click a row to see its event data as formatted JSON. Security events are in the security event log on the **Security** tab.
 
 ![Station events tab](https://www.evtivity.com/screenshots/csms/station-events-tab.png)
 
@@ -310,7 +315,7 @@ Available for OCPP 2.1 stations. View the monitoring events the station reports 
 
 ### Configurations
 
-View the station's current OCPP configuration as a read-only table. Click **Refresh from Station** to pull the latest configuration from the station via GetConfiguration (1.6) or GetBaseReport (2.1). Push a configuration template to update station settings.
+View the station's current OCPP configuration as a read-only table. Click **Refresh from Station** to pull the latest configuration from the station via GetConfiguration (1.6) or GetBaseReport (2.0.1 and 2.1). Push a configuration template to update station settings.
 
 ![Station configurations tab](https://www.evtivity.com/screenshots/csms/station-configurations-tab.png)
 
@@ -336,7 +341,7 @@ Generate and download QR codes for each EVSE on the station. QR codes link to th
 
 A static QR code is printed once and never changes. A dynamic QR code is shown on the station's display and changes over time. Its URL holds a time-based one-time password (TOTP). The station makes a new password every validity period, and the portal checks the password when a driver scans the code. A photo or copy of the code stops working once its password expires.
 
-Dynamic QR codes work only on OCPP 2.1 stations whose firmware implements the `WebPaymentsCtrlr` component and that have a display that can show a changing QR code. Other stations use the static QR code. OCPP 1.6 stations show a note instead of the settings.
+Dynamic QR codes work only on OCPP 2.1 stations whose firmware implements the `WebPaymentsCtrlr` component and that have a display that can show a changing QR code. Other stations use the static QR code. OCPP 1.6 and 2.0.1 stations show a note instead of the settings.
 
 The **Dynamic QR codes** card on the QR Codes tab shows the station support:
 

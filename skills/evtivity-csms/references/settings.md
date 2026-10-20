@@ -105,6 +105,24 @@ Each field is one line of text. An empty field is left off the invoice. A new in
 
 ![Invoice seller details](https://www.evtivity.com/screenshots/csms/settings-invoice-seller.png)
 
+### Invoice payment information
+
+The **Invoice Payment Information** section sets the bank details that invoices print in a "Payment information" block below the totals. The block appears only when an IBAN is set, on driver invoices, fleet invoices, member invoices, and credit notes.
+
+- **Account holder** - the name of the account owner. Leave it empty to print the company name.
+- **IBAN** - enter it with or without spaces. It is stored without spaces in upper case and printed in groups of four. An IBAN with a wrong check digit is refused.
+- **BIC** - 8 or 11 characters. Optional.
+- **Bank name** - optional.
+- **EPC QR code on EUR invoices** - on by default. Prints a QR code (EPC069-12, SEPA credit transfer) that banking apps scan to fill in the account holder, the IBAN, the amount, and the invoice number.
+
+What the block shows depends on the invoice:
+
+- **Open invoice** - asks for a transfer of the total by the due date, with the invoice number as the payment reference, and lists the bank details. Fleet and member invoices paid by transfer get this block. The EPC QR code is added when the invoice is in EUR.
+- **Paid invoice** - states that the invoice is paid, "by card" for a driver invoice paid by card when it was issued, and asks for no transfer, so nobody pays twice. A payment reference recorded with **Mark Paid** is printed.
+- **Credit note** - states that no payment is due and that the amount is refunded or offset. No QR code.
+
+The block is printed in the invoice language. A new installation starts with no bank details. Changing these settings needs `settings.system:write` and access to all sites. Settings `company.bankAccountHolder`, `company.iban`, `company.bic`, `company.bankName` and `invoice.epcQrEnabled`.
+
 ### PDF branding
 
 The **PDF branding** section sets the logo and the footer of every PDF the platform generates: invoices, credit notes, fleet invoices, and reports.

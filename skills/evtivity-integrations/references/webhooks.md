@@ -93,7 +93,8 @@ Internal event routing uses Redis pub/sub. These channels are not exposed extern
 | `ocpi_push` | Triggers OCPI data push to roaming partners |
 | `ocpi_register` | Handles OCPI registration handshakes |
 | `ocpi_sync` | Triggers bulk OCPI data synchronization |
-| `payment_webhook_deliveries` | Carries signed test payment provider events to the worker |
+
+Requests to the background worker, such as signed test payment provider events, go to its BullMQ job queues instead of pub/sub, so they wait in the queue while the worker is down.
 
 ## OCPI Push Notifications
 

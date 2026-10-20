@@ -11,7 +11,7 @@ EVtivity does not auto-create station records when an unknown station tries to c
 ## What you need before you start
 
 - The station's **identifier** (the OCPP charge point ID, often printed on a label, e.g. `CS-001`).
-- The station's **OCPP version**: 1.6 or 2.1.
+- The station's **OCPP version**: 1.6, 2.0.1 or 2.1.
 - The **security profile** the station is configured for:
   - No Auth: no auth (lab/dev only)
   - Basic Auth: HTTP Basic auth over plain WebSocket
@@ -33,7 +33,7 @@ Three ways to do this:
 2. Click **Create Station**.
 3. Fill in:
    - **Station Name** (required): must match what the station will report at the WebSocket URL path (e.g. `/CS-001`).
-   - **OCPP Version** (required): 1.6 or 2.1 (defaults to 1.6 — most field hardware is still 1.6).
+   - **OCPP Version** (required): 1.6, 2.0.1 or 2.1 (defaults to 1.6, as most field hardware is still 1.6).
    - **Security Profile** (required): No Auth, Basic Auth, or TLS + Basic Auth.
    - **Password** (Basic Auth and TLS + Basic Auth): the password the station authenticates with.
    - **Model** (optional, auto-populated from BootNotification).

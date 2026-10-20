@@ -6,7 +6,7 @@ How the EVtivity charging station simulator works, its architecture, and configu
 
 ## Overview
 
-The EVtivity Charging Station Simulator (CSS) is an internal tool that simulates OCPP 1.6 and 2.1 charging stations. It connects to the CSMS over WebSocket and behaves like a real station, sending boot notifications, status updates, meter values, and transaction events.
+The EVtivity Charging Station Simulator (CSS) is an internal tool that simulates OCPP 1.6, 2.0.1 and 2.1 charging stations. It connects to the CSMS over WebSocket and behaves like a real station, sending boot notifications, status updates, meter values, and transaction events.
 
 The simulator is useful for:
 
@@ -239,7 +239,7 @@ Each station connects to the target URL on its simulator record. The demo seed p
 
 ## Password and Security Profile Changes
 
-Simulated stations accept password and security profile changes from the CSMS the way real stations do. A new password (`SetVariables(SecurityCtrlr.BasicAuthPassword)` for OCPP 2.1, `ChangeConfiguration(AuthorizationKey)` for OCPP 1.6) is used on the next connection. A security profile upgrade (a new network connection profile for OCPP 2.1, `SecurityProfile` for OCPP 1.6) takes effect at the reset that follows. The station reconnects with the new profile and falls back to the previous connection after three failed attempts. The simulator saves the new URL and password, so a restart keeps them.
+Simulated stations accept password and security profile changes from the CSMS the way real stations do. A new password (`SetVariables(SecurityCtrlr.BasicAuthPassword)` for OCPP 2.0.1 and 2.1, `ChangeConfiguration(AuthorizationKey)` for OCPP 1.6) is used on the next connection. A security profile upgrade (a new network connection profile for OCPP 2.0.1 and 2.1, `SecurityProfile` for OCPP 1.6) takes effect at the reset that follows. The station reconnects with the new profile and falls back to the previous connection after three failed attempts. The simulator saves the new URL and password, so a restart keeps them.
 
 ## Health Endpoint
 
@@ -275,7 +275,7 @@ Each delay includes 20% random jitter to avoid thundering herd when all stations
 
 ## Notes
 
-- The simulator supports all 51 CSMS-initiated OCPP commands for both protocol versions.
+- The simulator supports all 51 CSMS-initiated OCPP commands for OCPP 1.6 and 2.1. An OCPP 2.0.1 station supports the ones OCPP 2.0.1 defines. See [OCPP 2.0.1 mode](https://www.evtivity.com/docs/simulator/stations#ocpp-201-mode).
 - Meter values are computed by the MeterValueGenerator with support for 12 measurands.
 - Clock-aligned meter values use a global scheduler with random jitter to avoid thundering herd effects.
 - In Kubernetes deployments, the simulator runs as a separate pod managed by the Helm chart.

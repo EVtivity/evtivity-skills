@@ -69,9 +69,8 @@ On Helm, set `appSettings.simulated.*`. On CDK, set `appSettings['simulated.*']`
 
 The test provider signs its events like a real provider and sends them through the same webhook pipeline as Stripe and Adyen, without an HTTP route:
 
-1. The API or OCPP server publishes the signed event on the internal `payment_webhook_deliveries` channel.
-2. The worker queues it with the provider's delay, for example 30 seconds for the dispute of card `4000000000000259`.
-3. When the delay ends, the worker verifies the signature, records the event once, and applies it, as it would a Stripe or Adyen webhook.
+1. The API or OCPP server adds the signed event to the worker's `payment-webhooks` job queue with the provider's delay, for example 30 seconds for the dispute of card `4000000000000259`.
+2. When the delay ends, the worker verifies the signature, records the event once, and applies it, as it would a Stripe or Adyen webhook.
 
 So the worker must run for test provider events to arrive. A repeated event is recorded once. An event with a bad signature is logged as an error and not retried.
 

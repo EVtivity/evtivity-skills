@@ -7,8 +7,10 @@
   ],
   "evtivity-conformance": [
     "conformance/charging-station-ocpp16",
+    "conformance/charging-station-ocpp201",
     "conformance/charging-station-ocpp21",
     "conformance/csms-ocpp16",
+    "conformance/csms-ocpp201",
     "conformance/csms-ocpp21",
     "conformance/overview",
     "csms/conformance-testing",

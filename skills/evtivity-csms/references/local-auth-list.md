@@ -51,4 +51,4 @@ The Local Auth List tab shows:
 
 ## Protocol Compatibility
 
-This feature works with both OCPP 1.6 and 2.1 stations. The CSMS handles command translation between protocol versions automatically.
+This feature works with OCPP 1.6, 2.0.1 and 2.1 stations. The CSMS handles command translation between protocol versions automatically.

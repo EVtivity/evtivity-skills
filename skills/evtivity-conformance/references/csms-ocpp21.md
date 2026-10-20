@@ -8,7 +8,7 @@ OCTT test case results for the EVtivity CSMS on OCPP 2.1, by module.
 
 These are the OCTT test cases for the CSMS role in OCPP 2.1. The test runner acts as a charging station and checks how the EVtivity CSMS responds. See [OCPP Conformance Testing](https://www.evtivity.com/docs/conformance/overview) for how tests run and how results are counted.
 
-Results as of 2026-10-05.
+Results as of 2026-10-20.
 
 ## Results by module
 

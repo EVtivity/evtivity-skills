@@ -28,7 +28,7 @@ OCPP is what an operator deals with day-to-day. ISO 15118 controls Plug & Charge
 
 ## OCPP Versions and the Configuration Model
 
-Two versions of OCPP are in active deployment: 1.6 (2015, still the majority of installed stations as of 2026) and 2.1 (2024, supersedes 2.0.1 with backward-compatible additions). They differ fundamentally in how a station's configuration is described.
+Three versions of OCPP are in active deployment, and EVtivity supports all three: 1.6 (2015, still the majority of installed stations as of 2026), 2.0.1 (2020) and 2.1 (2024, supersedes 2.0.1 with backward-compatible additions). OCPP 2.0.1 and 2.1 share the component and variable model described below, so 1.6 and 2.x differ fundamentally in how a station's configuration is described.
 
 ### OCPP 1.6: Flat Key-Value Configuration
 
@@ -107,7 +107,7 @@ A template is a named bundle of configuration values plus a target filter. Each 
 |-------|-------------|
 | Name | Operator-facing identifier |
 | Description | Free text explaining intent |
-| OCPP Version | 1.6 or 2.1 (determines variable encoding) |
+| OCPP Version | 1.6 or 2.1 (determines variable encoding). A 2.1 template also applies to OCPP 2.0.1 stations. |
 | Variables | Component / variable / value triples (or key / value pairs for 1.6) |
 | Target Filter | Site, vendor, model, station selectors that combine with AND |
 
@@ -146,7 +146,7 @@ After a successful push the CSMS automatically refreshes the station's configura
 
 ### Drift Detection
 
-A station's live configuration can drift away from a template, either because someone set a variable directly on the station or because a firmware update reset defaults. EVtivity compares the station's current configuration against the most recently pushed template and flags any variable whose value no longer matches. You can re-push the template to bring drifted stations back into compliance.
+A station's live configuration can drift away from a template, either because someone set a variable directly on the station or because a firmware update reset defaults. EVtivity compares the station's current configuration against the most recently pushed template and flags any variable whose value no longer matches. For an OCPP 2.0.1 station, a template variable that OCPP 2.0.1 does not define and the station never reported does not count as drift. You can re-push the template to bring drifted stations back into compliance.
 
 ### Station Detail: Configurations
 

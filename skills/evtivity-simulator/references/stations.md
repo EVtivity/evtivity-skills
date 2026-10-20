@@ -31,10 +31,10 @@ Unchecking **Simulator station** sets `enabled = false` on the `css_stations` ro
 Use `POST /v1/css/stations` to create both rows in a single request. If the station ID is new, the endpoint inserts a `charging_stations` row with `is_simulator = true`. If a non-simulator row already exists, the endpoint flips the flag instead. The body accepts:
 
 - **stationId** - The OCPP station ID (required)
-- **ocppProtocol** - `ocpp1.6` or `ocpp2.1`
+- **ocppProtocol** - `ocpp1.6`, `ocpp2.0.1` or `ocpp2.1`
 - **securityProfile** - 0, 1, 2, or 3
 - **targetUrl** - WebSocket endpoint the simulator connects to
-- **password** - For Basic Auth and TLS + Basic Auth stations. Without a password on security profile 1 or 2, the API generates a 20-character password, stores its hash for the CSMS, and gives the same password to the simulator, so the station connects at once. A given password must have 16 to 20 characters for OCPP 1.6 and 16 to 40 for OCPP 2.1, otherwise the API answers 400 `VALIDATION_ERROR`. When the station already exists, the password goes through the normal credential change: an online station must accept it, otherwise the API answers 502.
+- **password** - For Basic Auth and TLS + Basic Auth stations. Without a password on security profile 1 or 2, the API generates a 20-character password, stores its hash for the CSMS, and gives the same password to the simulator, so the station connects at once. A given password must have 16 to 20 characters for OCPP 1.6 and 16 to 40 for OCPP 2.0.1 and 2.1, otherwise the API answers 400 `VALIDATION_ERROR`. When the station already exists, the password goes through the normal credential change: an online station must accept it, otherwise the API answers 502.
 - **clientCert / clientKey / caCert** - For Mutual TLS stations
 - **model**, **serialNumber**, **firmwareVersion** - Identity fields stored on `charging_stations`
 - **evses** - Array of EVSE definitions for `css_evses`
@@ -108,11 +108,11 @@ A station with a conflict shows a warning on its detail page: "On *time* a conne
 
 The CSMS clears the simulator flag and the conflict, disables the paired simulator, and writes a `simulator_toggled` audit row with your user. The button needs the `stations:write` permission. To use the simulator again later, edit the station and turn the simulator back on. Changing the simulator setting on the station also clears a conflict.
 
-## OCPP 1.6 and 2.1 Support
+## OCPP 1.6, 2.0.1 and 2.1 Support
 
-The simulator supports both OCPP protocol versions. The version is determined by the `ocppProtocol` field on the charging station record.
+The simulator supports OCPP 1.6, 2.0.1 and 2.1. The version is determined by the `ocppProtocol` field on the charging station record. A simulated station offers only its own version when it connects.
 
-| Feature | OCPP 1.6 | OCPP 2.1 |
+| Feature | OCPP 1.6 | OCPP 2.0.1 and 2.1 |
 |---------|----------|----------|
 | BootNotification | Supported | Supported |
 | StatusNotification | 9 statuses | 5 statuses |
@@ -121,6 +121,17 @@ The simulator supports both OCPP protocol versions. The version is determined by
 | Meter values | MeterValues action | TransactionEvent Updated |
 | Heartbeat | Supported | Supported |
 | Reset | Hard / Soft | Immediate / OnIdle |
+
+### OCPP 2.0.1 mode
+
+An OCPP 2.0.1 simulated station runs the same station logic as a 2.1 station and sends only what OCPP 2.0.1 defines:
+
+- Messages that exist only in OCPP 2.1 are never sent. A CSMS command that exists only in OCPP 2.1 is answered with `NotImplemented`.
+- Fields and values that exist only in OCPP 2.1 are left out of its messages or mapped to their OCPP 2.0.1 equivalent, such as a 2.1-only trigger reason.
+- Meter values with a measurand OCPP 2.0.1 does not define are left out.
+- A simulator API action under `/v1/css/actions/v21/` whose message exists only in OCPP 2.1 answers `400 OCPP_VERSION_MISMATCH`. The other 2.1 actions run on 2.0.1 stations.
+
+To add an OCPP 2.0.1 simulated station, create a station with **OCPP Version** set to OCPP 2.0.1 and turn on **Simulator station**, or call `POST /v1/css/stations` with `ocppProtocol` set to `ocpp2.0.1`. The demo data includes OCPP 2.0.1 stations: a third of its OCPP 2.x stations use OCPP 2.0.1.
 
 ## Internal State
 

@@ -103,10 +103,10 @@ curl -s "${H[@]}" "$EVTIVITY_API/v1/stations/$STA/security-logs?limit=50" \
 
 ## 3. Run the OCTT conformance runner (`references/overview.md`, `references/conformance-testing.md`)
 
-- Check the CSMS quickly, no source checkout: dashboard or API (CSMS suites only).
-- TLS reconnect steps, one module, selected tests, or the charging station suites: command line from a CSMS checkout.
+- Check the CSMS or the simulator quickly, no source checkout: dashboard or API (`sutType` `csms` or `cs`).
+- TLS reconnect steps, one module or selected tests: command line from a CSMS checkout.
 
-Dashboard: **Settings**, **Conformance** tab. Choose **OCPP 2.1**, **OCPP 2.0.1**, **OCPP 1.6** or **Run All Tests**, click **Run Tests**. Click a run for the per-module breakdown and each step's expected and actual result.
+Dashboard: **Settings**, **Conformance** tab. In **System Under Test** choose **CSMS** or **Charging Station Simulator**, then **OCPP 2.1**, **OCPP 2.0.1**, **OCPP 1.6** or **Run All Tests**, click **Run Tests**. Click a run for the per-module breakdown and each step's expected and actual result.
 
 ```bash
 RUN=$(curl -s "${H[@]}" "$EVTIVITY_API/v1/octt/runs" -d '{"ocppVersion":"ocpp2.1","sutType":"csms"}' | jq -r .id)
@@ -115,7 +115,7 @@ curl -s "${H[@]}" "$EVTIVITY_API/v1/octt/runs/$RUN/summary"
 curl -s "${H[@]}" "$EVTIVITY_API/v1/octt/runs/$RUN?status=failed" | jq '.results[] | {testId, module, error, steps}'
 ```
 
-- `ocppVersion`: `ocpp2.1`, `ocpp2.0.1`, `ocpp1.6` or `all` (`ocpp2.0.1` runs the CSMS suite only). Run `status`: `pending`, `running`, `completed`, `failed`. Test `status` filter: `passed`, `failed`, `skipped`, `error`, `notApplicable`.
+- `ocppVersion`: `ocpp2.1`, `ocpp2.0.1`, `ocpp1.6` or `all`, for either `sutType`. A `cs` run tests the Charging Station Simulator with the charging station cases and needs no running CSMS. Run `status`: `pending`, `running`, `completed`, `failed`. Test `status` filter: `passed`, `failed`, `skipped`, `error`, `notApplicable`.
 - The worker runs the job. If runs stay `pending`, check the worker.
 - Dashboard and API runs have no TLS server URL, so TLS reconnect steps report skipped. The OCSP tests run when the worker has `OCTT_OCSP_RESPONDER_URL`, else they are skipped.
 
@@ -136,7 +136,7 @@ npx tsc -b packages/css && npm run octt:cs:2.1   # charging station suite agains
 | Skipped | Applies but could not run here | Missing TLS server URL or OCSP responder |
 | Not applicable | Excluded by PICS or a missing feature | Not run, not counted as passed |
 
-Compare a run with the published results of the release: the totals, the per-module tables and every test case are in `references/csms-ocpp21.md`, `references/csms-ocpp16.md`, `references/charging-station-ocpp21.md` and `references/charging-station-ocpp16.md`, with the run date. A charging station test reported not applicable is expected when the simulator's PICS excludes it: the charging station references give the PICS item and reason for each. After a fix, re-run the affected module, then the full suite.
+Compare a run with the published results of the release: the totals, the per-module tables and every test case are in `references/csms-ocpp21.md`, `references/csms-ocpp201.md`, `references/csms-ocpp16.md`, `references/charging-station-ocpp21.md`, `references/charging-station-ocpp201.md` and `references/charging-station-ocpp16.md`, with the run date. The OCPP 2.0.1 CSMS reference also counts the results per certification profile. A charging station test reported not applicable is expected when the simulator's PICS excludes it: the charging station references give the PICS item and reason for each. After a fix, re-run the affected module, then the full suite.
 
 ## 4. Connect a real station for testing
 
@@ -193,5 +193,5 @@ Generated from the website docs. Never edit them. The first line of each file is
 - `references/overview.md`: how the runner works, suites, statuses, PICS and not applicable rules, command-line flags.
 - `references/conformance-testing.md`: the dashboard Conformance tab and results page.
 - `references/ocpp-testing.md`: manual testing with the OCPP Commands and Configurations tabs.
-- `references/csms-ocpp21.md`, `references/csms-ocpp16.md`: published CSMS results per module and test case (grep them).
-- `references/charging-station-ocpp21.md`, `references/charging-station-ocpp16.md`: published simulator results, PICS and not applicable cases (grep them).
+- `references/csms-ocpp21.md`, `references/csms-ocpp201.md`, `references/csms-ocpp16.md`: published CSMS results per module and test case, and for 2.0.1 per certification profile (grep them).
+- `references/charging-station-ocpp21.md`, `references/charging-station-ocpp201.md`, `references/charging-station-ocpp16.md`: published simulator results, PICS and not applicable cases (grep them).

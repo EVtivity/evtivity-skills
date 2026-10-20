@@ -161,7 +161,7 @@ Existing rows cancelled before this metadata was introduced have `NULL` actor an
 
 ## OCPP Flow
 
-The reservation flow depends on the OCPP version. Both versions are fully supported by the CSMS, including the holding-fee accounting described below.
+The reservation flow depends on the OCPP version. OCPP 1.6, 2.0.1 and 2.1 are fully supported by the CSMS, including the holding-fee accounting described below. OCPP 2.0.1 stations follow the OCPP 2.1 flow.
 
 **OCPP 2.1**: The CSMS sends `ReserveNow` with `idToken`, `evseId`, and `expiryDateTime`. The station responds with Accepted or Rejected.
 

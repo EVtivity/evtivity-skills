@@ -61,7 +61,7 @@ Created by the migrate container's seed steps on first `docker compose up -d`. I
 | `PORTAL_URL` | `http://localhost:7101` | Public URL of the driver portal |
 | `COOKIE_DOMAIN` | - | Domain for auth cookies. Set for cross-subdomain cookies. |
 | `TRUST_PROXY` | - | API and OCPI. Comma-separated IP addresses or CIDR ranges of the proxies or load balancers in front of the service. The service then takes the client address from their `X-Forwarded-For` (and the scheme from `X-Forwarded-Proto`), so rate limits, the guest charging limits per IP address, and audit and access logs see the real client behind a load balancer or ingress. Empty trusts no proxy, and behind a proxy the guest charging limits per IP address are then off. A hop count or `true` is refused at startup. Leave it empty when the ports are published directly, as in Docker Compose. |
-| `OCPP_STATION_TLS_URL` | - | Public `wss://` address of the OCPP TLS endpoint, without the station ID. Used when upgrading a connected OCPP 2.1 station from `ws://` to TLS (TLS + Basic Auth or Mutual TLS). Unset: those upgrades are refused. |
+| `OCPP_STATION_TLS_URL` | - | Public `wss://` address of the OCPP TLS endpoint, without the station ID. Used when upgrading a connected OCPP 2.0.1 or 2.1 station from `ws://` to TLS (TLS + Basic Auth or Mutual TLS). Unset: those upgrades are refused. |
 
 ## Worker
 

@@ -15,7 +15,7 @@ The conformance test runner executes OCPP test scenarios against the CSMS server
 ### Running a Test
 
 1. Navigate to **Settings** in the sidebar and open the **Conformance** tab.
-2. Select the OCPP version from the dropdown: **Run All Tests**, **OCPP 2.1**, or **OCPP 1.6**.
+2. Select the OCPP version from the dropdown: **Run All Tests**, **OCPP 2.1**, **OCPP 2.0.1**, or **OCPP 1.6**.
 3. Click **Run Tests**.
 
 ![Conformance testing page](https://www.evtivity.com/screenshots/csms/conformance.png)
@@ -91,7 +91,9 @@ Commands vary by OCPP version. Common commands available for both 1.6 and 2.1:
 | ClearCache | Clear the station's authorization cache |
 | ChangeAvailability | Set a connector or station to available or unavailable |
 
-### OCPP 2.1 Additional Commands
+### OCPP 2.0.1 and 2.1 Additional Commands
+
+An OCPP 2.0.1 station gets these commands too. Its **OCPP Commands** tab hides the commands that exist only in OCPP 2.1, such as the tariff and DER commands.
 
 | Command | Purpose |
 |---|---|
@@ -174,5 +176,5 @@ A recommended workflow for verifying station compliance:
 
 - Conformance tests provision temporary test stations in the database. These are cleaned up after each run.
 - Commands sent to offline stations are queued and delivered when the station reconnects (OCPP 2.1 offline queue).
-- The CSMS supports both OCPP 1.6 and 2.1. Command names and payloads differ between versions, but the CSMS handles translation automatically.
+- The CSMS supports OCPP 1.6, 2.0.1 and 2.1. Command names and payloads differ between versions, but the CSMS handles translation automatically.
 - Station configurations are read-only in the CSMS. To change a value, use a configuration template push or the SetVariables command.

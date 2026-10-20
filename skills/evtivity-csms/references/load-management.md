@@ -147,4 +147,4 @@ On a load-managed station, the CSMS refuses a `ChargingStationMaxProfile` at sta
 - Stations with no circuit assignment are excluded from allocation.
 - The station must be online to receive power limit commands.
 - Set a max power on every connector. A connector without one is capped at its equal share of the circuit, not at its rating. OCPP 2.1 stations fill in the max power from their configuration report. For OCPP 1.6 stations, set it on the station **Connectors** tab, where a **Max power unknown** badge marks the missing value. See [Max power](https://www.evtivity.com/docs/csms/stations#connectors).
-- OCPP 1.6 and 2.1 stations are both supported (command translation handles version differences).
+- OCPP 1.6, 2.0.1 and 2.1 stations are supported (command translation handles version differences).

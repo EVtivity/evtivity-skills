@@ -152,6 +152,7 @@ The **Billing Profile** card on the **Billing** tab sets who the fleet invoice g
 - **Legal name**, address and **VAT ID or tax ID**: the bill-to block printed on the invoice. Without a legal name the invoice uses the fleet name.
 - **Invoice language**: the language of the fleet invoice and its email.
 - **Payment terms (days)**: the days from issue to the due date. Leave it empty to use the payment terms in **Settings** > **Payment**.
+- **Invoice date**: **Day the invoice is issued** (the default) or **Last day of the billed month**. With the last day of the billed month, a fleet invoice or member invoice issued after the month end is dated on that day and numbered in that month (for example `INV-202610-...` for October), and its due date counts from that day. An invoice of the current month is dated today.
 - **Automatic monthly invoice**: the monthly run invoices the fleet for the previous month and emails the invoice to the billing contacts. See [Monthly Run](https://www.evtivity.com/docs/csms/fleets#monthly-run). It needs at least one billing contact. Without one the CSMS answers `FLEET_BILLING_CONTACT_REQUIRED`.
 
 ![Fleet billing profile](https://www.evtivity.com/screenshots/csms/fleet-billing-profile.png)
@@ -327,6 +328,15 @@ The **Fleet Invoices** card lists member invoices beside the fleet invoices. The
 - **Issue Credit Note** cancels the invoice. The driver receives the credit note (`invoice.MemberCreditNote`), and its sessions are billed again on the next invoice you generate for the driver for that month or a later one.
 
 When an issued member invoice passes its due date unpaid, the driver receives one reminder with the PDF attached (`invoice.MemberOverdue`). A driver without an email address gets the reminder once an address is added.
+
+#### Moving Sessions Between Invoices
+
+An unbilled session can move between the fleet invoice and the member invoice of its driver.
+
+- On the session page, **Bill to Driver** moves a session from the fleet invoice to the driver's member invoice, and **Bill to Fleet** moves it back.
+- In the invoice preview on the **Billing** tab, **Bill to Driver** on a driver row moves that driver's unbilled sessions of the month to the member invoice, and **Bill All to Drivers** moves every driver's. On the member rows, **Bill to Fleet** and **Bill All to Fleet** move them back to the fleet invoice.
+
+A session moves only while it is on no invoice, its driver is still a member of the fleet, and the fleet bills on account. A session of an issued invoice needs a credit note first: the credit note releases it. Each move is recorded in the session history. Moving sessions needs the `payments:write` permission and access to all sites.
 
 #### Monthly Run for Members
 

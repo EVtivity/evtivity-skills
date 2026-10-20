@@ -161,7 +161,7 @@ If the station rejects the start command because it already has an active transa
 
 - Charging sessions require a verified email and a valid payment method, unless the tariff is free and no paid tariff can apply later in the session.
 - A driver whose fleet bills on account needs no payment method.
-- The Portal supports OCPP 1.6 and 2.1 stations.
+- The Portal supports OCPP 1.6, 2.0.1 and 2.1 stations.
 - Live session data (energy, cost, duration) updates in real time via polling.
 - If a session fails to start, the Portal displays an error message with the reason from the station.
 - A start request at an unavailable station returns `409 STATION_UNAVAILABLE`.

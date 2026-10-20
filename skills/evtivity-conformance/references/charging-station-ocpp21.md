@@ -10,14 +10,14 @@ These are the OCTT test cases for the charging station role in OCPP 2.1. The tes
 
 A test case applies only when the simulator's PICS meets its conditions. The [PICS](#pics) section lists every item, and the [Not applicable](#not-applicable) section lists every excluded test case.
 
-Results as of 2026-10-05.
+Results as of 2026-10-20.
 
 ## Results by module
 
 | Module | Total | Passed | Not applicable |
 |---|---|---|---|
 | A - Security | 16 | 16 | 0 |
-| B - Provisioning | 61 | 58 | 3 |
+| B - Provisioning | 61 | 57 | 4 |
 | C - Authorization | 78 | 53 | 25 |
 | D - Local Authorization List | 9 | 9 | 0 |
 | E - Transactions | 61 | 61 | 0 |
@@ -25,17 +25,17 @@ Results as of 2026-10-05.
 | G - Availability | 21 | 21 | 0 |
 | H - Reservation | 21 | 21 | 0 |
 | I - Tariff and Cost | 25 | 22 | 3 |
-| J - Meter Values | 10 | 10 | 0 |
+| J - Meter Values | 10 | 9 | 1 |
 | K - Smart Charging | 76 | 44 | 32 |
 | L - Firmware Management | 15 | 11 | 4 |
-| M - Certificate Management | 27 | 20 | 7 |
-| N - Diagnostics | 61 | 60 | 1 |
-| O - Display Message | 33 | 33 | 0 |
+| M - Certificate Management | 27 | 17 | 10 |
+| N - Diagnostics | 61 | 58 | 3 |
+| O - Display Message | 33 | 32 | 1 |
 | P - Data Transfer | 3 | 3 | 0 |
 | Q - Bidirectional Power Transfer | 25 | 0 | 25 |
 | R - DER Control | 8 | 0 | 8 |
 | S - Battery Swapping | 3 | 0 | 3 |
-| **Total** | **578** | **467** | **111** |
+| **Total** | **578** | **459** | **119** |
 
 ## PICS
 
@@ -48,6 +48,7 @@ The simulator declares these items from OCPP 2.1 Part 5 (Certification Profiles)
 | DERControl | No | Certification profile DER control (DCDERCtrlr / ACDERCtrlr) (Reason: No DER control: the simulator has no inverter model or DER control types) |
 | C-09.2 | No | Start transaction options - Authorized (TxStartPoint contains Authorized) (Reason: Transactions start once the EV is connected and the driver is authorized (PowerPathClosed); the simulator has no TxCtrlr.TxStartPoint) |
 | C-13 | Yes | Support for Reset per EVSE (AllowReset) |
+| C-28 | No | Support for AlignedDataCtrlr.SendDuringIdle (clock-aligned meter values only when idle) (Reason: The simulator has no AlignedDataCtrlr.SendDuringIdle: its clock-aligned meter values continue during a transaction (TransactionEvent MeterValueClock)) |
 | C-42 | Yes | Signed Metervalues (SampledDataSignReadings, AlignedDataSignReadings) |
 | C-51 | No | Configurable TxStartPoint (Reason: The simulator has no TxCtrlr.TxStartPoint variable; its start point is fixed) |
 | C-43 | No | Install Firmware with ongoing transaction(s) (Reason: The simulator downloads a firmware during a transaction but installs it only after all transactions ended (InstallScheduled)) |
@@ -76,6 +77,9 @@ The simulator declares these items from OCPP 2.1 Part 5 (Certification Profiles)
 | AQ-7 | Yes | The Charging Station is able to download firmware while there is an ongoing transaction |
 | AQ-10 | Yes | The Charging Station supports a Delta monitor on the WriteOnly SecurityCtrlr.BasicAuthPassword |
 | UI-2.2 | No | Supported message format HTML (DisplayMessageCtrlr.SupportedFormats) (Reason: The simulator display shows ASCII and UTF8 text only) |
+| UI-1.1 | Yes | Supported message priority AlwaysFront (DisplayMessageCtrlr.SupportedPriorities) |
+| UI-1.2 | Yes | Supported message priority InFront (DisplayMessageCtrlr.SupportedPriorities) |
+| UI-1.3 | Yes | Supported message priority NormalCycle (DisplayMessageCtrlr.SupportedPriorities) |
 | UI-3 | Yes | Multi-language support (DisplayMessageCtrlr.Language valuesList) |
 | AQ-19 | Yes | The Charging Station has at least 1 unsupported language code |
 | HFS-13 | No | Charging Station has Battery Swapping support (BatterySwapCtrlr.Available) (Reason: No battery swap station model: the simulator has no battery inventory or swap bays) |
@@ -83,6 +87,11 @@ The simulator declares these items from OCPP 2.1 Part 5 (Certification Profiles)
 | NoSmartCharging | No | The Charging Station does not support smart charging (TC_K_15_CS prerequisite) (Reason: The simulator supports smart charging (SmartChargingCtrlr.Enabled), so it never answers NotSupported) |
 | SingleChargingRateUnit | No | Only one of the charging rate units A (SC-2.1) and W (SC-2.2) is supported (TC_K_12_CS and TC_K_42_CS condition) (Reason: The simulator supports both A and W (SmartChargingCtrlr.RateUnit A,W)) |
 | NoLocalCostCalculation | No | The Charging Station does not support local cost calculation, or has it disabled (TC_I_103_CS prerequisite) (Reason: The simulator supports local cost calculation (P-0). With TariffCostCtrlr.Enabled[Tariff] false it still accepts a default tariff, as TC_I_107_CS (Part 5, P-0) requires; Part 5 does not list TC_I_103) |
+| AdditionalRootCertificateCheck | No | SecurityCtrlr.AdditionalRootCertificateCheck is true: a new CSMSRootCertificate must be signed by the installed one, which stays as fallback (M05.FR.10, M05.FR.11, M05.FR.13, M05.FR.14; TC_M_09_CS, TC_M_30_CS, TC_M_31_CS) (Reason: The simulator has no SecurityCtrlr.AdditionalRootCertificateCheck: it installs any valid CSMSRootCertificate next to the installed ones and keeps no fallback root) |
+| UnsupportedComponentCriteria | No | The Charging Station has one or more not supported componentCriteria (TC_B_19_CS prerequisite) (Reason: The simulator supports every ComponentCriterionEnumType value (Active, Available, Enabled, Problem) in GetReport, so it has no unsupported componentCriteria to report NotSupported for) |
+| UnsupportedMonitoringCriteria | No | The Charging Station has a <Configured Unsupported monitoringCriteria> (TC_N_04_CS) (Reason: The simulator supports every MonitoringCriterionEnumType value (ThresholdMonitoring, DeltaMonitoring, PeriodicMonitoring) in GetMonitoringReport) |
+| UnsupportedMonitoringBase | No | The Charging Station has a <Configured unsupported_monitoringBase> (TC_N_07_CS) (Reason: The simulator supports every MonitoringBaseEnumType value (All, FactoryDefault, HardWiredOnly) in SetMonitoringBase) |
+| UnsupportedDisplayMessageState | Yes | The Charging Station does not support all message states of the OCPP version (TC_O_18_CS prerequisite) |
 | NoLogInformationAvailable | No | The Charging Station can be in a state with no log information available (TC_N_34_CS prerequisite, N01.FR.05) (Reason: The simulator always has diagnostics and security log information to upload, so it cannot be put in a state without log information) |
 
 ## Not applicable
@@ -92,6 +101,7 @@ The simulator's PICS excludes these test cases. They are not run and do not coun
 | Test ID | Name | Reason |
 |---|---|---|
 | TC_B_15_CS | Get Base Report - Not Supported base report | PICS C-56 supported: test requires a station without it (Support for providing the SummaryInventory) |
+| TC_B_19_CS | Get Custom Report - for unknown component criteria | PICS UnsupportedComponentCriteria not supported: The simulator supports every ComponentCriterionEnumType value (Active, Available, Enabled, Problem) in GetReport, so it has no unsupported componentCriteria to report NotSupported for |
 | TC_B_28_CS | Reset EVSE - Not Supported | PICS C-13 supported: test requires a station without it (Support for Reset per EVSE (AllowReset)) |
 | TC_B_29_CS | Reset EVSE - With ongoing transaction - Not Supported | PICS C-13 supported: test requires a station without it (Support for Reset per EVSE (AllowReset)) |
 | TC_C_50_CS | Authorization using Contract Certificates 15118 - Online - Local contract certificate validation - Accepted | PICS ISO15118Support not supported: No ISO 15118 stack: the simulator has no EV-EVSE high-level communication, EV emulator, or V2G charging station certificate |
@@ -122,6 +132,7 @@ The simulator's PICS excludes these test cases. They are not run and do not coun
 | TC_I_103_CS | Set Default Tariff - CS doesn’t support local cost calculation | PICS NoLocalCostCalculation not supported: The simulator supports local cost calculation (P-0). With TariffCostCtrlr.Enabled[Tariff] false it still accepts a default tariff, as TC_I_107_CS (Part 5, P-0) requires; Part 5 does not list TC_I_103 |
 | TC_I_120_CS | Local Cost Calculation - Cost Details of Transaction - reservation | PICS P-1 not supported: The simulator calculates cost from unconditional tariff prices only; SetDefaultTariff answers ConditionNotSupported |
 | TC_I_121_CS | Local Cost Calculation - Cost Details of Transaction - minCost/maxCost | PICS P-1 not supported: The simulator calculates cost from unconditional tariff prices only; SetDefaultTariff answers ConditionNotSupported |
+| TC_J_06_CS | Clock-aligned Meter Values - No Meter Values during transaction | PICS C-28 not supported: The simulator has no AlignedDataCtrlr.SendDuringIdle: its clock-aligned meter values continue during a transaction (TransactionEvent MeterValueClock) |
 | TC_K_12_CS | Set Charging Profile - ChargerRateUnit Rejected | PICS SingleChargingRateUnit not supported: The simulator supports both A and W (SmartChargingCtrlr.RateUnit A,W) |
 | TC_K_15_CS | Set Charging Profile - Not Supported | PICS NoSmartCharging not supported: The simulator supports smart charging (SmartChargingCtrlr.Enabled), so it never answers NotSupported |
 | TC_K_42_CS | Get Composite Schedule - chargingRateUnit not supported | PICS SingleChargingRateUnit not supported: The simulator supports both A and W (SmartChargingCtrlr.RateUnit A,W) |
@@ -158,14 +169,20 @@ The simulator's PICS excludes these test cases. They are not run and do not coun
 | TC_L_12_CS | Secure Firmware Update - Unable to download/install firmware with ongoing transaction - AllowNewSessionsPendingFirmwareUpdate is true | PICS AQ-7 supported: test requires a station without it (The Charging Station is able to download firmware while there is an ongoing transaction) |
 | TC_L_13_CS | Secure Firmware Update - Unable to download/install firmware with ongoing transaction - AllowNewSessionsPendingFirmwareUpdate is false | PICS AQ-7 supported: test requires a station without it (The Charging Station is able to download firmware while there is an ongoing transaction) |
 | TC_L_16_CS | Secure Firmware Update - Able to update firmware with ongoing transaction | PICS C-43 not supported: The simulator downloads a firmware during a transaction but installs it only after all transactions ended (InstallScheduled) |
+| TC_M_09_CS | Install CA certificate - AdditionalRootCertificateCheck - Rejected | PICS AdditionalRootCertificateCheck not supported: The simulator has no SecurityCtrlr.AdditionalRootCertificateCheck: it installs any valid CSMSRootCertificate next to the installed ones and keeps no fallback root |
 | TC_M_24_CS | Get Charging Station Certificate status - Success | PICS ISO15118Support not supported: No ISO 15118 stack: the simulator has no EV-EVSE high-level communication, EV emulator, or V2G charging station certificate |
 | TC_M_25_CS | Get Charging Station Certificate status - Rejected | PICS ISO15118Support not supported: No ISO 15118 stack: the simulator has no EV-EVSE high-level communication, EV emulator, or V2G charging station certificate |
 | TC_M_26_CS | Certificate Installation EV - Success | PICS ISO15118Support not supported: No ISO 15118 stack: the simulator has no EV-EVSE high-level communication, EV emulator, or V2G charging station certificate |
 | TC_M_27_CS | Certificate Installation EV - Failed | PICS ISO15118Support not supported: No ISO 15118 stack: the simulator has no EV-EVSE high-level communication, EV emulator, or V2G charging station certificate |
 | TC_M_28_CS | Certificate Update EV - Success | PICS ISO15118Support not supported: No ISO 15118 stack: the simulator has no EV-EVSE high-level communication, EV emulator, or V2G charging station certificate |
 | TC_M_29_CS | Certificate Update EV - Failed | PICS ISO15118Support not supported: No ISO 15118 stack: the simulator has no EV-EVSE high-level communication, EV emulator, or V2G charging station certificate |
+| TC_M_30_CS | Install CA certificate - AdditionalRootCertificateCheck - Reconnect Success | PICS AdditionalRootCertificateCheck not supported: The simulator has no SecurityCtrlr.AdditionalRootCertificateCheck: it installs any valid CSMSRootCertificate next to the installed ones and keeps no fallback root |
+| TC_M_31_CS | Install CA certificate - AdditionalRootCertificateCheck - Reconnect Fallback | PICS AdditionalRootCertificateCheck not supported: The simulator has no SecurityCtrlr.AdditionalRootCertificateCheck: it installs any valid CSMSRootCertificate next to the installed ones and keeps no fallback root |
 | TC_M_100_CS | Certificate Installation EV - ISO 15118-20 - Success | PICS ISO15118Support not supported: No ISO 15118 stack: the simulator has no EV-EVSE high-level communication, EV emulator, or V2G charging station certificate |
+| TC_N_04_CS | Get Monitoring Report - unknown component criteria | PICS UnsupportedMonitoringCriteria not supported: The simulator supports every MonitoringCriterionEnumType value (ThresholdMonitoring, DeltaMonitoring, PeriodicMonitoring) in GetMonitoringReport |
+| TC_N_07_CS | Set Monitoring Base - for unknown base type | PICS UnsupportedMonitoringBase not supported: The simulator supports every MonitoringBaseEnumType value (All, FactoryDefault, HardWiredOnly) in SetMonitoringBase |
 | TC_N_34_CS | Retrieve Log Information - Rejected | PICS NoLogInformationAvailable not supported: The simulator always has diagnostics and security log information to upload, so it cannot be put in a state without log information |
+| TC_O_17_CS | Set Display Message - NotSupportedPriority | PICS none of NOT UI-1.1, NOT UI-1.2, NOT UI-1.3 holds: Supported message priority AlwaysFront (DisplayMessageCtrlr.SupportedPriorities); Supported message priority InFront (DisplayMessageCtrlr.SupportedPriorities); Supported message priority NormalCycle (DisplayMessageCtrlr.SupportedPriorities) |
 | TC_Q_100_CS | V2X Authorisation - V2X Tx Measurands defined | PICS BidirectionalPowerTransfer not supported: No V2X: the simulator models unidirectional charging only and has no ISO 15118-20 or CHAdeMO V2X loop |
 | TC_Q_101_CS | V2X Authorisation - ISO15118-20 - Processing charging needs | PICS BidirectionalPowerTransfer not supported: No V2X: the simulator models unidirectional charging only and has no ISO 15118-20 or CHAdeMO V2X loop |
 | TC_Q_102_CS | V2X Authorisation - ISO15118-20 - Charging only (V2X control) before starting V2X - Allowed Energy | PICS BidirectionalPowerTransfer not supported: No V2X: the simulator models unidirectional charging only and has no ISO 15118-20 or CHAdeMO V2X loop |
@@ -249,7 +266,7 @@ The simulator's PICS excludes these test cases. They are not run and do not coun
 | TC_B_16_CS | Get Custom Report - with component criteria | Passed |
 | TC_B_17_CS | Get Custom Report - with component/variable | Passed |
 | TC_B_18_CS | Get Custom Report - with component criteria and component/variable | Passed |
-| TC_B_19_CS | Get Custom Report - for unknown component criteria | Passed |
+| TC_B_19_CS | Get Custom Report - for unknown component criteria (PICS UnsupportedComponentCriteria not supported: The simulator supports every ComponentCriterionEnumType value (Active, Available, Enabled, Problem) in GetReport, so it has no unsupported componentCriteria to report NotSupported for) | Not applicable |
 | TC_B_20_CS | Reset Charging Station - Without ongoing transaction - OnIdle | Passed |
 | TC_B_21_CS | Reset Charging Station - With Ongoing Transaction - OnIdle | Passed |
 | TC_B_22_CS | Reset Charging Station - With Ongoing Transaction - Immediate | Passed |
@@ -595,7 +612,7 @@ The simulator's PICS excludes these test cases. They are not run and do not coun
 | TC_J_02_CS | Clock-aligned Meter Values - Transaction ongoing | Passed |
 | TC_J_03_CS | Clock-aligned Meter Values - EventType Ended | Passed |
 | TC_J_04_CS | Clock-aligned Meter Values - Signed | Passed |
-| TC_J_06_CS | Clock-aligned Meter Values - No Meter Values during transaction | Passed |
+| TC_J_06_CS | Clock-aligned Meter Values - No Meter Values during transaction (PICS C-28 not supported: The simulator has no AlignedDataCtrlr.SendDuringIdle: its clock-aligned meter values continue during a transaction (TransactionEvent MeterValueClock)) | Not applicable |
 | TC_J_07_CS | Sampled Meter Values - EventType Started - EVSE known | Passed |
 | TC_J_08_CS | Sampled Meter Values - Context Transaction.Begin - EVSE not known | Passed |
 | TC_J_09_CS | Sampled Meter Values - EventType Updated | Passed |
@@ -718,7 +735,7 @@ The simulator's PICS excludes these test cases. They are not run and do not coun
 | TC_M_03_CS | Install CA certificate - V2GRootCertificate | Passed |
 | TC_M_04_CS | Install CA certificate - MORootCertificate | Passed |
 | TC_M_07_CS | Install CA certificate - Rejected - Certificate invalid | Passed |
-| TC_M_09_CS | Install CA certificate - AdditionalRootCertificateCheck - Rejected | Passed |
+| TC_M_09_CS | Install CA certificate - AdditionalRootCertificateCheck - Rejected (PICS AdditionalRootCertificateCheck not supported: The simulator has no SecurityCtrlr.AdditionalRootCertificateCheck: it installs any valid CSMSRootCertificate next to the installed ones and keeps no fallback root) | Not applicable |
 | TC_M_12_CS | Retrieve certificates - CSMSRootCertificate | Passed |
 | TC_M_13_CS | Retrieve certificates - ManufacturerRootCertificate | Passed |
 | TC_M_14_CS | Retrieve certificates - V2GRootCertificate | Passed |
@@ -736,8 +753,8 @@ The simulator's PICS excludes these test cases. They are not run and do not coun
 | TC_M_27_CS | Certificate Installation EV - Failed (PICS ISO15118Support not supported: No ISO 15118 stack: the simulator has no EV-EVSE high-level communication, EV emulator, or V2G charging station certificate) | Not applicable |
 | TC_M_28_CS | Certificate Update EV - Success (PICS ISO15118Support not supported: No ISO 15118 stack: the simulator has no EV-EVSE high-level communication, EV emulator, or V2G charging station certificate) | Not applicable |
 | TC_M_29_CS | Certificate Update EV - Failed (PICS ISO15118Support not supported: No ISO 15118 stack: the simulator has no EV-EVSE high-level communication, EV emulator, or V2G charging station certificate) | Not applicable |
-| TC_M_30_CS | Install CA certificate - AdditionalRootCertificateCheck - Reconnect Success | Passed |
-| TC_M_31_CS | Install CA certificate - AdditionalRootCertificateCheck - Reconnect Fallback | Passed |
+| TC_M_30_CS | Install CA certificate - AdditionalRootCertificateCheck - Reconnect Success (PICS AdditionalRootCertificateCheck not supported: The simulator has no SecurityCtrlr.AdditionalRootCertificateCheck: it installs any valid CSMSRootCertificate next to the installed ones and keeps no fallback root) | Not applicable |
+| TC_M_31_CS | Install CA certificate - AdditionalRootCertificateCheck - Reconnect Fallback (PICS AdditionalRootCertificateCheck not supported: The simulator has no SecurityCtrlr.AdditionalRootCertificateCheck: it installs any valid CSMSRootCertificate next to the installed ones and keeps no fallback root) | Not applicable |
 | TC_M_100_CS | Certificate Installation EV - ISO 15118-20 - Success (PICS ISO15118Support not supported: No ISO 15118 stack: the simulator has no EV-EVSE high-level communication, EV emulator, or V2G charging station certificate) | Not applicable |
 | TC_M_101_CS | Install CA certificate - OEMRootCertificate | Passed |
 
@@ -750,10 +767,10 @@ The simulator's PICS excludes these test cases. They are not run and do not coun
 | TC_N_01_CS | Get Monitoring Report - with monitoringCriteria | Passed |
 | TC_N_02_CS | Get Monitoring Report - with component/variable | Passed |
 | TC_N_03_CS | Get Monitoring Report - criteria + component/variable | Passed |
-| TC_N_04_CS | Get Monitoring Report - unknown component criteria | Passed |
+| TC_N_04_CS | Get Monitoring Report - unknown component criteria (PICS UnsupportedMonitoringCriteria not supported: The simulator supports every MonitoringCriterionEnumType value (ThresholdMonitoring, DeltaMonitoring, PeriodicMonitoring) in GetMonitoringReport) | Not applicable |
 | TC_N_05_CS | Set Monitoring Base - success | Passed |
 | TC_N_06_CS | Set Monitoring Base - test removal custom monitors | Passed |
-| TC_N_07_CS | Set Monitoring Base - for unknown base type | Passed |
+| TC_N_07_CS | Set Monitoring Base - for unknown base type (PICS UnsupportedMonitoringBase not supported: The simulator supports every MonitoringBaseEnumType value (All, FactoryDefault, HardWiredOnly) in SetMonitoringBase) | Not applicable |
 | TC_N_08_CS | Set Variable Monitoring - one element | Passed |
 | TC_N_09_CS | Set Variable Monitoring - Multiple elements | Passed |
 | TC_N_10_CS | Set Variable Monitoring - Multiple on same component/variable | Passed |
@@ -829,7 +846,7 @@ The simulator's PICS excludes these test cases. They are not run and do not coun
 | TC_O_12_CS | Set Display Message - Replace DisplayMessage | Passed |
 | TC_O_13_CS | Set Display Message - Display at StartTime | Passed |
 | TC_O_14_CS | Set Display Message - Remove after EndTime | Passed |
-| TC_O_17_CS | Set Display Message - NotSupportedPriority | Passed |
+| TC_O_17_CS | Set Display Message - NotSupportedPriority (PICS none of NOT UI-1.1, NOT UI-1.2, NOT UI-1.3 holds: Supported message priority AlwaysFront (DisplayMessageCtrlr.SupportedPriorities); Supported message priority InFront (DisplayMessageCtrlr.SupportedPriorities); Supported message priority NormalCycle (DisplayMessageCtrlr.SupportedPriorities)) | Not applicable |
 | TC_O_18_CS | Set Display Message - NotSupportedState | Passed |
 | TC_O_19_CS | Set Display Message - NotSupportedMessageFormat | Passed |
 | TC_O_20_CS | Set Display Message - Persistent over reboot | Passed |

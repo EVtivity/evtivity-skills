@@ -10,7 +10,7 @@ EVtivity is an AI-powered, open-source charging station management system (CSMS)
 
 ## Key Features
 
-- **OCPP 1.6 and 2.1** with conformance test coverage for both versions
+- **OCPP 1.6, 2.0.1 and 2.1**, with conformance tests for the CSMS in all three versions
 - **Real-time monitoring** of station status, connector state, and active sessions
 - **Multi-tenant RBAC** with organizations, roles, and granular permissions
 - **Driver portal** for EV drivers to find stations, start sessions, and manage payments
