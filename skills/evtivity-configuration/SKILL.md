@@ -39,6 +39,7 @@ This skill tells you where a setting lives and how to change it safely. The webs
 | Script against the API | API key from the dashboard, sent as Bearer | `references/authentication.md` |
 | Restrict what a user can do | Custom role from `resource:action` permissions | `references/authentication.md` |
 | Turn on MFA or reCAPTCHA | Settings > Security in the dashboard | `references/authentication.md` |
+| Change the password rules or how long sessions last | Settings > Security > Passwords and Sessions | `references/authentication.md` |
 | Stations on TLS (profiles 2 and 3) | `OCPP_TLS_PORT`, `OCPP_TLS_CERT`, `OCPP_TLS_KEY`, `OCPP_TLS_CA` (or the `*_PEM` variants), `OCPP_STATION_TLS_URL` on the API | `references/ocpp-settings.md` |
 | Run several OCPP servers | `OCPP_INSTANCE_ID` per instance | `references/ocpp-settings.md` |
 | Open or approval-based station onboarding | `REGISTRATION_POLICY` at first install, later in the dashboard | `references/environment-variables.md` |
@@ -70,7 +71,8 @@ Before you change `SETTINGS_ENCRYPTION_KEY` on an existing install, stop and con
 - RBAC: permissions use `resource:action` (for example `stations:write`). Write implies read. Default roles are Admin, Operator and Viewer. Manage roles in the dashboard (evtivity-csms).
 - MFA: email, TOTP or SMS through Twilio. An admin enables methods system-wide in Settings > Security, then each user enables one. SMS needs Twilio, email needs SMTP. A code is single-use. Five failed attempts return `MFA_CHALLENGE_EXHAUSTED`.
 - reCAPTCHA v3: invisible and score-based. Turn it on and enter the site key and secret key in Settings > Security. Turning it on for a host that is not on the site key's domain list blocks every sign-in (fix: evtivity-troubleshoot).
-- Sessions: access tokens last 1 hour. Refresh tokens rotate on every use. A reused refresh token returns `401 INVALID_REFRESH_TOKEN`.
+- Password policy: one policy for operators and drivers in Settings > Security > Passwords and Sessions. Minimum length 8 to 64 (default 12), uppercase, lowercase and number required by default, symbol optional, at most 128 characters. It applies the next time someone sets a password. Sign-in never checks it.
+- Sessions: access tokens last 60 minutes and refresh tokens 30 days by default. An admin sets both, separately for operators and drivers, in the same tab. Refresh tokens rotate on every use, and each rotation starts a new lifetime. A reused refresh token returns `401 INVALID_REFRESH_TOKEN`.
 - Auth endpoints have their own rate limit: `AUTH_RATE_LIMIT_MAX` per `AUTH_RATE_LIMIT_WINDOW`.
 
 ## Workflow: database, migrations and seed (`references/database-setup.md`)

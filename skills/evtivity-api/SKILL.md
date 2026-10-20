@@ -59,7 +59,7 @@ curl -s "$EVTIVITY_API/v1/stations" -H "Authorization: Bearer $EVTIVITY_TOKEN"
 
 ### Operator: sign-in token
 
-`POST /v1/auth/login` with `email` and `password` returns `token` (a JWT valid for one hour) and sets cookies for the dashboard. Bearer clients send `token`.
+`POST /v1/auth/login` with `email` and `password` returns `token` (a JWT valid for the operator sign-in check interval, 60 minutes by default) and sets cookies for the dashboard. Bearer clients send `token`.
 
 - MFA on: the response has `mfaRequired: true` and an `mfaToken`. Post the code to `POST /v1/auth/mfa/verify` to get the session token.
 - reCAPTCHA on: the login needs `recaptchaToken`, so scripts should use an API key instead.

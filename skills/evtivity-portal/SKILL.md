@@ -30,7 +30,7 @@ On Helm or AWS the hosts come from the deployment. Use placeholders such as `htt
 3. Sign in. With MFA, the driver enters a code after the password.
 4. Optional MFA under Account > Security. To switch methods, disable MFA first (`MFA_ALREADY_ENABLED` otherwise).
 
-Passwords need at least 12 characters with upper, lower, digit and symbol. An invitation link works once and expires after 7 days. A reset link is valid for 1 hour and signs the driver out on every device.
+Passwords follow the operator's password policy (Settings > Security > Passwords and Sessions, evtivity-configuration). By default: at least 12 characters with an uppercase letter, a lowercase letter and a number, no symbol required. The form lists the rules in effect. A password that misses one answers 400 `WEAK_PASSWORD`, whose `missing` list names the rules. An invitation link works once and expires after 7 days. A reset link is valid for 1 hour and signs the driver out on every device.
 
 ## Workflow 2: sign in through the API
 
