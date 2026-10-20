@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.47 (https://github.com/EVtivity/evtivity-csms, commit 27fd114116fe) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -82,6 +82,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `DRIVER_ERASED` | 409 | The driver was erased |
 | `DRIVER_HAS_ACTIVE_SESSION` | 409 | The driver has an active charging session |
 | `DRIVER_INACTIVE` | 409 | Driver is inactive |
+| `DRIVER_NOT_FLEET_MEMBER` | 409 | The driver is no longer a member of the fleet |
 | `DRIVER_NOT_FOUND` | 400, 404 | Driver not found |
 | `DUPLICATE_ALERT_RULE` | 409 | An alert rule for this component and variable already exists |
 | `DUPLICATE_API_KEY_NAME` | 409 | An API key with this name already exists |
@@ -104,6 +105,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `EVSE_NOT_FOUND` | 404 | EVSE not found on this station |
 | `EVSE_RESERVED` | 409 | The EVSE has an active or upcoming reservation. Cancel it before retiring the EVSE. |
 | `FAVORITE_NOT_FOUND` | 404 | Favorite not found |
+| `FLEET_ACCOUNT_BILLING_OFF` | 409 | The fleet does not bill on account |
 | `FLEET_BILLING_CONTACT_REQUIRED` | 400 | The fleet needs at least one billing contact for automatic invoicing and invoice emails. |
 | `FLEET_BILLING_OLD_PODS_CONNECTED` | 409 | A process of an older release is still connected. Finish the upgrade, then change the fleet billing. |
 | `FLEET_BILLING_VERSION_CHECK_STALE` | 409 | The worker's version check has not run recently, so the upgrade cannot be confirmed. Check that the worker is running, then change the fleet billing. |
@@ -283,6 +285,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `SESSION_NOT_ACTIVE` | 409 | The session is not active |
 | `SESSION_NOT_FOUND` | 400, 404 | Session not found |
 | `SESSION_NOT_LINKED` | 400 | Session not linked to this case |
+| `SESSION_NOT_ON_ACCOUNT` | 409 | The session is not billed on account to a fleet |
 | `SESSION_NO_VEHICLE_ID` | 409 | The charger sent no vehicle id for this session. |
 | `SESSION_REBILL_IN_PROGRESS` | 409 | The session is being billed. Try again in a few minutes. |
 | `SESSION_REBILL_NOT_ELIGIBLE` | 409 | This session cannot be billed |
@@ -300,6 +303,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `STATION_ALREADY_AVAILABLE` | 409 | Station already has an available connector |
 | `STATION_ALREADY_IN_FLEET` | 409 | Station is already in this fleet |
 | `STATION_CREDENTIALS_ROUTE_REQUIRED` | 400 | Station passwords are changed with POST /v1/stations/:id/credentials, not with a generic OCPP command |
+| `STATION_ENDPOINT_URL_UNKNOWN` | 400 | The address this station connects on is not known yet. It is recorded when the station next connects. |
 | `STATION_HAS_ACTIVE_SESSION` | 409 | The station has an active charging session. Stop it before deleting the station. |
 | `STATION_ID_EXISTS` | 409 | A station with this name already exists. Please choose a different name. |
 | `STATION_NOT_FOUND` | 400, 404 | Station not found |

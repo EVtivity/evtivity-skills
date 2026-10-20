@@ -1,6 +1,6 @@
 # EVtivity API routes: Fleets
 
-Generated from EVtivity CSMS v0.1.46 (https://github.com/EVtivity/evtivity-csms, commit ed20394d5521) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.47 (https://github.com/EVtivity/evtivity-csms, commit 27fd114116fe) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -38,6 +38,7 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/fleets/{id}/invoices` | payments:read | List a fleet's invoices and credit notes |
 | POST | `/v1/fleets/{id}/invoices` | payments:write | Generate the fleet invoice of a period |
 | POST | `/v1/fleets/{id}/member-invoices` | payments:write | Generate one driver's member invoice of a period |
+| POST | `/v1/fleets/{id}/billing-recipient` | payments:write | Move drivers' unbilled sessions between the fleet invoice and member invoices |
 | POST | `/v1/fleets/{id}/member-invoices/batch` | payments:write | Generate the member invoices of a period for every driver |
 | GET | `/v1/fleets/{fleetId}/reservations` | reservations:read | List fleet reservations |
 | POST | `/v1/fleets/{fleetId}/reservations` | reservations:write | Create bulk reservations for a fleet |

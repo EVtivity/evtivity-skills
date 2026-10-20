@@ -4,9 +4,9 @@ description: "Install and run EVtivity CSMS locally with Docker: one setup scrip
 license: MIT
 compatibility: The setup script needs bash, git, curl, Docker with Docker Compose v2 and Node.js 24 or later with npm (the database seed runs on the host). Linux, macOS, or WSL on Windows.
 metadata:
-  evtivity-version: "0.1.46"
-  evtivity-release: "v0.1.46"
-  evtivity-commit: "ed20394d5521be3862275781ed9b668da947cffc"
+  evtivity-version: "0.1.47"
+  evtivity-release: "v0.1.47"
+  evtivity-commit: "27fd114116fed25d54c8a98fb40675133997380f"
   evtivity-docs-section: getting-started
 ---
 

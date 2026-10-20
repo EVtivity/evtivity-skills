@@ -4,9 +4,9 @@ description: "Run the EVtivity charging station simulator: create simulated OCPP
 license: MIT
 compatibility: Needs a running EVtivity CSMS with the simulator service (Docker Compose service "simulator"), curl and jq for the API examples.
 metadata:
-  evtivity-version: "0.1.46"
-  evtivity-release: "v0.1.46"
-  evtivity-commit: "ed20394d5521be3862275781ed9b668da947cffc"
+  evtivity-version: "0.1.47"
+  evtivity-release: "v0.1.47"
+  evtivity-commit: "27fd114116fed25d54c8a98fb40675133997380f"
   evtivity-docs-section: simulator
 ---
 
