@@ -29,7 +29,7 @@ import skillmeta  # noqa: E402
 REPO = "https://github.com/EVtivity/evtivity-skills"
 HOMEPAGE = "https://www.evtivity.com/docs"
 SUMMARY = (
-    "Agent Skills for the EVtivity CSMS (OCPP 1.6 and 2.1): set up, configure, deploy, "
+    "Agent Skills for the EVtivity CSMS (OCPP 1.6, 2.0.1 and 2.1): set up, configure, deploy, "
     "operate, test, integrate, troubleshoot and report issues."
 )
 AUTHOR = {"name": "EVtivity", "url": "https://www.evtivity.com"}

@@ -14,7 +14,7 @@ metadata:
 
 Not for: creating simulated stations or driving test sessions (use evtivity-simulator), a station that cannot connect (use evtivity-troubleshoot), API keys and the route catalog (use evtivity-api).
 
-EVtivity speaks OCPP 1.6, 2.0.1 and 2.1 on one WebSocket server. The OCTT suites cover OCPP 1.6 and 2.1. An OCPP 2.0.1 station gets only the commands and values OCPP 2.0.1 defines; anything else answers 400 `OCPP_VERSION_MISMATCH` and nothing is sent. You test it two ways:
+EVtivity speaks OCPP 1.6, 2.0.1 and 2.1 on one WebSocket server. The OCTT CSMS suites cover OCPP 2.1, 2.0.1 and 1.6. The charging station suites cover OCPP 2.1 and 1.6. An OCPP 2.0.1 station gets only the commands and values OCPP 2.0.1 defines; anything else answers 400 `OCPP_VERSION_MISMATCH` and nothing is sent. You test it two ways:
 
 - Manual: send single OCPP commands to a station and read the answer and the message log.
 - Automated: run the built-in OCTT conformance runner, which follows the Open Charge Alliance OCTT test cases. Its results are not an OCA certification.
@@ -38,7 +38,7 @@ curl -s "${H[@]}" "$EVTIVITY_API/v1/stations?search=CS-001" \
   | jq '.data[] | {id, stationId, ocppProtocol, isOnline, onboardingStatus, securityProfile}'
 ```
 
-Use `v21` routes for `ocppProtocol: "ocpp2.1"` and `v16` routes for `"ocpp1.6"`. The wrong one answers 400 `OCPP_VERSION_MISMATCH`.
+Use `v21` routes for `ocppProtocol: "ocpp2.1"` or `"ocpp2.0.1"` and `v16` routes for `"ocpp1.6"`. The wrong one answers 400 `OCPP_VERSION_MISMATCH`.
 
 ### Safety rules
 
@@ -106,7 +106,7 @@ curl -s "${H[@]}" "$EVTIVITY_API/v1/stations/$STA/security-logs?limit=50" \
 - Check the CSMS quickly, no source checkout: dashboard or API (CSMS suites only).
 - TLS reconnect steps, one module, selected tests, or the charging station suites: command line from a CSMS checkout.
 
-Dashboard: **Settings**, **Conformance** tab. Choose **OCPP 2.1**, **OCPP 1.6** or **Run All Tests**, click **Run Tests**. Click a run for the per-module breakdown and each step's expected and actual result.
+Dashboard: **Settings**, **Conformance** tab. Choose **OCPP 2.1**, **OCPP 2.0.1**, **OCPP 1.6** or **Run All Tests**, click **Run Tests**. Click a run for the per-module breakdown and each step's expected and actual result.
 
 ```bash
 RUN=$(curl -s "${H[@]}" "$EVTIVITY_API/v1/octt/runs" -d '{"ocppVersion":"ocpp2.1","sutType":"csms"}' | jq -r .id)
@@ -115,7 +115,7 @@ curl -s "${H[@]}" "$EVTIVITY_API/v1/octt/runs/$RUN/summary"
 curl -s "${H[@]}" "$EVTIVITY_API/v1/octt/runs/$RUN?status=failed" | jq '.results[] | {testId, module, error, steps}'
 ```
 
-- `ocppVersion`: `ocpp2.1`, `ocpp1.6` or `all`. Run `status`: `pending`, `running`, `completed`, `failed`. Test `status` filter: `passed`, `failed`, `skipped`, `error`, `notApplicable`.
+- `ocppVersion`: `ocpp2.1`, `ocpp2.0.1`, `ocpp1.6` or `all` (`ocpp2.0.1` runs the CSMS suite only). Run `status`: `pending`, `running`, `completed`, `failed`. Test `status` filter: `passed`, `failed`, `skipped`, `error`, `notApplicable`.
 - The worker runs the job. If runs stay `pending`, check the worker.
 - Dashboard and API runs have no TLS server URL, so TLS reconnect steps report skipped. The OCSP tests run when the worker has `OCTT_OCSP_RESPONDER_URL`, else they are skipped.
 
@@ -140,7 +140,7 @@ Compare a run with the published results of the release: the totals, the per-mod
 
 ## 4. Connect a real station for testing
 
-1. Create the station first. An unknown station gets HTTP 404 at the WebSocket upgrade. `POST /v1/stations` with `stationId`, `ocppProtocol` (`ocpp1.6` or `ocpp2.1`) and `securityProfile` (0 none, 1 Basic Auth, 2 TLS + Basic Auth, 3 mutual TLS).
+1. Create the station first. An unknown station gets HTTP 404 at the WebSocket upgrade. `POST /v1/stations` with `stationId`, `ocppProtocol` (`ocpp1.6`, `ocpp2.0.1` or `ocpp2.1`) and `securityProfile` (0 none, 1 Basic Auth, 2 TLS + Basic Auth, 3 mutual TLS).
 2. Password for profile 1 or 2: Security tab, **Change Password**, or `POST /v1/stations/{id}/credentials` with `{"password": "..."}`. 16 to 40 characters for 2.1, 16 to 20 for 1.6. `appliedTo` says `station` (sent and accepted) or `stored`.
 3. Point the station at `ws://<host>:7103/<stationId>` (profile 0 or 1) or `wss://<host>:8443/<stationId>` (profile 2 or 3). The path equals the station ID exactly. The Basic Auth username is the station ID.
 4. Approve it (`POST /v1/stations/{id}/approve`) under the default `approval-required` policy. A pending station can connect and take configuration commands, but remote start is refused.

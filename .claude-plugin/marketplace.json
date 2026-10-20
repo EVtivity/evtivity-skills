@@ -4,7 +4,7 @@
     "name": "EVtivity"
   },
   "metadata": {
-    "description": "Agent Skills for the EVtivity CSMS (OCPP 1.6 and 2.1): set up, configure, deploy, operate, test, integrate, troubleshoot and report issues."
+    "description": "Agent Skills for the EVtivity CSMS (OCPP 1.6, 2.0.1 and 2.1): set up, configure, deploy, operate, test, integrate, troubleshoot and report issues."
   },
   "plugins": [
     {

@@ -100,7 +100,7 @@ Permissions are `resource:action`, with `read` and `write`. `write` includes `re
 
 ## OCPP commands
 
-`POST /v1/ocpp/commands/{v21|v16}/{Action}` sends an OCPP command to a connected station and waits for its answer (up to 35 seconds). Use `v21` for stations with `ocppProtocol: "ocpp2.1"` and `v16` for `"ocpp1.6"`. The body is the OCPP request payload plus `stationId`, the station's OCPP identity. `GET /v1/ocpp/commands/v16/{action}/schema` and `GET /v1/ocpp/schemas/{action}` return the JSON schema of a payload.
+`POST /v1/ocpp/commands/{v21|v16}/{Action}` sends an OCPP command to a connected station and waits for its answer (up to 35 seconds). Use `v21` for stations with `ocppProtocol: "ocpp2.1"` or `"ocpp2.0.1"` and `v16` for `"ocpp1.6"`. A command defined in OCPP 2.1 only answers 400 `OCPP_VERSION_MISMATCH` for an OCPP 2.0.1 station. The body is the OCPP request payload plus `stationId`, the station's OCPP identity. `GET /v1/ocpp/commands/v16/{action}/schema` and `GET /v1/ocpp/schemas/{action}` return the JSON schema of a payload.
 
 | Status | Body | Meaning |
 |---|---|---|

@@ -20,7 +20,7 @@
   <a href="https://github.com/EVtivity/evtivity-mobile-app">Mobile app</a>
 </p>
 
-Agent Skills for the [EVtivity CSMS](https://github.com/EVtivity/evtivity-csms), the OCPP 1.6 and 2.1 charging station management system. They teach a coding agent to stand up EVtivity, configure, deploy, operate and test it, call its API, troubleshoot it and report issues.
+Agent Skills for the [EVtivity CSMS](https://github.com/EVtivity/evtivity-csms), the OCPP 1.6, 2.0.1 and 2.1 charging station management system. They teach a coding agent to stand up EVtivity, configure, deploy, operate and test it, call its API, troubleshoot it and report issues.
 
 The skills follow the [Agent Skills](https://agentskills.io) format, so they work with Claude Code, OpenAI Codex, GitHub Copilot, Gemini CLI, Cursor and other agents that read `SKILL.md`.
 
