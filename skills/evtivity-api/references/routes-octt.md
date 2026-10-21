@@ -1,6 +1,6 @@
 # EVtivity API routes: OCTT
 
-Generated from EVtivity CSMS v0.1.47 (https://github.com/EVtivity/evtivity-csms, commit 27fd114116fe) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 385b4084df38) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no

@@ -89,14 +89,20 @@ EVtivity uses 66 granular permissions in `resource:action` format. Actions are e
 
 Users cannot edit their own permissions. Another user with the `users:write` permission can change them, but only within the permissions it holds itself (see [Manage Other Users](#manage-other-users)).
 
-Operators can manage their SMS notification preferences from the **Notifications** tab on their Profile page.
+Operators can manage their SMS notification preferences from the **Notifications** tab of their [Profile](https://www.evtivity.com/docs/csms/profile).
 
 ## Security Tab
 
 The **Security** tab of a user page shows the user's second factor and API keys. It appears only when you hold every permission of that user. Changes need the `users:write` permission.
 
-- **Multi-Factor Authentication** - shows whether the user signs in with a second factor. **Reset MFA** turns the second factor off and signs the user out everywhere, after a confirmation. The user then signs in with the password alone and can set up MFA again.
+![User detail, Security tab](https://www.evtivity.com/screenshots/csms/user-detail-security.png)
+
+- **Multi-Factor Authentication** - shows whether the user signs in with a second factor. **Reset MFA** turns the second factor off, removes the user's passkeys and recovery codes, and signs the user out everywhere, after a confirmation. API keys keep working. The user then signs in with the password alone and can set up MFA again. When [Require MFA](https://www.evtivity.com/docs/csms/settings#mfa) covers the user's role, the user sets up MFA at the next sign-in. The user gets a security notice by email.
 - **API Keys** - lists the user's active API keys with their name, key suffix, created, last used, and expiry dates. **Revoke** ends a key the user no longer needs or that may have leaked, after a confirmation.
+
+## Your Own Account
+
+Opening your own user opens your [Profile](https://www.evtivity.com/docs/csms/profile). You cannot reset your own MFA or change your own role, status, site access or permissions. Your own email and phone number never change on the Users page: change your phone number on your Profile, and ask another admin to change your email address.
 
 ## Sessions and Sign-In
 
@@ -202,3 +208,5 @@ API keys authenticate programmatic access to the CSMS API. Each key inherits the
 API keys use the same permission and site access model as the user who created them. Revoking a user's permissions or site access immediately affects their API keys.
 
 API keys cannot use the account routes of the signed-in user: profile, password, MFA, notification preferences, and personal AI configuration. These answer 403 `SESSION_REQUIRED`.
+
+Creating a key, or widening the permissions of a key, asks you to confirm first with a code of your current second factor or a passkey, else your current password. See [API Keys](https://www.evtivity.com/docs/csms/settings#api-keys).

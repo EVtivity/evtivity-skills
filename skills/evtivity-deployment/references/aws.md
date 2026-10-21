@@ -110,6 +110,17 @@ The WAF lets Stripe webhooks through only on `/v1/webhooks/payments/stripe` and 
 
 See [Payment Providers](https://www.evtivity.com/docs/integrations/payment-providers).
 
+### Sign-In Security
+
+The config can set the multi-factor authentication settings. Leave a key out to keep the value set in the dashboard (Settings > Security > MFA). The config load fails with an unsupported value.
+
+- `appSettings['security.mfa.required']` (`off`, `all` or `roles`) and `appSettings['security.mfa.requiredRoles']` (a list of role names, each listed once, required with `roles`). `all` and `roles` are refused while `security.mfa.emailEnabled` and `security.mfa.totpEnabled` are both false.
+- `appSettings['security.mfa.requireDrivers']` (true or false), refused as true while email and authenticator app codes are both false.
+- `appSettings['security.mfa.webauthnEnabled']` and `appSettings['security.mfa.passkeyLoginEnabled']` (true or false). Passkey sign-in is refused while passkeys are false.
+- `services.api.env.WEBAUTHN_RP_ID`, the passkey relying party ID. Unset by default, so operators use the CSMS host and drivers the portal host. It must be the CSMS host or a parent domain of it, and not an IP address. When it does not cover the portal host, the config load prints a note and the portal uses its own host. Changing it later makes every registered passkey unusable. Never use a parent domain whose subdomains serve user content or are run by third parties.
+
+See [Multi-Factor Authentication](https://www.evtivity.com/docs/configuration/authentication#multi-factor-authentication).
+
 ### Client Addresses
 
 The API and OCPI services run behind the Application Load Balancer. The stacks set `TRUST_PROXY` on both to the VPC range, so rate limits, the guest charging limits per IP address, and audit and access logs see the real client address from `X-Forwarded-For`. See [Environment Variables](https://www.evtivity.com/docs/configuration/environment-variables#api-server).

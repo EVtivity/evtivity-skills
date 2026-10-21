@@ -37,6 +37,7 @@
     "csms/nevi-compliance",
     "csms/notifications",
     "csms/pricing",
+    "csms/profile",
     "csms/reports",
     "csms/reservations",
     "csms/roaming",

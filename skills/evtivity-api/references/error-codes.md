@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.47 (https://github.com/EVtivity/evtivity-csms, commit 27fd114116fe) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.48-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 385b4084df38) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -9,7 +9,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 
 | Code | HTTP | Message |
 |---|---|---|
-| `ACCOUNT_DEACTIVATED` |  | Account deactivated |
+| `ACCOUNT_DEACTIVATED` | 401 | Account deactivated |
 | `ACCOUNT_DISABLED` | 401, 403 | Account disabled |
 | `AI_ACTION_EXPIRED` | 409 | The AI action expired. Ask the assistant again |
 | `AI_ACTION_INVALID` | 409 | The AI action no longer matches or was already rejected |
@@ -172,11 +172,15 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `MFA_ALREADY_ENABLED` | 409 | MFA is already enabled. Disable it first before setting up a new method. |
 | `MFA_CHALLENGE_EXHAUSTED` | 400 | Too many failed attempts. Request a new code. |
 | `MFA_CODE_INVALID` | 400 | Invalid verification code |
+| `MFA_ENROLLMENT_REQUIRED` | 401, 403 | Set up multi-factor authentication to sign in. |
 | `MFA_LOCKED` | 429 | Too many wrong codes. Wait before you try again. |
 | `MFA_METHOD_DISABLED` | 403 | MFA method is disabled |
 | `MFA_NOT_CONFIGURED` | 400 | MFA not configured |
+| `MFA_POLICY_UNAVAILABLE` | 503 | The MFA settings could not be checked. Try again in a few minutes. |
 | `MFA_REQUIRED` |  | MFA verification required |
+| `MFA_REQUIRED_BY_POLICY` | 409 | MFA is required for your role and cannot be turned off. |
 | `MFA_RESEND_LIMITED` | 429 | Too many codes sent. Wait before you request another one. |
+| `MFA_SETUP_UNAVAILABLE` | 403 | MFA is required to sign in, but no MFA method can be set up. Contact your administrator. |
 | `MFA_TOKEN_EXPIRED` | 401 | Invalid or expired MFA token |
 | `MFA_TOKEN_INVALID` | 400 | Invalid MFA token |
 | `MFA_TOTP_NO_RESEND` | 400 | Cannot resend TOTP codes |
@@ -209,6 +213,8 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `PARTNER_NOT_CONNECTED` | 400 | Partner must be connected to sync |
 | `PARTNER_NOT_FOUND` | 404 | Partner not found |
 | `PARTNER_NOT_REGISTERED` | 409 | A partner becomes connected through the OCPI credentials handshake |
+| `PASSKEY_LIMIT_REACHED` | 409 | You have registered the maximum number of passkeys and security keys. Remove one first. |
+| `PASSKEY_NOT_FOUND` | 404 | Passkey or security key not found. |
 | `PASSWORD_REQUIRED` | 400 | Password required when upgrading to Basic Auth or TLS + Basic Auth |
 | `PAYMENT_CONFIG_NOT_FOUND` | 404 | No payment config for this site |
 | `PAYMENT_FAILED` | 400 | Payment failed |
@@ -349,6 +355,8 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `VENDOR_NOT_FOUND` | 404 | Vendor not found |
 | `VERIFICATION_RESEND_LIMITED` | 429 | Too many verification emails. Wait before you request another one. |
 | `WEAK_PASSWORD` | 400 | Password does not meet complexity requirements |
+| `WEBAUTHN_CHALLENGE_EXPIRED` | 400 | The passkey request expired or was already used. Try again. |
+| `WEBAUTHN_VERIFICATION_FAILED` | 400 | The passkey or security key could not be verified. |
 | `WEBHOOK_NOT_CONFIGURED` | 500 | Webhook not configured |
 | `WEBHOOK_SIGNATURE_INVALID` | 400, 401 | Invalid signature |
 | `WEBHOOK_SIGNATURE_MISSING` | 400, 401 | Missing webhook signature or credentials |

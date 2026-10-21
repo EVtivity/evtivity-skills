@@ -1,6 +1,6 @@
 # EVtivity API routes: Portal Auth
 
-Generated from EVtivity CSMS v0.1.47 (https://github.com/EVtivity/evtivity-csms, commit 27fd114116fe) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 385b4084df38) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -24,3 +24,7 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/portal/auth/reset-password` | public | Reset driver password using a token from the reset email |
 | POST | `/v1/portal/auth/verify-email` | public | Verify driver email address using a token from the verification email |
 | POST | `/v1/portal/auth/resend-verification` | driver | Resend email verification link |
+| POST | `/v1/portal/auth/webauthn/options` | public | Start the passkey or security key MFA step |
+| POST | `/v1/portal/auth/webauthn/verify` | public | Complete the MFA step with a passkey or security key |
+| POST | `/v1/portal/auth/passkey/options` | public | Start a passkey sign-in |
+| POST | `/v1/portal/auth/passkey/verify` | public | Sign in with a passkey |

@@ -14,7 +14,7 @@ The Account tab is the hub for everything about you: your profile, security, pay
 
 ![Personal info screen](https://www.evtivity.com/screenshots/mobile/personal.png)
 
-Tap **Personal Info** to edit your first and last name and your phone number. Your email is shown but cannot be changed here. Below that, set your preferences:
+Tap **Personal Info** to edit your first and last name and your phone number. Your email is shown but cannot be changed here. When your account uses two-factor authentication, the app tells you to change the phone number in the driver portal, where you confirm the change. Below that, set your preferences:
 
 - **Language** - the app updates immediately when you change it.
 - **Distance unit** - miles or kilometers.
@@ -34,7 +34,7 @@ Tap **Invoices** to see your invoices and credit notes and share their PDFs. Whe
 Tap **Security** to protect your account. Here you can:
 
 - Change your password.
-- Set up or turn off two-factor authentication, using an authenticator app or email.
+- Set up two-factor authentication, using an authenticator app or email. Turning it off needs a code of your second factor or a recovery code, which the app cannot send, so the app tells you to turn it off in the driver portal.
 - Turn on **Require Face ID / fingerprint** so the app opens only with biometrics.
 
 ## Notifications

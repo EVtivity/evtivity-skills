@@ -4,9 +4,9 @@ description: "Report an EVtivity bug to the maintainers: gather the version, dep
 license: MIT
 compatibility: Requires the GitHub CLI (gh) signed in to a GitHub account. The diagnostics step needs bash, Docker and curl.
 metadata:
-  evtivity-version: "0.1.47"
-  evtivity-release: "v0.1.47"
-  evtivity-commit: "27fd114116fed25d54c8a98fb40675133997380f"
+  evtivity-version: "0.1.48"
+  evtivity-release: "v0.1.48-beta.2"
+  evtivity-commit: "385b4084df389434f0300d3610efb6345f5ddf99"
 ---
 
 # Report an EVtivity issue

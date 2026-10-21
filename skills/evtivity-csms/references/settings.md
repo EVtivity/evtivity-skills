@@ -479,7 +479,7 @@ Sentry error monitoring configuration.
 
 **Permission:** `settings.security:read` / `settings.security:write`
 
-Security settings with three sub-tabs.
+Security settings with four sub-tabs.
 
 ### reCAPTCHA
 
@@ -498,11 +498,24 @@ While reCAPTCHA is off, the tab shows a warning: driver portal sign-up, sign-in 
 
 ### MFA
 
-Multi-factor authentication methods available system-wide. Enabling a method makes it available for users and drivers to activate on their profiles. It does not force MFA on anyone.
+The sign-in methods operators and drivers can use, and who must use MFA. See [Multi-Factor Authentication](https://www.evtivity.com/docs/configuration/authentication#multi-factor-authentication) for how each method works.
+
+![Security settings, MFA tab](https://www.evtivity.com/screenshots/csms/settings-security-mfa.png)
 
 - **Email Code** - toggle for email-based verification codes. Disabled when SMTP is not configured (shows a warning hint).
 - **Authenticator App (TOTP)** - toggle for authenticator app codes (Google Authenticator, Authy, etc.).
 - **SMS Code** - toggle for SMS-based verification codes. Disabled when Twilio is not configured (shows a warning hint).
+- **Passkeys and Security Keys** - operators and drivers can add a passkey or a security key, such as a YubiKey, as a second factor. Needs HTTPS or localhost. On by default.
+- **Passkey Sign-In** - operators and drivers can sign in with a passkey alone, without a password. The passkey counts as both factors. Needs **Passkeys and Security Keys**. Off by default.
+- **Require MFA** - **Off**, **All Operators**, or **Selected Roles**. With **Selected Roles**, check the roles under **Roles That Must Use MFA**. Operators without MFA must set it up at their next sign-in. Signed-in operators are asked at their next session renewal. Open sessions and API keys keep working until then.
+- **Require MFA for Drivers** - every driver must set up MFA in the driver portal at the next sign-in, before a session starts. Signed-in drivers are asked at their next session renewal. The mobile app sends drivers to the portal to finish the setup.
+
+Notes:
+
+- Switching a method off also applies at sign-in. Accounts that use it sign in with another factor, or set up an allowed method after proving the old one. See [Switched-Off Methods](https://www.evtivity.com/docs/configuration/authentication#switched-off-methods).
+- **Require MFA** and **Require MFA for Drivers** need **Email Code** or **Authenticator App (TOTP)** on. Otherwise the tab shows "Turn on email codes or the authenticator app before you require MFA." and does not save.
+- When the MFA settings cannot be read, accounts that must use MFA and have none cannot sign in until the settings can be read again.
+- Saving needs access to all sites.
 
 ### Single Sign-On
 
@@ -526,7 +539,36 @@ Notes:
 - Accounts created through SSO have no password. They cannot sign in with a password, reset it, or change it.
 - The allowed email domains (`sso.allowedDomains`, a comma-separated list) apply to existing accounts as well as new ones. An empty list allows every domain.
 - A SAML reply is accepted only when it answers a sign-in request the CSMS made, and only once.
-- A user with MFA completes the second factor after the SSO sign-in.
+- A user with MFA completes the second factor after the SSO sign-in. When **Require MFA** covers a user without MFA, the user sets it up after the SSO sign-in.
+- The sign-in must finish in the browser that started it. A reply posted to another browser shows "The single sign-on reply did not match a sign-in started in this browser." and starts no session.
+- Over plain HTTP, Chrome accepts the reply only within two minutes of the start of the sign-in. Use HTTPS, or start a slow sign-in again. See [SSO Accounts](https://www.evtivity.com/docs/configuration/authentication#sso-accounts).
+
+### Passwords and Sessions
+
+The rules for new passwords and how long operators and drivers stay signed in. The tab has two cards, **Passwords** and **Sessions**, each with its own **Save** button.
+
+![Security settings, Passwords and Sessions tab](https://www.evtivity.com/screenshots/csms/settings-security-passwords.png)
+
+**Passwords** apply to operators and drivers alike:
+
+- **Minimum Length** - characters, from 8 to 64 (default 12). A new password is at most 128 characters.
+- **Require an Uppercase Letter** - on by default.
+- **Require a Lowercase Letter** - on by default.
+- **Require a Number** - on by default.
+- **Require a Special Character** - any keyboard character that is not a letter, digit or space, such as `!` or `#`. Off by default.
+
+The rules apply the next time someone sets a password. Current passwords keep working, because sign-in never checks the rules. The password forms of the CSMS and the driver portal list the rules in effect.
+
+**Sessions**:
+
+- **Operator Sign-In Check Interval** - minutes, from 5 to 1440 (default 60). The CSMS checks the sign-in again this often, in the background, without asking the operator.
+- **Operator Inactivity Timeout** - days, from 1 to 90 (default 30). An operator who does not use the CSMS for this long has to sign in again.
+- **Driver Sign-In Check Interval** - minutes, from 5 to 1440 (default 60), for the driver portal and the mobile app.
+- **Driver Inactivity Timeout** - days, from 1 to 365 (default 30). A driver who does not use the portal or the app for this long has to sign in again.
+
+The values apply when someone signs in or the app renews their sign-in. Active sessions take on the new values within one check interval. A session no one uses keeps its old expiry. A deactivated account is signed out within a minute, whatever the check interval.
+
+Saving needs access to all sites. For the API, see [Password Policy](https://www.evtivity.com/docs/configuration/authentication#password-policy) and [Session Management](https://www.evtivity.com/docs/configuration/authentication#session-management).
 
 ## API Keys
 
@@ -547,6 +589,8 @@ Manage API keys for programmatic access to the REST API.
   - Actions (edit permissions, revoke)
 - **Token display dialog** - shown once after creation with a copy button. The raw token is only visible at creation time.
 - **Quick Start** card - code examples in cURL, JavaScript, and Python showing how to use the API key with Bearer authentication.
+
+Creating a key, or widening the permissions of a key, asks you to confirm first with a code of your current second factor or a passkey, else your current password. An SSO account without a second factor signs in again with SSO. A request made with an API key needs no confirmation. See [API Keys](https://www.evtivity.com/docs/configuration/authentication#api-keys).
 
 API keys inherit the creating user's site access at request time. Revoking a key is permanent. API keys cannot use the account routes of the signed-in user (profile, password, MFA, notification preferences, and personal AI configuration). Deactivating or deleting a user revokes the user's API keys, and the user page shows them on its [Security tab](https://www.evtivity.com/docs/csms/users#security-tab).
 

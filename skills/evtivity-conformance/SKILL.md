@@ -4,9 +4,9 @@ description: "Test OCPP on EVtivity: send OCPP 1.6, 2.0.1 or 2.1 commands such a
 license: MIT
 compatibility: API examples use curl and jq against a running EVtivity API (default http://localhost:7102 with Docker Compose). Command-line conformance runs need a CSMS source checkout with Node.js.
 metadata:
-  evtivity-version: "0.1.47"
-  evtivity-release: "v0.1.47"
-  evtivity-commit: "27fd114116fed25d54c8a98fb40675133997380f"
+  evtivity-version: "0.1.48"
+  evtivity-release: "v0.1.48-beta.2"
+  evtivity-commit: "385b4084df389434f0300d3610efb6345f5ddf99"
   evtivity-docs-section: conformance
 ---
 

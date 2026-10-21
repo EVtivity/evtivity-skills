@@ -1,6 +1,6 @@
 # EVtivity API routes: Portal Driver
 
-Generated from EVtivity CSMS v0.1.47 (https://github.com/EVtivity/evtivity-csms, commit 27fd114116fe) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 385b4084df38) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -11,6 +11,7 @@ A `write` permission includes `read` for the same resource.
 | Method | Path | Permission | Summary |
 |---|---|---|---|
 | PATCH | `/v1/portal/driver/profile` | driver | Update the authenticated driver profile |
+| POST | `/v1/portal/driver/phone-verification` | driver | Send a code to confirm a new phone number |
 | PATCH | `/v1/portal/driver/billing-address` | driver | Update the authenticated driver billing address |
 | PATCH | `/v1/portal/driver/password` | driver | Change the authenticated driver password |
 | GET | `/v1/portal/driver/notification-preferences` | driver | Get driver notification preferences |
@@ -19,6 +20,14 @@ A `write` permission includes `read` for the same resource.
 | DELETE | `/v1/portal/driver/mfa` | driver | Disable MFA |
 | POST | `/v1/portal/driver/mfa/setup` | driver | Start MFA setup |
 | POST | `/v1/portal/driver/mfa/confirm` | driver | Confirm MFA setup with verification code |
+| POST | `/v1/portal/driver/mfa/recovery-codes` | driver | Replace the MFA recovery codes |
+| POST | `/v1/portal/driver/webauthn/registration-options` | driver | Start registering a passkey or security key |
+| POST | `/v1/portal/driver/webauthn/registration` | driver | Register a passkey or security key |
+| GET | `/v1/portal/driver/webauthn` | driver | List my passkeys and security keys |
+| PATCH | `/v1/portal/driver/webauthn/{id}` | driver | Rename a passkey or security key |
+| DELETE | `/v1/portal/driver/webauthn/{id}` | driver | Remove a passkey or security key |
+| POST | `/v1/portal/driver/mfa/recovery-codes/webauthn-options` | driver | Start the passkey proof for new recovery codes |
+| POST | `/v1/portal/driver/mfa/factor-proof` | driver | Prepare the proof for adding an MFA factor |
 | GET | `/v1/portal/favorites` | driver | List favorite stations |
 | POST | `/v1/portal/favorites` | driver | Add a station to favorites |
 | GET | `/v1/portal/favorites/check/{stationId}` | driver | Check if a station is favorited |

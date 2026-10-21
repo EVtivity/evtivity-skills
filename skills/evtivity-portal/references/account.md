@@ -17,7 +17,7 @@ The Personal Info page holds your profile and display settings.
 1. Tap **Personal Info**.
 2. Edit any of the following fields:
    - **First name** and **Last name**
-   - **Email** (changing your email requires re-verification)
+   - **Email** (shown only: ask the operator to change it)
    - **Phone** (used for SMS notifications and MFA)
    - **Language** (English, Deutsch, Español, 한국어, 简体中文, or 繁體中文)
    - **Timezone** (affects how timestamps are displayed)
@@ -25,6 +25,8 @@ The Personal Info page holds your profile and display settings.
    - **Distance Unit** (miles or km, affects vehicle range estimates and session summaries)
    - **Show prices** (**Operator default**, **Including tax (gross)**, or **Excluding tax (net)**)
 3. Tap **Save** to apply changes. All fields persist in one request, and the language bundle reloads in place if you switched it.
+
+When your account has a second factor, a new phone number needs a proof first: a code of your method or one of your passkeys. When you sign in with SMS codes, also tap **Send Code to New Number** and enter the code from the text message under **Code Sent to the New Number**. The number is saved only once confirmed. The mobile app cannot change the number of such an account and tells you to use the portal.
 
 ### Billing Address
 
@@ -48,7 +50,7 @@ You pay the same amount either way. The choice changes only how prices are shown
 
 ## Security
 
-The Security section lets you change your password and manage MFA.
+The Security section lets you change your password and manage MFA, passkeys and security keys, and recovery codes.
 
 ### Change Password
 
@@ -59,7 +61,7 @@ The Security section lets you change your password and manage MFA.
 
 ### Multi-Factor Authentication
 
-See [Registration and Authentication](https://www.evtivity.com/docs/portal/registration) for detailed MFA setup instructions. The Security section shows your current MFA status and provides buttons to set up or disable MFA.
+The Security section shows your current MFA status, your passkeys and security keys, and how many recovery codes are left. See [Multi-Factor Authentication](https://www.evtivity.com/docs/portal/registration#multi-factor-authentication-mfa) for setup, recovery codes and disabling MFA, and [Passkeys and Security Keys](https://www.evtivity.com/docs/portal/registration#passkeys-and-security-keys) for passkeys.
 
 ## Notification Preferences
 

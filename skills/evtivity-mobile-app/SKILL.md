@@ -4,9 +4,9 @@ description: "Build, white-label and ship the EVtivity driver mobile app (Expo, 
 license: MIT
 compatibility: Per the docs, needs the latest Node.js LTS, Git, npx expo and npx eas-cli, Android Studio with JDK 17 for Android, macOS with Xcode for iOS, a development build (not Expo Go), and a running EVtivity CSMS API reachable from the device.
 metadata:
-  evtivity-version: "0.1.47"
-  evtivity-release: "v0.1.47"
-  evtivity-commit: "27fd114116fed25d54c8a98fb40675133997380f"
+  evtivity-version: "0.1.48"
+  evtivity-release: "v0.1.48-beta.2"
+  evtivity-commit: "385b4084df389434f0300d3610efb6345f5ddf99"
   evtivity-docs-section: mobile-app
 ---
 

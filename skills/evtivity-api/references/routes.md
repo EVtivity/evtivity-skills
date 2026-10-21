@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.47 (https://github.com/EVtivity/evtivity-csms, commit 27fd114116fe) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 385b4084df38) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
@@ -16,7 +16,7 @@ A `write` permission includes `read` for the same resource.
 | Sites | 32 | `references/routes-sites.md` |
 | Stations | 76 | `references/routes-stations.md` |
 | Sessions | 9 | `references/routes-sessions.md` |
-| Users | 38 | `references/routes-users.md` |
+| Users | 51 | `references/routes-users.md` |
 | Drivers | 28 | `references/routes-drivers.md` |
 | Pricing | 19 | `references/routes-pricing.md` |
 | OCPP 2.1 Commands | 57 | `references/routes-ocpp-2-1-commands.md` |
@@ -26,7 +26,7 @@ A `write` permission includes `read` for the same resource.
 | Fleets | 34 | `references/routes-fleets.md` |
 | Tokens | 12 | `references/routes-tokens.md` |
 | Dashboard | 17 | `references/routes-dashboard.md` |
-| Settings | 29 | `references/routes-settings.md` |
+| Settings | 31 | `references/routes-settings.md` |
 | Documentation | 1 | `references/routes-documentation.md` |
 | Payments | 38 | `references/routes-payments.md` |
 | Events | 1 | `references/routes-events.md` |
@@ -34,8 +34,8 @@ A `write` permission includes `read` for the same resource.
 | Notifications | 13 | `references/routes-notifications.md` |
 | Reservations | 9 | `references/routes-reservations.md` |
 | Maintenance | 11 | `references/routes-maintenance.md` |
-| Portal Auth | 14 | `references/routes-portal-auth.md` |
-| Portal Driver | 17 | `references/routes-portal-driver.md` |
+| Portal Auth | 18 | `references/routes-portal-auth.md` |
+| Portal Driver | 26 | `references/routes-portal-driver.md` |
 | Portal Payments | 9 | `references/routes-portal-payments.md` |
 | Portal Sessions | 8 | `references/routes-portal-sessions.md` |
 | Portal Chargers | 19 | `references/routes-portal-chargers.md` |

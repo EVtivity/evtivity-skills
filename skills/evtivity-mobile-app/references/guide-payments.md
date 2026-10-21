@@ -53,7 +53,11 @@ Tap **Remove** on a card to delete it. If you remove your only card, add another
 
 If your fleet bills your charging on account, the Payment Methods screen shows a note above your cards: "Your charging is billed to (your fleet). You need no payment method to charge." Your fleet pays these sessions, so you can charge without a saved card.
 
+![The Payment Methods screen with the fleet billing note](https://www.evtivity.com/screenshots/mobile/payment-methods-fleet.png)
+
 When you start a session, the station shows **Billed to** and your fleet in place of a card, with "Your fleet pays for this session. You need no payment method." See [Start and stop a charge](https://www.evtivity.com/docs/mobile-app/guide/start-and-stop-a-charge).
+
+![A station billed to the fleet](https://www.evtivity.com/screenshots/mobile/station-detail-fleet.png)
 
 Each session billed to your fleet shows its billing state in [Activity](https://www.evtivity.com/docs/mobile-app/guide/activity-and-statements): Not invoiced yet, Invoiced to the fleet, or Paid by the fleet.
 

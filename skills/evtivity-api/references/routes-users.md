@@ -1,6 +1,6 @@
 # EVtivity API routes: Users
 
-Generated from EVtivity CSMS v0.1.47 (https://github.com/EVtivity/evtivity-csms, commit 27fd114116fe) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 385b4084df38) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -18,6 +18,7 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/auth/force-change-password` | public | Change password for a user that has mustResetPassword set |
 | GET | `/v1/users/me` |  | Get the currently authenticated user |
 | PATCH | `/v1/users/me` |  | Update the authenticated user's own profile fields |
+| POST | `/v1/users/me/phone-verification` |  | Send a code to confirm a new phone number |
 | GET | `/v1/users` | users:read | List all users with pagination |
 | POST | `/v1/users` | users:write | Create a new user |
 | GET | `/v1/users/{id}` | users:read | Get a user by ID |
@@ -34,6 +35,7 @@ A `write` permission includes `read` for the same resource.
 | DELETE | `/v1/users/me/mfa` |  | Disable MFA |
 | POST | `/v1/users/me/mfa/setup` |  | Start MFA setup |
 | POST | `/v1/users/me/mfa/confirm` |  | Confirm MFA setup with verification code |
+| POST | `/v1/users/me/mfa/recovery-codes` |  | Replace the MFA recovery codes |
 | GET | `/v1/users/me/notification-preferences` |  | Get operator notification preferences |
 | PUT | `/v1/users/me/notification-preferences` |  | Update operator notification preferences |
 | GET | `/v1/users/me/chatbot-ai-config` |  | Get personal AI configuration |
@@ -46,5 +48,16 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/users/me/permissions` |  | Get current user permissions |
 | GET | `/v1/users/{id}/permissions` | users:read | Get a user permissions by user ID |
 | PUT | `/v1/users/{id}/permissions` | users:write | Replace a user permissions |
+| POST | `/v1/users/me/webauthn/registration-options` |  | Start registering a passkey or security key |
+| POST | `/v1/users/me/webauthn/registration` |  | Register a passkey or security key |
+| GET | `/v1/users/me/webauthn` |  | List my passkeys and security keys |
+| PATCH | `/v1/users/me/webauthn/{id}` |  | Rename a passkey or security key |
+| DELETE | `/v1/users/me/webauthn/{id}` |  | Remove a passkey or security key |
+| POST | `/v1/users/me/mfa/recovery-codes/webauthn-options` |  | Start the passkey proof for new recovery codes |
+| POST | `/v1/users/me/mfa/factor-proof` |  | Prepare the proof for adding an MFA factor |
+| POST | `/v1/auth/webauthn/options` | public | Start the passkey or security key MFA step |
+| POST | `/v1/auth/webauthn/verify` | public | Complete the MFA step with a passkey or security key |
+| POST | `/v1/auth/passkey/options` | public | Start a passkey sign-in |
+| POST | `/v1/auth/passkey/verify` | public | Sign in with a passkey |
 | GET | `/v1/users/me/ai-defaults` |  | Get the built-in AI prompts and models for personal AI configuration |
 | GET | `/v1/users/{id}/neighbors` | users:read | Get previous and next entity IDs in default list order |

@@ -261,6 +261,7 @@ Non-sensitive environment variables are stored in a shared ConfigMap mounted by 
 | `OCPI_COUNTRY_CODE` | `ocpi.env.countryCode` | OCPI country code |
 | `OCPI_PARTY_ID` | `ocpi.env.partyId` | OCPI party ID |
 | `TRUST_PROXY` | `api.env.trustProxy` | Proxy IPs or CIDRs whose `X-Forwarded-For` the API and OCPI trust (empty by default) |
+| `WEBAUTHN_RP_ID` | `api.env.webauthnRpId` | Passkey relying party ID, rendered only when set (empty by default) |
 
 `CORS_ORIGIN` is automatically derived from gateway route hostnames. No manual configuration needed.
 
@@ -450,6 +451,34 @@ appSettings:
     priceDisplay: "gross"
   stationMessage:
     language: "de"
+```
+
+### Sign-in security settings
+
+These keys configure multi-factor authentication and passkeys. They are also set in Settings > Security > MFA. Leave a key empty to keep the value set in the dashboard. The chart fails to render with an unsupported value. See [Multi-Factor Authentication](https://www.evtivity.com/docs/configuration/authentication#multi-factor-authentication).
+
+| Key | Values | Default | Setting |
+|-----|--------|---------|---------|
+| `appSettings.security.mfaRequired` | `"off"`, `"all"` or `"roles"`, quoted | empty (off on a fresh install) | **Require MFA**. Quote the value: YAML reads an unquoted `off` as `false`, which fails the render. `all` and `roles` fail the render while `mfaEmailEnabled` and `mfaTotpEnabled` are both `false`. |
+| `appSettings.security.mfaRequiredRoles` | List of role names, each listed once, for example `[Admin]` | `[]` | **Roles That Must Use MFA**. Required with `roles`. |
+| `appSettings.security.mfaRequireDrivers` | `true` or `false` | empty (off on a fresh install) | **Require MFA for Drivers**. `true` fails the render while `mfaEmailEnabled` and `mfaTotpEnabled` are both `false`. |
+| `appSettings.security.mfaWebauthnEnabled` | `true` or `false` | empty (on on a fresh install) | **Passkeys and Security Keys** |
+| `appSettings.security.mfaPasskeyLoginEnabled` | `true` or `false` | empty (off on a fresh install) | **Passkey Sign-In**. `true` fails the render while `mfaWebauthnEnabled` is `false`. |
+| `api.env.webauthnRpId` | A domain name | empty | `WEBAUTHN_RP_ID`. Empty uses the CSMS host for operators and the portal host for drivers. |
+
+`appSettings.security.mfaEmailEnabled`, `mfaTotpEnabled` and `mfaSmsEnabled` (`true`, `true` and `false` by default) seed the **Email Code**, **Authenticator App (TOTP)** and **SMS Code** switches.
+
+`api.env.webauthnRpId` must be the CSMS route host or a parent domain of it. An IP address, a single label other than `localhost`, or any value while the CSMS host is an IP address fails the render, since browsers refuse passkeys there. The portal shares the ID only when it is also a parent of the portal host. Otherwise the portal uses its own host, and the install notes say so. Changing the value later makes every registered passkey unusable. Never use a parent domain whose subdomains serve user content or are run by third parties. See [Passkeys and Security Keys](https://www.evtivity.com/docs/configuration/authentication#passkeys-and-security-keys).
+
+```yaml
+api:
+  env:
+    webauthnRpId: "example.com"
+appSettings:
+  security:
+    mfaRequired: "roles"
+    mfaRequiredRoles: [Admin]
+    mfaPasskeyLoginEnabled: true
 ```
 
 ### Payment settings
