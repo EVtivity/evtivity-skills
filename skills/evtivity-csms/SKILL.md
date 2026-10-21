@@ -80,6 +80,7 @@ Each row names the reference file for the page (page id `csms/<name>`).
 | NEVI uptime and excluded downtime | `references/nevi-compliance.md` | Reports | `reports:write` |
 | Driver support tickets | `references/support-cases.md` | Support Cases | `support:write` |
 | Operator users, roles, site access | `references/users.md` | Users | `users:write` |
+| Own password, MFA, passkeys | `references/profile.md` | Profile | any user |
 | System configuration, API keys | `references/settings.md` | Settings > tab | `settings.<tab>:write` |
 | Request and worker logs | `references/access-logs.md` | Access Logs | `logs:read` |
 | OCTT conformance runs | `references/conformance-testing.md` | Settings > Conformance | `conformance:write` |
