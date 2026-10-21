@@ -28,7 +28,7 @@ On Helm or AWS the hosts come from the deployment. Use placeholders such as `htt
 1. Self-registration: "Create an Account". If the form shows a "contact your operator" message, or the API answers `PORTAL_REGISTRATION_DISABLED`, the operator must create the driver and send an invitation (evtivity-csms). The driver then follows "Accept an Invitation".
 2. The email must be verified before an authenticated charge. Accepting an invitation also verifies it.
 3. Sign in. With MFA, the driver enters a code after the password.
-4. Optional MFA under Account > Security. To switch methods, disable MFA first (`MFA_ALREADY_ENABLED` otherwise).
+4. Optional MFA under Account > Security: one code method, passkeys and security keys, and ten recovery codes. To switch methods, disable MFA first (`MFA_ALREADY_ENABLED` otherwise). Disabling MFA or removing a passkey needs a code of a factor or a recovery code, never the password alone. When the operator requires MFA for drivers, the portal asks for the setup at sign-in.
 
 Passwords follow the operator's password policy (Settings > Security > Passwords and Sessions, evtivity-configuration). By default: at least 12 characters with an uppercase letter, a lowercase letter and a number, no symbol required. The form lists the rules in effect. A password that misses one answers 400 `WEAK_PASSWORD`, whose `missing` list names the rules. An invitation link works once and expires after 7 days. A reset link is valid for 1 hour and signs the driver out on every device.
 
