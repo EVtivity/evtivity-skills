@@ -73,14 +73,19 @@ The email/SMS challenge row stores `(user_id | driver_id, code_hash, expires_at,
 
 A challenge is single-use: a successful verify stamps `used_at`, and subsequent attempts return `MFA_CODE_INVALID`. Per-challenge rate limiting caps failed attempts at five before returning `MFA_CHALLENGE_EXHAUSTED` and forcing the user to request a new code. A code confirms only what it was sent for: a sign-in code never confirms a security change, an email code never confirms SMS, and an SMS code confirms only the number it went to.
 
-Operator and driver MFA codes can be resent at most 5 times in 15 minutes. Over the limit, the API returns `MFA_RESEND_LIMITED`. Setup and phone change codes to one phone number are capped at 3 an hour across all accounts.
+Each operator and driver account gets at most 5 email or SMS codes in 15 minutes for signing in (sign-in, resend, forced password change and SSO). Codes asked for from a signed-in session (factor proofs, replacing recovery codes, MFA setup and phone changes) have their own 5 in 15 minutes, so they never use up the sign-in codes. SMS codes to one phone number are also capped at 3 an hour:
+
+- A setup or phone change code to a number counts the codes every account sent to that number in the last hour.
+- A sign-in, resend or proof code to the account's own confirmed number counts the sign-in and proof codes other accounts sent to that number in the last hour. The account's own codes and other accounts' setup and phone change codes do not count against it.
+
+Over a cap, a setup, resend, proof, recovery code replacement or phone change request returns 429 `MFA_RESEND_LIMITED`. A sign-in over the account cap sends no new code, and the newest code of its method that is still valid works. A sign-in over the phone number cap sends no code.
 
 ### Switched-Off Methods
 
-Switching a method off in Settings stops new setups of it and also applies at sign-in:
+Switching a method off in Settings refuses new setups of it with 403 `MFA_METHOD_DISABLED`. It also applies at sign-in:
 
-- An account that has another usable factor, such as recovery codes or a passkey, signs in with that factor. A code of the switched-off method returns 403 `MFA_METHOD_DISABLED`, and the sign-in page opens on the recovery code input.
-- An account whose only factor is the switched-off method proves it once more, then sets up an allowed method before the session starts.
+- An account that has another usable factor, such as recovery codes or a passkey, signs in with that factor. A code of the switched-off method returns 403 `MFA_METHOD_DISABLED`. The MFA step opens on the passkey prompt when the account has a passkey, passkeys are switched on, and the browser supports passkeys on a secure page (HTTPS or localhost). Otherwise, when the account has recovery codes left, it opens on the recovery code input, which shows `Your administrator switched off <method>. Sign in with a recovery code.` An account whose other usable factor is only a passkey, with no recovery codes left, sees the code input when the page is plain HTTP on a host other than localhost or the browser does not support passkeys: a code of the switched-off method still returns 403 `MFA_METHOD_DISABLED`, so the account signs in with its passkey from HTTPS or localhost in a browser that supports passkeys.
+- An account whose only factor is the switched-off method proves it once more, then sets up an allowed method before the session starts. The mobile app cannot set up a method: a driver whose only factor is switched off gets 403 `MFA_ENROLLMENT_REQUIRED` there, and the app shows `Your sign-in method was turned off. Set up another one in the driver portal at <portal URL>, then sign in here again.`
 - When no method can be set up at all, the account signs in after proving its factor.
 
 ### Sign-In Lockout
@@ -93,10 +98,10 @@ Wrong codes entered from a signed-in session to confirm a security change count 
 
 ### Required MFA
 
-An admin can require MFA for operators in Settings > Security > MFA > **Require MFA**: **Off**, **All Operators**, or **Selected Roles** (the roles under **Roles That Must Use MFA**). **Require MFA for Drivers** does the same for every driver.
+An admin can require MFA for operators in Settings > Security > MFA > **Require MFA**: **Off**, **All Operators**, or **Selected Roles** (the roles under **Roles That Must Use MFA**). **Require MFA for Drivers** does the same for every driver. Both settings are off by default, so no one has to use MFA unless an admin turns one on.
 
 - A covered account without MFA gets no session after the password step. The CSMS or the portal opens **Set Up Two-Factor Authentication**, and the account is signed in once the setup is confirmed. SSO users, including users that SSO creates on their first sign-in, set up MFA the same way.
-- Signed-in accounts without MFA are signed out at their next session renewal and set up MFA when they sign in again. API keys keep working.
+- A covered account that is already signed in without MFA keeps its session until its access token expires. That is the sign-in check interval in [Session Management](#session-management): 60 minutes by default, set separately for operators and drivers. At that renewal the session ends, and the account sets up MFA when it signs in again. API keys keep working.
 - A covered account cannot turn MFA off or remove its last passkey (409 `MFA_REQUIRED_BY_POLICY`). An admin can still reset its MFA. The account then sets up MFA again at its next sign-in.
 - Requiring MFA needs email codes or the authenticator app switched on. When no method can be set up for an account, for example SMS only and no phone number, the sign-in fails with 403 `MFA_SETUP_UNAVAILABLE` and never starts a session without MFA.
 - When the MFA settings cannot be read, every required MFA check fails closed: an account without MFA cannot sign in or renew its session, and no one can turn MFA off or remove the last passkey (503 `MFA_POLICY_UNAVAILABLE`). Accounts with MFA sign in as usual.

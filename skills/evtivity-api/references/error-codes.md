@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.48-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 385b4084df38) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.48-beta.3 (https://github.com/EVtivity/evtivity-csms, commit 41e94513813a) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -299,6 +299,18 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `SESSION_REQUIRED` | 403 | This action needs a signed-in session. API keys cannot use it. |
 | `SESSION_STOP_REJECTED` | 409 | The station rejected the stop request. The session is still charging. |
 | `SETTING_NOT_FOUND` | 404 | Setting not found |
+| `SIM_ACTION_UNSUPPORTED` | 409 | The SIM provider does not support this action for this SIM |
+| `SIM_CONFIRMED_ELSEWHERE` | 409 | Another station already has a confirmed match for this SIM |
+| `SIM_FEATURE_DISABLED` | 400 | SIM providers and station signal reads are turned off |
+| `SIM_MATCHED_ELSEWHERE` | 409 | This SIM is matched to another station |
+| `SIM_MATCH_CHANGED` | 409 | The SIM match changed since it was shown. Check the SIM and confirm again |
+| `SIM_MATCH_NOT_CONFIRMED` | 409 | Confirm the SIM before resetting its network |
+| `SIM_NOT_FOUND` | 404 | No SIM is matched to this station |
+| `SIM_PROVIDER_ERROR` | 502 | The SIM provider request failed |
+| `SIM_PROVIDER_NOT_CONFIGURED` | 400 | No SIM provider is configured |
+| `SIM_PROVIDER_RATE_LIMITED` | 429 | Too many SIM requests, try again later |
+| `SIM_RESET_UNAVAILABLE` | 503 | The network reset cannot be started right now. Try again in a minute |
+| `SIM_TEST_UNAVAILABLE` | 503 | The connection test cannot run right now. Try again in a minute |
 | `SITE_HAS_STATIONS` | 409 | Cannot delete site with stations. Remove or reassign stations first. |
 | `SITE_NOT_FOUND` | 404 | Site not found |
 | `SITE_PAYMENT_CONFIG_IN_USE` | 409 | This site's payment configuration has payments and cannot be deleted. Disable it instead. |

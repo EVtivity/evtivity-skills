@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.48-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 385b4084df38) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.3 (https://github.com/EVtivity/evtivity-csms, commit 41e94513813a) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
@@ -14,7 +14,7 @@ A `write` permission includes `read` for the same resource.
 |---|---|---|
 | Health | 2 | `references/routes-health.md` |
 | Sites | 32 | `references/routes-sites.md` |
-| Stations | 76 | `references/routes-stations.md` |
+| Stations | 82 | `references/routes-stations.md` |
 | Sessions | 9 | `references/routes-sessions.md` |
 | Users | 51 | `references/routes-users.md` |
 | Drivers | 28 | `references/routes-drivers.md` |
@@ -26,7 +26,7 @@ A `write` permission includes `read` for the same resource.
 | Fleets | 34 | `references/routes-fleets.md` |
 | Tokens | 12 | `references/routes-tokens.md` |
 | Dashboard | 17 | `references/routes-dashboard.md` |
-| Settings | 31 | `references/routes-settings.md` |
+| Settings | 34 | `references/routes-settings.md` |
 | Documentation | 1 | `references/routes-documentation.md` |
 | Payments | 38 | `references/routes-payments.md` |
 | Events | 1 | `references/routes-events.md` |
@@ -65,7 +65,7 @@ A `write` permission includes `read` for the same resource.
 | CSS Management | 7 | `references/routes-css-management.md` |
 | CSS Actions | 14 | `references/routes-css-actions.md` |
 | CSS OCPP 1.6 Actions | 15 | `references/routes-css-ocpp-1-6-actions.md` |
-| CSS OCPP 2.1 Actions | 42 | `references/routes-css-ocpp-2-1-actions.md` |
+| CSS OCPP 2.1 Actions | 43 | `references/routes-css-ocpp-2-1-actions.md` |
 | Smart Charging | 12 | `references/routes-smart-charging.md` |
 | AI Assistant | 13 | `references/routes-ai-assistant.md` |
 | AI | 4 | `references/routes-ai.md` |

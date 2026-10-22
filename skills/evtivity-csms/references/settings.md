@@ -304,7 +304,7 @@ See [Stripe Connect](https://www.evtivity.com/docs/integrations/stripe#4-stripe-
 
 **Permission:** `settings.integrations:read` / `settings.integrations:write`
 
-Feature toggles and third-party service configuration with 15 sub-tabs.
+Feature toggles and third-party service configuration with 17 sub-tabs.
 
 ### OCPP
 
@@ -434,6 +434,10 @@ The Messages tab also includes a per-state template editor. Each state has a tem
 
 OCPP 1.6 stations have no native equivalent. They receive the Idle screen (Available, Occupied, Reserved) as a vendor `DataTransfer`.
 
+### SIM Providers
+
+The SIM provider account (Hologram) and the station signal settings behind the station **Connectivity** tab. Needs access to every site. Off by default: while Hologram and **Read Signal from Stations** are both off, nothing changes. See [SIM Providers](https://www.evtivity.com/docs/integrations/sim-providers).
+
 ### S3 Bucket
 
 Amazon S3 (or S3-compatible) object storage for file attachments and station images.
@@ -507,8 +511,8 @@ The sign-in methods operators and drivers can use, and who must use MFA. See [Mu
 - **SMS Code** - toggle for SMS-based verification codes. Disabled when Twilio is not configured (shows a warning hint).
 - **Passkeys and Security Keys** - operators and drivers can add a passkey or a security key, such as a YubiKey, as a second factor. Needs HTTPS or localhost. On by default.
 - **Passkey Sign-In** - operators and drivers can sign in with a passkey alone, without a password. The passkey counts as both factors. Needs **Passkeys and Security Keys**. Off by default.
-- **Require MFA** - **Off**, **All Operators**, or **Selected Roles**. With **Selected Roles**, check the roles under **Roles That Must Use MFA**. Operators without MFA must set it up at their next sign-in. Signed-in operators are asked at their next session renewal. Open sessions and API keys keep working until then.
-- **Require MFA for Drivers** - every driver must set up MFA in the driver portal at the next sign-in, before a session starts. Signed-in drivers are asked at their next session renewal. The mobile app sends drivers to the portal to finish the setup.
+- **Require MFA** - **Off**, **All Operators**, or **Selected Roles**. With **Selected Roles**, check the roles under **Roles That Must Use MFA**. Off by default. When it is on, operators without MFA must set it up at their next sign-in. Signed-in operators are asked at their next session renewal. Open sessions and API keys keep working until then.
+- **Require MFA for Drivers** - off by default. When it is on, every driver must set up MFA in the driver portal at the next sign-in, before a session starts. Signed-in drivers are asked at their next session renewal. The mobile app sends drivers to the portal to finish the setup.
 
 Notes:
 

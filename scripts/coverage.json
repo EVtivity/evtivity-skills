@@ -48,6 +48,7 @@
     "csms/station-configurations-ocpp16",
     "csms/station-configurations-ocpp21",
     "csms/station-configurations",
+    "csms/station-connectivity",
     "csms/station-images",
     "csms/stations",
     "csms/support-cases",
@@ -90,6 +91,7 @@
     "integrations/energy-management",
     "integrations/mcp-server",
     "integrations/payment-providers",
+    "integrations/sim-providers",
     "integrations/stripe",
     "integrations/test-payment-provider",
     "integrations/webhooks"

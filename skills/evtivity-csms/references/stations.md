@@ -287,6 +287,10 @@ Manage the station's authentication credentials. Change the security profile, se
 
 ![Security event log with an expanded row](https://www.evtivity.com/screenshots/csms/station-security-log.png)
 
+### Connectivity
+
+The SIM status, cellular data sessions, SIM alerts and modem signal of a cellular station, a timeline of its connects and disconnects with the likely cause of each disconnect, and **Reset Network**. The tab, and the ICCID and IMSI field on the **Details** tab, show only while a SIM provider or station signal reads are on (off by default). See [Station Connectivity](https://www.evtivity.com/docs/csms/station-connectivity).
+
 ### Certificates
 
 Available for OCPP 2.0.1 and 2.1 stations when Plug and Charge is enabled. View installed certificates, install new CA certificates, query the station for its certificate inventory, and delete certificates. See [Certificates](https://www.evtivity.com/docs/csms/certificates) for details.

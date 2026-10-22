@@ -1,12 +1,12 @@
 ---
 name: evtivity-integrations
-description: "Set up EVtivity payments and integrations: Stripe, Stripe Connect, Adyen, the test payment provider, holds, refunds, guest payments, currency, payment webhooks, energy management, the MCP server for AI agents. Use to accept cards, refund, test payments, connect an AI agent, or debug a failed payment. Not for tariffs and prices (evtivity-csms)."
+description: "Set up EVtivity payments and integrations: Stripe, Stripe Connect, Adyen, test provider, holds, refunds, guest payments, currency, payment webhooks, energy management, SIM providers, the MCP server for AI agents. Use to accept cards, refund, test payments, connect an AI agent, or debug a failed payment. Not for tariffs and prices (evtivity-csms)."
 license: MIT
 compatibility: Needs a running EVtivity CSMS (v0.1.38 or later for Adyen and the provider-neutral payment API). API examples use curl and jq. Stripe or Adyen setup needs an account with that provider. Provider webhooks need a public HTTPS URL for the API.
 metadata:
   evtivity-version: "0.1.48"
-  evtivity-release: "v0.1.48-beta.2"
-  evtivity-commit: "385b4084df389434f0300d3610efb6345f5ddf99"
+  evtivity-release: "v0.1.48-beta.3"
+  evtivity-commit: "41e94513813a93264b7720745bc01c6686f99b3c"
   evtivity-docs-section: integrations
 ---
 
@@ -201,7 +201,17 @@ Rules that trip agents:
 - A browser `Origin` must be in **Allowed origins**, else 403. An API key never confirms an AI chat or insight action (`AI_CONFIRMATION_REQUIRES_SESSION`).
 - Over the per-key limits: 429 with `AI_MCP_RATE_LIMITED` and `Retry-After`.
 
-### 12. Troubleshoot a payment failure
+### 12. SIM providers (`references/sim-providers.md`)
+
+Shows a cellular station's SIM status, data sessions and SIM alerts on the station Connectivity tab. Off by default: while Hologram and **Read Signal from Stations** are both off, nothing changes.
+
+1. Confirm with the user. The user creates a Hologram API key and enters the organization id and key in Settings > Integrations > SIM Providers (needs access to every site). Never ask for the key in chat.
+2. **Test Connection** checks the saved account. Then set Session History (Refresh period, retention) and, optionally, Station Signal and the low signal alert.
+3. Only a person's click calls Hologram: Refresh on the Connectivity tab, Test Connection, Reset Network. A SIM matched from the ICCID the station reported fetches nothing until a user with access to every site confirms it (Confirm SIM).
+
+Confirm: `GET /v1/settings/sim-providers` (filter the key out with jq), then Refresh on one station (the Station Connectivity page of evtivity-csms).
+
+### 13. Troubleshoot a payment failure
 
 ```bash
 curl -s "$EVTIVITY_API/v1/settings/payments" -H "Authorization: Bearer $EVTIVITY_TOKEN" | jq '{provider, providers}'
@@ -234,4 +244,5 @@ Generated from the website docs. Never edit them. The first line of each file is
 - `references/test-payment-provider.md`: simulated provider, test cards, sync and async modes.
 - `references/webhooks.md`: incoming payment webhooks, outgoing OCPP event webhooks, SSE streams.
 - `references/energy-management.md`: load management, smart charging profiles, carbon tracking.
+- `references/sim-providers.md`: Hologram SIM provider, session history, station signal and low signal alert, off by default.
 - `references/mcp-server.md`: MCP server for AI agents (`POST /v1/mcp`, API key with `aiMcp:*`), off by default. Writes run only with **Allow Writes** on.

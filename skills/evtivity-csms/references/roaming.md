@@ -31,7 +31,7 @@ Registration uses the OCPI credentials handshake:
 
 You can also initiate outbound registration by clicking **Register** on a partner record and providing their versions URL.
 
-A partner becomes **Connected** only through the credentials handshake. A registration token reaches only the OCPI versions and credentials endpoints, and it stops working once the handshake completes. To issue a new one, open the partner and click **New Registration Token**, shown until the partner is connected. Registration tokens issued before stop working.
+A partner gets the status `connected` only through the credentials handshake. A registration token reaches only the OCPI versions and credentials endpoints, and it stops working once the handshake completes. To issue a new one, open the partner and click **New Registration Token**, shown until the partner is connected. Registration tokens issued before stop working.
 
 ### Accept Unencoded Tokens
 

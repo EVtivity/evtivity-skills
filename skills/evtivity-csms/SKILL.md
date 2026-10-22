@@ -4,8 +4,8 @@ description: "Operate the EVtivity operator dashboard: sites, stations, sessions
 license: MIT
 metadata:
   evtivity-version: "0.1.48"
-  evtivity-release: "v0.1.48-beta.2"
-  evtivity-commit: "385b4084df389434f0300d3610efb6345f5ddf99"
+  evtivity-release: "v0.1.48-beta.3"
+  evtivity-commit: "41e94513813a93264b7720745bc01c6686f99b3c"
   evtivity-docs-section: csms
 ---
 
@@ -13,7 +13,7 @@ metadata:
 
 Not for: Stripe, Adyen or payment webhooks (use evtivity-integrations), scripts and the route catalog (use evtivity-api), end-to-end procedures such as onboarding a station (use evtivity-guides), a broken stack (use evtivity-troubleshoot).
 
-Every dashboard action calls the REST API, so each workflow also works with curl. The references (website docs) are the source of truth: read them for any detail not covered here. Do not guess.
+Every dashboard action calls the REST API, so each workflow also works with curl. The references (website docs) are the source of truth: read them for detail. Do not guess.
 
 ## Confirm before you act
 
@@ -22,7 +22,7 @@ Ask the user before any destructive or customer-visible action, and say what it 
 - Deletes of any kind (sites, tokens, tariffs, pricing groups, CA certificates, partners, templates, API keys). A station delete blocks the station.
 - Deactivating a driver or token, rejecting or blocking a station, disabling a station.
 - Maintenance windows, above all with the Stop gracefully policy (it stops live sessions and cancels reservations).
-- OCPP Reset, ChangeAvailability, ClearCache, UnlockConnector, remote stop.
+- OCPP Reset, ChangeAvailability, ClearCache, UnlockConnector, remote stop, SIM Reset Network.
 - Starting a firmware campaign. Pushing configuration templates, charging profiles or a local auth list.
 - Turning free vend on or off at a site.
 - Publishing a site or tariff to OCPI partners, registering a partner, issuing a credit CDR.
@@ -56,6 +56,7 @@ Each row names the reference file for the page (page id `csms/<name>`).
 | Create and edit sites, rates, QR codes | `references/sites.md` | Sites > site | `sites:write` |
 | Register, approve, enable stations | `references/stations.md` | Stations > station | `stations:write` |
 | Station photos | `references/station-images.md` | Station > Images | `stations:write` |
+| SIM status, signal, Reset Network | `references/station-connectivity.md` | Station > Connectivity | `stations:read`, Confirm SIM all sites |
 | Configuration templates and drift | `references/station-configurations.md` | Settings > Station Configurations | `settings.stationConfig:write` |
 | OCPP 1.6 key reference | `references/station-configurations-ocpp16.md` | Station > Configurations | `stations:read` |
 | OCPP 2.1 variable reference | `references/station-configurations-ocpp21.md` | Station > Configurations | `stations:read` |
@@ -122,7 +123,7 @@ curl -s "$EVTIVITY_API/v1/stations?onboardingStatus=pending" "${auth[@]}"
 curl -s -X POST "$EVTIVITY_API/v1/stations/<id>/approve" "${auth[@]}"
 ```
 
-Confirm: `onboardingStatus` is `accepted` in `GET /v1/stations/<id>`, the status badge and its hover reason, the station History tab.
+Confirm: `onboardingStatus` is `accepted` in `GET /v1/stations/<id>` and on the station History tab.
 
 ### Maintenance windows (`references/maintenance.md`)
 
@@ -194,12 +195,12 @@ Confirm: push history per station (Accepted, Rejected, Failed), the Load Mgmt po
 - Users > Create User: first and last name, email, mobile, role. The user gets an invitation email to set a password. Role defaults are copied, then edit on the Permissions tab.
 - New users see nothing until you grant **All sites** or specific sites under Site Access. Drivers, tokens, fleets, pricing, settings and roaming are not filtered by site access.
 - Settings tab permissions: Company Info, Marketing, Content, Sustainability `settings.system`; Notification `settings.notification`; Payment `settings.payment` (provider actions also `payments:write`); Integrations & Features `settings.integrations`; Security `settings.security`; API Keys `settings.apiKeys`.
-- Company currency is one value for the platform. Changing it does not relabel past records. API keys show the token once. Revoking is permanent.
+- Changing the company currency does not relabel past records. API keys show the token once. Revoking is permanent.
 
 ### Firmware and station configurations (`references/firmware-updates.md`, `references/station-configurations.md`)
 
 - Firmware: Settings > Firmware Campaign > Create (name, HTTPS firmware URL, version, optional signing certificate and signature, set both or neither). Start Campaign sends UpdateFirmware to online stations. A failed install marks the station faulted until the next install or **Enable Station**.
-- Configuration templates are bound to one OCPP version: 1.6 keys (ChangeConfiguration), 2.1 component and variable (SetVariables, also pushed to OCPP 2.0.1 stations). Push, then the CSMS refreshes and checks drift. Station > Configurations > **Refresh from Station** reads the live values. The 1.6 and 2.1 reference files are long: grep them for the key or variable.
+- Configuration templates are bound to one OCPP version: 1.6 keys (ChangeConfiguration), 2.1 component and variable (SetVariables, also pushed to OCPP 2.0.1 stations). Push, then the CSMS refreshes and checks drift. Station > Configurations > **Refresh from Station** reads the live values.
 
 ### More pages
 

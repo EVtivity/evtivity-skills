@@ -1,6 +1,6 @@
 # EVtivity API routes: Stations
 
-Generated from EVtivity CSMS v0.1.48-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 385b4084df38) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.3 (https://github.com/EVtivity/evtivity-csms, commit 41e94513813a) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -70,6 +70,12 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/stations/{id}/event-alerts` | stations:read | List event alerts for a station |
 | POST | `/v1/stations/{id}/event-alerts/{alertId}/acknowledge` | stations:write | Acknowledge an event alert |
 | GET | `/v1/stations/{id}/standalone-meter-values` | stations:read | List standalone meter values for a station |
+| GET | `/v1/stations/{id}/sim` | stations:read | Get a station's SIM |
+| GET | `/v1/stations/{id}/sim/timeline` | stations:read | Get a station's connectivity timeline |
+| POST | `/v1/stations/{id}/sim/refresh` | stations:read | Refresh a station's SIM data |
+| POST | `/v1/stations/{id}/sim/network-reset` | stations:write | Reset a station's SIM network |
+| POST | `/v1/stations/{id}/sim/match/confirm` | stations:write | Confirm a station's SIM match |
+| DELETE | `/v1/stations/{id}/sim/match` | stations:write | Clear a station's SIM match |
 | GET | `/v1/stations/{id}/web-payments` | stations:read | Get the dynamic QR code payment configuration of a station |
 | PUT | `/v1/stations/{id}/web-payments` | stations:write | Enable dynamic QR code payments on a station |
 | DELETE | `/v1/stations/{id}/web-payments` | stations:write | Disable dynamic QR code payments on a station |

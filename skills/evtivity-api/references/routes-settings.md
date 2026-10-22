@@ -1,6 +1,6 @@
 # EVtivity API routes: Settings
 
-Generated from EVtivity CSMS v0.1.48-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 385b4084df38) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.3 (https://github.com/EVtivity/evtivity-csms, commit 41e94513813a) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -23,6 +23,9 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/settings/s3/test` | settings.system:write | Test S3 connection |
 | GET | `/v1/settings/ai/defaults` | settings.ai:read | Get the built-in AI prompts and models |
 | POST | `/v1/email-wrapper/preview` | settings.notification:read | Preview a draft email layout |
+| GET | `/v1/settings/sim-providers` | settings.integrations:read | Get SIM provider settings |
+| PUT | `/v1/settings/sim-providers` | settings.integrations:write | Update SIM provider settings |
+| POST | `/v1/settings/sim-providers/{provider}/test` | settings.integrations:write | Test a SIM provider connection |
 | GET | `/v1/security/settings` | settings.security:read | Get all security settings |
 | PUT | `/v1/security/password-policy` | settings.security:write | Update the password policy |
 | PUT | `/v1/security/sessions` | settings.security:write | Update the operator and driver session lifetimes |

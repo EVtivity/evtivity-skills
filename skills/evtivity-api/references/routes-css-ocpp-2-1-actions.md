@@ -1,6 +1,6 @@
 # EVtivity API routes: CSS OCPP 2.1 Actions
 
-Generated from EVtivity CSMS v0.1.48-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 385b4084df38) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.3 (https://github.com/EVtivity/evtivity-csms, commit 41e94513813a) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -26,6 +26,7 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/css/actions/v21/authorizePnc` | stations:write | Plug and Charge: Authorize with the eMAID and certificate hash data without starting (returns status and certificateStatus) |
 | POST | `/v1/css/actions/v21/startPncCharging` | stations:write | Plug and Charge: Authorize with the eMAID and certificate hash data, then start |
 | POST | `/v1/css/actions/v21/sendNotifyEvent` | stations:write | Send NotifyEvent |
+| POST | `/v1/css/actions/v21/setSignalStrength` | stations:write | Change the simulated modem signal strength (DataLink.SignalStrength) |
 | POST | `/v1/css/actions/v21/sendNotifyReport` | stations:write | Send NotifyReport |
 | POST | `/v1/css/actions/v21/sendNotifyMonitoringReport` | stations:write | Send NotifyMonitoringReport |
 | POST | `/v1/css/actions/v21/sendNotifyChargingLimit` | stations:write | Send NotifyChargingLimit |
