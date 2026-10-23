@@ -159,7 +159,7 @@ The config can set the SIM provider settings. Leave a key out to keep the value 
 
 - `appSettings['sim.hologram.enabled']` and `appSettings['sim.stationSignal.enabled']` (true or false).
 - `appSettings['sim.hologram.orgId']`, the Hologram organization ID: a quoted string of 1 to 15 digits, as in `'123456'`.
-- `appSettings['sim.sessions.retentionDays']` (whole number, 7 to 730) and `appSettings['sim.sessions.fetchDays']` (whole number, 1 to 31).
+- `appSettings['sim.sessions.fetchDays']` (whole number, 1 to 31). The SIM retention is set in **Settings > Data Retention**.
 - `appSettings['sim.signal.alertBelowDbm']`, `appSettings['sim.signal.goodDbm']` and `appSettings['sim.signal.fairDbm']` (whole numbers, -140 to -40). The good threshold must be above the fair one.
 - `appSettings['sim.ocpp16.signalKeys']`, a list of at most 20 configuration key names, each listed once and 1 to 50 characters long, as in `sim.ocpp16.signalKeys: [RSSI]`.
 
@@ -220,7 +220,7 @@ Approximate monthly cost with the default configs in `us-east-1`, including obse
 | qa   | $195 - $262 |
 | prod | $598 - $960 |
 
-Aurora and Fargate are the largest items. Aurora storage grows with the data and is billed by the amount stored. A large network or chaos mode in the simulator stores many rows in `ocpp_message_logs` and `meter_values`: about 2,000 simulated stations filled 90 GB on a test network. Set the retention in `appSettings` to keep it smaller. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention). Setting every service to `desiredCount: 0` in dev lets Aurora pause and drops dev to about $45 per month. The dev config turns on the OCPP TLS Network Load Balancer, which adds about $28 per month.
+Aurora and Fargate are the largest items. Aurora storage grows with the data and is billed by the amount stored. A large network or chaos mode in the simulator stores many rows in `ocpp_message_logs` and `meter_values`: about 2,000 simulated stations filled 90 GB on a test network. Lower the retention of these tables in **Settings > Data Retention** to keep it smaller: the CDK config does not set data retention. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention). Setting every service to `desiredCount: 0` in dev lets Aurora pause and drops dev to about $45 per month. The dev config turns on the OCPP TLS Network Load Balancer, which adds about $28 per month.
 
 ### Release Auto-Bump
 

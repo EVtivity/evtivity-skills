@@ -34,7 +34,7 @@ This skill tells you where a setting lives and how to change it safely. The webs
 | Change the first admin or driver login | `INITIAL_ADMIN_EMAIL`, `INITIAL_ADMIN_PASSWORD`, `INITIAL_ADMIN_MUST_RESET_PASSWORD`, `INITIAL_DRIVER_*` (first seed only) | `references/environment-variables.md` |
 | Allow other machines to reach Compose ports | `BIND_IP` for user-facing ports, `INFRA_BIND_IP` (default `127.0.0.1`) for Postgres, pgAdmin, Mailpit, FTP and monitoring | `references/environment-variables.md` |
 | Point at another database or Redis | `DATABASE_URL`, `REDIS_URL` | `references/database-setup.md` |
-| Keep the database small, change how long logs and meter values are kept | `logs.*.retentionDays` and the other retention settings, Helm `appSettings.logs.*` | `references/data-retention.md` |
+| Keep the database small, change how long logs and meter values are kept | Settings > Data Retention in the CSMS (`logs.*.retentionDays` and the other retention settings, `PUT /v1/settings/data-retention`); Helm and CDK do not set them | `references/data-retention.md` |
 | Fix "too many connections" | `DB_POOL_MAX` per process, sum below Postgres `max_connections` | `references/environment-variables.md` |
 | Cross-subdomain cookies | `COOKIE_DOMAIN`, plus `CSMS_URL`, `PORTAL_URL`, `CORS_ORIGIN` | `references/environment-variables.md` |
 | Script against the API | API key from the dashboard, sent as Bearer | `references/authentication.md` |
@@ -117,7 +117,7 @@ Confirm with the user before you change or rotate `SETTINGS_ENCRYPTION_KEY`, run
 Generated from the website docs. Never edit them. The first line of each file is the live page URL: link it when you answer.
 
 - `references/authentication.md`: auth realms, cookies, API keys, RBAC, MFA, reCAPTCHA, CSRF, session lifetimes.
-- `references/data-retention.md`: every retention setting with its default and where to change it, the prune jobs, database storage for large networks and chaos mode.
+- `references/data-retention.md`: every retention setting with its default and range, Settings > Data Retention, the AWS retention that stays in CDK, the prune jobs, database storage for large networks and chaos mode.
 - `references/database-setup.md`: PostgreSQL 17, migration and seed commands, Redis purposes and ACL users.
 - `references/environment-variables.md`: every environment variable per service, with defaults.
 - `references/ocpp-settings.md`: station URLs, security profiles, TLS, limits, message pipeline, horizontal scaling.

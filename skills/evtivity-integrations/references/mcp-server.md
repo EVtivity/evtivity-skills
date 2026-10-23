@@ -114,7 +114,7 @@ Errors of a tool call appear as an error result with a text and `structuredConte
 
 ## Audit
 
-EVtivity logs every tool call with the key, the user, the client name and version, the tool, the redacted arguments, the status, and the duration. Audit entries written by MCP reads and writes are marked as made through MCP, with the API key as the actor. Call logs are deleted after the conversation retention period of **Settings > AI > Usage and Limits** (30 days by default), and never sooner than 3 days.
+EVtivity logs every tool call with the key, the user, the client name and version, the tool, the redacted arguments, the status, and the duration. Audit entries written by MCP reads and writes are marked as made through MCP, with the API key as the actor. Call logs are deleted after the conversation retention period of **Settings > Data Retention** (30 days by default), and never sooner than 3 days.
 
 ## Settings
 

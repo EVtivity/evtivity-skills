@@ -207,7 +207,7 @@ Confirm: push history per station (Accepted, Rejected, Failed), the Load Mgmt po
 
 - Free vend (`references/free-vend.md`): any token is accepted and payment is skipped. Turning it off does not revert station configuration: edit or remove its templates.
 - Sessions and refunds (`references/sessions.md`): Refund from the Payment tab on captured payments (`POST /v1/sessions/<id>/refund`). A `faulted` session with stopped reason `EndRequestFailed` (Session End Failed alert) is not billed: Details > Billing > **Bill session** (`POST /v1/sessions/<id>/rebill`). Uncharged ones become **Manual billing** (collect outside the platform). Payment provider detail: evtivity-integrations.
-- Access logs (`references/access-logs.md`): tabs CSMS, Portal, API, Workers. Each entity has a History tab, the global audit page is `/audit` (`GET /v1/audit`, `audit:read`). Retention: `logs.*.retentionDays`.
+- Access logs (`references/access-logs.md`): tabs CSMS, Portal, API, Workers. Each entity has a History tab, the global audit page is `/audit` (`GET /v1/audit`, `audit:read`). Retention: Settings > Data Retention.
 - Support cases (`references/support-cases.md`): public messages reach the driver, internal notes do not. Refund a linked session from the case (`POST /v1/support-cases/<id>/refund`). AI Draft never sends.
 - AI: off until turned on in Settings > AI. A change runs only after a signed-in user confirms it (API keys get `AI_CONFIRMATION_REQUIRES_SESSION`).
 - Conformance testing (`references/conformance-testing.md`): Settings > Conformance > **Run Tests**. Command line runner and results: evtivity-conformance.

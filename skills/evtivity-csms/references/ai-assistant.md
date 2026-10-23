@@ -130,7 +130,7 @@ Your conversations are saved and private to you. Open **Conversation history** i
 - Rename a conversation.
 - Delete a conversation and its attachments. This cannot be undone.
 
-Click **New chat** to start over. Conversations are deleted automatically once they have had no activity for the retention period set in **Settings > AI > Usage and Limits** (30 days by default). See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention).
+Click **New chat** to start over. Conversations are deleted automatically once they have had no activity for the retention period set in **Settings > Data Retention** (30 days by default). See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention).
 
 ## Attachments
 
@@ -168,7 +168,8 @@ An administrator sets these in **Settings > AI > Usage and Limits**. They apply 
 - **Requests per user per minute**: default 10.
 - **Tokens per user per day**: default 2,000,000. 0 means no daily limit. The day runs from midnight to midnight UTC.
 - **Tool calls per answer**: default 20. The assistant stops calling the API for that answer when it reaches the limit.
-- **Keep conversations for (days)**: default 30.
+
+How long conversations are kept (default 30 days) is set in **Settings > Data Retention**.
 
 Company and site monthly token budgets also apply. See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage).
 

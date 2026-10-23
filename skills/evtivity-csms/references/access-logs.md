@@ -38,7 +38,7 @@ The redaction applies to both subject and body fields. Other operator emails and
 
 ## Retention
 
-Access logs and worker job logs are kept for 30 days by default (`logs.access.retentionDays`, `logs.workerJob.retentionDays`). See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention) for every retention setting, the prune jobs, and where to change them.
+Access logs and worker job logs are kept for 30 days by default (`logs.access.retentionDays`, `logs.workerJob.retentionDays`). Change them in **Settings > Data Retention**. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention) for every retention setting and the prune jobs.
 
 ## API Access
 

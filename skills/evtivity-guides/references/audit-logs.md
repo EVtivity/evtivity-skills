@@ -68,7 +68,7 @@ ORDER BY created_at DESC;
 
 ## Retention
 
-Audit rows older than 1095 days (`audit.retentionDays`) are deleted by a daily job. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention) for every retention setting and where to change it.
+Audit rows older than 1095 days (`audit.retentionDays`) are deleted by a daily job. Change the period in **Settings > Data Retention**. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention) for every retention setting.
 
 ## API access
 

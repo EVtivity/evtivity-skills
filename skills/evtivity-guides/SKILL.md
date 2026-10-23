@@ -160,7 +160,7 @@ curl -s -X POST "$EVTIVITY_API/v1/smart-charging/templates/$TPL/push" -H "Author
 - Create a user (`users:write`): `POST /v1/users` with `email`, `roleId` (`GET /v1/roles`), optional `hasAllSiteAccess` or `siteIds`. The API sends an invitation email with a setup link. Resend: `POST /v1/users/{id}/resend-invite`.
 - Live permission catalog: `GET /v1/permissions` returns `{ resource, kind, labelKey, permissions }` per group. Customize: `PUT /v1/users/{id}/permissions` with the full list. Users cannot edit their own permissions. Confirm changes with the user.
 - Site access is default-deny: set `hasAllSiteAccess` or `siteIds` (`PATCH /v1/users/{id}`).
-- Audit (`audit:read`): `GET /v1/audit/{entityType}/{entityId}` for one entity, `GET /v1/audit?entityType=station&actor=api_key&from=...&to=...` across entities. Retention: `audit.retentionDays` (default 1095, 0 disables pruning).
+- Audit (`audit:read`): `GET /v1/audit/{entityType}/{entityId}` for one entity, `GET /v1/audit?entityType=station&actor=api_key&from=...&to=...` across entities. Retention: `audit.retentionDays` in Settings > Data Retention (default 1095, 0 disables pruning).
 
 ## 10. White labeling and portal setup (`references/white-labeling.md`, `references/portal-setup.md`)
 

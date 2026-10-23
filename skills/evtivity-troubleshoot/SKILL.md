@@ -163,7 +163,7 @@ Every OCPP message is a row in `ocpp_message_logs`, heartbeats included, and eve
 
 Confirm: list the largest tables with `docker compose exec postgres psql -U evtivity evtivity -c "SELECT relname, pg_size_pretty(pg_total_relation_size(relid)) FROM pg_stat_user_tables ORDER BY pg_total_relation_size(relid) DESC LIMIT 10"`.
 
-Fix: lower `logs.ocppMessage.retentionDays` (default 30) and `logs.meterValues.retentionDays` (default 90), run fewer simulated stations (every enabled one stays connected, also in standby), or add disk. The daily `log-retention-prune` job deletes the old rows at 03:30 UTC. PostgreSQL reuses the freed space, the files do not shrink.
+Fix: lower **OCPP Messages** (`logs.ocppMessage.retentionDays`, default 30) and **Meter Values** (`logs.meterValues.retentionDays`, default 90) in Settings > Data Retention, run fewer simulated stations (every enabled one stays connected, also in standby), or add disk. The daily `log-retention-prune` job deletes the old rows at 03:30 UTC. PostgreSQL reuses the freed space, the files do not shrink.
 
 Detail: evtivity-configuration (Data Retention).
 

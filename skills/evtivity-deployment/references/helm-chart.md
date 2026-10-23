@@ -251,7 +251,7 @@ Copy the current credentials back into your values first: `secrets.databaseUrl` 
 
 ## Database Storage
 
-The chart itself does not run PostgreSQL. The install script installs the Bitnami PostgreSQL chart with its default volume size (8 Gi), which a large network outgrows. Size the database disk for your station count: set `primary.persistence.size` on that PostgreSQL release, or size your own database. Every OCPP message is a row in `ocpp_message_logs`, heartbeats included, and every meter reading is a row in `meter_values`. On a test network of about 2,000 simulated stations that stayed connected, the database reached 90 GB: 57 GB in `ocpp_message_logs` and 32 GB in `meter_values`. The demo data (`seedDemo`) has 2,000 simulated stations. Set the retention with `appSettings.logs.*`. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention).
+The chart itself does not run PostgreSQL. The install script installs the Bitnami PostgreSQL chart with its default volume size (8 Gi), which a large network outgrows. Size the database disk for your station count: set `primary.persistence.size` on that PostgreSQL release, or size your own database. Every OCPP message is a row in `ocpp_message_logs`, heartbeats included, and every meter reading is a row in `meter_values`. On a test network of about 2,000 simulated stations that stayed connected, the database reached 90 GB: 57 GB in `ocpp_message_logs` and 32 GB in `meter_values`. The demo data (`seedDemo`) has 2,000 simulated stations. The chart does not set data retention: lower the retention of these tables in **Settings > Data Retention**. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention).
 
 ## ConfigMap
 
@@ -496,7 +496,6 @@ These keys configure the SIM provider and the station signal reads. They are als
 |-----|--------|---------|---------|
 | `appSettings.sim.hologramEnabled` | `true` or `false` | empty (off on a fresh install) | **Enable Hologram** |
 | `appSettings.sim.hologramOrgId` | 1 to 15 digits. Quote it, for example `"123456"`. | empty | **Organization ID** |
-| `appSettings.sim.sessionsRetentionDays` | Whole number, 7 to 730 | empty (90 on a fresh install) | **Keep Sessions and Alerts (Days)** |
 | `appSettings.sim.sessionsFetchDays` | Whole number, 1 to 31 | empty (7 on a fresh install) | **Default Refresh Period (Days)** |
 | `appSettings.sim.stationSignalEnabled` | `true` or `false` | empty (off on a fresh install) | **Read Signal from Stations** |
 | `appSettings.sim.signalAlertBelowDbm` | Whole number, -140 to -40 | empty (off on a fresh install) | **Low Signal Alert (dBm)**. Turn the alert off in the dashboard. |

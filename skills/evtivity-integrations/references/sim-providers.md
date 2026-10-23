@@ -59,7 +59,8 @@ Test Connection runs at most 6 times a minute. While Hologram asks the CSMS to s
 | Setting | Default | Range | Effect |
 |---|---|---|---|
 | **Default Refresh Period (Days)** | 7 | 1 to 31 | The period preselected next to **Refresh** on a station's **Connectivity** tab and on a SIM page. A person can pick another period or a custom date range there. |
-| **Keep Sessions and Alerts (Days)** | 90 | 7 to 730 | Sessions and SIM alerts older than this are deleted. Sessions include cell IDs, which show roughly where a station was online. |
+
+How long sessions and SIM alerts are kept (90 days by default, 7 to 730) is set in **Settings > Data Retention** under **SIM Sessions and Alerts**. Sessions include cell IDs, which show roughly where a station was online.
 
 The CSMS keeps sessions and SIM alerts only for SIMs someone refreshed, on a station's **Connectivity** tab or on the SIM page. It never fetches them on its own.
 

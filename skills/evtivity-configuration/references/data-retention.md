@@ -6,7 +6,7 @@ How long EVtivity keeps logs, meter values, audit history and AI data, where you
 
 ## Overview
 
-EVtivity deletes old rows from its high-volume tables on a schedule. Each group of data has a retention setting in days. This page lists every retention setting, its default, the data it covers, and where you change it.
+EVtivity deletes old rows from its high-volume tables on a schedule. Each group of data has a retention setting in days. You change every one of them in **Settings > Data Retention** in the CSMS. This page lists every retention setting, its default and range, and the data it covers.
 
 > **Warning:**
 >
@@ -16,11 +16,11 @@ EVtivity deletes old rows from its high-volume tables on a schedule. Each group 
 >
 > On a test network of about 2,000 simulated stations that stayed connected, the database reached 90 GB. `ocpp_message_logs` held about 100 million rows (57 GB) at its default retention of 30 days. `meter_values` held about 61 million rows (32 GB).
 >
-> Plan the database disk for your station count before you turn on chaos mode or connect a large network. Lower `logs.ocppMessage.retentionDays` and `logs.meterValues.retentionDays` to keep these tables smaller.
+> Plan the database disk for your station count before you turn on chaos mode or connect a large network. Lower **OCPP Messages** and **Meter Values** in **Settings > Data Retention** (`logs.ocppMessage.retentionDays` and `logs.meterValues.retentionDays`) to keep these tables smaller.
 
 ## Log Retention Settings
 
-The daily `log-retention-prune` job deletes rows older than these settings. A value of 0 keeps the rows forever.
+The daily `log-retention-prune` job deletes rows older than these settings. Each `logs.*` value is a whole number from 0 to 3,650. A value of 0 keeps the rows forever.
 
 | Setting | Default (days) | Data deleted |
 |---|---|---|
@@ -46,24 +46,15 @@ The daily `log-retention-prune` job deletes rows older than these settings. A va
 | `ai.conversationRetentionDays` | 30 | [AI Assistant](https://www.evtivity.com/docs/csms/ai-assistant) conversations without activity for this period, with their attachments, and MCP call logs. Range 1 to 3,650. | `ai-retention-prune` |
 | `aiInsights.retentionDays` | 90 | [Automatic insights](https://www.evtivity.com/docs/csms/ai-insights) and background AI worker runs. Range 1 to 3,650. | `ai-retention-prune` |
 
-A value of 0 for `audit.retentionDays` or `refreshTokens.retentionDays` keeps the rows forever.
+`audit.retentionDays` and `refreshTokens.retentionDays` take a whole number from 0 to 3,650. A value of 0 keeps the rows forever.
 
 ## Where to Change Them
 
-Three settings have a field in the CSMS:
+Open **Settings > Data Retention** in the CSMS. The tab groups the settings into **Operational Logs**, **Security and Audit**, **Sign-In Sessions and Tokens**, **AI** and **SIM Data**, and shows the range and the default of each one. Click **Save** to store the changed values. The tab needs access to every site. Without the `settings.system:write` permission the fields are read-only. See [Settings](https://www.evtivity.com/docs/csms/settings#data-retention).
 
-| Setting | Field |
-|---|---|
-| `ai.conversationRetentionDays` | **Settings > AI > Usage and Limits > Keep conversations for (days)** |
-| `aiInsights.retentionDays` | **Settings > AI > Automatic Insights > Keep insights (days)** |
-| `sim.sessions.retentionDays` | **Settings > Integrations & Features > SIM Providers > Keep Sessions and Alerts (Days)** |
+The API offers the same settings at `GET` and `PUT /v1/settings/data-retention`, with a body such as `{ "logs.ocppMessage.retentionDays": 14 }`. Each value is a whole number of days in its range. See the [API reference](https://www.evtivity.com/api-reference).
 
-The `logs.*` settings, `audit.retentionDays` and `refreshTokens.retentionDays` have no field in the CSMS. Set them in your deployment:
-
-- **Helm chart:** `appSettings.logs.<name>RetentionDays` (for example `appSettings.logs.ocppMessageRetentionDays`), `appSettings.audit.retentionDays` and `appSettings.refreshTokens.retentionDays`. The chart writes these values on every install and upgrade, so a value set another way returns to the chart value at the next upgrade. See [Helm Chart](https://www.evtivity.com/docs/deployment/helm-chart).
-- **AWS CDK:** add the key to `appSettings` in the environment config, for example `appSettings['logs.ocppMessage.retentionDays']: 14`. Each deploy writes it. See [AWS](https://www.evtivity.com/docs/deployment/aws).
-- **Docker Compose and source installs:** set the key in `packages/database/seed.config.json` and run `npm run db:seed -- --apply-config`.
-- **API:** `PUT /v1/settings/<key>` with a body such as `{ "value": 14 }`. It needs the `settings.system:write` permission. Send a whole number: the prune job uses the default for any other value.
+The Helm chart and the AWS CDK config do not set data retention. Retention of AWS resources stays in the CDK config: CloudWatch log groups (`logs.retentionDays`), Aurora backups (`aurora.backupRetentionDays`) and Valkey snapshots (`valkey.snapshotRetentionDays`). See [AWS](https://www.evtivity.com/docs/deployment/aws).
 
 ## Prune Jobs
 

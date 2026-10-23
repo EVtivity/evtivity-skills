@@ -2,7 +2,7 @@ Generated from https://www.evtivity.com/docs/csms/settings. Do not edit.
 
 # Settings
 
-Configure company info, marketing, content, notifications, sustainability, payments, integrations, security, API keys, firmware, station configurations, smart charging, and AI.
+Configure company info, marketing, content, notifications, sustainability, payments, integrations, security, API keys, firmware, station configurations, smart charging, AI, and data retention.
 
 ## Overview
 
@@ -726,8 +726,9 @@ The **Automatic Insights** card holds the insight settings. See [Automatic Insig
 | **Cooldown per station, session or token (minutes)** | `aiInsights.cooldownMinutes` | 60 | 1 to 10,080 |
 | **Stations down at one site that make one site incident** | `aiInsights.siteIncidentThreshold` | 3 | 2 to 1,000 |
 | **Insights per site per day** | `aiInsights.maxPerSitePerDay` | 50 | 1 to 10,000 |
-| **Keep insights (days)** | `aiInsights.retentionDays` | 90 | 1 to 3,650 |
 | **Close one-off insights after (days)** | `aiInsights.expireAfterDays` | 7 | 1 to 365 |
+
+How long insights are kept is set in [Data Retention](#data-retention).
 
 ![Automatic Insights card](https://www.evtivity.com/screenshots/csms/settings-ai-insights-card.png)
 
@@ -777,7 +778,6 @@ The **AI Limits** card holds the rate limits and token budgets of the assistant,
 | **Support AI requests per site per minute** | `ai.rateLimit.sitePerMinute` | 60 | 1 to 100,000 |
 | **Tokens per user per day** | `ai.budget.userDailyTokens` | 2,000,000 | 0 to 10,000,000,000 (0 means no daily limit) |
 | **Tool calls per answer** | `ai.maxToolCallsPerTurn` | 20 | 1 to 100 |
-| **Keep conversations for (days)** | `ai.conversationRetentionDays` | 30 | 1 to 3,650 |
 | **Maximum attachment size (bytes)** | `ai.attachments.maxBytes` | 10,485,760 (10 MB) | 1 to 33,554,432 (32 MB) |
 | **Attachments per message** | `ai.attachments.maxPerMessage` | 5 | 1 to 20 |
 | **Company tokens per month** | `ai.budget.companyMonthlyTokens` | 0 | 0 to 1,000,000,000,000 (0 means no limit) |
@@ -785,7 +785,7 @@ The **AI Limits** card holds the rate limits and token budgets of the assistant,
 | **Tokens per site per day (insights and workers)** | `ai.budget.siteDailyTokens` | 300,000 | 0 to 10,000,000,000 (0 means no limit) |
 | **Warn at (% of a budget)** | `ai.budget.warnPercent` | 80 | 1 to 100 |
 
-The maximum attachment size also applies to [support case](https://www.evtivity.com/docs/csms/support-cases) attachments.
+The maximum attachment size also applies to [support case](https://www.evtivity.com/docs/csms/support-cases) attachments. How long conversations are kept is set in [Data Retention](#data-retention).
 
 Token budgets count input plus output tokens. Daily budgets run on UTC days, monthly budgets on calendar months in the system timezone.
 
@@ -803,6 +803,37 @@ The CSMS shows a banner at the top of every page to users with the `settings.ai:
 A rate limit does not raise an alert: it ends by waiting. A personal key from a user's profile belongs to another provider account and never raises it.
 
 The same users also get these alerts as system notifications by email and SMS: **AI Provider Out of Credit or Quota**, **AI Budget Warning**, and **AI Budget Used Up**. See [Notifications](https://www.evtivity.com/docs/csms/notifications). The API returns the active alerts at `GET /v1/ai/alerts`.
+
+## Data Retention
+
+**Permission:** `settings.system:read` / `settings.system:write` and access to every site.
+
+Sets how many days the CSMS keeps each kind of stored data. A prune job deletes older rows at its next run. Without `settings.system:write` the fields are read-only and **Save** is hidden. Changes appear on the **History** tab.
+
+The tab starts with a warning: chaos mode and large networks need large storage. Every OCPP message is a row in `ocpp_message_logs` and every meter reading a row in `meter_values`, so both tables grow with the number of connected stations.
+
+![Data Retention tab](https://www.evtivity.com/screenshots/csms/settings-data-retention.png)
+
+| Card | Field | Setting key | Default | Range |
+|------|-------|-------------|---------|-------|
+| **Operational Logs** | **OCPP Messages** | `logs.ocppMessage.retentionDays` | 30 | 0 to 3,650 |
+| **Operational Logs** | **Meter Values** | `logs.meterValues.retentionDays` | 90 | 0 to 3,650 |
+| **Operational Logs** | **Domain Events** | `logs.domainEvents.retentionDays` | 30 | 0 to 3,650 |
+| **Operational Logs** | **Access Logs** | `logs.access.retentionDays` | 30 | 0 to 3,650 |
+| **Operational Logs** | **Worker Job Logs** | `logs.workerJob.retentionDays` | 30 | 0 to 3,650 |
+| **Operational Logs** | **Connector Status History** | `logs.portStatus.retentionDays` | 30 | 0 to 3,650 |
+| **Operational Logs** | **Station Connection Log** | `logs.connection.retentionDays` | 90 | 0 to 3,650 |
+| **Operational Logs** | **Sent Notifications** | `logs.notifications.retentionDays` | 90 | 0 to 3,650 |
+| **Operational Logs** | **Load Management Allocations** | `logs.loadAllocation.retentionDays` | 90 | 0 to 3,650 |
+| **Security and Audit** | **Audit History** | `audit.retentionDays` | 1,095 | 0 to 3,650 |
+| **Security and Audit** | **Sign-In Records** | `logs.loginAudit.retentionDays` | 90 | 0 to 3,650 |
+| **Security and Audit** | **Station Security Events** | `logs.securityEvents.retentionDays` | 365 | 0 to 3,650 |
+| **Sign-In Sessions and Tokens** | **Revoked and Expired Sign-In Tokens** | `refreshTokens.retentionDays` | 30 | 0 to 3,650 |
+| **AI** | **AI Assistant Conversations** | `ai.conversationRetentionDays` | 30 | 1 to 3,650 |
+| **AI** | **Automatic Insights** | `aiInsights.retentionDays` | 90 | 1 to 3,650 |
+| **SIM Data** | **SIM Sessions and Alerts** | `sim.sessions.retentionDays` | 90 | 7 to 730 |
+
+A value of 0 keeps the data forever for the settings whose range starts at 0. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention) for the tables each setting covers and the prune jobs.
 
 ## Conformance
 
