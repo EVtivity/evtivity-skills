@@ -116,7 +116,7 @@ The limit is in watts. A station that reports support for amps only (OCPP 2.1 `S
 
 When you turn load management off, or a station leaves its circuit or the site, its limit is removed from the station.
 
-Changed allocations are logged in the Allocations list. The list keeps entries for 90 days by default (setting `logs.loadAllocation.retentionDays`; 0 keeps them forever).
+Changed allocations are logged in the Allocations list. The list keeps entries for 90 days by default (`logs.loadAllocation.retentionDays`). See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention).
 
 ## View Allocation Status
 

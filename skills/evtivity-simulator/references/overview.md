@@ -43,7 +43,7 @@ The CSMS API exposes endpoints for managing simulated stations and triggering ac
 |----------|---------|-------------|
 | `CSS_MODE` | `standby` | Operating mode: `standby` or `chaos` |
 | `CSS_ACTION_INTERVAL_MS` | `1000` | Interval between chaos mode actions (ms). Docker Compose sets `3000` when `.env` does not set it. |
-| `CSS_STATION_LIMIT` | `0` | Max stations in chaos mode (0 = all) |
+| `CSS_STATION_LIMIT` | `0` | Max stations in chaos mode (0 = all). Stations beyond the limit stay connected. |
 | `OCPP_SERVER_URL` | `ws://localhost:7103` | Plain WebSocket OCPP endpoint |
 | `OCPP_TLS_SERVER_URL` | `wss://localhost:8443` | TLS WebSocket OCPP endpoint |
 | `DATABASE_URL` | (PostgreSQL connection) | Database for reading CSS station config |
@@ -84,6 +84,10 @@ When a connector is in `Finishing`, the filter restricts the chaos pool to `{unp
 A typical end-to-end session emerges as: an early tick picks `plugIn` → some later tick picks `authorize` → another tick picks `startCharging` → much later a tick picks `stopCharging` → eventually a tick picks `unplug`. The intervals between these are random — driven by `CSS_ACTION_INTERVAL_MS` and the state filter, not by a coordinated script.
 
 Use chaos mode for load testing and demos.
+
+> **Warning:**
+>
+> Chaos mode and a large number of simulated stations need large database storage. Every OCPP message is a row in `ocpp_message_logs`, heartbeats included, and every meter reading is a row in `meter_values`. Every enabled simulated station stays connected and sends heartbeats, also in standby mode. On a test network of about 2,000 simulated stations the database reached 90 GB: 57 GB in `ocpp_message_logs` and 32 GB in `meter_values`. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention) to plan storage and lower the retention.
 
 ## Meter Value Generation
 

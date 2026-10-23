@@ -70,3 +70,7 @@ The Migrate image runs Drizzle migrations on startup and exits. Use it as an ini
 | Worker        | 1 GB   | 0.5 CPU | Scales with job volume.                |
 
 These are starting points. Monitor actual usage and adjust based on your station count and traffic patterns.
+
+### Database Storage
+
+PostgreSQL storage grows with the number of connected stations. Every OCPP message is a row in `ocpp_message_logs`, heartbeats included, and every meter reading is a row in `meter_values`. On a test network of about 2,000 simulated stations that stayed connected, the database reached 90 GB: `ocpp_message_logs` held about 100 million rows (57 GB) and `meter_values` about 61 million rows (32 GB). Plan the disk for your station count, and lower the retention of these tables for a large network or chaos mode. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention).

@@ -24,7 +24,7 @@ When adding a new environment variable, update all 5 locations: Zod config schem
 | `REDIS_URL` | `redis://localhost:6379` | Redis connection string for pub/sub, queues, and caching. In Docker Compose, Helm, and AWS each service connects as its own ACL user (`redis://<user>:<password>@host:6379`) |
 | `REDIS_TLS_CA_PEM` | - | CA certificate (PEM) that signed the Redis server certificate, for a `rediss://` URL with a private CA. The Helm chart sets it when `redisTls.enabled` |
 | `REDIS_TLS_CA_FILE` | - | Path to that CA certificate, as an alternative to `REDIS_TLS_CA_PEM` |
-| `SEED_DEMO` | `false` | Read by `npm run db:seed`. Set to `true` to populate demo data (stations, sessions, drivers) when seeding. When `false`, only settings, roles, and the admin user are created. The migrate container does not auto-seed; seeding is always explicit. |
+| `SEED_DEMO` | `false` | Read by `npm run db:seed`. Set to `true` to populate demo data (stations, sessions, drivers) when seeding. When `false`, only settings, roles, and the admin user are created. The migrate container does not auto-seed; seeding is always explicit. The demo data includes 2,000 simulated stations, which need large database storage once the simulator connects them. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention). |
 | `SEED_CSS_TARGET_URL` | `ws://ocpp:7103` | Override for the OCPP URL written to simulator station rows by the demo seed, as reachable from the simulator container. |
 | `SEED_CSS_TLS_TARGET_URL` | `wss://ocpp:8443` | TLS variant of the seeded simulator target URL. |
 | `REGISTRATION_POLICY` | `approval-required` | Station onboarding policy at first install. `approval-required` or `open`. Change later via dashboard, API, or Helm. |
@@ -144,10 +144,10 @@ Integrations (Stripe, S3, SMTP, Twilio, reCAPTCHA, Google Maps, Plug and Charge)
 
 | Variable | Default | Description |
 |---|---|---|
-| `CSS_MODE` | `standby` | Simulator mode on startup: `standby` or `chaos` |
+| `CSS_MODE` | `standby` | Simulator mode on startup: `standby` or `chaos`. Chaos mode needs large database storage, see [Data Retention](https://www.evtivity.com/docs/configuration/data-retention). |
 | `CSS_HEALTH_PORT` | `8082` | Health check endpoint port |
 | `CSS_ACTION_INTERVAL_MS` | `1000` | Milliseconds between simulated actions. Docker Compose sets `3000` when `.env` does not set it. |
-| `CSS_STATION_LIMIT` | `0` | Max stations to simulate. 0 for unlimited. |
+| `CSS_STATION_LIMIT` | `0` | Max stations chaos mode drives. 0 for all. Every enabled simulated station stays connected and writes heartbeats to `ocpp_message_logs`, also beyond this limit. |
 | `CSS_STATION_PASSWORD` | `password` | Not used. Each simulated station presents the password stored on its simulator record. |
 | `OCPP_SERVER_URL` | `ws://localhost:7103` | OCPP server URL the simulator connects to |
 | `OCPP_TLS_SERVER_URL` | `wss://localhost:8443` | TLS OCPP server URL for TLS + Basic Auth and Mutual TLS stations |

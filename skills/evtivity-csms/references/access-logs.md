@@ -38,21 +38,7 @@ The redaction applies to both subject and body fields. Other operator emails and
 
 ## Retention
 
-Each log table has its own retention setting so noisy operational tables can stay short while security-critical history is preserved longer.
-
-| Setting | Default | Table |
-| --- | --- | --- |
-| `logs.access.retentionDays` | 30 | Access logs (CSMS, Portal, API tabs) |
-| `logs.ocppMessage.retentionDays` | 30 | OCPP message log |
-| `logs.connection.retentionDays` | 90 | Connection log |
-| `logs.notifications.retentionDays` | 90 | Notification history |
-| `logs.securityEvents.retentionDays` | 365 | Security events |
-| `logs.portStatus.retentionDays` | 30 | Connector status history |
-| `logs.workerJob.retentionDays` | 30 | Worker job logs (Workers tab) |
-
-A daily cron job named `log-retention-prune` runs at 03:30 UTC and removes rows older than each setting's cutoff in 1000-row batches so a large prune does not hold an exclusive lock. Set any value to 0 to disable pruning for that table.
-
-The audit log family (per-entity History tabs and the global Audit page) is governed separately by `audit.retentionDays`. See [Audit Logs](https://www.evtivity.com/docs/guides/audit-logs) for details.
+Access logs and worker job logs are kept for 30 days by default (`logs.access.retentionDays`, `logs.workerJob.retentionDays`). See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention) for every retention setting, the prune jobs, and where to change them.
 
 ## API Access
 

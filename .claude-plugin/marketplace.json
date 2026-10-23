@@ -18,7 +18,7 @@
     },
     {
       "name": "evtivity-configuration",
-      "description": "Configure EVtivity: environment variables, secrets such as JWT_SECRET and SETTINGS_ENCRYPTION_KEY, operator and driver auth, roles, MFA, reCAPTCHA setup, database, migrations, seed, Redis users, OCPP ports, TLS and station security profiles. Use to change a setting or variable or harden an install. Not for a blocked sign-in (evtivity-troubleshoot).",
+      "description": "Configure EVtivity: environment variables, secrets such as JWT_SECRET and SETTINGS_ENCRYPTION_KEY, operator and driver auth, roles, MFA, reCAPTCHA, database, migrations, seed, data retention, Redis users, OCPP ports, TLS and station security profiles. Use to change a setting or harden an install. Not for a blocked sign-in (evtivity-troubleshoot).",
       "source": "./",
       "strict": false,
       "skills": [

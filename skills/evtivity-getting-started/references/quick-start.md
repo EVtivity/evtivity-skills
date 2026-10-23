@@ -71,6 +71,10 @@ The simulator connects virtual stations to the OCPP server. It starts in standby
 CSS_MODE=chaos docker compose up -d
 ```
 
+> **Warning:**
+>
+> Chaos mode fills the database fast. Every OCPP message and every meter reading is stored, in `ocpp_message_logs` and `meter_values`. With about 2,000 simulated stations, the number the demo data (`SEED_DEMO=true`) creates, the database reached 90 GB. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention) before you run chaos mode on a large network.
+
 ## Optional services
 
 Add profiles for additional services:

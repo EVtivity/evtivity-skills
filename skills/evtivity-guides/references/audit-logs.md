@@ -68,7 +68,7 @@ ORDER BY created_at DESC;
 
 ## Retention
 
-Audit rows older than 3 years (1095 days) are pruned automatically by a daily cron job. The retention period is configurable via the `audit.retentionDays` setting. Set the value to 0 to disable automatic pruning entirely.
+Audit rows older than 1095 days (`audit.retentionDays`) are deleted by a daily job. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention) for every retention setting and where to change it.
 
 ## API access
 

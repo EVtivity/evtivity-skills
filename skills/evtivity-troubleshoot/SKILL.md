@@ -47,6 +47,7 @@ Start at the first symptom that matches.
 - Card payments, guest checkout or webhooks fail with `PAYMENT_PROVIDER_NOT_CONFIGURED` or `WEBHOOK_NOT_CONFIGURED`: go to E.
 - The problem started after `git pull`, a checkout of a new tag, or an image upgrade: go to G.
 - A cellular station shows no SIM data on its Connectivity tab, or the SIM routes answer `SIM_FEATURE_DISABLED`, `SIM_INACTIVE` or `SIM_ATTACHED_ELSEWHERE`: go to H.
+- The database disk fills up, or Postgres stops with `No space left on device`: go to I.
 - A session is `faulted` with stopped reason `EndRequestFailed` (Session End Failed alert): this is a field problem, not a stack failure. Bill it with the evtivity-csms skill (Bill session), or see evtivity-guides field troubleshooting.
 - Reports stay `pending`, or the worker log shows `NOPERM` on `report_generate` or `ocpp:conn:*` after an upgrade to v0.1.40: go to D.
 - None of these: collect diagnostics and use the evtivity-report-issue skill.
@@ -155,6 +156,16 @@ Fix, by state:
 - Older data missing: the station tab shows a SIM's data only from its last detach, move or deactivation. The SIM page shows the full history to users with access to every site.
 
 Detail: evtivity-csms (Station Connectivity, SIMs), evtivity-integrations (SIM providers).
+
+### I. Database disk filling up
+
+Every OCPP message is a row in `ocpp_message_logs`, heartbeats included, and every meter reading is a row in `meter_values`. Both grow with the number of connected stations. About 2,000 simulated stations (the demo data, or chaos mode) filled 90 GB on a test network.
+
+Confirm: list the largest tables with `docker compose exec postgres psql -U evtivity evtivity -c "SELECT relname, pg_size_pretty(pg_total_relation_size(relid)) FROM pg_stat_user_tables ORDER BY pg_total_relation_size(relid) DESC LIMIT 10"`.
+
+Fix: lower `logs.ocppMessage.retentionDays` (default 30) and `logs.meterValues.retentionDays` (default 90), run fewer simulated stations (every enabled one stays connected, also in standby), or add disk. The daily `log-retention-prune` job deletes the old rows at 03:30 UTC. PostgreSQL reuses the freed space, the files do not shrink.
+
+Detail: evtivity-configuration (Data Retention).
 
 ## 3. After the fix
 

@@ -91,7 +91,7 @@ This starts postgres, redis, migrate, mailpit, prometheus, grafana, loki, and al
 
 Persistent data is stored in named Docker volumes:
 
-- `pgdata` - PostgreSQL data
+- `pgdata` - PostgreSQL data. It grows with the number of connected stations, most of all in `ocpp_message_logs` and `meter_values`. Chaos mode with many simulated stations can fill tens of gigabytes. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention).
 - `redisdata` - Redis data
 - `ftpdata` - FTP server files
 - `pgadmindata` - pgAdmin configuration

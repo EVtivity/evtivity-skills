@@ -220,7 +220,7 @@ Approximate monthly cost with the default configs in `us-east-1`, including obse
 | qa   | $195 - $262 |
 | prod | $598 - $960 |
 
-Aurora and Fargate are the largest items. Setting every service to `desiredCount: 0` in dev lets Aurora pause and drops dev to about $45 per month. The dev config turns on the OCPP TLS Network Load Balancer, which adds about $28 per month.
+Aurora and Fargate are the largest items. Aurora storage grows with the data and is billed by the amount stored. A large network or chaos mode in the simulator stores many rows in `ocpp_message_logs` and `meter_values`: about 2,000 simulated stations filled 90 GB on a test network. Set the retention in `appSettings` to keep it smaller. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention). Setting every service to `desiredCount: 0` in dev lets Aurora pause and drops dev to about $45 per month. The dev config turns on the OCPP TLS Network Load Balancer, which adds about $28 per month.
 
 ### Release Auto-Bump
 

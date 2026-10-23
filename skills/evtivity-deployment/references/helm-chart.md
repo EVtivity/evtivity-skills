@@ -249,6 +249,10 @@ The admin passwords are not rotated. `CREDENTIAL_ROTATION=true ./scripts/install
 
 Copy the current credentials back into your values first: `secrets.databaseUrl` from `MIGRATE_DATABASE_URL` and each `secrets.redisUrls.<service>` from `REDIS_URL_<SERVICE>` of `<fullname>-credentials`. Then upgrade with `credentialRotation.enabled=false` and delete the Secret.
 
+## Database Storage
+
+The chart itself does not run PostgreSQL. The install script installs the Bitnami PostgreSQL chart with its default volume size (8 Gi), which a large network outgrows. Size the database disk for your station count: set `primary.persistence.size` on that PostgreSQL release, or size your own database. Every OCPP message is a row in `ocpp_message_logs`, heartbeats included, and every meter reading is a row in `meter_values`. On a test network of about 2,000 simulated stations that stayed connected, the database reached 90 GB: 57 GB in `ocpp_message_logs` and 32 GB in `meter_values`. The demo data (`seedDemo`) has 2,000 simulated stations. Set the retention with `appSettings.logs.*`. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention).
+
 ## ConfigMap
 
 Non-sensitive environment variables are stored in a shared ConfigMap mounted by all deployments:

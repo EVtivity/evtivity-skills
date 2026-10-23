@@ -130,7 +130,7 @@ Your conversations are saved and private to you. Open **Conversation history** i
 - Rename a conversation.
 - Delete a conversation and its attachments. This cannot be undone.
 
-Click **New chat** to start over. Conversations are deleted automatically once they have had no activity for the retention period set in **Settings > AI > Usage and Limits** (30 days by default).
+Click **New chat** to start over. Conversations are deleted automatically once they have had no activity for the retention period set in **Settings > AI > Usage and Limits** (30 days by default). See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention).
 
 ## Attachments
 
