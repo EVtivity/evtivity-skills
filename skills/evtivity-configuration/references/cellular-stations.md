@@ -151,6 +151,17 @@ Sent automatically at every boot from the station's plan, with the AC or DC valu
 - Idle readings
 - Values at the end of a session
 
+These values live in **Settings > Integrations & Features > OCPP** and the station's data plan, never in a template: a template that names one of them is refused with `400 DATA_PLAN_SETTING_IN_TEMPLATE`, on save and on push.
+
+| OCPP 1.6 key | OCPP 2.0.1 and 2.1 variable |
+|---|---|
+| `HeartbeatInterval` | `OCPPCommCtrlr.HeartbeatInterval` |
+| `MeterValueSampleInterval` | `SampledDataCtrlr.TxUpdatedInterval` |
+| `MeterValuesSampledData` | `SampledDataCtrlr.TxUpdatedMeasurands` |
+| `StopTxnSampledData` | `SampledDataCtrlr.TxEndedMeasurands` |
+| `ClockAlignedDataInterval` | `AlignedDataCtrlr.Interval` |
+| `MeterValuesAlignedData` | `AlignedDataCtrlr.Measurands` |
+
 Set by the templates, one per plan per OCPP version:
 
 - Station ping interval
