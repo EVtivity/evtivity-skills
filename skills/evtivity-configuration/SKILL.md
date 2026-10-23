@@ -4,8 +4,8 @@ description: "Configure EVtivity: environment variables, secrets such as JWT_SEC
 license: MIT
 metadata:
   evtivity-version: "0.1.48"
-  evtivity-release: "v0.1.48-beta.3"
-  evtivity-commit: "41e94513813a93264b7720745bc01c6686f99b3c"
+  evtivity-release: "v0.1.48-beta.4"
+  evtivity-commit: "871b5dded1fdd6a9b909f0dbaa0c9ba3683abc7c"
   evtivity-docs-section: configuration
 ---
 

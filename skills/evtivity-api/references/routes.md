@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.48-beta.3 (https://github.com/EVtivity/evtivity-csms, commit 41e94513813a) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.4 (https://github.com/EVtivity/evtivity-csms, commit 871b5dded1fd) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
@@ -13,10 +13,11 @@ A `write` permission includes `read` for the same resource.
 | Tag | Routes | File |
 |---|---|---|
 | Health | 2 | `references/routes-health.md` |
-| Sites | 32 | `references/routes-sites.md` |
+| Sites | 33 | `references/routes-sites.md` |
 | Stations | 82 | `references/routes-stations.md` |
+| SIMs | 18 | `references/routes-sims.md` |
 | Sessions | 9 | `references/routes-sessions.md` |
-| Users | 51 | `references/routes-users.md` |
+| Users | 53 | `references/routes-users.md` |
 | Drivers | 28 | `references/routes-drivers.md` |
 | Pricing | 19 | `references/routes-pricing.md` |
 | OCPP 2.1 Commands | 57 | `references/routes-ocpp-2-1-commands.md` |
@@ -26,7 +27,7 @@ A `write` permission includes `read` for the same resource.
 | Fleets | 34 | `references/routes-fleets.md` |
 | Tokens | 12 | `references/routes-tokens.md` |
 | Dashboard | 17 | `references/routes-dashboard.md` |
-| Settings | 34 | `references/routes-settings.md` |
+| Settings | 39 | `references/routes-settings.md` |
 | Documentation | 1 | `references/routes-documentation.md` |
 | Payments | 38 | `references/routes-payments.md` |
 | Events | 1 | `references/routes-events.md` |

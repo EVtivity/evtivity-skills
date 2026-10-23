@@ -1,6 +1,6 @@
 # EVtivity API routes: Settings
 
-Generated from EVtivity CSMS v0.1.48-beta.3 (https://github.com/EVtivity/evtivity-csms, commit 41e94513813a) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.4 (https://github.com/EVtivity/evtivity-csms, commit 871b5dded1fd) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -10,6 +10,9 @@ A `write` permission includes `read` for the same resource.
 
 | Method | Path | Permission | Summary |
 |---|---|---|---|
+| GET | `/v1/settings/notifications/webhook-signing-secret` | settings.system:read | Whether a webhook signing secret is stored |
+| POST | `/v1/settings/notifications/webhook-signing-secret` | settings.system:write | Generate a new webhook signing secret, shown once |
+| DELETE | `/v1/settings/notifications/webhook-signing-secret` | settings.system:write | Remove the webhook signing secret (webhooks go out unsigned) |
 | GET | `/v1/portal/branding` | public | Get portal branding settings |
 | GET | `/v1/portal/features` | public | Get public feature flags |
 | GET | `/v1/portal/content/{type}` | public | Get public legal content |
@@ -26,6 +29,8 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/settings/sim-providers` | settings.integrations:read | Get SIM provider settings |
 | PUT | `/v1/settings/sim-providers` | settings.integrations:write | Update SIM provider settings |
 | POST | `/v1/settings/sim-providers/{provider}/test` | settings.integrations:write | Test a SIM provider connection |
+| GET | `/v1/settings/data-retention` | settings.system:read | Get data retention settings |
+| PUT | `/v1/settings/data-retention` | settings.system:write | Update data retention settings |
 | GET | `/v1/security/settings` | settings.security:read | Get all security settings |
 | PUT | `/v1/security/password-policy` | settings.security:write | Update the password policy |
 | PUT | `/v1/security/sessions` | settings.security:write | Update the operator and driver session lifetimes |

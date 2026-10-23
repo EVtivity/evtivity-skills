@@ -1,6 +1,6 @@
 # EVtivity API routes: Stations
 
-Generated from EVtivity CSMS v0.1.48-beta.3 (https://github.com/EVtivity/evtivity-csms, commit 41e94513813a) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.4 (https://github.com/EVtivity/evtivity-csms, commit 871b5dded1fd) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -23,7 +23,7 @@ A `write` permission includes `read` for the same resource.
 | PATCH | `/v1/stations/{id}/evses/{evseId}` | stations:write | Update connectors on an EVSE |
 | DELETE | `/v1/stations/{id}/evses/{evseId}` | stations:write | Delete an EVSE and all its connectors |
 | POST | `/v1/stations/{id}/evses/{evseId}/refresh-status` | stations:read | Force the station to re-report this EVSE's connector status |
-| POST | `/v1/stations/{id}/evses/{evseId}/stop-active-session` | stations:write | Force-stop the active charging session on this EVSE |
+| POST | `/v1/stations/{id}/evses/{evseId}/stop-active-session` |  | Force-stop the active charging session on this EVSE |
 | POST | `/v1/stations/{id}/evses/{evseId}/connectors` | stations:write | Add a connector to an EVSE |
 | DELETE | `/v1/stations/{id}/evses/{evseId}/connectors/{connectorId}` | stations:write | Delete a connector from an EVSE |
 | POST | `/v1/stations/{id}/evses/{evseId}/retire` | stations:write | Retire an EVSE |
@@ -43,9 +43,9 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/stations/{id}/confirm-real-station` | stations:write | Confirm that a real station uses a simulator-flagged station identity |
 | GET | `/v1/stations/{id}/security-logs` | stations:read | Get security event logs for a station |
 | GET | `/v1/stations/{id}/certificates` | stations:read | List certificates for a station |
-| POST | `/v1/stations/{id}/certificates/install` | stations:write | Install a certificate on a station |
-| POST | `/v1/stations/{id}/certificates/delete` | stations:write | Delete a certificate from a station |
-| POST | `/v1/stations/{id}/certificates/query` | stations:write | Query installed certificate IDs from a station |
+| POST | `/v1/stations/{id}/certificates/install` |  | Install a certificate on a station |
+| POST | `/v1/stations/{id}/certificates/delete` |  | Delete a certificate from a station |
+| POST | `/v1/stations/{id}/certificates/query` |  | Query installed certificate IDs from a station |
 | GET | `/v1/stations/{id}/pricing-groups` | stations:read | Get the pricing group for a station |
 | POST | `/v1/stations/{id}/pricing-groups` | stations:write | Assign a pricing group to a station |
 | DELETE | `/v1/stations/{id}/pricing-groups/{pricingGroupId}` | stations:write | Remove a pricing group from a station |
@@ -57,16 +57,16 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/stations/{id}/variables` | stations:read | List reported variables for a station |
 | GET | `/v1/stations/{id}/firmware-history` | stations:read | List firmware update history for a station |
 | GET | `/v1/stations/{id}/charging-profiles` | stations:read | List charging profiles for a station |
-| POST | `/v1/stations/{id}/charging-profiles/refresh` | stations:write | Refresh charging profiles from the station via OCPP GetChargingProfiles |
-| POST | `/v1/stations/{id}/charging-profiles/composite` | stations:write | Get composite charging schedule from the station |
-| POST | `/v1/stations/{id}/charging-profiles/clear` | stations:write | Clear charging profiles from the station |
-| POST | `/v1/stations/{id}/charging-profiles/push` | stations:write | Push a charging profile template to this station |
-| POST | `/v1/stations/{id}/configurations/push` | stations:write | Push a configuration template to this station |
+| POST | `/v1/stations/{id}/charging-profiles/refresh` |  | Refresh charging profiles from the station via OCPP GetChargingProfiles |
+| POST | `/v1/stations/{id}/charging-profiles/composite` |  | Get composite charging schedule from the station |
+| POST | `/v1/stations/{id}/charging-profiles/clear` |  | Clear charging profiles from the station |
+| POST | `/v1/stations/{id}/charging-profiles/push` |  | Push a charging profile template to this station |
+| POST | `/v1/stations/{id}/configurations/push` |  | Push a configuration template to this station |
 | GET | `/v1/stations/{id}/ev-charging-needs` | stations:read | List EV charging needs for a station |
 | GET | `/v1/stations/{id}/ev-charging-schedules` | stations:read | List the charging schedules EVs reported for a station |
 | GET | `/v1/stations/{id}/monitoring-rules` | stations:read | List variable monitoring rules for a station |
-| POST | `/v1/stations/{id}/monitoring-rules` | stations:write | Create a variable monitoring rule and send SetVariableMonitoring |
-| DELETE | `/v1/stations/{id}/monitoring-rules/{ruleId}` | stations:write | Clear a variable monitoring rule and send ClearVariableMonitoring |
+| POST | `/v1/stations/{id}/monitoring-rules` |  | Create a variable monitoring rule and send SetVariableMonitoring |
+| DELETE | `/v1/stations/{id}/monitoring-rules/{ruleId}` |  | Clear a variable monitoring rule and send ClearVariableMonitoring |
 | GET | `/v1/stations/{id}/event-alerts` | stations:read | List event alerts for a station |
 | POST | `/v1/stations/{id}/event-alerts/{alertId}/acknowledge` | stations:write | Acknowledge an event alert |
 | GET | `/v1/stations/{id}/standalone-meter-values` | stations:read | List standalone meter values for a station |
@@ -74,14 +74,14 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/stations/{id}/sim/timeline` | stations:read | Get a station's connectivity timeline |
 | POST | `/v1/stations/{id}/sim/refresh` | stations:read | Refresh a station's SIM data |
 | POST | `/v1/stations/{id}/sim/network-reset` | stations:write | Reset a station's SIM network |
-| POST | `/v1/stations/{id}/sim/match/confirm` | stations:write | Confirm a station's SIM match |
-| DELETE | `/v1/stations/{id}/sim/match` | stations:write | Clear a station's SIM match |
+| POST | `/v1/stations/{id}/sim/attachment/confirm` | stations:write | Confirm a station's SIM attachment |
+| DELETE | `/v1/stations/{id}/sim/attachment` | stations:write | Detach a station's SIM |
 | GET | `/v1/stations/{id}/web-payments` | stations:read | Get the dynamic QR code payment configuration of a station |
 | PUT | `/v1/stations/{id}/web-payments` | stations:write | Enable dynamic QR code payments on a station |
 | DELETE | `/v1/stations/{id}/web-payments` | stations:write | Disable dynamic QR code payments on a station |
 | GET | `/v1/stations/{id}/web-payments/support` | stations:read | Check whether a station supports dynamic QR codes |
 | GET | `/v1/stations/{id}/images` | stations:read | List all images for a station |
-| POST | `/v1/stations/{id}/images` | stations:write | Confirm a station image upload after S3 PUT |
+| POST | `/v1/stations/{id}/images` | stations:write | Confirm a station image upload after the S3 POST |
 | POST | `/v1/stations/{id}/images/upload-url` | stations:write | Get a presigned S3 upload URL for a station image |
 | PATCH | `/v1/stations/{id}/images/{imageId}` | stations:write | Update station image metadata |
 | DELETE | `/v1/stations/{id}/images/{imageId}` | stations:write | Delete a station image |

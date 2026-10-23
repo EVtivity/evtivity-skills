@@ -1,6 +1,6 @@
 # EVtivity API routes: Payments
 
-Generated from EVtivity CSMS v0.1.48-beta.3 (https://github.com/EVtivity/evtivity-csms, commit 41e94513813a) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.4 (https://github.com/EVtivity/evtivity-csms, commit 871b5dded1fd) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -13,11 +13,11 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/sites/{id}/payment-config` | payments:read | Get payment configuration for a site |
 | PUT | `/v1/sites/{id}/payment-config` | payments:write | Create or update payment configuration for a site |
 | DELETE | `/v1/sites/{id}/payment-config` | payments:write | Delete payment configuration for a site |
-| GET | `/v1/settings/stripe` | payments:read | Get system Stripe settings |
-| PUT | `/v1/settings/stripe` | payments:write | Update system Stripe settings |
-| POST | `/v1/settings/stripe/test` | payments:write | Test Stripe API connection |
-| GET | `/v1/settings/stripe/webhook` | payments:read | Get the Stripe webhook setup |
-| POST | `/v1/settings/stripe/webhook` | payments:write | Create the Stripe webhooks |
+| GET | `/v1/settings/stripe` | settings.payment:read | Get system Stripe settings |
+| PUT | `/v1/settings/stripe` | settings.payment:write | Update system Stripe settings |
+| POST | `/v1/settings/stripe/test` | settings.payment:write | Test Stripe API connection |
+| GET | `/v1/settings/stripe/webhook` | settings.payment:read | Get the Stripe webhook setup |
+| POST | `/v1/settings/stripe/webhook` | settings.payment:write | Create the Stripe webhooks |
 | GET | `/v1/sites/payment-configs` | payments:read | List all site payment configurations |
 | GET | `/v1/drivers/{id}/payment-methods` | payments:read | List payment methods for a driver |
 | POST | `/v1/drivers/{id}/payment-methods` | payments:write | Save a payment method for a driver |
@@ -36,15 +36,15 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/payments/reconciliation` | payments:read | List payment reconciliation runs |
 | POST | `/v1/payments/reconciliation/run` | payments:write | Run payment reconciliation against Stripe |
 | GET | `/v1/payments` | payments:read | List all payment records |
-| GET | `/v1/settings/adyen` | payments:read | Get Adyen settings |
-| PUT | `/v1/settings/adyen` | payments:write | Update Adyen settings |
-| POST | `/v1/settings/adyen/test` | payments:write | Test the Adyen connection |
-| GET | `/v1/settings/adyen/webhook` | payments:read | Get the Adyen webhook |
-| POST | `/v1/settings/adyen/webhook` | payments:write | Create the Adyen webhook |
+| GET | `/v1/settings/adyen` | settings.payment:read | Get Adyen settings |
+| PUT | `/v1/settings/adyen` | settings.payment:write | Update Adyen settings |
+| POST | `/v1/settings/adyen/test` | settings.payment:write | Test the Adyen connection |
+| GET | `/v1/settings/adyen/webhook` | settings.payment:read | Get the Adyen webhook |
+| POST | `/v1/settings/adyen/webhook` | settings.payment:write | Create the Adyen webhook |
 | GET | `/v1/sites/{id}/payout-account` | payments:read | Get the payout account of a site |
 | POST | `/v1/sites/{id}/payout-account` | payments:write | Create the Stripe payout account of a site |
 | POST | `/v1/sites/{id}/payout-account/refresh` | payments:write | Read the payout account status from Stripe |
 | POST | `/v1/sites/{id}/payout-account/invite` | payments:write | Create the onboarding link of a site payout account |
-| GET | `/v1/settings/payments` | payments:read | Get payment settings |
-| PUT | `/v1/settings/payments` | payments:write | Update payment settings |
+| GET | `/v1/settings/payments` | settings.payment:read | Get payment settings |
+| PUT | `/v1/settings/payments` | settings.payment:write | Update payment settings |
 | POST | `/v1/ad-hoc-payments` | payments:write | Start a transaction for an authorized ad hoc payment |

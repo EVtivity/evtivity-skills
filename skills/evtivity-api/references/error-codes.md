@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.48-beta.3 (https://github.com/EVtivity/evtivity-csms, commit 41e94513813a) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.48-beta.4 (https://github.com/EVtivity/evtivity-csms, commit 871b5dded1fd) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -51,6 +51,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `ATTACHMENT_NOT_FOUND` | 404 | Attachment not found |
 | `ATTESTATION_FAILED` | 403 | Device attestation failed. Update the app and try again. |
 | `AUDIT_ENTITY_TYPE_INVALID` | 400 | Unknown audit entity type |
+| `AUTOCHARGE_CLAIM_REQUIRED` | 409 | Autocharge works only with vehicle ids a charger sent in one of your sessions. Use the vehicle id from a session first. |
 | `CAMPAIGN_NOT_ACTIVE` | 409 | Only active campaigns can be cancelled |
 | `CAMPAIGN_NOT_FOUND` | 404 | Campaign not found |
 | `CASE_NOT_FOUND` | 404 | Case not found |
@@ -75,6 +76,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `CSR_NOT_FOUND` | 404 | Pending CSR not found |
 | `CSS_ACTION_REJECTED` | 400 | Charging Station Simulator rejected the action |
 | `CSS_ACTION_TIMEOUT` | 504 | Simulator did not respond within 5s |
+| `DATA_PLAN_SETTING_IN_TEMPLATE` | 400 | Heartbeat and meter value settings come from Settings > Integrations & Features > OCPP and the station data plan, not from a configuration template. |
 | `DOWNTIME_NOT_FOUND` | 404 | Excluded downtime record not found |
 | `DRIVER_AI_NOTICE_OUTDATED` | 409 | The AI notice has changed. Read it and choose again |
 | `DRIVER_ALREADY_IN_FLEET` | 409 | Driver is already in this fleet |
@@ -138,7 +140,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `INVALID_REFRESH_TOKEN` | 401 | Invalid refresh token |
 | `INVALID_REGION_CODE` | 400 | Invalid region code |
 | `INVALID_RESTRICTIONS` | 400 | Invalid tariff restrictions |
-| `INVALID_SITE_IDS` |  | One or more siteIds do not exist |
+| `INVALID_SITE_IDS` | 400 | One or more siteIds do not exist |
 | `INVALID_TOKEN` | 400 | Invalid or expired reset link |
 | `INVOICE_ALREADY_CREDITED` | 409 | The invoice is already credited by a credit note |
 | `INVOICE_ALREADY_PAID` | 409 | The invoice is already paid |
@@ -190,6 +192,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `NOT_BLOCKED` | 409 | Station is not blocked |
 | `NOT_CHARGING` | 400 | Session is not currently charging |
 | `NOT_DRAFT` |  | Only draft campaigns can be updated |
+| `NOT_FOUND` |  | Not found |
 | `NOT_IMPLEMENTED` | 501 | Remote start on partner networks requires the OCPI Commands module |
 | `NOT_PENDING` | 409 | Station is not pending approval |
 | `NOT_SUPPORTED` | 400 | Not supported for OCPP 1.6 |
@@ -216,6 +219,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `PASSKEY_LIMIT_REACHED` | 409 | You have registered the maximum number of passkeys and security keys. Remove one first. |
 | `PASSKEY_NOT_FOUND` | 404 | Passkey or security key not found. |
 | `PASSWORD_REQUIRED` | 400 | Password required when upgrading to Basic Auth or TLS + Basic Auth |
+| `PAYLOAD_TOO_LARGE` |  | The request is too large |
 | `PAYMENT_CONFIG_NOT_FOUND` | 404 | No payment config for this site |
 | `PAYMENT_FAILED` | 400 | Payment failed |
 | `PAYMENT_METHOD_IN_USE` |  | Payment method is in use by an active charging session |
@@ -242,6 +246,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `PNC_DISABLED` |  | Plug & Charge is disabled |
 | `PORTAL_ALREADY_ACTIVE` | 409 | Driver already has portal access |
 | `PORTAL_REGISTRATION_DISABLED` | 403 | Driver self-registration is disabled. Contact your operator to be invited. |
+| `PREPAID_BALANCE_CONFLICT` | 409 | The prepaid balance changed since you opened the form, for example after a session. Reload the token and enter the balance again. |
 | `PRE_AUTH_FAILED` |  | Payment pre-authorization failed |
 | `PRICING_ASSIGNMENT_NOT_FOUND` | 404 | No pricing group is assigned to this entity |
 | `PRICING_GROUP_DEFAULT_EXISTS` | 409 | Another pricing group is already the default |
@@ -278,7 +283,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `RESERVATION_TOO_LONG` | 400 | Reservation cannot exceed ... hours |
 | `RESERVATION_WINDOW_TOO_SHORT` | 400 | Reservation must end at least 60 seconds after it starts |
 | `ROAMING_DISABLED` |  | Roaming is disabled |
-| `ROLE_NOT_FOUND` |  | Role does not exist |
+| `ROLE_NOT_FOUND` | 400 | Role does not exist |
 | `ROTATION_NOT_APPLICABLE` | 400 | Credential rotation only applies to security profiles 1 and 2 |
 | `RULE_NOT_FOUND` | 404 | Rule not found |
 | `SCHEDULE_NOT_FOUND` | 404 | Schedule not found |
@@ -300,12 +305,13 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `SESSION_STOP_REJECTED` | 409 | The station rejected the stop request. The session is still charging. |
 | `SETTING_NOT_FOUND` | 404 | Setting not found |
 | `SIM_ACTION_UNSUPPORTED` | 409 | The SIM provider does not support this action for this SIM |
-| `SIM_CONFIRMED_ELSEWHERE` | 409 | Another station already has a confirmed match for this SIM |
+| `SIM_ATTACHED` | 409 | Detach the SIM from its station before deleting it |
+| `SIM_ATTACHED_ELSEWHERE` | 409 | This SIM is attached to another station |
+| `SIM_ATTACHMENT_CHANGED` | 409 | The SIM attachment changed since it was shown. Check the SIM and confirm again |
+| `SIM_ATTACHMENT_NOT_CONFIRMED` | 409 | Confirm the SIM before resetting its network |
 | `SIM_FEATURE_DISABLED` | 400 | SIM providers and station signal reads are turned off |
-| `SIM_MATCHED_ELSEWHERE` | 409 | This SIM is matched to another station |
-| `SIM_MATCH_CHANGED` | 409 | The SIM match changed since it was shown. Check the SIM and confirm again |
-| `SIM_MATCH_NOT_CONFIRMED` | 409 | Confirm the SIM before resetting its network |
-| `SIM_NOT_FOUND` | 404 | No SIM is matched to this station |
+| `SIM_INACTIVE` | 409 | This SIM is inactive. Reactivate it first |
+| `SIM_NOT_FOUND` | 404 | SIM not found |
 | `SIM_PROVIDER_ERROR` | 502 | The SIM provider request failed |
 | `SIM_PROVIDER_NOT_CONFIGURED` | 400 | No SIM provider is configured |
 | `SIM_PROVIDER_RATE_LIMITED` | 429 | Too many SIM requests, try again later |
@@ -323,13 +329,14 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `STATION_CREDENTIALS_ROUTE_REQUIRED` | 400 | Station passwords are changed with POST /v1/stations/:id/credentials, not with a generic OCPP command |
 | `STATION_ENDPOINT_URL_UNKNOWN` | 400 | The address this station connects on is not known yet. It is recorded when the station next connects. |
 | `STATION_HAS_ACTIVE_SESSION` | 409 | The station has an active charging session. Stop it before deleting the station. |
+| `STATION_HAS_SIM` | 409 | This station already has a SIM attached. Detach it first |
 | `STATION_ID_EXISTS` | 409 | A station with this name already exists. Please choose a different name. |
 | `STATION_NOT_FOUND` | 400, 404 | Station not found |
 | `STATION_OFFLINE` | 400, 403, 409 | Station is offline |
 | `STATION_ONLINE` | 409 | The station is online. Stop the session at the station instead. |
 | `STATION_REJECTED` | 502 | Station rejected start: ... |
 | `STATION_SECURITY_CHANGE_REJECTED` | 502 | The station did not accept the security change; its current settings are unchanged |
-| `STATION_SECURITY_ROUTE_REQUIRED` |  | Station security profiles and network profiles are changed with PATCH /v1/stations/:id, not with a configuration template |
+| `STATION_SECURITY_ROUTE_REQUIRED` | 400 | Station security profiles and network profiles are changed with PATCH /v1/stations/:id, not with a configuration template |
 | `STATION_SITE_SUPPRESSED` | 409 | The AI insights of the station's site are suppressed. Resume the site to resume its stations |
 | `STATION_TIMEOUT` | 504 | Station did not respond |
 | `STATION_TLS_URL_NOT_CONFIGURED` | 400 | The public TLS address for stations (OCPP_STATION_TLS_URL) is not configured |
@@ -339,6 +346,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `STATUS_CHECK_TIMEOUT` | 504 | Status check timed out. Replug the connector and try again. |
 | `STORAGE_CONNECTION_FAILED` | 400 | Storage connection test failed |
 | `STORAGE_NOT_CONFIGURED` | 400, 404 | Attachment storage not configured |
+| `STREAM_LIMIT_REACHED` |  | Too many live station updates are open from this device. Close other tabs and try again. |
 | `SUPPORT_AI_NOT_CONFIGURED` | 400 | Support AI is not configured |
 | `SUPPORT_CASE_AI_NOT_AWAITING_FEEDBACK` | 409 | This support case is not waiting for feedback on an automatic answer |
 | `SUPPORT_CASE_NOT_FOUND` | 404 | Support case not found |
@@ -357,6 +365,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `TRANSACTION_NOT_FOUND` | 404 | Transaction not found |
 | `UNAUTHORIZED` | 401 | Unauthorized |
 | `UNKNOWN_ACTION` | 404 | Unknown OCPP action |
+| `UNSUPPORTED_MEDIA_TYPE` |  | Unsupported content type |
 | `USER_NOT_FOUND` | 400, 404 | User not found |
 | `USER_SSO_MANAGED` | 409 | This user signs in with SSO and has no password to set. |
 | `VALIDATION_ERROR` | 400 | Validation error |

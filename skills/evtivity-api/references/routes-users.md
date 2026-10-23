@@ -1,6 +1,6 @@
 # EVtivity API routes: Users
 
-Generated from EVtivity CSMS v0.1.48-beta.3 (https://github.com/EVtivity/evtivity-csms, commit 41e94513813a) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.4 (https://github.com/EVtivity/evtivity-csms, commit 871b5dded1fd) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -18,6 +18,8 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/auth/force-change-password` | public | Change password for a user that has mustResetPassword set |
 | GET | `/v1/users/me` |  | Get the currently authenticated user |
 | PATCH | `/v1/users/me` |  | Update the authenticated user's own profile fields |
+| DELETE | `/v1/users/{id}/sso-link` | users:write | Clear the SSO binding of a user |
+| POST | `/v1/users/me/sso-link` |  | Allow SSO to link the own account |
 | POST | `/v1/users/me/phone-verification` |  | Send a code to confirm a new phone number |
 | GET | `/v1/users` | users:read | List all users with pagination |
 | POST | `/v1/users` | users:write | Create a new user |

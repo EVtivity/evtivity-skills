@@ -1,6 +1,6 @@
 # EVtivity API routes: Sites
 
-Generated from EVtivity CSMS v0.1.48-beta.3 (https://github.com/EVtivity/evtivity-csms, commit 41e94513813a) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.4 (https://github.com/EVtivity/evtivity-csms, commit 871b5dded1fd) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -19,6 +19,7 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/sites/{id}` | sites:read | Get a site by ID |
 | PATCH | `/v1/sites/{id}` | sites:write | Update a site |
 | DELETE | `/v1/sites/{id}` | sites:write | Delete a site |
+| GET | `/v1/sites/{id}/data-plan-impact` | sites:read | Count the stations a site data plan change moves |
 | POST | `/v1/sites/{id}/ai-insights/suppress` | sites:write | Suppress the AI insights of a site |
 | POST | `/v1/sites/{id}/ai-insights/resume` | sites:write | Resume the AI insights of a site |
 | GET | `/v1/sites/{id}/metrics` | sites:read | Get performance metrics for a site |
