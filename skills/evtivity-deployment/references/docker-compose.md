@@ -26,9 +26,23 @@ All services include health checks. The `migrate` service runs first, and depend
 docker compose up
 ```
 
+## Secrets
+
+`docker compose up` needs `JWT_SECRET` and `SETTINGS_ENCRYPTION_KEY` in `.env`: `docker-compose.yml` has no defaults for them and stops with an error without them. `scripts/docker-build.sh` writes random values (`openssl rand -hex 32`) into `.env` when a value is missing or a published example value. It keeps the built-in `SETTINGS_ENCRYPTION_KEY` of a stack whose database volume already exists and prints a warning, because a new key cannot decrypt the credentials stored with it.
+
+The script also writes a random `REDIS_ADMIN_PASSWORD` and random passwords for the service Redis users (`REDIS_API_PASSWORD`, `REDIS_OCPP_PASSWORD`, `REDIS_OCPI_PASSWORD`, `REDIS_WORKER_PASSWORD`, `REDIS_CSS_PASSWORD`) when one is missing or the published default. Redis loads them when its container is recreated.
+
+## Redis Users
+
+Each service signs in to Redis as its own user. The Redis `default` user is off, so nothing reaches Redis without a password. Host tools (`npm run dev:*`, `redis-cli`, the integration tests) sign in as the development-only `admin` user with `REDIS_ADMIN_PASSWORD`:
+
+```bash
+redis-cli --user admin --pass "$REDIS_ADMIN_PASSWORD" ping
+```
+
 ## Port Binding
 
-User-facing ports (csms, portal, api, ocpp including 8443, ocpi) bind to `BIND_IP` (default `0.0.0.0`). Infrastructure and tool ports (postgres 5433, pgadmin 7109, mailpit 7108 and SMTP 1025, ftp 21 and 30000-30009, prometheus 9090, grafana 7107, loki 3100) bind to `INFRA_BIND_IP` (default `127.0.0.1`), because these services use default logins. Redis (6379) and the OCPP server's Node inspector (9229) always bind to `127.0.0.1`.
+User-facing ports (csms, portal, api, ocpp including 8443, ocpi) bind to `BIND_IP` (default `0.0.0.0`). Infrastructure and tool ports (postgres 5433, pgadmin 7109, mailpit 7108 and SMTP 1025, ftp 21 and 30000-30009, prometheus 9090, grafana 7107, loki 3100) bind to `INFRA_BIND_IP` (default `127.0.0.1`), because these services use default logins. Redis (6379) and the OCPP server's Node inspector (9229) always bind to `127.0.0.1`. The inspector also listens on `127.0.0.1` inside the container; set `NODE_INSPECT=--inspect=0.0.0.0:9229` in `.env` to attach a debugger from the host.
 
 To expose the infrastructure ports, set `INFRA_BIND_IP=0.0.0.0` (or a LAN IP) in `.env`. Do this only on a trusted network. Before you expose PostgreSQL, change its default `evtivity` / `evtivity` login. Otherwise reach them from another machine through an SSH tunnel, for example for Grafana:
 
@@ -101,7 +115,7 @@ Persistent data is stored in named Docker volumes:
 
 ## Environment Variables
 
-All environment variables have shell defaults defined in `docker-compose.yml`. Override them by setting values in your shell or a `.env` file before running `docker compose up`.
+All environment variables except the secrets above have shell defaults defined in `docker-compose.yml`. Override them by setting values in your shell or a `.env` file before running `docker compose up`.
 
 ```bash
 # Example: override the database password

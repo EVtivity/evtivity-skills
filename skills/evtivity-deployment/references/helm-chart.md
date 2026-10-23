@@ -272,7 +272,7 @@ Non-sensitive environment variables are stored in a shared ConfigMap mounted by 
 
 `CORS_ORIGIN` is automatically derived from gateway route hostnames. No manual configuration needed.
 
-`api.env.trustProxy` applies to the API and the OCPI server. Set it to the addresses or CIDR ranges of your gateway or load balancer pods, for example `10.0.0.0/8`, so rate limits, the guest charging limits per IP address, and audit and access logs see the real client address. Empty trusts no proxy, and the guest charging limits per IP address are then off. A hop count or `true` is refused when the chart renders.
+`api.env.trustProxy` applies to the API and the OCPI server. Set it to the addresses or CIDR ranges of your gateway or load balancer pods, for example `10.0.0.0/8`, so rate limits, the guest charging limits per IP address, and audit and access logs see the real client address. Empty trusts no proxy, and the guest charging limits per IP address are then off. A hop count or `true` is refused when the chart renders. An entry that trusts every address is refused too: a `/0` range, or an IPv6 range that holds every IPv4-mapped address, such as `::ffff:0.0.0.0/96`. Behind a gateway with an HTTPS listener, or a Gateway the chart does not create, the chart refuses to render while it is empty: without it sign-in cookies get no Secure flag.
 
 ## Runtime Config
 

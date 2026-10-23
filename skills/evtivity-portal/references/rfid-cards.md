@@ -31,7 +31,7 @@ With app-based charging, you select a specific connector, choose a payment metho
 
 1. Open **Account** > **RFID Cards**, or tap the **RFID Cards** card on the Home page.
 2. Tap **Add RFID Card**.
-3. Enter the card number printed on your RFID card. The number has 4 to 64 letters, digits or dashes. Choose the **Token type** (ISO14443 for most cards) and tap **Add**.
+3. Enter the card number printed on your RFID card. The number has 4 to 64 letters, digits or dashes. Choose the **Token type** (ISO14443 for most cards) and tap **Add**. A MAC address (12 hexadecimal digits) or a 17-character vehicle identification number is a vehicle id, not a card number: add it to your vehicle on the Vehicles page instead.
 4. The card is added in an active state and ready to use.
 
 Duplicate card numbers are rejected. Each card number can only be linked to one account. Adding a card you turned off earlier turns it back on.

@@ -89,8 +89,11 @@ The `migrate` container creates both accounts on the first start. Before others 
 
 ```bash
 git clone --branch <release tag> https://github.com/EVtivity/evtivity-csms.git && cd evtivity-csms
-docker compose up -d            # works without .env
+cp .env.example .env            # set JWT_SECRET and SETTINGS_ENCRYPTION_KEY (openssl rand -hex 32)
+docker compose up -d
 ```
+
+`docker compose up` stops with an error while `JWT_SECRET` or `SETTINGS_ENCRYPTION_KEY` is missing from `.env` (the Docker Compose page of evtivity-deployment, "Secrets").
 
 `./scripts/docker-build.sh` is the guided build. It needs `.env` (`cp .env.example .env`) and `npm ci` first. It asks: bind to the LAN IP (skipped when `BIND_IP` is set), dev tools, OCPI, monitoring, and whether to restart postgres and redis (wipes all data and reseeds).
 

@@ -20,7 +20,7 @@ EVtivity deletes old rows from its high-volume tables on a schedule. Each group 
 
 ## Log Retention Settings
 
-The daily `log-retention-prune` job deletes rows older than these settings. Each `logs.*` value is a whole number from 0 to 3,650. A value of 0 keeps the rows forever.
+The daily `log-retention-prune` job deletes rows older than these settings. Each `logs.*` value is a whole number from 0 to 3,650. A value of 0 keeps the rows forever. `logs.loginAudit.retentionDays` and `logs.securityEvents.retentionDays` take 0 or 30 to 3,650.
 
 | Setting | Default (days) | Data deleted |
 |---|---|---|
@@ -33,20 +33,20 @@ The daily `log-retention-prune` job deletes rows older than these settings. Each
 | `logs.connection.retentionDays` | 90 | Station connection log (`connection_logs`) |
 | `logs.notifications.retentionDays` | 90 | Notification history (`notifications`) |
 | `logs.loadAllocation.retentionDays` | 90 | Allocations list of [Load Management](https://www.evtivity.com/docs/csms/load-management) (`load_allocation_log`) |
-| `logs.loginAudit.retentionDays` | 90 | Sign-in rows (`login_succeeded`, `login_failed`) of the user and driver audit logs |
-| `logs.securityEvents.retentionDays` | 365 | Station security events (`security_events`) |
+| `logs.loginAudit.retentionDays` | 90 | Sign-in rows (`login_succeeded`, `login_failed`) of the user and driver audit logs. Range 0 or 30 to 3,650. |
+| `logs.securityEvents.retentionDays` | 365 | Station security events (`security_events`). Range 0 or 30 to 3,650. |
 | `sim.sessions.retentionDays` | 90 | SIM sessions, SIM alerts and fetched periods (`sim_sessions`, `sim_alerts`, `sim_fetch_coverage`). Range 7 to 730. |
 
 ## Other Retention Settings
 
 | Setting | Default (days) | Data deleted | Job |
 |---|---|---|---|
-| `audit.retentionDays` | 1095 | Entity history of the [Audit Logs](https://www.evtivity.com/docs/guides/audit-logs) (History tabs and the Audit page) and OCPP authorization attempts (`authorize_attempts`) | `audit-retention-prune` |
+| `audit.retentionDays` | 1095 | Entity history of the [Audit Logs](https://www.evtivity.com/docs/guides/audit-logs) (History tabs and the Audit page) and OCPP authorization attempts (`authorize_attempts`). Range 0 or 30 to 3,650. | `audit-retention-prune` |
 | `refreshTokens.retentionDays` | 30 | Revoked and expired sign-in refresh tokens (`refresh_tokens`) | `refresh-token-prune` |
 | `ai.conversationRetentionDays` | 30 | [AI Assistant](https://www.evtivity.com/docs/csms/ai-assistant) conversations without activity for this period, with their attachments, and MCP call logs. Range 1 to 3,650. | `ai-retention-prune` |
 | `aiInsights.retentionDays` | 90 | [Automatic insights](https://www.evtivity.com/docs/csms/ai-insights) and background AI worker runs. Range 1 to 3,650. | `ai-retention-prune` |
 
-`audit.retentionDays` and `refreshTokens.retentionDays` take a whole number from 0 to 3,650. A value of 0 keeps the rows forever.
+`refreshTokens.retentionDays` takes a whole number from 0 to 3,650, `audit.retentionDays` 0 or 30 to 3,650. A value of 0 keeps the rows forever.
 
 ## Where to Change Them
 

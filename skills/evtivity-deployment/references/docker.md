@@ -29,6 +29,10 @@ docker build -f packages/api/Dockerfile -t ghcr.io/evtivity/evtivity-csms/api .
 
 Run builds from the monorepo root so the build context includes shared packages.
 
+## Production Mode
+
+The API, OCPP, OCPI and worker images set `NODE_ENV=production`. In production mode the simulated payment provider is off unless `PAYMENTS_ALLOW_SIMULATED=true` is set, and the API refuses a short or published `JWT_SECRET`. For a test install outside Docker Compose, Helm or CDK, set `NODE_ENV=development` and `PAYMENTS_ALLOW_SIMULATED=true` on the containers, or configure a real payment provider. See [Environment Variables](https://www.evtivity.com/docs/configuration/environment-variables).
+
 ## Frontend Images (CSMS and Portal)
 
 CSMS and Portal are static React builds served by nginx. Both support runtime configuration through a `/runtime-config.js` file that injects the API URL without rebuilding the image.

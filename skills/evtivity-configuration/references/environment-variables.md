@@ -47,11 +47,11 @@ Created by the migrate container's seed steps on first `docker compose up -d`. I
 |---|---|---|
 | `API_PORT` | `7102` | HTTP port for the REST API |
 | `API_HOST` | `0.0.0.0` | Bind address |
-| `JWT_SECRET` | `dev-secret-change-in-production` | Secret for signing JWTs. Always set it in production: the default is a known development value. |
+| `JWT_SECRET` | - | Secret for signing JWTs. Required. The API refuses to start with a value shorter than 32 characters or a published example value (except with `NODE_ENV=test`). Use a long random value, for example `openssl rand -hex 32`. |
 | `CORS_ORIGIN` | `*` | Allowed CORS origins, comma-separated. `local` allows private network and same-origin requests and refuses others with 403. A listed origin gets the CORS headers. Any other origin gets the response without them, so the browser blocks the page from reading it. |
 | `SETTINGS_ENCRYPTION_KEY` | - | Any non-empty value. The AES-256-GCM key for sensitive settings is derived from it with scrypt. Use a long random value (32 characters or more). Required; the API refuses to start without it. |
 | `LOG_LEVEL` | `info` | Log verbosity: `trace`, `debug`, `info`, `warn`, `error`, `fatal` |
-| `NODE_ENV` | `development` | `development`, `production`, or `test`. Set `production` in production. |
+| `NODE_ENV` | `production` | `development`, `production`, or `test`. The published API, OCPP, OCPI and worker images set `production`. Docker Compose sets `development`. Development settings such as the simulated payment provider need `development` or `test`. |
 | `RATE_LIMIT_MAX` | `3000` | Max requests per window for general endpoints |
 | `RATE_LIMIT_WINDOW` | `1 minute` | Time window for rate limiting |
 | `AUTH_RATE_LIMIT_MAX` | `30` | Max requests per window for auth endpoints |
@@ -88,6 +88,8 @@ Created by the migrate container's seed steps on first `docker compose up -d`. I
 | `OCPP_TLS_CA_PEM` | - | Inline PEM CA certificate content |
 | `OCPP_MAX_CONNECTIONS_PER_IP` | `2500` | Max concurrent WebSocket connections per IP |
 | `OCPP_MAX_MESSAGES_PER_IP_PER_SECOND` | `5000` | Rate limit for OCPP messages per IP |
+| `OCPP_MAX_PENDING_AUTH_PER_IP` | `50` | Max connection requests from one client address (an IPv4 address, or an IPv6 /64) whose password check is still running. More answer 429. A station whose password succeeded recently is not counted. |
+| `OCPP_TRUSTED_PROXY_CIDRS` | - | Comma-separated IP addresses or CIDR ranges of the proxies or load balancers in front of the OCPP server. From these peers the server takes the station address from `X-Forwarded-For` and TLS from `X-Forwarded-Proto`. Empty trusts no proxy: the socket peer counts as the client for the per-IP limits, so behind a proxy every station shares one address. A `/0` entry or a range that holds every IPv4 address is refused at startup. |
 | `OCPP_INSTANCE_ID` | - | Unique pod identifier for horizontal scaling. Typically set from pod name. |
 
 ## OCPI Server
@@ -130,7 +132,7 @@ Read by the API, OCPP server, and worker.
 
 | Variable | Default | Description |
 |---|---|---|
-| `PAYMENTS_ALLOW_SIMULATED` | `true` when `NODE_ENV` is `development`, `test`, or unset, otherwise `false` | Allows the test (simulated) payment provider, which moves no money. Docker Compose sets `true`. Required for demo data. Never enable it in production. See [Payment Providers](https://www.evtivity.com/docs/integrations/test-payment-provider). |
+| `PAYMENTS_ALLOW_SIMULATED` | `true` when `NODE_ENV` is `development` or `test`, otherwise `false` | Allows the test (simulated) payment provider, which moves no money. Docker Compose sets `true`. Required for demo data. Never enable it in production. See [Payment Providers](https://www.evtivity.com/docs/integrations/test-payment-provider). |
 
 ## Integrations
 

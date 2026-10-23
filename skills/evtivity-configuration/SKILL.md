@@ -59,9 +59,9 @@ This skill tells you where a setting lives and how to change it safely. The webs
 
 ## Workflow: production secrets
 
-- `JWT_SECRET` signs operator and driver tokens. Always set it: the default is a known development value.
+- `JWT_SECRET` signs operator and driver tokens. It has no default: the API refuses to start with a value shorter than 32 characters or a published example value. Use a long random value, for example `openssl rand -hex 32`.
 - `SETTINGS_ENCRYPTION_KEY` encrypts every secret setting (`*Enc` keys). The API, OCPP server, OCPI server and worker refuse to start without it. Use the same value in every service, the migrate container included. Use a long random value, for example `openssl rand -base64 32`.
-- Set `NODE_ENV=production` in production.
+- Keep `NODE_ENV=production` in production. The published API, OCPP, OCPI and worker images set it, and Docker Compose sets `development`.
 
 Before you change `SETTINGS_ENCRYPTION_KEY` on an existing install, stop and confirm with the user. Settings encrypted with the old key cannot be decrypted with the new one, so every stored integration credential (payment keys, SMTP and Twilio credentials, TOTP secrets) must be entered again.
 

@@ -102,7 +102,7 @@ The **Security** tab of a user page shows the user's second factor and API keys.
 
 ![User detail, Security tab](https://www.evtivity.com/screenshots/csms/user-detail-security.png)
 
-- **Multi-Factor Authentication** - shows whether the user signs in with a second factor. **Reset MFA** turns the second factor off, removes the user's passkeys and recovery codes, and signs the user out everywhere, after a confirmation. API keys keep working. The user then signs in with the password alone and can set up MFA again. When [Require MFA](https://www.evtivity.com/docs/csms/settings#mfa) covers the user's role, the user sets up MFA at the next sign-in. The user gets a security notice by email.
+- **Multi-Factor Authentication** - shows whether the user signs in with a second factor. **Reset MFA** turns the second factor off, removes the user's passkeys and recovery codes, and signs the user out everywhere, after a confirmation. API keys keep working. The user then signs in with the password alone and can set up MFA again. When [Require MFA](https://www.evtivity.com/docs/csms/settings#mfa) covers the user's role, the user sets up MFA at the next sign-in. The user gets a security notice by email. You confirm it is you before the reset, with your own second factor, or your password when you have none.
 - **API Keys** - lists the user's active API keys with their name, key suffix, created, last used, and expiry dates. **Revoke** ends a key the user no longer needs or that may have leaked, after a confirmation.
 
 ## Your Own Account
