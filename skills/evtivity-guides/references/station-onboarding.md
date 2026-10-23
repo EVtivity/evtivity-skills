@@ -158,7 +158,7 @@ If another operator changed the station first (for example rejected it while you
 
 **Station connects but BootNotification returns `Pending` and stays there.** Registration policy is `approval-required` and you haven't approved yet. Approve from the **Stations** list filtered by Pending.
 
-**Station goes online briefly, then offline.** Heartbeat watchdog is timing out. Check the configured `HeartbeatInterval` value (returned in the BootNotification response) — defaults to 300 seconds. If the station's firmware doesn't honor that interval, set it explicitly via OCPP `ChangeConfiguration` (1.6) or `SetVariables` (2.1).
+**Station goes online briefly, then offline.** Heartbeat watchdog is timing out. Check the configured `HeartbeatInterval` value (returned in the BootNotification response): 900 seconds on the Wi-Fi or wired data plan and 3600 on the Cellular plan (see [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults#plan-settings)). If the station's firmware doesn't honor that interval, set it explicitly via OCPP `ChangeConfiguration` (1.6) or `SetVariables` (2.1).
 
 **Connectors don't appear after the station is online.** Some 1.6 firmware doesn't emit `StatusNotification` for every connector at boot. Either pre-define EVSEs and connectors with **Create EVSE** on the station's **Connectors** tab, or send a `TriggerMessage(StatusNotification)` for each connector ID to force the station to report.
 

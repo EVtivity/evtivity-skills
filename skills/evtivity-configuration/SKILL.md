@@ -1,6 +1,6 @@
 ---
 name: evtivity-configuration
-description: "Configure EVtivity: environment variables, secrets such as JWT_SECRET and SETTINGS_ENCRYPTION_KEY, operator and driver auth, roles, MFA, reCAPTCHA, database, migrations, seed, data retention, Redis users, OCPP ports, TLS and station security profiles. Use to change a setting or harden an install. Not for a blocked sign-in (evtivity-troubleshoot)."
+description: "Configure EVtivity: environment variables, secrets such as JWT_SECRET, operator and driver auth, roles, MFA, reCAPTCHA, database, migrations, seed, data retention, Redis users, OCPP ports, TLS, security profiles and data plans for cellular stations. Use to change a setting or harden an install. Not for a blocked sign-in (evtivity-troubleshoot)."
 license: MIT
 metadata:
   evtivity-version: "0.1.48"
@@ -20,7 +20,7 @@ This skill tells you where a setting lives and how to change it safely. The webs
 | Surface | What goes there | How to change it | Takes effect |
 | --- | --- | --- | --- |
 | Environment variables | Ports, URLs, database and Redis connections, `JWT_SECRET`, `SETTINGS_ENCRYPTION_KEY`, OCPP TLS files, rate limits, seed credentials, `PAYMENTS_ALLOW_SIMULATED` | `.env` for Docker Compose, chart values for Helm, `config/<env>.yaml` for AWS CDK | After the service restarts |
-| Dashboard settings (database) | Integrations (Stripe, Adyen, S3, SMTP, Twilio, reCAPTCHA, Google Maps, Plug and Charge), MFA methods, heartbeat interval, offline command queue TTL, company currency | Settings page, or `PUT /v1/settings/:key` | Without a restart (readers cache briefly) |
+| Dashboard settings (database) | Integrations (Stripe, Adyen, S3, SMTP, Twilio, reCAPTCHA, Google Maps, Plug and Charge), MFA methods, the data plan values (heartbeat, meter values, CSMS ping), offline command queue TTL, company currency | Settings page, or `PUT /v1/settings/:key` | Without a restart (readers cache briefly) |
 | Helm or CDK `appSettings` | Seed values for selected dashboard settings at install or upgrade | Chart values or CDK config | When the settings job runs |
 
 - Integration credentials are never environment variables. They are dashboard settings, stored AES-256-GCM encrypted. The only integration variable is `SMTP_HOST`, which overrides the SMTP host setting.
@@ -43,6 +43,8 @@ This skill tells you where a setting lives and how to change it safely. The webs
 | Change the password rules or how long sessions last | Settings > Security > Passwords and Sessions | `references/authentication.md` |
 | Stations on TLS (profiles 2 and 3) | `OCPP_TLS_PORT`, `OCPP_TLS_CERT`, `OCPP_TLS_KEY`, `OCPP_TLS_CA` (or the `*_PEM` variants), `OCPP_STATION_TLS_URL` on the API | `references/ocpp-settings.md` |
 | Run several OCPP servers | `OCPP_INSTANCE_ID` per instance | `references/ocpp-settings.md` |
+| Cut station data use, set up stations on cellular data plans | The station's data plan (Configurations tab, or Cellular when a SIM is confirmed), the plan values in Settings > Integrations & Features > OCPP, the plan's configuration template | `references/cellular-stations.md`, `references/data-usage-defaults.md` |
+| Turn WebSocket compression off for debugging | `OCPP_WS_COMPRESSION=false` on the OCPP server | `references/ocpp-settings.md` |
 | Open or approval-based station onboarding | `REGISTRATION_POLICY` at first install, later in the dashboard | `references/environment-variables.md` |
 | Turn on automatic insights, AI workers or the MCP server | Settings > AI in the dashboard: `opsAi.enabled`, `aiInsights.*`, `aiWorkers.*`, `ai.mcp.*` (all AI features off by default) | evtivity-csms skill, Settings page |
 | Cap AI token use | `ai.budget.companyMonthlyTokens`, `ai.budget.siteMonthlyTokens`, `ai.budget.siteDailyTokens`, `ai.budget.userDailyTokens` (input plus output tokens, days in UTC, months in the system timezone) | evtivity-csms skill, AI usage page |
@@ -117,7 +119,9 @@ Confirm with the user before you change or rotate `SETTINGS_ENCRYPTION_KEY`, run
 Generated from the website docs. Never edit them. The first line of each file is the live page URL: link it when you answer.
 
 - `references/authentication.md`: auth realms, cookies, API keys, RBAC, MFA, reCAPTCHA, CSRF, session lifetimes.
+- `references/cellular-stations.md`: the recommended configuration for cellular stations and why (carrier NAT timeouts, pings, heartbeat, meter values, compression, TLS, modem power saving), picking the Cellular plan, the plan templates.
 - `references/data-retention.md`: every retention setting with its default and range, Settings > Data Retention, the AWS retention that stays in CDK, the prune jobs, database storage for large networks and chaos mode.
+- `references/data-usage-defaults.md`: the values of both data plans with their OCPP 1.6 keys and 2.0.1 and 2.1 variables, message sizes, monthly data use per plan and OCPP version, reconnect and firmware costs.
 - `references/database-setup.md`: PostgreSQL 17, migration and seed commands, Redis purposes and ACL users.
 - `references/environment-variables.md`: every environment variable per service, with defaults.
 - `references/ocpp-settings.md`: station URLs, security profiles, TLS, limits, message pipeline, horizontal scaling.

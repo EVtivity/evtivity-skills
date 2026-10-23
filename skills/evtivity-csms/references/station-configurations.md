@@ -109,9 +109,13 @@ A template is a named bundle of configuration values plus a target filter. Each 
 | Description | Free text explaining intent |
 | OCPP Version | 1.6 or 2.1 (determines variable encoding). A 2.1 template also applies to OCPP 2.0.1 stations. |
 | Variables | Component / variable / value triples (or key / value pairs for 1.6) |
-| Target Filter | Site, vendor, model, station selectors that combine with AND |
+| Target Filter | Site, vendor, model, station and data plan selectors that combine with AND |
 
 You can preview the matching station count before pushing.
+
+EVtivity ships one template per data plan and OCPP version, with the station-side settings each plan needs: "Wi-Fi or Wired Data Plan (OCPP 1.6)", "Cellular Data Plan (OCPP 1.6)", "Wi-Fi or Wired Data Plan (OCPP 2.0.1 and 2.1)" and "Cellular Data Plan (OCPP 2.0.1 and 2.1)". Each one targets the stations of its plan. You can edit, push or delete them like your own templates. See [Apply the templates](https://www.evtivity.com/docs/configuration/cellular-stations#apply-the-templates).
+
+A template value for the heartbeat interval or a meter value setting lasts only until the next boot: the CSMS sends the station's data plan values at every boot. Change those values in the data plan instead (see [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults#plan-settings)).
 
 A template cannot hold a station password. Creating, editing, or pushing a template with a credential variable, such as `SecurityCtrlr.BasicAuthPassword` (2.1) or `AuthorizationKey` (1.6), fails with `400 STATION_CREDENTIALS_ROUTE_REQUIRED`. Change passwords on the station's **Security** tab instead (see [Station passwords](https://www.evtivity.com/docs/csms/stations#station-passwords)).
 
@@ -154,6 +158,7 @@ Individual station configuration is visible on the station detail page under the
 
 ![Station Configurations tab](https://www.evtivity.com/screenshots/csms/station-configurations-tab.png)
 
+- **Data Plan**: the station's data plan, **Wi-Fi or Wired** or **Cellular**, and where it came from: the default, a confirmed SIM, or an operator. Change it and click **Save** (`stations:write`). See [Pick the Cellular plan](https://www.evtivity.com/docs/configuration/cellular-stations#pick-the-cellular-plan).
 - **View**: read-only table of every variable the station is reporting, sourced from the most recent `NotifyReport` (2.1) or `GetConfiguration` response (1.6).
 - **Refresh from Station**: re-issue the read so the table reflects the latest station state. The CSMS sends `GetBaseReport` (2.1) or `GetConfiguration` (1.6) and updates the table when the station replies. The screenshot above shows the table after a refresh has populated it from the live station.
 - **Push Configuration**: push a single template to this one station. Useful for ad-hoc tuning or testing a template against one station before rolling it out fleet-wide. Clicking the button opens a dialog where you choose a template that matches the station's OCPP version.

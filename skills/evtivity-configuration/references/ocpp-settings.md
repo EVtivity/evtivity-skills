@@ -87,11 +87,19 @@ To admit more stations at once, raise `DB_POOL_MAX` rather than `OCPP_AUTH_MAX_C
 
 After 5 wrong passwords for one station within 60 seconds, the server refuses that station for 60 seconds with HTTP 429 and a `Retry-After` header, without checking the password. See [Stations](https://www.evtivity.com/docs/csms/stations#failed-login-throttling).
 
+## WebSocket Compression
+
+The OCPP server supports WebSocket compression (permessage-deflate) on the plain and the TLS ports. A station that offers it in the WebSocket handshake sends and receives compressed frames. A station that does not offer it works uncompressed. `OCPP_WS_COMPRESSION=false` turns it off. See [Compression](https://www.evtivity.com/docs/configuration/cellular-stations#compression).
+
+## Keep-Alive
+
+The CSMS pings a station only when it received nothing from it for the station's data plan ping interval: 120 seconds on Wi-Fi or wired, 240 on Cellular. A station that answered a ping and then sends nothing for three ping intervals is disconnected. A load balancer or proxy in front of the OCPP server needs an idle timeout above the largest ping interval plus 30 seconds.
+
 ## Configurable Settings
 
 These are configured through the CSMS settings UI, not environment variables:
 
-- **Heartbeat interval**: Default 300 seconds. Sent to stations in BootNotification response.
+- **Data plan settings**: the heartbeat interval, meter value settings and CSMS ping interval of the Wi-Fi or wired and Cellular data plans. Each station uses one plan. See [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults) and [Cellular Stations](https://www.evtivity.com/docs/configuration/cellular-stations).
 - **Offline command queue TTL**: Default 24 hours. Commands queued for offline stations expire after this duration.
 
 ## Message Pipeline

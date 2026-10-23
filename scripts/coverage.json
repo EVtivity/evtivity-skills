@@ -1,7 +1,9 @@
 {
   "evtivity-configuration": [
     "configuration/authentication",
+    "configuration/cellular-stations",
     "configuration/data-retention",
+    "configuration/data-usage-defaults",
     "configuration/database-setup",
     "configuration/environment-variables",
     "configuration/ocpp-settings"

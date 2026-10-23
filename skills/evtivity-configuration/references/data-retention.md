@@ -18,6 +18,21 @@ EVtivity deletes old rows from its high-volume tables on a schedule. Each group 
 >
 > Plan the database disk for your station count before you turn on chaos mode or connect a large network. Lower **OCPP Messages** and **Meter Values** in **Settings > Data Retention** (`logs.ocppMessage.retentionDays` and `logs.meterValues.retentionDays`) to keep these tables smaller.
 
+## Station Data Use
+
+The OCPP messages that fill `ocpp_message_logs` and `meter_values` are the same messages that use a station's data. Their number depends on the station's data plan. Estimated data use of one station in a 30-day month (byte model, not a measurement: 1 EVSE on OCPP 1.6 and 2 EVSEs on OCPP 2.0.1 and 2.1, AC charging with 4 one-hour sessions a day, TLS, firmware not included):
+
+| Plan | OCPP | Idle uplink | Idle downlink | Charging adds | Total per month | Total with compression |
+|---|---|---|---|---|---|---|
+| Wi-Fi or wired | 1.6 | 3.8 MB | 3.1 MB | 7.0 MB | 13.9 MB | 10.4 MB |
+| Wi-Fi or wired | 2.0.1 | 5.0 MB | 3.5 MB | 9.0 MB | 17.4 MB | 11.1 MB |
+| Wi-Fi or wired | 2.1 | 5.0 MB | 3.5 MB | 9.0 MB | 17.4 MB | 11.1 MB |
+| Cellular | 1.6 | 1.6 MB | 0.9 MB | 1.3 MB | 3.8 MB | 3.4 MB |
+| Cellular | 2.0.1 | 1.6 MB | 0.9 MB | 1.7 MB | 4.2 MB | 3.3 MB |
+| Cellular | 2.1 | 1.6 MB | 0.9 MB | 1.7 MB | 4.2 MB | 3.3 MB |
+
+See [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults) for the settings and message sizes behind these numbers, and [Cellular Stations](https://www.evtivity.com/docs/configuration/cellular-stations) for stations on cellular data plans.
+
 ## Log Retention Settings
 
 The daily `log-retention-prune` job deletes rows older than these settings. Each `logs.*` value is a whole number from 0 to 3,650. A value of 0 keeps the rows forever. `logs.loginAudit.retentionDays` and `logs.securityEvents.retentionDays` take 0 or 30 to 3,650.

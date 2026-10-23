@@ -91,6 +91,7 @@ Created by the migrate container's seed steps on first `docker compose up -d`. I
 | `OCPP_MAX_PENDING_AUTH_PER_IP` | `50` | Max connection requests from one client address (an IPv4 address, or an IPv6 /64) whose password check is still running. More answer 429. A station whose password succeeded recently is not counted. |
 | `OCPP_TRUSTED_PROXY_CIDRS` | - | Comma-separated IP addresses or CIDR ranges of the proxies or load balancers in front of the OCPP server. From these peers the server takes the station address from `X-Forwarded-For` and TLS from `X-Forwarded-Proto`. Empty trusts no proxy: the socket peer counts as the client for the per-IP limits, so behind a proxy every station shares one address. A `/0` entry or a range that holds every IPv4 address is refused at startup. |
 | `OCPP_INSTANCE_ID` | - | Unique pod identifier for horizontal scaling. Typically set from pod name. |
+| `OCPP_WS_COMPRESSION` | `true` | WebSocket compression (permessage-deflate) on station connections. `false` turns it off. See [Compression](https://www.evtivity.com/docs/configuration/cellular-stations#compression). |
 
 ## OCPI Server
 

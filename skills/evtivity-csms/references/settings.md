@@ -308,14 +308,22 @@ Feature toggles and third-party service configuration with 17 sub-tabs.
 
 ### OCPP
 
-Default OCPP configuration values sent to stations during provisioning.
+OCPP values sent to stations at every boot, one set per data plan. The **Wi-Fi or Wired** tab holds the values of the default plan, the **Cellular** tab the values of stations on cellular data plans. Each tab has its own **Save**. A station gets its plan's values at its next boot, or at once when its plan changes while it is online.
 
-- **Meter value interval (seconds)** - seconds between meter value reports (default 60).
-- **Clock-aligned interval (seconds)** - seconds for clock-aligned meter values (default 900).
-- **Sampled measurands** - comma-separated list of measurands for sampled meter values (default: `Energy.Active.Import.Register,Power.Active.Import,Voltage,Temperature,SoC,Current.Import`).
-- **Clock-aligned measurands** - comma-separated list of measurands for clock-aligned meter values.
-- **Transaction ended measurands** - measurands captured at transaction end.
-- **Heartbeat interval (seconds)** - seconds between station heartbeats (default 300).
+| Field | Wi-Fi or wired | Cellular |
+|---|---|---|
+| Heartbeat interval (seconds), sent in the BootNotification response | 900 | 3600 |
+| CSMS ping interval (seconds) | 120 | 240 |
+| Meter value interval (seconds), readings while charging | 60 | 300 |
+| Clock-aligned interval (seconds), idle readings, 0 turns them off | 900 | 0 |
+| Sampled measurands, readings while charging | `Energy.Active.Import.Register,Power.Active.Import,Current.Import,SoC` | `Energy.Active.Import.Register,Power.Active.Import,SoC` |
+| Clock-aligned measurands | `Energy.Active.Import.Register` | `Energy.Active.Import.Register` |
+| Transaction ended measurands | `Energy.Active.Import.Register` | `Energy.Active.Import.Register` |
+
+See [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults) for the OCPP keys and the data use of each plan, and [Cellular Stations](https://www.evtivity.com/docs/configuration/cellular-stations) for how a station gets its plan.
+
+The tab also has:
+
 - **Command timeout (seconds)** - seconds to wait for a station to respond to a command before timing out (default 120).
 - **Reset retries** - number of reset command retries (default 3).
 - **Require approval for new stations** - when on, new stations need manual approval. When off, stations are auto-accepted.
