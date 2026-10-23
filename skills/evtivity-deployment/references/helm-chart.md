@@ -111,12 +111,15 @@ The install script generates self-signed certificates automatically:
 
 The TLS Secret must contain `tls.crt`, `tls.key`, and `ca.crt`.
 
-OCPP has two external paths:
+Stations connect through up to three entry points:
 
-- **Gateway route** (`ocpp.evtivity.local`) - plain WebSocket via the gateway. Always available.
-- **LoadBalancer** (port 8443) - TLS with optional client cert. Only when `ocpp.tls.enabled: true`.
+| Security profile | Station URL | Values | Default |
+|---|---|---|---|
+| 0 and 1 | `ws://<ocpp route host>/<stationId>` | The OCPP route in `gatewayAPI.routes` and an `HTTP` gateway listener | On |
+| 2 | `wss://<ocpp route host>/<stationId>` | An `HTTPS` gateway listener with `tls.certificateRefs`, and `ocpp.env.trustedProxyCidrs` | Off |
+| 3 (mutual TLS) | `wss://<tls-lb-ip>:8443/<stationId>` | `ocpp.tls.enabled`, `ocpp.tls.certSecret`, `ocpp.tls.port` | On |
 
-Station WebSocket URL format: `ws://ocpp.evtivity.local/STATION-001` or `wss://<tls-lb-ip>:8443/STATION-001`.
+The gateway terminates TLS for security profile 2 and forwards `X-Forwarded-Proto`. The OCPP server trusts that header only from the CIDRs in `ocpp.env.trustedProxyCidrs`, so set them to the gateway pod range. Security profile 2 stations can also connect to the LoadBalancer on port 8443 without a client certificate. A server certificate must name the host stations connect to exactly: stations refuse a wildcard certificate by default.
 
 The API needs the public TLS address to move a connected OCPP 2.0.1 or 2.1 station from `ws://` to TLS. Set `api.env.stationTlsUrl` (for example `wss://<tls-lb-ip>:8443`). When it is empty and the gateway serves HTTPS, the chart uses `wss://<ocpp route host>`. Otherwise those upgrades are refused.
 
@@ -158,7 +161,7 @@ Each service connects to Redis as its own ACL user. The chart's `redis/acl-rules
 
 | User | Keys | Pub/sub channels |
 |------|------|------------------|
-| `api` | Response cache, attestation nonces, payment process watch key (read only) | Core channels and the simulator channels |
+| `api` | Response cache, attestation nonces, SIM provider keys (`~sim:*`), payment process watch key (read only) | Core channels and the simulator channels |
 | `ocpp` | Station connection registry | Core channels |
 | `worker` | BullMQ queues, maintenance locks, payment process watch key | Core channels |
 | `ocpi` | OCPI pull locks | `ocpp_commands`, `ocpp_command_results`, `csms_events`, `ocpi_push`, `ocpi_sync`, `ocpi_register` |
@@ -479,6 +482,33 @@ appSettings:
     mfaRequired: "roles"
     mfaRequiredRoles: [Admin]
     mfaPasskeyLoginEnabled: true
+```
+
+### SIM provider settings
+
+These keys configure the SIM provider and the station signal reads. They are also set in Settings > Integrations & Features > SIM Providers. Leave a key empty to keep the value set in the dashboard. The chart fails to render with an unsupported value. See [SIM Providers](https://www.evtivity.com/docs/integrations/sim-providers).
+
+| Key | Values | Default | Setting |
+|-----|--------|---------|---------|
+| `appSettings.sim.hologramEnabled` | `true` or `false` | empty (off on a fresh install) | **Enable Hologram** |
+| `appSettings.sim.hologramOrgId` | 1 to 15 digits. Quote it, for example `"123456"`. | empty | **Organization ID** |
+| `appSettings.sim.sessionsRetentionDays` | Whole number, 7 to 730 | empty (90 on a fresh install) | **Keep Sessions and Alerts (Days)** |
+| `appSettings.sim.sessionsFetchDays` | Whole number, 1 to 31 | empty (7 on a fresh install) | **Default Refresh Period (Days)** |
+| `appSettings.sim.stationSignalEnabled` | `true` or `false` | empty (off on a fresh install) | **Read Signal from Stations** |
+| `appSettings.sim.signalAlertBelowDbm` | Whole number, -140 to -40 | empty (off on a fresh install) | **Low Signal Alert (dBm)**. Turn the alert off in the dashboard. |
+| `appSettings.sim.signalGoodDbm` | Whole number, -140 to -40, above `signalFairDbm` | empty (-65 on a fresh install) | **Good Signal From (dBm)** |
+| `appSettings.sim.signalFairDbm` | Whole number, -140 to -40, below `signalGoodDbm` | empty (-85 on a fresh install) | **Fair Signal From (dBm)** |
+| `appSettings.sim.ocpp16SignalKeys` | List of at most 20 configuration key names, each listed once, 1 to 50 characters, for example `[RSSI]` | `[]` (keeps the dashboard value, none on a fresh install) | **OCPP 1.6 Signal Keys** |
+
+Enter the Hologram API key in the dashboard. The chart has no value for it.
+
+```yaml
+appSettings:
+  sim:
+    hologramEnabled: true
+    hologramOrgId: "123456"
+    stationSignalEnabled: true
+    ocpp16SignalKeys: [RSSI]
 ```
 
 ### Payment settings

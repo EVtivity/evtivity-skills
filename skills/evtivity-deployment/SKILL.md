@@ -56,7 +56,7 @@ Prerequisites: Kubernetes 1.27+, Helm 3, kubectl and a Gateway API implementatio
 3. Without the script, pass secrets with `--set secrets.*` (`databaseUrl`, `redisUrls.api`, `.ocpp`, `.ocpi`, `.worker`, `.css`, `jwtSecret`, `settingsEncryptionKey`), or point `secrets.existingSecret` at a Secret you manage. Never commit secrets to `values.yaml`.
 4. External Redis 7+: create the five ACL users from the chart's `redis/acl-rules.conf` before you install or upgrade.
 5. Point DNS for each hostname (default `csms`, `portal`, `api`, `ocpp`, `ocpi` under `evtivity.local`) at the gateway LoadBalancer IP.
-6. OCPP TLS: stations use the separate LoadBalancer on 8443. Set `api.env.stationTlsUrl` so the API can move connected OCPP 2.x stations to TLS. For OCPP 2.0.1 the operator also picks the station's network interface (Wired 0 by default).
+6. Station entry points: profiles 0 and 1 on `ws://<ocpp route host>/<stationId>` through the gateway `HTTP` listener (on by default). Profile 2 on `wss://<ocpp route host>/<stationId>` needs an `HTTPS` gateway listener with `tls.certificateRefs` and `ocpp.env.trustedProxyCidrs` set to the gateway pod range (off by default). Profile 3 mutual TLS on `wss://<tls-lb-ip>:8443/<stationId>`, the `<release>-ocpp-tls` LoadBalancer (`ocpp.tls.enabled`, on by default; Secret `ocpp.tls.certSecret` with `tls.crt`, `tls.key`, `ca.crt`). Set `api.env.stationTlsUrl` so the API can move connected OCPP 2.x stations to TLS. For OCPP 2.0.1 the operator also picks the station's network interface (Wired 0 by default).
 7. Sign in with the admin credentials the script prints. The admin must change the password at first sign-in.
 8. Confirm: `kubectl get pods -n evtivity`, `helm status evtivity -n evtivity` shows `deployed`, and the dashboard loads.
 
@@ -87,7 +87,17 @@ Six stacks per environment (`dev`, `qa`, `prod`): Network, Domain, Storage, Data
 6. A database job runs migrations, creates the app role, seeds the first admin and writes settings before services start.
 7. Sign in as `initialAdmin.email`. The password: `aws secretsmanager get-secret-value --secret-id evtivity/<env>/initial-admin --query SecretString --output text`.
 
-Enter payment credentials in the dashboard, not the config. `payments.allowSimulatedProvider` is refused in `prod`. Ask the user before `cdk destroy` or deleting any stack: the Data stack holds the database.
+Station entry points (`<zone>` is `<subdomain>.<apex>`; the dev config turns on all three, qa and prod only profile 2):
+
+| Security profile | Station URL | Setting |
+|---|---|---|
+| 0 and 1 | `ws://ocpp.<zone>/<stationId>` | `alb.ocppPlainWs: true` (ALB port 80, passwords unencrypted) |
+| 2 | `wss://ocpp.<zone>/<stationId>` | always on (ALB, ACM certificate) |
+| 3 (mutual TLS) | `wss://ocpp-tls.<zone>:8443/<stationId>` | `ocppTls.enabled: true` and `ocppTls.secretName` (NLB, TCP passthrough) |
+
+Create the profile 3 secret before the deploy: Secrets Manager JSON with the PEM keys `cert` (names `ocpp-tls.<zone>` exactly, no wildcard: stations refuse one), `key` and `ca` (signs station client certificates). Exact command on the page.
+
+Enter payment credentials in the dashboard, not the config. `payments.allowSimulatedProvider` is refused in `prod`. The SIM provider settings can be seeded in `appSettings` (CDK `sim.*` keys, Helm `appSettings.sim.*`); the Hologram API key goes in the dashboard only (evtivity-integrations). Ask the user before `cdk destroy` or deleting any stack: the Data stack holds the database.
 
 ## Workflow: upgrade a release
 

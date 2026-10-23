@@ -95,6 +95,38 @@ aws secretsmanager get-secret-value --secret-id evtivity/dev/initial-admin \
   --query SecretString --output text
 ```
 
+### Charging Station Connections
+
+Stations connect through up to three entry points. `<zone>` is `<subdomain>.<apex>`.
+
+| Security profile | Station URL | Setting | Default |
+|---|---|---|---|
+| 0 and 1 | `ws://ocpp.<zone>/<stationId>` | `alb.ocppPlainWs: true` | Off |
+| 2 | `wss://ocpp.<zone>/<stationId>` | None | On |
+| 3 (mutual TLS) | `wss://ocpp-tls.<zone>:8443/<stationId>` | `ocppTls.enabled: true` and `ocppTls.secretName` | Off |
+
+The dev config turns on all three so dev tests every entry point. qa and prod turn on only security profile 2.
+
+- **Security profiles 0 and 1**: `alb.ocppPlainWs: true` adds one rule on port 80 of the load balancer that forwards the OCPP host to the OCPP server. Every other host still redirects to HTTPS. Station passwords cross the internet unencrypted, so use it only for stations that support nothing else.
+- **Security profile 2**: always on. Stations send their password with HTTP Basic Auth over TLS. The load balancer certificate comes from AWS Certificate Manager.
+- **Security profile 3**: `ocppTls.enabled: true` adds a Network Load Balancer on port 8443 that passes TLS straight to the OCPP server, which checks the station's client certificate. Create the Secrets Manager secret first. It holds three PEM values: `cert` (the server certificate), `key` (its private key) and `ca` (the CA that signs station client certificates). The certificate must name `ocpp-tls.<zone>` exactly. Stations refuse a wildcard certificate by default.
+
+```bash
+aws secretsmanager create-secret --name evtivity/dev/ocpp-tls --secret-string "$(jq -n \
+  --arg cert "$(cat tls.crt)" --arg key "$(cat tls.key)" --arg ca "$(cat ca.crt)" \
+  '{cert:$cert, key:$key, ca:$ca}')"
+```
+
+```yaml
+alb:
+  ocppPlainWs: true
+ocppTls:
+  enabled: true
+  secretName: evtivity/dev/ocpp-tls
+```
+
+The Helm chart offers the same three entry points. See [Helm Chart](https://www.evtivity.com/docs/deployment/helm-chart#ocpp-tls).
+
 ### Payments
 
 Enter payment credentials in the dashboard (Settings > Payment), not in the config. Leave a key out to keep the value set in the dashboard. The config validates these payment keys:
@@ -120,6 +152,18 @@ The config can set the multi-factor authentication settings. Leave a key out to 
 - `services.api.env.WEBAUTHN_RP_ID`, the passkey relying party ID. Unset by default, so operators use the CSMS host and drivers the portal host. It must be the CSMS host or a parent domain of it, and not an IP address. When it does not cover the portal host, the config load prints a note and the portal uses its own host. Changing it later makes every registered passkey unusable. Never use a parent domain whose subdomains serve user content or are run by third parties.
 
 See [Multi-Factor Authentication](https://www.evtivity.com/docs/configuration/authentication#multi-factor-authentication).
+
+### SIM Providers
+
+The config can set the SIM provider settings. Leave a key out to keep the value set in the dashboard (Settings > Integrations & Features > SIM Providers). The config load fails with an unsupported value.
+
+- `appSettings['sim.hologram.enabled']` and `appSettings['sim.stationSignal.enabled']` (true or false).
+- `appSettings['sim.hologram.orgId']`, the Hologram organization ID: a quoted string of 1 to 15 digits, as in `'123456'`.
+- `appSettings['sim.sessions.retentionDays']` (whole number, 7 to 730) and `appSettings['sim.sessions.fetchDays']` (whole number, 1 to 31).
+- `appSettings['sim.signal.alertBelowDbm']`, `appSettings['sim.signal.goodDbm']` and `appSettings['sim.signal.fairDbm']` (whole numbers, -140 to -40). The good threshold must be above the fair one.
+- `appSettings['sim.ocpp16.signalKeys']`, a list of at most 20 configuration key names, each listed once and 1 to 50 characters long, as in `sim.ocpp16.signalKeys: [RSSI]`.
+
+Enter the Hologram API key in the dashboard. The config load refuses `sim.hologram.apiKey`. See [SIM Providers](https://www.evtivity.com/docs/integrations/sim-providers).
 
 ### Client Addresses
 
@@ -176,7 +220,7 @@ Approximate monthly cost with the default configs in `us-east-1`, including obse
 | qa   | $195 - $262 |
 | prod | $598 - $960 |
 
-Aurora and Fargate are the largest items. Setting every service to `desiredCount: 0` in dev lets Aurora pause and drops dev to about $45 per month.
+Aurora and Fargate are the largest items. Setting every service to `desiredCount: 0` in dev lets Aurora pause and drops dev to about $45 per month. The dev config turns on the OCPP TLS Network Load Balancer, which adds about $28 per month.
 
 ### Release Auto-Bump
 
