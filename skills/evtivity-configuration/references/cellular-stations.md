@@ -47,16 +47,16 @@ Station vendors report 20 to 150 MB a month for AC stations and 200 MB to 2 GB f
 | Values at transaction end | `Energy.Active.Import.Register` | `Energy.Active.Import.Register` | `StopTxnSampledData` | `SampledDataCtrlr.TxEndedMeasurands` |
 | CSMS ping interval (seconds) | 240 | 120 | Not a station setting | Not a station setting |
 | Station ping interval (seconds) | 240 | 300 | `WebSocketPingInterval` | `OCPPCommCtrlr.WebSocketPingInterval` |
-| Transaction message attempts | 5 | 3 | `TransactionMessageAttempts` | `OCPPCommCtrlr.MessageAttempts` (instance `TransactionEvent`, set by hand) |
-| Transaction message retry interval (seconds) | 120 | 60 | `TransactionMessageRetryInterval` | `OCPPCommCtrlr.MessageAttemptInterval` (instance `TransactionEvent`, set by hand) |
+| Transaction message attempts | 5 | 3 | `TransactionMessageAttempts` | `OCPPCommCtrlr.MessageAttempts` (instance `TransactionEvent`) |
+| Transaction message retry interval (seconds) | 120 | 60 | `TransactionMessageRetryInterval` | `OCPPCommCtrlr.MessageAttemptInterval` (instance `TransactionEvent`) |
 | Queue all messages while offline | true | false | Not in OCPP 1.6 | `OCPPCommCtrlr.QueueAllMessages` |
 | Offline threshold (seconds) | 300 | 60 | Not in OCPP 1.6 | `OCPPCommCtrlr.OfflineThreshold` |
-| Message timeout (seconds) | 60 (90 on NB-IoT) | 30 | Not in OCPP 1.6 | `OCPPCommCtrlr.MessageTimeout` (instance `Default`, set by hand) |
+| Message timeout (seconds) | 60 | 30 | Not in OCPP 1.6 | `OCPPCommCtrlr.MessageTimeout` (instance `Default`) |
 | Reconnect back-off minimum / random range / repeat times | 15 / 30 / 5 | 5 / 10 / 5 | Not in OCPP 1.6 | `OCPPCommCtrlr.RetryBackOffWaitMinimum`, `RetryBackOffRandomRange`, `RetryBackOffRepeatTimes` |
 | Energy register without phases | true | false | Not in OCPP 1.6 | `SampledDataCtrlr.RegisterValuesWithoutPhases` |
 | Idle readings only while idle | true | false | Not in OCPP 1.6 | `AlignedDataCtrlr.SendDuringIdle` |
 
-The first nine rows are plan settings in the CSMS, sent at every boot. A DC station gets the DC rows (see [AC and DC stations](https://www.evtivity.com/docs/configuration/data-usage-defaults#ac-and-dc-stations)). The others are in the plan's configuration templates, except the three marked "set by hand". See [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults#plan-settings) for the setting keys.
+The first nine rows are plan settings in the CSMS, sent at every boot. A DC station gets the DC rows (see [AC and DC stations](https://www.evtivity.com/docs/configuration/data-usage-defaults#ac-and-dc-stations)). The others are in the plan's configuration templates. See [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults#plan-settings) for the setting keys.
 
 ## Why These Values
 
@@ -131,6 +131,17 @@ When a station's plan changes while it is online, it gets the plan's settings at
 
 To change the values of a plan, open **Settings > Integrations & Features > OCPP** and its **Cellular** tab. Each station on the plan gets the new values at its next boot or plan change.
 
+## Which Template to Use
+
+| Station's data plan | Station's OCPP version | Template |
+|---|---|---|
+| Wi-Fi or wired | 1.6 | Wi-Fi or Wired Data Plan (OCPP 1.6) |
+| Wi-Fi or wired | 2.0.1 and 2.1 | Wi-Fi or Wired Data Plan (OCPP 2.0.1 and 2.1) |
+| Cellular | 1.6 | Cellular Data Plan (OCPP 1.6) |
+| Cellular | 2.0.1 and 2.1 | Cellular Data Plan (OCPP 2.0.1 and 2.1) |
+
+The templates are complete: push the one that matches the station and change nothing.
+
 ## What the CSMS Sends and What the Templates Set
 
 Sent automatically at every boot from the station's plan, with the AC or DC values chosen from the connector types:
@@ -155,7 +166,7 @@ Set by the templates, one per plan per OCPP version:
 | Wi-Fi or Wired Data Plan (OCPP 2.0.1 and 2.1) | OCPP 2.0.1 and 2.1 stations on the Wi-Fi or wired plan, AC and DC |
 | Cellular Data Plan (OCPP 2.0.1 and 2.1) | OCPP 2.0.1 and 2.1 stations on the Cellular plan, AC and DC |
 
-AC and DC stations share a template because the template values depend on the network connection, not on the charger type.
+AC and DC stations share a template because the template values depend on the network connection, not on the charger type. The boot values stay out of the templates because the CSMS picks the AC or DC values for each station.
 
 ## Apply the Templates
 
@@ -169,7 +180,7 @@ The station ping, the offline queue, the back-off and the other station-side set
 | Cellular Data Plan (OCPP 2.0.1 and 2.1) | 2.1, also OCPP 2.0.1 stations | Data plan Cellular |
 
 1. Set the data plan of your cellular stations or their sites.
-2. Open **Configuration Templates** and the Cellular template of each OCPP version your stations use.
+2. Open **Configuration Templates** and the template from [Which Template to Use](#which-template-to-use) for each OCPP version your stations use.
 3. Check the matching stations, then push the template. Each station records its result: accepted, rejected or failed.
 4. A station that rejects a variable keeps its own value. Check the push result and the station's **Configurations** tab.
 

@@ -108,7 +108,7 @@ A template is a named bundle of configuration values plus a target filter. Each 
 | Name | Operator-facing identifier |
 | Description | Free text explaining intent |
 | OCPP Version | 1.6 or 2.1 (determines variable encoding). A 2.1 template also applies to OCPP 2.0.1 stations. |
-| Variables | Component / variable / value triples (or key / value pairs for 1.6) |
+| Variables | Component / variable / value triples with an optional variable instance, such as `Default` for `OCPPCommCtrlr.MessageTimeout` (or key / value pairs for 1.6, which have no instance) |
 | Target Filter | Site, vendor, model, station and data plan selectors that combine with AND |
 
 You can preview the matching station count before pushing.

@@ -88,27 +88,16 @@ A station with at least one DC connector gets the DC values. The reading setting
 
 The CSMS sends a WebSocket ping to a station only when it received nothing from the station for the plan's ping interval. A station that pings on its own, or sends messages more often, gets no CSMS pings. A station that answered a ping and then sends nothing for three ping intervals is disconnected: after 6 minutes on Wi-Fi or wired and 12 minutes on Cellular. A station that never answers pings is disconnected after twice its heartbeat interval without a message or ping (at least 5 minutes).
 
-### Template settings
+## Which Template to Use
 
-These station settings are not in the boot push, and they are the same for AC and DC stations. Each plan has a configuration template with them, one for OCPP 1.6 and one for OCPP 2.0.1 and 2.1. See [Apply the templates](https://www.evtivity.com/docs/configuration/cellular-stations#apply-the-templates).
+| Station's data plan | Station's OCPP version | Template |
+|---|---|---|
+| Wi-Fi or wired | 1.6 | Wi-Fi or Wired Data Plan (OCPP 1.6) |
+| Wi-Fi or wired | 2.0.1 and 2.1 | Wi-Fi or Wired Data Plan (OCPP 2.0.1 and 2.1) |
+| Cellular | 1.6 | Cellular Data Plan (OCPP 1.6) |
+| Cellular | 2.0.1 and 2.1 | Cellular Data Plan (OCPP 2.0.1 and 2.1) |
 
-| Setting | Wi-Fi or wired | Cellular | OCPP 1.6 key | OCPP 2.0.1 and 2.1 variable |
-|---|---|---|---|---|
-| Station ping interval (seconds) | 300 | 240 | `WebSocketPingInterval` | `OCPPCommCtrlr.WebSocketPingInterval` |
-| Transaction message attempts | 3 | 5 | `TransactionMessageAttempts` | Not in the template |
-| Transaction message retry interval (seconds) | 60 | 120 | `TransactionMessageRetryInterval` | Not in the template |
-| Queue all messages while offline | false | true | Not in OCPP 1.6 | `OCPPCommCtrlr.QueueAllMessages` |
-| Offline threshold (seconds) | 60 | 300 | Not in OCPP 1.6 | `OCPPCommCtrlr.OfflineThreshold` |
-| Reconnect back-off minimum (seconds) | 5 | 15 | Not in OCPP 1.6 | `OCPPCommCtrlr.RetryBackOffWaitMinimum` |
-| Reconnect back-off random range (seconds) | 10 | 30 | Not in OCPP 1.6 | `OCPPCommCtrlr.RetryBackOffRandomRange` |
-| Reconnect back-off repeat times | 5 | 5 | Not in OCPP 1.6 | `OCPPCommCtrlr.RetryBackOffRepeatTimes` |
-| Values at transaction start | `Energy.Active.Import.Register` | `Energy.Active.Import.Register` | Not in OCPP 1.6 | `SampledDataCtrlr.TxStartedMeasurands` |
-| Readings in the transaction end message | 0 (none) | 0 (none) | Not in OCPP 1.6 | `SampledDataCtrlr.TxEndedInterval` |
-| Energy register without phases | false | true | Not in OCPP 1.6 | `SampledDataCtrlr.RegisterValuesWithoutPhases` |
-| Idle readings only while idle | false | true | Not in OCPP 1.6 | `AlignedDataCtrlr.SendDuringIdle` |
-| Clock-aligned readings in the transaction end message | 0 (none) | 0 (none) | Not in OCPP 1.6 | `AlignedDataCtrlr.TxEndedInterval` |
-
-The OCPP 2.0.1 and 2.1 message timeout (`OCPPCommCtrlr.MessageTimeout`, instance `Default`) and transaction message attempts (`OCPPCommCtrlr.MessageAttempts` and `MessageAttemptInterval`, instance `TransactionEvent`) need a variable instance, which templates do not hold. Set them on the station, or send them with `SetVariables` from the station's **OCPP Commands** tab. Suggested values: message timeout 30 seconds on Wi-Fi or wired and 60 on Cellular (90 on NB-IoT), attempts 3 and 5, interval 60 and 120 seconds.
+The templates are complete: push the one that matches the station and change nothing.
 
 ## What the CSMS Sends and What the Templates Set
 
@@ -134,7 +123,30 @@ Set by the templates, one per plan per OCPP version:
 | Wi-Fi or Wired Data Plan (OCPP 2.0.1 and 2.1) | OCPP 2.0.1 and 2.1 stations on the Wi-Fi or wired plan, AC and DC |
 | Cellular Data Plan (OCPP 2.0.1 and 2.1) | OCPP 2.0.1 and 2.1 stations on the Cellular plan, AC and DC |
 
-AC and DC stations share a template because the template values depend on the network connection, not on the charger type.
+AC and DC stations share a template because the template values depend on the network connection, not on the charger type. The boot values stay out of the templates because the CSMS picks the AC or DC values for each station.
+
+## Template Settings
+
+These station settings are not in the boot push, and they are the same for AC and DC stations. Each plan has a configuration template with them, one for OCPP 1.6 and one for OCPP 2.0.1 and 2.1.
+
+| Setting | Wi-Fi or wired | Cellular | OCPP 1.6 key | OCPP 2.0.1 and 2.1 variable |
+|---|---|---|---|---|
+| Station ping interval (seconds) | 300 | 240 | `WebSocketPingInterval` | `OCPPCommCtrlr.WebSocketPingInterval` |
+| Transaction message attempts | 3 | 5 | `TransactionMessageAttempts` | `OCPPCommCtrlr.MessageAttempts`, instance `TransactionEvent` |
+| Transaction message retry interval (seconds) | 60 | 120 | `TransactionMessageRetryInterval` | `OCPPCommCtrlr.MessageAttemptInterval`, instance `TransactionEvent` |
+| Message timeout (seconds) | 30 | 60 | Not in OCPP 1.6 | `OCPPCommCtrlr.MessageTimeout`, instance `Default` |
+| Queue all messages while offline | false | true | Not in OCPP 1.6 | `OCPPCommCtrlr.QueueAllMessages` |
+| Offline threshold (seconds) | 60 | 300 | Not in OCPP 1.6 | `OCPPCommCtrlr.OfflineThreshold` |
+| Reconnect back-off minimum (seconds) | 5 | 15 | Not in OCPP 1.6 | `OCPPCommCtrlr.RetryBackOffWaitMinimum` |
+| Reconnect back-off random range (seconds) | 10 | 30 | Not in OCPP 1.6 | `OCPPCommCtrlr.RetryBackOffRandomRange` |
+| Reconnect back-off repeat times | 5 | 5 | Not in OCPP 1.6 | `OCPPCommCtrlr.RetryBackOffRepeatTimes` |
+| Values at transaction start | `Energy.Active.Import.Register` | `Energy.Active.Import.Register` | Not in OCPP 1.6 | `SampledDataCtrlr.TxStartedMeasurands` |
+| Readings in the transaction end message | 0 (none) | 0 (none) | Not in OCPP 1.6 | `SampledDataCtrlr.TxEndedInterval` |
+| Energy register without phases | false | true | Not in OCPP 1.6 | `SampledDataCtrlr.RegisterValuesWithoutPhases` |
+| Idle readings only while idle | false | true | Not in OCPP 1.6 | `AlignedDataCtrlr.SendDuringIdle` |
+| Clock-aligned readings in the transaction end message | 0 (none) | 0 (none) | Not in OCPP 1.6 | `AlignedDataCtrlr.TxEndedInterval` |
+
+The templates set the variable instance where OCPP needs one: `Default` for the message timeout, `TransactionEvent` for the transaction message attempts and retry interval.
 
 ## Message Sizes
 
