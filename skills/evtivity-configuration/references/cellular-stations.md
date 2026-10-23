@@ -14,16 +14,22 @@ For every value and the data use of both plans, see [Data Usage Defaults](https:
 
 Estimated data use of one station in a 30-day month, with the plan's configuration template pushed.
 
-| Plan | OCPP | Idle uplink | Idle downlink | Charging adds (4 one-hour sessions a day) | Total per month | Total with compression |
-|---|---|---|---|---|---|---|
-| Wi-Fi or wired | 1.6 | 3.8 MB | 3.1 MB | 7.0 MB | 13.9 MB | 10.4 MB |
-| Wi-Fi or wired | 2.0.1 | 5.0 MB | 3.5 MB | 9.0 MB | 17.4 MB | 11.1 MB |
-| Wi-Fi or wired | 2.1 | 5.0 MB | 3.5 MB | 9.0 MB | 17.4 MB | 11.1 MB |
-| Cellular | 1.6 | 1.6 MB | 0.9 MB | 1.3 MB | 3.8 MB | 3.4 MB |
-| Cellular | 2.0.1 | 1.6 MB | 0.9 MB | 1.7 MB | 4.2 MB | 3.3 MB |
-| Cellular | 2.1 | 1.6 MB | 0.9 MB | 1.7 MB | 4.2 MB | 3.3 MB |
+| Plan | OCPP | Station | Idle uplink | Idle downlink | Charging adds | Total per month | Total with compression |
+|---|---|---|---|---|---|---|---|
+| Wi-Fi or wired | 1.6 | AC | 3.8 MB | 3.1 MB | 7.0 MB | 13.9 MB | 10.4 MB |
+| Wi-Fi or wired | 1.6 | DC | 3.8 MB | 3.1 MB | 6.1 MB | 13.0 MB | 10.3 MB |
+| Wi-Fi or wired | 2.0.1 | AC | 5.0 MB | 3.5 MB | 9.0 MB | 17.4 MB | 11.1 MB |
+| Wi-Fi or wired | 2.0.1 | DC | 5.0 MB | 3.5 MB | 7.9 MB | 16.4 MB | 11.1 MB |
+| Wi-Fi or wired | 2.1 | AC | 5.0 MB | 3.5 MB | 9.0 MB | 17.4 MB | 11.1 MB |
+| Wi-Fi or wired | 2.1 | DC | 5.0 MB | 3.5 MB | 7.9 MB | 16.4 MB | 11.1 MB |
+| Cellular | 1.6 | AC | 1.6 MB | 0.9 MB | 1.3 MB | 3.8 MB | 3.4 MB |
+| Cellular | 1.6 | DC | 1.6 MB | 0.9 MB | 2.9 MB | 5.4 MB | 4.4 MB |
+| Cellular | 2.0.1 | AC | 1.6 MB | 0.9 MB | 1.7 MB | 4.2 MB | 3.3 MB |
+| Cellular | 2.0.1 | DC | 1.6 MB | 0.9 MB | 3.8 MB | 6.3 MB | 4.1 MB |
+| Cellular | 2.1 | AC | 1.6 MB | 0.9 MB | 1.7 MB | 4.2 MB | 3.3 MB |
+| Cellular | 2.1 | DC | 1.6 MB | 0.9 MB | 3.8 MB | 6.3 MB | 4.1 MB |
 
-These are estimates from a byte model, not measurements of a real station. They assume 1 EVSE on OCPP 1.6 and 2 EVSEs on OCPP 2.0.1 and 2.1, as the simulator stations have, AC charging, TLS 1.3 and TCP over IPv4. Firmware downloads and reconnects are not included. [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults#data-use-per-month) lists every assumption and the measured message sizes.
+These are estimates from a byte model, not measurements of a real station. They assume 4 one-hour AC sessions or 4 DC sessions of 30 minutes a day, 1 EVSE on OCPP 1.6 and 2 EVSEs on OCPP 2.0.1 and 2.1, as the simulator stations have, TLS 1.3 and TCP over IPv4. Firmware downloads and reconnects are not included. [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults#data-use-per-month) lists every assumption and the measured message sizes.
 
 Station vendors report 20 to 150 MB a month for AC stations and 200 MB to 2 GB for DC stations with a screen or payment terminal, firmware included ([Simbase](https://simbase.com/industries/ev-charging), [IoT SIM data guide](https://simfalcon.ie/guides/how-much-data-iot-sim/)). Most of that is firmware, vendor messages and the station's own services. The OCPP part is what the plan controls.
 
@@ -32,11 +38,13 @@ Station vendors report 20 to 150 MB a month for AC stations and 200 MB to 2 GB f
 | Setting | Cellular | Wi-Fi or wired | OCPP 1.6 key | OCPP 2.0.1 and 2.1 variable |
 |---|---|---|---|---|
 | Heartbeat interval (seconds) | 3600 | 900 | `HeartbeatInterval` | `BootNotification` interval |
-| Meter value interval while charging (seconds) | 300 | 60 | `MeterValueSampleInterval` | `SampledDataCtrlr.TxUpdatedInterval` |
-| Measurands while charging | `Energy.Active.Import.Register`, `Power.Active.Import`, `SoC` | `Energy.Active.Import.Register`, `Power.Active.Import`, `Current.Import`, `SoC` | `MeterValuesSampledData` | `SampledDataCtrlr.TxUpdatedMeasurands` |
+| AC: reading interval while charging (seconds) | 300 | 60 | `MeterValueSampleInterval` | `SampledDataCtrlr.TxUpdatedInterval` |
+| AC: values while charging | `Energy.Active.Import.Register`, `Power.Active.Import` | `Energy.Active.Import.Register`, `Power.Active.Import`, `Current.Import` | `MeterValuesSampledData` | `SampledDataCtrlr.TxUpdatedMeasurands` |
+| DC: reading interval while charging (seconds) | 60 | 30 | `MeterValueSampleInterval` | `SampledDataCtrlr.TxUpdatedInterval` |
+| DC: values while charging | `Energy.Active.Import.Register`, `Power.Active.Import`, `SoC` | `Energy.Active.Import.Register`, `Power.Active.Import`, `Current.Import`, `SoC` | `MeterValuesSampledData` | `SampledDataCtrlr.TxUpdatedMeasurands` |
 | Idle reading interval (seconds) | 0 (off) | 900 | `ClockAlignedDataInterval` | `AlignedDataCtrlr.Interval` |
-| Idle reading measurands | `Energy.Active.Import.Register` | `Energy.Active.Import.Register` | `MeterValuesAlignedData` | `AlignedDataCtrlr.Measurands` |
-| Measurands at transaction end | `Energy.Active.Import.Register` | `Energy.Active.Import.Register` | `StopTxnSampledData` | `SampledDataCtrlr.TxEndedMeasurands` |
+| Idle reading values | `Energy.Active.Import.Register` | `Energy.Active.Import.Register` | `MeterValuesAlignedData` | `AlignedDataCtrlr.Measurands` |
+| Values at transaction end | `Energy.Active.Import.Register` | `Energy.Active.Import.Register` | `StopTxnSampledData` | `SampledDataCtrlr.TxEndedMeasurands` |
 | CSMS ping interval (seconds) | 240 | 120 | Not a station setting | Not a station setting |
 | Station ping interval (seconds) | 240 | 300 | `WebSocketPingInterval` | `OCPPCommCtrlr.WebSocketPingInterval` |
 | Transaction message attempts | 5 | 3 | `TransactionMessageAttempts` | `OCPPCommCtrlr.MessageAttempts` (instance `TransactionEvent`, set by hand) |
@@ -48,7 +56,7 @@ Station vendors report 20 to 150 MB a month for AC stations and 200 MB to 2 GB f
 | Energy register without phases | true | false | Not in OCPP 1.6 | `SampledDataCtrlr.RegisterValuesWithoutPhases` |
 | Idle readings only while idle | true | false | Not in OCPP 1.6 | `AlignedDataCtrlr.SendDuringIdle` |
 
-The first seven rows are plan settings in the CSMS, sent at every boot. The others are in the plan's configuration templates, except the three marked "set by hand". See [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults#plan-settings) for the setting keys.
+The first nine rows are plan settings in the CSMS, sent at every boot. A DC station gets the DC rows (see [AC and DC stations](https://www.evtivity.com/docs/configuration/data-usage-defaults#ac-and-dc-stations)). The others are in the plan's configuration templates, except the three marked "set by hand". See [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults#plan-settings) for the setting keys.
 
 ## Why These Values
 
@@ -66,7 +74,15 @@ The heartbeat tells the station the CSMS time and tells the CSMS the station is 
 
 ### Meter values
 
-Every reading while charging is one message, and each measurand makes it larger. The Cellular plan sends a reading every 300 seconds with energy and power, and the state of charge when the station reports it (DC). OCPP gives 300 as its example interval. Monta uses 180 seconds with energy only, GreenFlux 900 for AC and 300 for DC ([Monta](https://monta.com/help/integrations-advanced-developer/ocpp-configuration-for-charge-points-a-short-explainer), [GreenFlux](https://greenflux.helpkit.so/13d17d68194280c7bed4d86435b26298), [eMabler](https://docs.emabler.com/docs/emabler-ocpp-configuration-parameters-guide)). For a DC station under [load management](https://www.evtivity.com/docs/csms/load-management), 60 seconds gives the load manager fresher data: change the plan's meter value interval.
+Every reading while charging is one message, and each value makes it larger. OCPP gives 300 seconds as its example interval. Monta reads every 180 seconds with energy only; eMabler uses 60 to 180 seconds ([Monta](https://monta.com/help/integrations-advanced-developer/ocpp-configuration-for-charge-points-a-short-explainer), [eMabler](https://docs.emabler.com/docs/emabler-ocpp-configuration-parameters-guide)).
+
+The Cellular plan reads an AC station every 300 seconds with energy and power, and a DC station every 60 seconds with energy, power and state of charge. DC reads faster for three reasons:
+
+- A DC session is short. A 30-minute session read every 300 seconds gives only six readings, too few to follow its power curve.
+- The power of a DC session changes fast as the battery fills, and [load management](https://www.evtivity.com/docs/csms/load-management) shares the site's power from the readings. Older readings mean the load manager works on old power values.
+- The state of charge tells the driver and the CSMS how far the session is. AC stations do not report it.
+
+GreenFlux uses the same split: AC every 900 seconds (300 with smart charging) and DC every 300 seconds (30 with smart charging) ([GreenFlux](https://greenflux.helpkit.so/13d17d68194280c7bed4d86435b26298)). On the Wi-Fi or wired plan, AC reads every 60 seconds and DC every 30.
 
 Idle (clock-aligned) readings are off on the Cellular plan. The transaction start and end messages carry the energy register, and the CSMS does not need readings of an idle station. Set the idle reading interval to 900 when you need interval data, for example for a utility report.
 
@@ -92,24 +108,58 @@ LTE-M and NB-IoT modems can sleep with PSM (Power Saving Mode) and eDRX (extende
 
 - Pings above the carrier NAT timeout: the carrier drops the connection without a close. The CSMS sees the station offline only after the ping timeout, remote commands fail until the station reconnects, and each reconnect costs 5 to 7 kB.
 - A long heartbeat without pings: an outage can go unnoticed for a day.
-- Long meter value intervals: load management and the session view work on older data.
+- Long reading intervals while charging: load management and the session view work on older data, most on DC stations.
 - PSM or long eDRX: the station misses remote starts and stops.
 - Pings or heartbeats far below the defaults: more data for no gain, and some networks treat very frequent traffic as abuse (GreenFlux warns a charger can be blocked).
 
 ## Pick the Cellular Plan
 
-Each station has a data plan on its **Configurations** tab, in the **Data Plan** card: **Wi-Fi or Wired** (the default) or **Cellular**. The card shows where the choice came from: the default, a confirmed SIM, or an operator.
+A station uses the first plan that applies:
 
-- Automatic: when a SIM attachment is confirmed on the station, the station becomes **Cellular**. See [Confirm SIM](https://www.evtivity.com/docs/csms/station-connectivity#confirm-sim). Detaching the SIM leaves the plan as it is.
-- By an operator: choose the plan in the card and click **Save**. You need `stations:write`. A plan you choose stays: a later SIM confirmation does not change it.
+1. The plan set on the station.
+2. **Cellular** when a SIM attachment is confirmed on the station. See [Confirm SIM](https://www.evtivity.com/docs/csms/station-connectivity#confirm-sim).
+3. The plan set on the station's site.
+4. **Wi-Fi or Wired**.
 
-When the station is online, it gets the plan's settings at once, the heartbeat interval included. An offline station gets them at its next boot. At every boot the CSMS sends the station its plan's settings again, so a reboot never undoes them.
+Set the plan for a whole site on the site's **Details** tab, in the **Data Plan** card: **Not Set**, **Wi-Fi or Wired** or **Cellular**. You need `sites:write`. Before you save, the confirmation names how many stations change plan. Stations with their own plan or a confirmed SIM keep theirs. See [Sites](https://www.evtivity.com/docs/csms/sites#data-plan).
+
+Set the plan for one station on its **Configurations** tab, in the **Data Plan** card. You need `stations:write`. The card shows the plan the station uses and where it came from: set on the station, a confirmed SIM, the site, or the default. It also shows whether the station gets the AC or the DC values. Choose **Wi-Fi or Wired** or **Cellular** and click **Save**. A plan set on the station wins over a SIM and the site. Choose **Use the Site's Plan** to remove the station's own choice.
+
+When a SIM is detached, the station goes back to its site's plan or the default, unless the station has its own plan.
+
+When a station's plan changes while it is online, it gets the plan's settings at once, the heartbeat interval included. An offline station gets them at its next boot. At every boot the CSMS sends the station its plan's settings again, so a reboot never undoes them.
 
 To change the values of a plan, open **Settings > Integrations & Features > OCPP** and its **Cellular** tab. Each station on the plan gets the new values at its next boot or plan change.
 
+## What the CSMS Sends and What the Templates Set
+
+Sent automatically at every boot from the station's plan, with the AC or DC values chosen from the connector types:
+
+- Heartbeat interval
+- Reading interval and values while charging (AC or DC)
+- Idle readings
+- Values at the end of a session
+
+Set by the templates, one per plan per OCPP version:
+
+- Station ping interval
+- Offline message queue
+- Reconnect back-off
+- Message retries
+- Offline threshold
+
+| Template | Applies to |
+|---|---|
+| Wi-Fi or Wired Data Plan (OCPP 1.6) | OCPP 1.6 stations on the Wi-Fi or wired plan, AC and DC |
+| Cellular Data Plan (OCPP 1.6) | OCPP 1.6 stations on the Cellular plan, AC and DC |
+| Wi-Fi or Wired Data Plan (OCPP 2.0.1 and 2.1) | OCPP 2.0.1 and 2.1 stations on the Wi-Fi or wired plan, AC and DC |
+| Cellular Data Plan (OCPP 2.0.1 and 2.1) | OCPP 2.0.1 and 2.1 stations on the Cellular plan, AC and DC |
+
+AC and DC stations share a template because the template values depend on the network connection, not on the charger type.
+
 ## Apply the Templates
 
-The station ping, the offline queue, the back-off and the other station-side settings are not in the boot push. EVtivity ships four configuration templates with them, in **Configuration Templates**:
+The station ping, the offline queue, the back-off and the other station-side settings are not in the boot push. They are the same for AC and DC stations. EVtivity ships four configuration templates with them, in **Configuration Templates**:
 
 | Template | OCPP version | Target filter |
 |---|---|---|
@@ -118,7 +168,7 @@ The station ping, the offline queue, the back-off and the other station-side set
 | Wi-Fi or Wired Data Plan (OCPP 2.0.1 and 2.1) | 2.1, also OCPP 2.0.1 stations | Data plan Wi-Fi or wired |
 | Cellular Data Plan (OCPP 2.0.1 and 2.1) | 2.1, also OCPP 2.0.1 stations | Data plan Cellular |
 
-1. Set the data plan of your cellular stations.
+1. Set the data plan of your cellular stations or their sites.
 2. Open **Configuration Templates** and the Cellular template of each OCPP version your stations use.
 3. Check the matching stations, then push the template. Each station records its result: accepted, rejected or failed.
 4. A station that rejects a variable keeps its own value. Check the push result and the station's **Configurations** tab.

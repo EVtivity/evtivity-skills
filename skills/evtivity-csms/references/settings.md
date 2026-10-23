@@ -314,13 +314,15 @@ OCPP values sent to stations at every boot, one set per data plan. The **Wi-Fi o
 |---|---|---|
 | Heartbeat interval (seconds), sent in the BootNotification response | 900 | 3600 |
 | CSMS ping interval (seconds) | 120 | 240 |
-| Meter value interval (seconds), readings while charging | 60 | 300 |
+| AC stations: meter value interval (seconds), readings while charging | 60 | 300 |
+| AC stations: sampled measurands, readings while charging | `Energy.Active.Import.Register,Power.Active.Import,Current.Import` | `Energy.Active.Import.Register,Power.Active.Import` |
+| DC stations: meter value interval (seconds), readings while charging | 30 | 60 |
+| DC stations: sampled measurands, readings while charging | `Energy.Active.Import.Register,Power.Active.Import,Current.Import,SoC` | `Energy.Active.Import.Register,Power.Active.Import,SoC` |
 | Clock-aligned interval (seconds), idle readings, 0 turns them off | 900 | 0 |
-| Sampled measurands, readings while charging | `Energy.Active.Import.Register,Power.Active.Import,Current.Import,SoC` | `Energy.Active.Import.Register,Power.Active.Import,SoC` |
 | Clock-aligned measurands | `Energy.Active.Import.Register` | `Energy.Active.Import.Register` |
 | Transaction ended measurands | `Energy.Active.Import.Register` | `Energy.Active.Import.Register` |
 
-See [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults) for the OCPP keys and the data use of each plan, and [Cellular Stations](https://www.evtivity.com/docs/configuration/cellular-stations) for how a station gets its plan.
+The readings while charging have an **AC Stations** and a **DC Stations** section on each tab. See [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults) for the OCPP keys, how the CSMS tells AC from DC, and the data use of each plan, and [Cellular Stations](https://www.evtivity.com/docs/configuration/cellular-stations) for how a station gets its plan.
 
 The tab also has:
 

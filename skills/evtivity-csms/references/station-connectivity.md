@@ -55,7 +55,7 @@ The dialog shows the ICCID, the provider and where the ICCID came from: reported
 - the attachment changed after the dialog opened, for example the station reported another ICCID (`409 SIM_ATTACHMENT_CHANGED`). Nothing is confirmed and the tab reloads, so you can check the new attachment first.
 - the SIM is inactive (`409 SIM_INACTIVE`). Reactivate it on its page first.
 
-A confirmed attachment also sets the station's data plan to **Cellular**, unless an operator chose the plan on the **Configurations** tab. See [Cellular Stations](https://www.evtivity.com/docs/configuration/cellular-stations#pick-the-cellular-plan).
+While a confirmed attachment is open, the station uses the **Cellular** data plan, unless a plan is set on the station itself on the **Configurations** tab. After a detach the station goes back to its site's plan or the default. See [Cellular Stations](https://www.evtivity.com/docs/configuration/cellular-stations#pick-the-cellular-plan).
 
 When the station's SIM is attached to another station or is inactive, the tab says so and shows no SIM data.
 

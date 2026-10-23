@@ -20,16 +20,22 @@ EVtivity deletes old rows from its high-volume tables on a schedule. Each group 
 
 ## Station Data Use
 
-The OCPP messages that fill `ocpp_message_logs` and `meter_values` are the same messages that use a station's data. Their number depends on the station's data plan. Estimated data use of one station in a 30-day month (byte model, not a measurement: 1 EVSE on OCPP 1.6 and 2 EVSEs on OCPP 2.0.1 and 2.1, AC charging with 4 one-hour sessions a day, TLS, firmware not included):
+The OCPP messages that fill `ocpp_message_logs` and `meter_values` are the same messages that use a station's data. Their number depends on the station's data plan. Estimated data use of one station in a 30-day month (byte model, not a measurement: 1 EVSE on OCPP 1.6 and 2 EVSEs on OCPP 2.0.1 and 2.1, 4 one-hour AC sessions or 4 DC sessions of 30 minutes a day, TLS, firmware not included):
 
-| Plan | OCPP | Idle uplink | Idle downlink | Charging adds | Total per month | Total with compression |
-|---|---|---|---|---|---|---|
-| Wi-Fi or wired | 1.6 | 3.8 MB | 3.1 MB | 7.0 MB | 13.9 MB | 10.4 MB |
-| Wi-Fi or wired | 2.0.1 | 5.0 MB | 3.5 MB | 9.0 MB | 17.4 MB | 11.1 MB |
-| Wi-Fi or wired | 2.1 | 5.0 MB | 3.5 MB | 9.0 MB | 17.4 MB | 11.1 MB |
-| Cellular | 1.6 | 1.6 MB | 0.9 MB | 1.3 MB | 3.8 MB | 3.4 MB |
-| Cellular | 2.0.1 | 1.6 MB | 0.9 MB | 1.7 MB | 4.2 MB | 3.3 MB |
-| Cellular | 2.1 | 1.6 MB | 0.9 MB | 1.7 MB | 4.2 MB | 3.3 MB |
+| Plan | OCPP | Station | Idle uplink | Idle downlink | Charging adds | Total per month | Total with compression |
+|---|---|---|---|---|---|---|---|
+| Wi-Fi or wired | 1.6 | AC | 3.8 MB | 3.1 MB | 7.0 MB | 13.9 MB | 10.4 MB |
+| Wi-Fi or wired | 1.6 | DC | 3.8 MB | 3.1 MB | 6.1 MB | 13.0 MB | 10.3 MB |
+| Wi-Fi or wired | 2.0.1 | AC | 5.0 MB | 3.5 MB | 9.0 MB | 17.4 MB | 11.1 MB |
+| Wi-Fi or wired | 2.0.1 | DC | 5.0 MB | 3.5 MB | 7.9 MB | 16.4 MB | 11.1 MB |
+| Wi-Fi or wired | 2.1 | AC | 5.0 MB | 3.5 MB | 9.0 MB | 17.4 MB | 11.1 MB |
+| Wi-Fi or wired | 2.1 | DC | 5.0 MB | 3.5 MB | 7.9 MB | 16.4 MB | 11.1 MB |
+| Cellular | 1.6 | AC | 1.6 MB | 0.9 MB | 1.3 MB | 3.8 MB | 3.4 MB |
+| Cellular | 1.6 | DC | 1.6 MB | 0.9 MB | 2.9 MB | 5.4 MB | 4.4 MB |
+| Cellular | 2.0.1 | AC | 1.6 MB | 0.9 MB | 1.7 MB | 4.2 MB | 3.3 MB |
+| Cellular | 2.0.1 | DC | 1.6 MB | 0.9 MB | 3.8 MB | 6.3 MB | 4.1 MB |
+| Cellular | 2.1 | AC | 1.6 MB | 0.9 MB | 1.7 MB | 4.2 MB | 3.3 MB |
+| Cellular | 2.1 | DC | 1.6 MB | 0.9 MB | 3.8 MB | 6.3 MB | 4.1 MB |
 
 See [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults) for the settings and message sizes behind these numbers, and [Cellular Stations](https://www.evtivity.com/docs/configuration/cellular-stations) for stations on cellular data plans.
 

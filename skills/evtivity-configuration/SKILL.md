@@ -43,7 +43,7 @@ This skill tells you where a setting lives and how to change it safely. The webs
 | Change the password rules or how long sessions last | Settings > Security > Passwords and Sessions | `references/authentication.md` |
 | Stations on TLS (profiles 2 and 3) | `OCPP_TLS_PORT`, `OCPP_TLS_CERT`, `OCPP_TLS_KEY`, `OCPP_TLS_CA` (or the `*_PEM` variants), `OCPP_STATION_TLS_URL` on the API | `references/ocpp-settings.md` |
 | Run several OCPP servers | `OCPP_INSTANCE_ID` per instance | `references/ocpp-settings.md` |
-| Cut station data use, set up stations on cellular data plans | The station's data plan (Configurations tab, or Cellular when a SIM is confirmed), the plan values in Settings > Integrations & Features > OCPP, the plan's configuration template | `references/cellular-stations.md`, `references/data-usage-defaults.md` |
+| Cut station data use, set up stations on cellular data plans | The data plan: set on the station (Configurations tab), else Cellular for a confirmed SIM, else the site's plan (site Details tab), else Wi-Fi or wired. Plan values with AC and DC charging readings in Settings > Integrations & Features > OCPP (AC or DC comes from the connector types); one template per plan and OCPP version | `references/cellular-stations.md`, `references/data-usage-defaults.md` |
 | Turn WebSocket compression off for debugging | `OCPP_WS_COMPRESSION=false` on the OCPP server | `references/ocpp-settings.md` |
 | Open or approval-based station onboarding | `REGISTRATION_POLICY` at first install, later in the dashboard | `references/environment-variables.md` |
 | Turn on automatic insights, AI workers or the MCP server | Settings > AI in the dashboard: `opsAi.enabled`, `aiInsights.*`, `aiWorkers.*`, `ai.mcp.*` (all AI features off by default) | evtivity-csms skill, Settings page |
@@ -121,7 +121,7 @@ Generated from the website docs. Never edit them. The first line of each file is
 - `references/authentication.md`: auth realms, cookies, API keys, RBAC, MFA, reCAPTCHA, CSRF, session lifetimes.
 - `references/cellular-stations.md`: the recommended configuration for cellular stations and why (carrier NAT timeouts, pings, heartbeat, meter values, compression, TLS, modem power saving), picking the Cellular plan, the plan templates.
 - `references/data-retention.md`: every retention setting with its default and range, Settings > Data Retention, the AWS retention that stays in CDK, the prune jobs, database storage for large networks and chaos mode.
-- `references/data-usage-defaults.md`: the values of both data plans with their OCPP 1.6 keys and 2.0.1 and 2.1 variables, message sizes, monthly data use per plan and OCPP version, reconnect and firmware costs.
+- `references/data-usage-defaults.md`: the plan order (station, SIM, site, default), the values of both data plans with AC and DC charging readings, their OCPP 1.6 keys and 2.0.1 and 2.1 variables, what the boot push sends and what the templates set, message sizes, monthly data use per plan, OCPP version and AC or DC, reconnect and firmware costs.
 - `references/database-setup.md`: PostgreSQL 17, migration and seed commands, Redis purposes and ACL users.
 - `references/environment-variables.md`: every environment variable per service, with defaults.
 - `references/ocpp-settings.md`: station URLs, security profiles, TLS, limits, message pipeline, horizontal scaling.

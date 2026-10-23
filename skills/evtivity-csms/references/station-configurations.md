@@ -158,7 +158,7 @@ Individual station configuration is visible on the station detail page under the
 
 ![Station Configurations tab](https://www.evtivity.com/screenshots/csms/station-configurations-tab.png)
 
-- **Data Plan**: the station's data plan, **Wi-Fi or Wired** or **Cellular**, and where it came from: the default, a confirmed SIM, or an operator. Change it and click **Save** (`stations:write`). See [Pick the Cellular plan](https://www.evtivity.com/docs/configuration/cellular-stations#pick-the-cellular-plan).
+- **Data Plan**: the data plan the station uses, **Wi-Fi or Wired** or **Cellular**, where it came from (set on the station, a confirmed SIM, the site, or the default), and whether the station gets the AC or the DC values. Choose a plan, or **Use the Site's Plan** to remove the station's own choice, and click **Save** (`stations:write`). See [Pick the Cellular plan](https://www.evtivity.com/docs/configuration/cellular-stations#pick-the-cellular-plan).
 - **View**: read-only table of every variable the station is reporting, sourced from the most recent `NotifyReport` (2.1) or `GetConfiguration` response (1.6).
 - **Refresh from Station**: re-issue the read so the table reflects the latest station state. The CSMS sends `GetBaseReport` (2.1) or `GetConfiguration` (1.6) and updates the table when the station replies. The screenshot above shows the table after a refresh has populated it from the live station.
 - **Push Configuration**: push a single template to this one station. Useful for ad-hoc tuning or testing a template against one station before rolling it out fleet-wide. Clicking the button opens a dialog where you choose a template that matches the station's OCPP version.
