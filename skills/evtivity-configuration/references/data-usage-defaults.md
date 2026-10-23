@@ -99,6 +99,10 @@ The CSMS sends a WebSocket ping to a station only when it received nothing from 
 
 The templates are complete: push the one that matches the station and change nothing.
 
+Push a template from its page in **Configuration Templates**: set the **Target Filter** (site, data plan, vendor or model) and push it to every matching station. A filter on one site reaches all of that site's stations at once. To update a single station, push the template from the station's **Configurations** tab.
+
+Push the template again for a station you add later and for a station whose data plan changes. The out-of-sync check on the station's **Configurations** tab shows a station that still misses the template's values.
+
 ## What the CSMS Sends and What the Templates Set
 
 Sent automatically at every boot from the station's plan, with the AC or DC values chosen from the connector types:
