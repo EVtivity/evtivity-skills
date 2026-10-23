@@ -14,8 +14,6 @@ EVtivity deletes old rows from its high-volume tables on a schedule. Each group 
 >
 > Every OCPP message a station sends or receives is a row in `ocpp_message_logs`, heartbeats included. Every meter reading is a row in `meter_values`. Both tables grow with the number of connected stations, even while no one charges. Chaos mode in the [Charging Station Simulator](https://www.evtivity.com/docs/simulator/overview) also starts charging sessions on the simulated stations, which adds meter values.
 >
-> On a test network of about 2,000 simulated stations that stayed connected, the database reached 90 GB. `ocpp_message_logs` held about 100 million rows (57 GB) at its default retention of 30 days. `meter_values` held about 61 million rows (32 GB).
->
 > Plan the database disk for your station count before you turn on chaos mode or connect a large network. Lower **OCPP Messages** and **Meter Values** in **Settings > Data Retention** (`logs.ocppMessage.retentionDays` and `logs.meterValues.retentionDays`) to keep these tables smaller.
 
 ## Station Data Use
