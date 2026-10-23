@@ -46,6 +46,7 @@ Start at the first symptom that matches.
 - A charging station stays offline or reconnects in a loop: go to B.
 - Card payments, guest checkout or webhooks fail with `PAYMENT_PROVIDER_NOT_CONFIGURED` or `WEBHOOK_NOT_CONFIGURED`: go to E.
 - The problem started after `git pull`, a checkout of a new tag, or an image upgrade: go to G.
+- A cellular station shows no SIM data on its Connectivity tab, or the SIM routes answer `SIM_FEATURE_DISABLED`, `SIM_INACTIVE` or `SIM_ATTACHED_ELSEWHERE`: go to H.
 - A session is `faulted` with stopped reason `EndRequestFailed` (Session End Failed alert): this is a field problem, not a stack failure. Bill it with the evtivity-csms skill (Bill session), or see evtivity-guides field troubleshooting.
 - Reports stay `pending`, or the worker log shows `NOPERM` on `report_generate` or `ocpp:conn:*` after an upgrade to v0.1.40: go to D.
 - None of these: collect diagnostics and use the evtivity-report-issue skill.
@@ -140,6 +141,20 @@ Confirm: API `/v1/version` differs from `package.json` in the checkout, or the U
 Fix: `git status` (clean, at the new tag), then `docker compose up -d --build`.
 
 Stale volume: the data in a volume does not fit the release, for example after a downgrade, a skipped required upgrade step, or a PostgreSQL major version change (`database files are incompatible with server`). Read the release notes for the upgrade path first. For data you must keep, back up first: `docker compose exec postgres pg_dump -U evtivity evtivity > backup.sql`. For disposable data only, and only after the user agrees: `docker compose down --volumes` (deletes all data), then `docker compose up -d`.
+
+### H. No SIM data for a station
+
+Confirm: the station Connectivity tab names the state. The tab and the SIMs page exist only while a SIM provider or **Read Signal from Stations** is on (else `400 SIM_FEATURE_DISABLED`).
+
+Fix, by state:
+
+- Not confirmed: nothing is fetched until a user with access to every site checks the SIM is in the station and clicks **Confirm SIM**.
+- Attached to another station: a SIM sits in one station at a time. A user with access to every site detaches it on the SIM page, or corrects the ICCID on the station Details tab.
+- Inactive: **Reactivate SIM** on the SIM page. Deactivation never changed the SIM at the provider.
+- No provider knows the ICCID: check the ICCID and the provider account (Test Connection), then **Look Up Again**.
+- Older data missing: the station tab shows a SIM's data only from its last detach, move or deactivation. The SIM page shows the full history to users with access to every site.
+
+Detail: evtivity-csms (Station Connectivity, SIMs), evtivity-integrations (SIM providers).
 
 ## 3. After the fix
 

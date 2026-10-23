@@ -436,7 +436,7 @@ OCPP 1.6 stations have no native equivalent. They receive the Idle screen (Avail
 
 ### SIM Providers
 
-The SIM provider account (Hologram) and the station signal settings behind the station **Connectivity** tab. Needs access to every site. Off by default: while Hologram and **Read Signal from Stations** are both off, nothing changes. See [SIM Providers](https://www.evtivity.com/docs/integrations/sim-providers).
+The SIM provider account (Hologram) and the station signal settings behind the **SIMs** page and the station **Connectivity** tab. Needs access to every site. Off by default: while Hologram and **Read Signal from Stations** are both off, nothing changes. See [SIM Providers](https://www.evtivity.com/docs/integrations/sim-providers).
 
 ### S3 Bucket
 

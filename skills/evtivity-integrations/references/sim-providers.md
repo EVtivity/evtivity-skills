@@ -6,15 +6,15 @@ Connect the SIM provider of your cellular stations to see their SIM status, data
 
 ## Overview
 
-A SIM provider account lets the CSMS show the SIM status, the cellular data sessions and the SIM alerts of each cellular station on the station's **Connectivity** tab, beside the station's own OCPP connects and disconnects. Hologram is the supported provider.
+A SIM provider account lets the CSMS show the SIM status, the cellular data sessions and the SIM alerts of each cellular station on the station's **Connectivity** tab, beside the station's own OCPP connects and disconnects, and of each SIM on the [SIMs](https://www.evtivity.com/docs/csms/sims) page. Hologram is the supported provider.
 
 Configure it under **Settings > Integrations & Features > SIM Providers**.
 
 ![SIM Providers settings](https://www.evtivity.com/screenshots/csms/settings-sim-providers.png)
 
-The feature is off by default. While Hologram and **Read Signal from Stations** are both off, the CSMS calls no SIM provider and sends no SIM related OCPP request, and the station pages show no **Connectivity** tab and no ICCID field. Turning either one on shows them.
+The feature is off by default. While Hologram and **Read Signal from Stations** are both off, the CSMS calls no SIM provider and sends no SIM related OCPP request, the station pages show no **Connectivity** tab and no ICCID field, and the **SIMs** page is hidden. Turning either one on shows them.
 
-For the station side (Refresh, Confirm SIM, the timeline and the network reset), see [Station Connectivity](https://www.evtivity.com/docs/csms/station-connectivity).
+For the station side (Refresh, Confirm SIM, the timeline and the network reset), see [Station Connectivity](https://www.evtivity.com/docs/csms/station-connectivity). For the SIM records (import, export, attach, detach and deactivate), see [SIMs](https://www.evtivity.com/docs/csms/sims).
 
 ## Permissions
 
@@ -49,7 +49,7 @@ Test Connection runs at most 6 times a minute. While Hologram asks the CSMS to s
 
 ### Hologram data
 
-- Hologram reports a data session only after it closes, up to 6 hours later. The newest hours of a station show as **Pending** until then.
+- Hologram reports a data session only after it closes, up to 6 hours later. The newest hours show as **Pending** until then.
 - Hologram keeps 90 days of data. A Refresh cannot fetch older periods.
 - A SIM alert (data limit reached, data warning, the SIM moved to another device, device model changed, first device) reaches the CSMS only with a Refresh.
 - When Hologram answers `429`, the CSMS calls Hologram again only after the wait it gives, at most one hour (60 seconds when it gives none).
@@ -58,10 +58,10 @@ Test Connection runs at most 6 times a minute. While Hologram asks the CSMS to s
 
 | Setting | Default | Range | Effect |
 |---|---|---|---|
-| **Default Refresh Period (Days)** | 7 | 1 to 31 | The period preselected next to **Refresh** on a station's **Connectivity** tab. A person can pick another period or a custom date range there. |
+| **Default Refresh Period (Days)** | 7 | 1 to 31 | The period preselected next to **Refresh** on a station's **Connectivity** tab and on a SIM page. A person can pick another period or a custom date range there. |
 | **Keep Sessions and Alerts (Days)** | 90 | 7 to 730 | Sessions and SIM alerts older than this are deleted. Sessions include cell IDs, which show roughly where a station was online. |
 
-The CSMS keeps sessions and SIM alerts only for stations someone refreshed. It never fetches them on its own.
+The CSMS keeps sessions and SIM alerts only for SIMs someone refreshed, on a station's **Connectivity** tab or on the SIM page. It never fetches them on its own.
 
 ## Station Signal
 
@@ -83,10 +83,10 @@ Clearing the value or turning **Read Signal from Stations** off removes the moni
 
 ## Data use
 
-- The CSMS calls the SIM provider only when a person clicks **Refresh**, **Test Connection** or **Reset Network**. No schedule, background job, station event or incoming webhook calls it, and opening a station's **Connectivity** tab fetches nothing.
+- The CSMS calls the SIM provider only when a person clicks **Refresh**, **Test Connection** or **Reset Network**. No schedule, background job, station event or incoming webhook calls it. Opening a station's **Connectivity** tab, the **SIMs** list or a SIM page fetches nothing, and a CSV import calls no provider.
 - While **Read Signal from Stations** is on, each **Refresh** sends one OCPP request to the station, at most once a minute per station. It uses a small amount of the station's cellular data when the station connects over cellular. Nothing reads a station when it connects or when the tab opens.
 - The low signal monitors are configuration, sent when the alert is saved and when a station connects. They read nothing.
 
 ## Error codes
 
-The SIM routes answer with the `SIM_*` codes listed under [Sites & Stations](https://www.evtivity.com/api-reference/error-codes#sites-stations) in the error code reference.
+The SIM routes answer with the `SIM_*` and `STATION_HAS_SIM` codes listed under [Sites & Stations](https://www.evtivity.com/api-reference/error-codes#sites-stations) in the error code reference.

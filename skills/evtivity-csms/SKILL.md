@@ -13,7 +13,7 @@ metadata:
 
 Not for: Stripe, Adyen or payment webhooks (use evtivity-integrations), scripts and the route catalog (use evtivity-api), end-to-end procedures such as onboarding a station (use evtivity-guides), a broken stack (use evtivity-troubleshoot).
 
-Every dashboard action calls the REST API, so each workflow also works with curl. The references (website docs) are the source of truth: read them for detail. Do not guess.
+Every dashboard action calls the REST API, so each workflow also works with curl. The references (website docs) are the source of truth. Do not guess.
 
 ## Confirm before you act
 
@@ -22,7 +22,7 @@ Ask the user before any destructive or customer-visible action, and say what it 
 - Deletes of any kind (sites, tokens, tariffs, pricing groups, CA certificates, partners, templates, API keys). A station delete blocks the station.
 - Deactivating a driver or token, rejecting or blocking a station, disabling a station.
 - Maintenance windows, above all with the Stop gracefully policy (it stops live sessions and cancels reservations).
-- OCPP Reset, ChangeAvailability, ClearCache, UnlockConnector, remote stop, SIM Reset Network.
+- OCPP Reset, ChangeAvailability, ClearCache, UnlockConnector, remote stop, SIM Reset Network, Detach SIM, Deactivate SIM, Delete SIM.
 - Starting a firmware campaign. Pushing configuration templates, charging profiles or a local auth list.
 - Turning free vend on or off at a site.
 - Publishing a site or tariff to OCPI partners, registering a partner, issuing a credit CDR.
@@ -57,6 +57,7 @@ Each row names the reference file for the page (page id `csms/<name>`).
 | Register, approve, enable stations | `references/stations.md` | Stations > station | `stations:write` |
 | Station photos | `references/station-images.md` | Station > Images | `stations:write` |
 | SIM status, signal, Reset Network | `references/station-connectivity.md` | Station > Connectivity | `stations:read`, Confirm SIM all sites |
+| SIM records, CSV import, attach | `references/sims.md` | SIMs (`/sims`) | `sims:write`, import and attach all sites |
 | Configuration templates and drift | `references/station-configurations.md` | Settings > Station Configurations | `settings.stationConfig:write` |
 | OCPP 1.6 key reference | `references/station-configurations-ocpp16.md` | Station > Configurations | `stations:read` |
 | OCPP 2.1 variable reference | `references/station-configurations-ocpp21.md` | Station > Configurations | `stations:read` |
@@ -123,7 +124,7 @@ curl -s "$EVTIVITY_API/v1/stations?onboardingStatus=pending" "${auth[@]}"
 curl -s -X POST "$EVTIVITY_API/v1/stations/<id>/approve" "${auth[@]}"
 ```
 
-Confirm: `onboardingStatus` is `accepted` in `GET /v1/stations/<id>` and on the station History tab.
+Confirm: `onboardingStatus` is `accepted` in `GET /v1/stations/<id>`.
 
 ### Maintenance windows (`references/maintenance.md`)
 
@@ -135,7 +136,7 @@ curl -s "$EVTIVITY_API/v1/sites/<siteId>/maintenance/events" "${auth[@]}" \
   -d '{"eventType":"one_off","plannedStartAt":"2026-10-10T02:00:00Z","plannedEndAt":"2026-10-10T04:00:00Z","activeSessionPolicy":"ignore","reason":"Panel work"}'
 ```
 
-Confirm: the Maintenance History columns Taken Offline, Re-asserted and Restored (green means every station accepted). Reservations in the window fail with `409 RESERVATION_DURING_MAINTENANCE`. For one station with no end time, use Disable Station instead.
+Confirm: the Maintenance History columns Taken Offline, Re-asserted and Restored. Reservations in the window fail with `409 RESERVATION_DURING_MAINTENANCE`. For one station with no end time, use Disable Station.
 
 ### Drivers, tokens and fleets (`references/drivers.md`, `references/tokens.md`, `references/fleets.md`, `references/local-auth-list.md`)
 
@@ -204,13 +205,13 @@ Confirm: push history per station (Accepted, Rejected, Failed), the Load Mgmt po
 
 ### More pages
 
-- Free vend (`references/free-vend.md`): Site > Free Vend toggle. Any token is accepted, payment is skipped, and config templates go to online stations. Turning it off does not revert station configuration: edit or remove the generated templates.
-- Sessions and refunds (`references/sessions.md`): filters by status (also **Manual billing**), station, site, driver and date. Refund from the Payment tab on captured payments (`POST /v1/sessions/<id>/refund`). A `faulted` session with stopped reason `EndRequestFailed` (Session End Failed alert) is not billed: Details > Billing > **Bill session** (`POST /v1/sessions/<id>/rebill`). Uncharged ones become **Manual billing** (collect outside the platform). Payment provider detail: evtivity-integrations.
+- Free vend (`references/free-vend.md`): any token is accepted and payment is skipped. Turning it off does not revert station configuration: edit or remove its templates.
+- Sessions and refunds (`references/sessions.md`): Refund from the Payment tab on captured payments (`POST /v1/sessions/<id>/refund`). A `faulted` session with stopped reason `EndRequestFailed` (Session End Failed alert) is not billed: Details > Billing > **Bill session** (`POST /v1/sessions/<id>/rebill`). Uncharged ones become **Manual billing** (collect outside the platform). Payment provider detail: evtivity-integrations.
 - Access logs (`references/access-logs.md`): tabs CSMS, Portal, API, Workers. Each entity has a History tab, the global audit page is `/audit` (`GET /v1/audit`, `audit:read`). Retention: `logs.*.retentionDays`.
-- Station images (`references/station-images.md`): upload (10 MB max, needs S3), main image, tags, captions, driver-visible flag.
 - Support cases (`references/support-cases.md`): public messages reach the driver, internal notes do not. Refund a linked session from the case (`POST /v1/support-cases/<id>/refund`). AI Draft never sends.
 - AI: off until turned on in Settings > AI. A change runs only after a signed-in user confirms it (API keys get `AI_CONFIRMATION_REQUIRES_SESSION`).
 - Conformance testing (`references/conformance-testing.md`): Settings > Conformance > **Run Tests**. Command line runner and results: evtivity-conformance.
+- SIMs (`references/sims.md`): shown while a SIM provider or station signal reads are on. Nothing is fetched before Confirm SIM. Deactivate SIM never changes the provider. Site-restricted users see only SIMs confirmed at their stations.
 
 ## References
 

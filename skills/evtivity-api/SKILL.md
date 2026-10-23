@@ -85,6 +85,7 @@ Permissions are `resource:action`, with `read` and `write`. `write` includes `re
 | Route group | Permission |
 |---|---|
 | Stations, EVSEs, connectors, station images, local auth list, event alerts, display messages, OCPP commands | `stations:read` / `stations:write` |
+| SIM inventory (import, attach and confirm also need access to every site) | `sims:read` / `sims:write` |
 | Sites | `sites:read` / `sites:write` |
 | Sessions, transactions, meter values | `sessions:read` / `sessions:write` |
 | Drivers and driver tokens (RFID) | `drivers:read` / `drivers:write` |

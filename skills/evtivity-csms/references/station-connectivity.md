@@ -10,7 +10,7 @@ The **Connectivity** tab on the Station Detail page shows how a cellular station
 
 ![Station Connectivity tab](https://www.evtivity.com/screenshots/csms/station-connectivity.png)
 
-The tab and the ICCID field on the **Details** tab show only while a SIM provider or **Read Signal from Stations** is on. Both are off by default. See [SIM Providers](https://www.evtivity.com/docs/integrations/sim-providers) for the settings.
+The tab and the ICCID field on the **Details** tab show only while a SIM provider or **Read Signal from Stations** is on, as does the [SIMs](https://www.evtivity.com/docs/csms/sims) page. Both are off by default. See [SIM Providers](https://www.evtivity.com/docs/integrations/sim-providers) for the settings.
 
 Opening the tab fetches nothing: it shows what was stored by the last **Refresh**.
 
@@ -20,33 +20,46 @@ Opening the tab fetches nothing: it shows what was stored by the last **Refresh*
 |---|---|
 | Open the tab, **Refresh**, **Look Up Again** | `stations:read` and access to the station's site |
 | **Confirm SIM** | `stations:write` and access to every site |
-| **Reset Network**, **Clear Match**, **Read Device Model**, editing the ICCID | `stations:write` and access to the station's site |
+| **Reset Network**, **Detach SIM**, **Read Device Model**, editing the ICCID | `stations:write` and access to the station's site |
+| **View SIM** | `sims:read`, and a confirmed attachment or access to every site |
 
-## SIM matching
+## SIM attachment
 
-The CSMS finds a station's SIM from its ICCID. The station reports it when it boots, or you enter it on the **Details** tab (19 or 20 digits, a 19-digit ICCID may end in F, with an optional IMSI of up to 15 digits). A station that reports another ICCID when it boots replaces the entered one.
+The CSMS keeps one record per SIM card on the [SIMs](https://www.evtivity.com/docs/csms/sims) page. The tab shows the SIM attached to the station. A SIM is attached to one station at a time, and a station has one SIM at a time.
 
-On the first **Refresh**, the CSMS asks each enabled provider for the ICCID and stores the first match. When no provider knows the ICCID, the tab says so and the CSMS does not ask again for an hour. **Look Up Again** asks at once.
+The CSMS finds the SIM from the station's ICCID. The station reports it when it boots, or you enter it on the **Details** tab (19 or 20 digits, a 19-digit ICCID may end in F, with an optional IMSI of up to 15 digits).
 
-Changing the ICCID, on the **Details** tab or by the station at boot, removes the match. **Clear Match** removes it by hand. The next **Refresh** looks the SIM up again. The station **History** tab records each match, confirmation and removal with the provider name, never the ICCID.
+- **An ICCID you enter.** Saving it creates the SIM when it is new and attaches it to the station. It replaces the station's attachment of another SIM. When the SIM is attached to another station, it is not attached here and the **Details** tab says why. A user with access to every site moves the SIM here only when its other attachment is unconfirmed and was reported by that station. An inactive SIM is not attached either.
+- **An ICCID the station reports.** When a station boots with another ICCID, its attachment ends. The next **Refresh** creates the SIM when it is new and attaches it unconfirmed, unless the SIM is attached to another station. A reported ICCID never moves a SIM from another station.
+- **An ICCID entered while the SIM features were off** is stored on the station only. The first **Refresh** after a SIM provider or **Read Signal from Stations** is turned on attaches it as entered by that user.
+
+On the first **Refresh**, the CSMS asks each enabled provider for the ICCID and stores the first match on the SIM. When no provider knows the ICCID, the tab says so and the CSMS does not ask again for an hour. **Look Up Again** asks at once.
+
+**View SIM** opens the SIM's page. **Detach SIM** ends the station's attachment after a confirmation. The SIM, its attachment history and its stored sessions and alerts stay. While the station keeps the same ICCID, the next **Refresh** attaches the SIM again, unconfirmed, so it needs **Confirm SIM** again before anything is fetched or reset. To take a SIM out of a station for good, remove its ICCID on the **Details** tab or deactivate the SIM on its page.
+
+The station **History** tab records each attachment, confirmation and detach with the provider name, never the ICCID.
 
 ### Confirm SIM
 
-Nothing is fetched for a match until it is confirmed: no SIM status, sessions or alerts, and no network reset. A match is confirmed when:
+Nothing is fetched for an attachment until it is confirmed: no SIM status, sessions or alerts, and no network reset. An attachment is confirmed when:
 
-- a user with access to every site entered the ICCID on the **Details** tab, or
+- a user with access to every site entered the ICCID on the **Details** tab, attached the SIM on its page, or imported it with the station, or
 - a user with `stations:write` and access to every site clicks **Confirm SIM**.
 
-A match made from the ICCID the station reported, or from an ICCID a user with access to some sites only entered, stays unconfirmed until **Confirm SIM**. So a station that reports a SIM it does not hold, or a user limited to some sites, cannot make a SIM a reset target.
+An attachment made from the ICCID the station reported, or from an ICCID a user with access to some sites only entered, stays unconfirmed until **Confirm SIM**. So a station that reports a SIM it does not hold, or a user limited to some sites, cannot make a SIM a reset target or read its data.
 
 ![Confirm SIM dialog](https://www.evtivity.com/screenshots/csms/station-sim-confirm.png)
 
-The dialog shows the ICCID, the provider and where the ICCID came from: reported by the station, or entered by a named user. Confirm SIM is refused when:
+The dialog shows the ICCID, the provider and where the ICCID came from: reported by the station, entered on the station by a named user, attached on the SIM page by a named user, or imported from a CSV file by a named user. Confirm SIM is refused when:
 
-- another station already holds a confirmed match for the same SIM (`409 SIM_CONFIRMED_ELSEWHERE`). A SIM serves one station only.
-- the match changed after the dialog opened, for example the station reported another ICCID (`409 SIM_MATCH_CHANGED`). Nothing is confirmed and the tab reloads, so you can check the new match first.
+- the attachment changed after the dialog opened, for example the station reported another ICCID (`409 SIM_ATTACHMENT_CHANGED`). Nothing is confirmed and the tab reloads, so you can check the new attachment first.
+- the SIM is inactive (`409 SIM_INACTIVE`). Reactivate it on its page first.
 
-A lookup that finds a SIM another station holds as confirmed shows that the SIM is matched to another station, and this station shows no SIM data.
+When the station's SIM is attached to another station or is inactive, the tab says so and shows no SIM data.
+
+### Data from earlier attachments
+
+The tab shows the SIM's status, sessions, alerts and fetched days only from the last time an attachment of the SIM ended: detached, replaced, moved, deactivated, or ended because the station reported another ICCID. So a SIM that comes from another station shows none of its time there. A SIM never attached elsewhere shows everything stored for it, also the days the first **Refresh** fetched before **Confirm SIM**. The SIM page shows the full history to users with access to every site.
 
 ## Refresh
 
@@ -131,11 +144,12 @@ Each **Disconnected** row shows a likely cause, worked out from stored data when
 
 **Reset Network** asks the provider to end the station's data session, and the station reconnects to the cellular network. The station can be offline until it reconnects. Click **Refresh** after a few minutes to see the new session.
 
-- It needs a confirmed match. Before **Confirm SIM** the button is disabled (`409 SIM_MATCH_NOT_CONFIRMED` through the API).
+- It needs a confirmed attachment. Before **Confirm SIM** the button is disabled (`409 SIM_ATTACHMENT_NOT_CONFIRMED` through the API).
 - It shows only when the provider supports a network reset.
-- One reset per station a minute. A second one answers `429 SIM_PROVIDER_RATE_LIMITED` with the time to wait.
+- One reset per SIM a minute, counted together with the SIM page. A second one answers `429 SIM_PROVIDER_RATE_LIMITED` with the time to wait.
+- An inactive SIM cannot be reset (`409 SIM_INACTIVE`).
 - The station **History** tab records each reset (command `SimNetworkReset`) with its outcome.
 
 ## Error codes
 
-The SIM routes answer with the `SIM_*` codes listed under [Sites & Stations](https://www.evtivity.com/api-reference/error-codes#sites-stations) in the error code reference.
+The SIM routes answer with the `SIM_*` and `STATION_HAS_SIM` codes listed under [Sites & Stations](https://www.evtivity.com/api-reference/error-codes#sites-stations) in the error code reference.

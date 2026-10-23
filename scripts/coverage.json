@@ -43,6 +43,7 @@
     "csms/roaming",
     "csms/sessions",
     "csms/settings",
+    "csms/sims",
     "csms/sites",
     "csms/smart-charging",
     "csms/station-configurations-ocpp16",

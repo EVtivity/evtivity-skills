@@ -14,7 +14,7 @@ The Users page manages operator accounts that access the CSMS dashboard. Each us
 
 | Role | Default Access |
 |------|----------------|
-| Admin | All 66 permissions. Full access to every page and setting. |
+| Admin | All 76 permissions. Full access to every page and setting. |
 | Operator | Operational subset. No settings access, no user write permissions. |
 | Viewer | Read-only access. |
 
@@ -43,16 +43,17 @@ Roles provide default permission sets. After creating a user, you can customize 
 
 ## Permissions
 
-EVtivity uses 66 granular permissions in `resource:action` format. Actions are either `read` or `write`. Write permission implies read for the same resource.
+EVtivity uses 76 granular permissions in `resource:action` format. Actions are either `read` or `write`. Write permission implies read for the same resource.
 
-### Page Permissions (44)
+### Page Permissions (54)
 
-22 resources with read and write:
+27 resources with read and write:
 
 | Resource | Controls Access To |
 |----------|--------------------|
 | dashboard | Dashboard page and stats |
 | stations | Station list, detail, and commands |
+| sims | SIM list and SIM pages |
 | sites | Site list and detail |
 | sessions | Session list and detail |
 | drivers | Driver list, detail, and driver tokens |
@@ -73,6 +74,10 @@ EVtivity uses 66 granular permissions in `resource:action` format. Actions are e
 | users | User management |
 | audit | Audit log |
 | maintenance | Maintenance windows |
+| aiAssistant | The AI assistant: read your own conversations (read), chat (write) |
+| aiInsights | AI insights and their suggested actions |
+| aiUsage | AI usage and cost |
+| aiMcp | The MCP server for AI clients |
 
 ### Settings Permissions (22)
 
@@ -146,6 +151,7 @@ A site-restricted user sees only data from its assigned sites:
 - Station images, local auth lists, display messages, and OCPP commands
 - Roaming locations, sessions, and CDRs at those sites
 - Simulator stations at those sites
+- SIMs with a confirmed attachment to a station of those sites, with their data from those periods only
 
 Stations without a site are visible only to users with all-site access. A site-restricted user cannot create a station without a site or remove a station from its site. A simulator station it creates must name one of its sites.
 
@@ -170,6 +176,7 @@ These features span every site and need all-site access:
 - Roaming partners and tariffs
 - Access and worker logs
 - Creating sites
+- Importing, attaching, confirming, deactivating, reactivating, and deleting SIMs, and SIMs without a confirmed attachment to a station of the user's sites
 
 A site-restricted user keeps the **Payment** (site configurations only), **API Keys**, **Firmware Campaign**, **Station Configurations**, **Smart Charging**, and **Conformance** tabs. With the permission to read system settings, the **Payment** tab also shows three company-wide settings read-only: **Low Credit Notice Threshold**, **Payment Terms (days)**, and **Monthly Fleet Invoice Day**. A notice says that only users with access to all sites can change them.
 

@@ -289,7 +289,7 @@ Manage the station's authentication credentials. Change the security profile, se
 
 ### Connectivity
 
-The SIM status, cellular data sessions, SIM alerts and modem signal of a cellular station, a timeline of its connects and disconnects with the likely cause of each disconnect, and **Reset Network**. The tab, and the ICCID and IMSI field on the **Details** tab, show only while a SIM provider or station signal reads are on (off by default). See [Station Connectivity](https://www.evtivity.com/docs/csms/station-connectivity).
+The SIM status, cellular data sessions, SIM alerts and modem signal of a cellular station, a timeline of its connects and disconnects with the likely cause of each disconnect, and **Reset Network**. The tab, and the ICCID and IMSI field on the **Details** tab, show only while a SIM provider or station signal reads are on (off by default). The tab shows the SIM attached to the station, with **View SIM** and **Detach SIM**. See [Station Connectivity](https://www.evtivity.com/docs/csms/station-connectivity) and [SIMs](https://www.evtivity.com/docs/csms/sims).
 
 ### Certificates
 

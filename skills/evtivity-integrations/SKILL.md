@@ -203,11 +203,11 @@ Rules that trip agents:
 
 ### 12. SIM providers (`references/sim-providers.md`)
 
-Shows a cellular station's SIM status, data sessions and SIM alerts on the station Connectivity tab. Off by default: while Hologram and **Read Signal from Stations** are both off, nothing changes.
+Shows a cellular station's SIM status, data sessions and SIM alerts on the station Connectivity tab and the SIMs page. Off by default: while Hologram and **Read Signal from Stations** are both off, nothing changes.
 
 1. Confirm with the user. The user creates a Hologram API key and enters the organization id and key in Settings > Integrations & Features > SIM Providers (needs access to every site). Never ask for the key in chat.
 2. **Test Connection** checks the saved account. Then set Session History (Refresh period, retention) and, optionally, Station Signal and the low signal alert.
-3. Only a person's click calls Hologram: Refresh on the Connectivity tab, Test Connection, Reset Network. A SIM matched from the ICCID the station reported fetches nothing until a user with access to every site confirms it (Confirm SIM).
+3. Only a person's click calls Hologram: Refresh on the Connectivity tab, Test Connection, Reset Network. A SIM attached from the ICCID the station reported fetches nothing until a user with access to every site confirms the attachment (Confirm SIM). SIM records, CSV import and attachments: evtivity-csms (SIMs page).
 
 Confirm: `GET /v1/settings/sim-providers` (filter the key out with jq), then Refresh on one station (the Station Connectivity page of evtivity-csms).
 
