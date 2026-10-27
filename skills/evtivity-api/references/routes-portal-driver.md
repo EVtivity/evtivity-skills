@@ -1,6 +1,6 @@
 # EVtivity API routes: Portal Driver
 
-Generated from EVtivity CSMS v0.1.48-beta.5 (https://github.com/EVtivity/evtivity-csms, commit ddae79cd1fc4) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.6 (https://github.com/EVtivity/evtivity-csms, commit 4fac936bfe11) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -28,6 +28,11 @@ A `write` permission includes `read` for the same resource.
 | DELETE | `/v1/portal/driver/webauthn/{id}` | driver | Remove a passkey or security key |
 | POST | `/v1/portal/driver/mfa/recovery-codes/webauthn-options` | driver | Start the passkey proof for new recovery codes |
 | POST | `/v1/portal/driver/mfa/factor-proof` | driver | Prepare the proof for adding an MFA factor |
+| GET | `/v1/portal/driver/avatar` | driver | Get the driver avatar |
+| PUT | `/v1/portal/driver/avatar` | driver | Set a generated avatar |
+| DELETE | `/v1/portal/driver/avatar` | driver | Remove the driver avatar |
+| POST | `/v1/portal/driver/avatar/upload-url` | driver | Get a presigned upload for an avatar image |
+| POST | `/v1/portal/driver/avatar/image` | driver | Confirm an uploaded avatar image |
 | GET | `/v1/portal/favorites` | driver | List favorite stations |
 | POST | `/v1/portal/favorites` | driver | Add a station to favorites |
 | GET | `/v1/portal/favorites/check/{stationId}` | driver | Check if a station is favorited |

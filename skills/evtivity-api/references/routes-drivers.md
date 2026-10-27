@@ -1,6 +1,6 @@
 # EVtivity API routes: Drivers
 
-Generated from EVtivity CSMS v0.1.48-beta.5 (https://github.com/EVtivity/evtivity-csms, commit ddae79cd1fc4) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.6 (https://github.com/EVtivity/evtivity-csms, commit 4fac936bfe11) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -34,6 +34,10 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/drivers/{id}/pricing-groups` | drivers:read | Get the pricing group for a driver |
 | POST | `/v1/drivers/{id}/pricing-groups` | drivers:write | Assign a pricing group to a driver |
 | DELETE | `/v1/drivers/{id}/pricing-groups/{pricingGroupId}` | drivers:write | Remove a pricing group from a driver |
+| PUT | `/v1/drivers/{id}/avatar` | drivers:write | Set a generated driver avatar |
+| DELETE | `/v1/drivers/{id}/avatar` | drivers:write | Remove a driver avatar |
+| POST | `/v1/drivers/{id}/avatar/upload-url` | drivers:write | Get a presigned upload for a driver avatar image |
+| POST | `/v1/drivers/{id}/avatar/image` | drivers:write | Confirm an uploaded driver avatar image |
 | GET | `/v1/drivers/{id}/pnc-contracts` | drivers:read | List the Plug and Charge contracts of a driver |
 | POST | `/v1/drivers/{id}/pnc-contracts` | drivers:write | Create a Plug and Charge contract for a driver |
 | POST | `/v1/drivers/{id}/pnc-contracts/{contractId}/revoke` | drivers:write | Revoke a Plug and Charge contract |

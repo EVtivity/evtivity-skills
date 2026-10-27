@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.48-beta.5 (https://github.com/EVtivity/evtivity-csms, commit ddae79cd1fc4) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.48-beta.6 (https://github.com/EVtivity/evtivity-csms, commit 4fac936bfe11) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -26,6 +26,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `AI_CONVERSATION_NOT_FOUND` | 404 | Conversation not found |
 | `AI_ERROR` |  | Failed to process AI request |
 | `AI_INSIGHTS_DISABLED` | 400 | Automatic insights are turned off |
+| `AI_INSIGHTS_NOT_IN_SCOPE` | 409 | AI insights are not on for this site or station. Add it to the AI insights scope in Settings first |
 | `AI_INSIGHT_COOLDOWN` | 429 | This insight was regenerated recently. Try again later |
 | `AI_INSIGHT_NOT_FOUND` | 404 | Insight not found |
 | `AI_MCP_RATE_LIMITED` |  | Too many MCP requests. Try again later |

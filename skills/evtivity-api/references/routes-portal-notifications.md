@@ -1,6 +1,6 @@
 # EVtivity API routes: Portal Notifications
 
-Generated from EVtivity CSMS v0.1.48-beta.5 (https://github.com/EVtivity/evtivity-csms, commit ddae79cd1fc4) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.6 (https://github.com/EVtivity/evtivity-csms, commit 4fac936bfe11) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no

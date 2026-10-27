@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.48-beta.5 (https://github.com/EVtivity/evtivity-csms, commit ddae79cd1fc4) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.6 (https://github.com/EVtivity/evtivity-csms, commit 4fac936bfe11) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
@@ -17,8 +17,8 @@ A `write` permission includes `read` for the same resource.
 | Stations | 82 | `references/routes-stations.md` |
 | SIMs | 18 | `references/routes-sims.md` |
 | Sessions | 9 | `references/routes-sessions.md` |
-| Users | 53 | `references/routes-users.md` |
-| Drivers | 28 | `references/routes-drivers.md` |
+| Users | 64 | `references/routes-users.md` |
+| Drivers | 32 | `references/routes-drivers.md` |
 | Pricing | 19 | `references/routes-pricing.md` |
 | OCPP 2.1 Commands | 57 | `references/routes-ocpp-2-1-commands.md` |
 | OCPP 1.6 Commands | 27 | `references/routes-ocpp-1-6-commands.md` |
@@ -26,8 +26,8 @@ A `write` permission includes `read` for the same resource.
 | Transactions | 3 | `references/routes-transactions.md` |
 | Fleets | 34 | `references/routes-fleets.md` |
 | Tokens | 12 | `references/routes-tokens.md` |
-| Dashboard | 17 | `references/routes-dashboard.md` |
-| Settings | 39 | `references/routes-settings.md` |
+| Dashboard | 21 | `references/routes-dashboard.md` |
+| Settings | 42 | `references/routes-settings.md` |
 | Documentation | 1 | `references/routes-documentation.md` |
 | Payments | 38 | `references/routes-payments.md` |
 | Events | 1 | `references/routes-events.md` |
@@ -36,7 +36,7 @@ A `write` permission includes `read` for the same resource.
 | Reservations | 9 | `references/routes-reservations.md` |
 | Maintenance | 11 | `references/routes-maintenance.md` |
 | Portal Auth | 18 | `references/routes-portal-auth.md` |
-| Portal Driver | 26 | `references/routes-portal-driver.md` |
+| Portal Driver | 31 | `references/routes-portal-driver.md` |
 | Portal Payments | 9 | `references/routes-portal-payments.md` |
 | Portal Sessions | 8 | `references/routes-portal-sessions.md` |
 | Portal Chargers | 19 | `references/routes-portal-chargers.md` |

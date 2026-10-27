@@ -1,6 +1,6 @@
 # EVtivity API routes: Users
 
-Generated from EVtivity CSMS v0.1.48-beta.5 (https://github.com/EVtivity/evtivity-csms, commit ddae79cd1fc4) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.6 (https://github.com/EVtivity/evtivity-csms, commit 4fac936bfe11) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -50,6 +50,14 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/users/me/permissions` |  | Get current user permissions |
 | GET | `/v1/users/{id}/permissions` | users:read | Get a user permissions by user ID |
 | PUT | `/v1/users/{id}/permissions` | users:write | Replace a user permissions |
+| PUT | `/v1/users/me/avatar` |  | Set the own generated avatar |
+| DELETE | `/v1/users/me/avatar` |  | Remove the own avatar |
+| POST | `/v1/users/me/avatar/upload-url` |  | Get a presigned upload for the own avatar image |
+| POST | `/v1/users/me/avatar/image` |  | Confirm the own uploaded avatar image |
+| PUT | `/v1/users/{id}/avatar` | users:write | Set the generated avatar of another user |
+| DELETE | `/v1/users/{id}/avatar` | users:write | Remove the avatar of another user |
+| POST | `/v1/users/{id}/avatar/upload-url` | users:write | Get a presigned upload for the avatar image of another user |
+| POST | `/v1/users/{id}/avatar/image` | users:write | Confirm the uploaded avatar image of another user |
 | POST | `/v1/users/me/webauthn/registration-options` |  | Start registering a passkey or security key |
 | POST | `/v1/users/me/webauthn/registration` |  | Register a passkey or security key |
 | GET | `/v1/users/me/webauthn` |  | List my passkeys and security keys |
@@ -61,5 +69,8 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/auth/webauthn/verify` | public | Complete the MFA step with a passkey or security key |
 | POST | `/v1/auth/passkey/options` | public | Start a passkey sign-in |
 | POST | `/v1/auth/passkey/verify` | public | Sign in with a passkey |
+| GET | `/v1/users/me/dashboard-layout` |  | Get the dashboard layout of the current user |
+| PUT | `/v1/users/me/dashboard-layout` |  | Save the dashboard layout of the current user |
+| DELETE | `/v1/users/me/dashboard-layout` |  | Reset the dashboard layout of the current user |
 | GET | `/v1/users/me/ai-defaults` |  | Get the built-in AI prompts and models for personal AI configuration |
 | GET | `/v1/users/{id}/neighbors` | users:read | Get previous and next entity IDs in default list order |

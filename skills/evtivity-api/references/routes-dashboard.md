@@ -1,6 +1,6 @@
 # EVtivity API routes: Dashboard
 
-Generated from EVtivity CSMS v0.1.48-beta.5 (https://github.com/EVtivity/evtivity-csms, commit ddae79cd1fc4) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.48-beta.6 (https://github.com/EVtivity/evtivity-csms, commit 4fac936bfe11) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -22,6 +22,10 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/dashboard/uptime` | dashboard:read | Get station uptime percentage and port counts |
 | GET | `/v1/dashboard/ocpp-health` | dashboard:read | Get OCPP WebSocket server health metrics |
 | GET | `/v1/dashboard/site-locations` | dashboard:read | Site locations for map |
+| GET | `/v1/dashboard/locations-by-city` | dashboard:read | Sites and stations per city |
+| GET | `/v1/dashboard/evses-by-connector-type` | dashboard:read | EVSEs and connectors per connector type |
+| GET | `/v1/dashboard/plug-and-charge` | dashboard:read | Plug and Charge sessions per day |
+| GET | `/v1/dashboard/free-vend` | dashboard:read | Free vend sessions per day |
 | GET | `/v1/dashboard/snapshots/trend` | dashboard:read | Get 14-day trend of dashboard snapshots |
 | GET | `/v1/dashboard/snapshots/day-over-day` | dashboard:read | Get the snapshots the day-over-day arrows compare |
 | GET | `/v1/dashboard/snapshots/available-dates` | dashboard:read | Get dates that have snapshot data |
