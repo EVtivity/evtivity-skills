@@ -50,6 +50,8 @@ The CSMS API exposes endpoints for managing simulated stations and triggering ac
 | `REDIS_URL` | `redis://localhost:6379` | Redis for pub/sub command channel |
 | `CSS_HEALTH_PORT` | `8082` | Health endpoint port for probes |
 | `CSS_STATION_PASSWORD` | `password` | Not used. Each station uses the password stored on its simulator record. |
+| `CSS_FILE_TRANSFER_ALLOWED_HOSTS` | (empty) | Comma-separated hosts (`host` or `host:port`) on a loopback or private address that stations may reach for log uploads and firmware downloads. With `NODE_ENV` `development` or `test`, every private address is allowed. Docker Compose sets `ftp,sftp,file-receiver`. |
+| `CSS_SFTP_HOST_KEY_SHA256` | - | SFTP server host key (OpenSSH `SHA256:` fingerprint) that stations require while they verify server certificates. Without it, SFTP transfers fail in that case. |
 
 ## Operating Modes
 

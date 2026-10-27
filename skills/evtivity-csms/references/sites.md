@@ -49,7 +49,7 @@ Choose a plan and click **Save**. The confirmation names how many stations chang
 
 **Delete** asks for confirmation. A site with stations cannot be deleted. This includes stations deleted from the site, which keep their site for their history: move them to another site first. A site whose payment configuration has payments cannot be deleted either.
 
-The **AI Insights** row shows whether [automatic AI insights](https://www.evtivity.com/docs/csms/ai-insights) watch the site: **In Scope**, or **Suppressed** with **Until** and the end date or **Until resumed**, who suppressed them and why. Users with the `sites:write` permission click **Suppress**, enter a reason and an optional end date, and confirm. While the site is suppressed:
+The **AI Insights** row shows whether [automatic AI insights](https://www.evtivity.com/docs/csms/ai-insights) watch the site: **In Scope**, **Off** with the reason, or **Suppressed** with **Until** and the end date or **Until resumed**, who suppressed them and why. **Off** means the site is outside the AI insights scope, or system-initiated AI is off: the reason names which, with a link to the **AI Insights Scope** card in [Settings](https://www.evtivity.com/docs/csms/settings#automatic-insights). **Suppress** shows only for a site in the scope. Users with the `sites:write` permission click **Suppress**, enter a reason and an optional end date, and confirm. While the site is suppressed:
 
 - Every station of the site counts as suppressed, also stations added to the site later.
 - The site gets no site-level insight: no site incident, site summary, or tariff anomaly.
@@ -147,12 +147,11 @@ Available when reservations are enabled in settings. View and manage reservation
 The **AI Usage** tab holds the site's **AI Usage** card:
 
 - **Used** and **Budget**: the site's AI tokens this month against its monthly budget, with the percentage used. When the company currency is USD, the card also shows the cost.
-- **Automatic Insights**: turn it off to stop [automatic insights](https://www.evtivity.com/docs/csms/ai-insights) for this site.
 - **Monthly token budget**: leave it empty to use the default site budget from **Settings > AI > Usage and Limits**. 0 means no limit.
 
 ![Site AI tab](https://www.evtivity.com/screenshots/csms/site-ai-tab.png)
 
-The tab shows to users with the `aiUsage:read` permission, and to users with access to every site and the `sites:write` permission. The token figures need `aiUsage:read`. Only users with access to every site and `sites:write` can change the switch and the budget. Users without access to every site see **Only users with access to every site can change this.** See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage#site-budget).
+The tab shows to users with the `aiUsage:read` permission, and to users with access to every site and the `sites:write` permission. The token figures need `aiUsage:read`. Only users with access to every site and `sites:write` can change the budget. Whether [automatic insights](https://www.evtivity.com/docs/csms/ai-insights) analyze the site is set in the **AI Insights Scope** card of **Settings > AI > Automatic Insights** (see [Settings](https://www.evtivity.com/docs/csms/settings#automatic-insights)). Users without access to every site see **Only users with access to every site can change this.** See [AI Usage and Budgets](https://www.evtivity.com/docs/csms/ai-usage#site-budget).
 
 ### AI Insights
 

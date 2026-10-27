@@ -16,6 +16,7 @@ The EVtivity Portal requires a driver account for authenticated charging, sessio
    - **Email** (used for login and notifications)
    - **Password**. By default it needs at least 12 characters, an uppercase letter, a lowercase letter, and a number. Your charging provider can change these rules. The form lists the rules in effect under the field and checks them as you type.
    - **Phone (optional)** (used for SMS notifications and MFA)
+   - **Avatar (optional)**: tap **Edit Avatar** to create a generated avatar. Uploading a photo is possible after you sign in, from [Account > Personal Info](https://www.evtivity.com/docs/portal/account#avatar).
 3. Tap **Create Account**.
 
 ![Registration form](https://www.evtivity.com/screenshots/portal/register.png)

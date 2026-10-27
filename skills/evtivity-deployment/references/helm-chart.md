@@ -426,7 +426,7 @@ Key sections in `values.yaml`:
 | `ocpi.*` | OCPI service config, country/party settings |
 | `csms.*` | CSMS frontend resources |
 | `portal.*` | Portal frontend resources |
-| `css.*` | Simulator config, TLS client certs |
+| `css.*` | Simulator config, TLS client certs, file transfer hosts (`css.env.fileTransferAllowedHosts`) and SFTP host key (`css.env.sftpHostKeySha256`) |
 | `worker.*` | Background job processor resources, autoscaling |
 | `credentialRotation.*` | Scheduled PostgreSQL and Redis password rotation |
 | `gatewayAPI.*` | Gateway creation, routes, listeners |

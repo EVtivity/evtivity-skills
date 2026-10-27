@@ -14,9 +14,11 @@ The Account tab is the hub for everything about you: your profile, security, pay
 
 Your avatar shows at the top of the Account hub. Without one, your initials show. Tap it to open the **Avatar** screen. You have one avatar at a time, and the driver portal and the operator see the same one.
 
-- **Create** - pick the hair or headwear, glasses, eyebrows, eyes, mouth, facial hair, clothes, colors, background and direction, or tap **Random**. Tap **Save** to keep it.
+- **Create** - pick the hair or headwear, glasses, eyebrows, eyes, mouth, facial hair, clothes, colors, background and direction, or tap **Random**. Hair or headwear, glasses and facial hair also offer **None**. Tap **Save** to keep it.
 - **Upload** - tap **Choose Image** and pick a photo from your library. Crop it to a square in the picker. The image must be a JPEG, PNG or WebP smaller than 1 MB. It is saved as soon as it uploads, scaled to at most 512 x 512 pixels. **Upload** shows only when the operator has set up file storage.
 - **Remove Avatar** - deletes an uploaded image and shows your initials again.
+
+An operator with the permission can also set or remove your avatar in the CSMS.
 
 ## Personal info
 

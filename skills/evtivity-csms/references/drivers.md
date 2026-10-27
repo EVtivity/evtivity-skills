@@ -16,7 +16,8 @@ Drivers are EV owners who charge at your stations. Each driver has an account wi
 2. Click **Create Driver**.
 3. Enter the driver's name, email, and phone number.
 4. Optionally set the driver's language. The portal, notifications, and invoice PDFs use it.
-5. Click **Create**.
+5. Optionally click **Edit Avatar** to give the driver an avatar. It is saved right after the driver is created.
+6. Click **Create**.
 
 ![Create driver](https://www.evtivity.com/screenshots/csms/drivers-create.png)
 
@@ -30,9 +31,11 @@ Clear the email or phone field to remove it. A driver with portal access keeps a
 
 ### Avatar
 
-Drivers set their own avatar in the [portal](https://www.evtivity.com/docs/portal/account#avatar) or the [mobile app](https://www.evtivity.com/docs/mobile-app/guide/account-and-settings#avatar): a generated avatar or an uploaded photo. The CSMS shows it on the Drivers list, the fleet **Drivers** tab and the driver detail header. A driver without an avatar shows initials.
+Drivers set their own avatar in the [portal](https://www.evtivity.com/docs/portal/account#avatar) or the [mobile app](https://www.evtivity.com/docs/mobile-app/guide/account-and-settings#avatar): a generated avatar or an uploaded photo. The CSMS shows it on the Drivers list, the fleet **Drivers** tab and the driver page. A driver without an avatar shows initials.
 
-Operators cannot set or change a driver's avatar. A user with `drivers:write` can remove it: click **Remove Avatar** in the driver detail header and confirm. An uploaded photo is deleted. The driver gets no notice, sees initials, and can set a new avatar. Erasing a driver also deletes the avatar.
+A user with the `drivers:write` permission can also set or remove a driver's avatar, for example to remove an unsuitable photo: click **Edit** on the **Details** tab and click **Edit Avatar** in the form. The change is saved at once, apart from the form's **Save**, and recorded in the driver's **History**. The driver gets no notice and can set a new avatar. Without `drivers:write`, the avatar is read-only. Erasing a driver deletes the avatar.
+
+The editor has **Create** (a generated avatar with **Random**, where **Hair or Headwear**, **Glasses** and **Facial Hair** offer **None**) and **Upload** (a JPEG, PNG or WebP image smaller than 1 MB, cropped to a square and scaled to at most 512 x 512 pixels). **Remove Avatar** asks for a confirmation. Uploads need the [S3 bucket](https://www.evtivity.com/docs/csms/settings#s3-bucket). The API is `PUT` and `DELETE /v1/drivers/:id/avatar`, with `POST /v1/drivers/:id/avatar/upload-url` and `POST /v1/drivers/:id/avatar/image` for an upload.
 
 ### Tokens
 

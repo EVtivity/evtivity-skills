@@ -38,16 +38,16 @@ Live updates refresh the numbers as stations and sessions change. Today's number
 
 ### Customize the Live Dashboard
 
-Each user can arrange the Live dashboard. The layout is saved on the server for your account, so it follows you to every browser.
+Each user can arrange the charts of the Live dashboard. The stat cards stay in their fixed order and cannot be moved or hidden. The layout is saved on the server for your account, so it follows you to every browser.
 
-1. In Live mode, click **Customize**. Every card and chart shows a drag handle and a hide button.
-2. Drag a card or chart by its handle to move it. With the keyboard, press Space or Enter on the handle, move it with the arrow keys, and press Space or Enter to drop it (Escape cancels).
-3. Click the hide button of a card or chart to hide it. Hidden cards and charts are listed under **Hidden** in the bar above the dashboard. Click one there to show it again.
-4. Click **Done** to leave customize mode.
+1. In Live mode, click the **Customize** button (the sliders icon next to the mode toggle). Every chart shows a drag handle and a hide button.
+2. Drag a chart by its handle to move it. With the keyboard, press Space or Enter on the handle, move it with the arrow keys, and press Space or Enter to drop it (Escape cancels).
+3. Click the hide button of a chart to hide it. Hidden charts are listed under **Hidden** in the bar above the dashboard. Click one there to show it again.
+4. Click the button again (now a check icon, **Done**) to leave customize mode.
 
-Cards move among the cards and charts move among the charts. **Reset Layout** in the customize bar removes your saved layout after a confirmation, and the Live dashboard returns to the default order with the default cards and charts. When your layout cannot be saved, the dashboard shows an error and keeps the previous layout.
+**Reset Layout** in the customize bar removes your saved layout after a confirmation, and the Live dashboard returns to the default chart order with the default charts. When your layout cannot be saved, the dashboard shows an error and keeps the previous layout.
 
-The layout only orders and hides cards and charts. It never shows a card or chart your permissions do not allow, and such cards are not offered in the **Hidden** list. Historical and Trend modes keep the default order and show all their cards, whatever you hide in Live mode.
+The layout only orders and hides charts. It never shows a chart your permissions do not allow, and such charts are not offered in the **Hidden** list. Historical and Trend modes keep the default order and show all their charts, whatever you hide in Live mode.
 
 ![Dashboard in customize mode](https://www.evtivity.com/screenshots/csms/dashboard-customize.png)
 
@@ -71,7 +71,7 @@ The dashboard displays three rows of stat cards.
 
 **OCPP and Infrastructure**: Connected stations, uptime percentage over the last 30 days, average ping latency, ping success rate. The ping cards show only to users with access to all sites.
 
-**Financials**: **Total Revenue (incl. tax)** and **Today's Revenue (incl. tax)**, transaction count, **Revenue/Session**, **Total Revenue (excl. tax)**, **Total Tax Collected**, total electricity cost, and **Total Profit**, each with a today value. This row shows only to users with the payments permission. Electricity cost and profit are populated from the per-site electricity rate periods configured on each site's Electricity Rates tab. See [Sites](https://www.evtivity.com/docs/csms/sites) for how to configure rate periods.
+**Financials**: **Total Revenue (incl. tax)** and **Today's Revenue (incl. tax)**, transaction count, **Revenue/Session**, **Total Revenue (excl. tax)**, **Total Tax Collected**, total electricity cost, and **Total Profit**, each with a today value. This row shows only to users with the payments permission. On a phone, the financial cards scroll sideways, one group at a time. Electricity cost and profit are populated from the per-site electricity rate periods configured on each site's Electricity Rates tab. See [Sites](https://www.evtivity.com/docs/csms/sites) for how to configure rate periods.
 
 ### Card States
 

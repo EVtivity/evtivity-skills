@@ -12,12 +12,12 @@ The Account page is the fourth tab in the Portal bottom navigation. It lists a r
 
 ## Avatar
 
-Your avatar shows at the top of the Account page and in the portal header. Without an avatar, your initials show. Tap your avatar on the Account page to open the **Avatar** page. You have one avatar at a time: saving a generated avatar replaces an uploaded image, and the other way around. The operator sees your avatar in the CSMS.
+Your avatar shows at the top of the Account page and in the portal header. Without an avatar, your initials show. Tap your avatar on the Account page, or open **Personal Info**, and tap **Edit Avatar** next to your avatar to open the avatar editor. You have one avatar at a time: saving a generated avatar replaces an uploaded image, and the other way around. The operator sees your avatar in the CSMS.
 
 To create an avatar:
 
 1. Tap **Create**.
-2. Pick the hair or headwear, glasses, eyebrows, eyes, mouth, facial hair, clothes, colors, background and direction, or tap **Random** for a new random avatar.
+2. Pick the hair or headwear, glasses, eyebrows, eyes, mouth, facial hair, clothes, colors, background and direction, or tap **Random** for a new random avatar. **Hair or Headwear**, **Glasses** and **Facial Hair** start with a **None** option.
 3. Tap **Save**.
 
 To upload an image:
@@ -27,9 +27,9 @@ To upload an image:
 
 **Upload** shows only when the operator has set up file storage. Creating an avatar always works.
 
-To remove your avatar, tap **Remove Avatar** and confirm. An uploaded image is deleted, and your initials show instead. The operator can also remove your avatar.
+To remove your avatar, tap **Remove Avatar** and confirm. An uploaded image is deleted, and your initials show instead. An operator with the permission can also set or remove your avatar.
 
-![Avatar page](https://www.evtivity.com/screenshots/portal/account-avatar.png)
+![Avatar editor](https://www.evtivity.com/screenshots/portal/account-avatar.png)
 
 ## Personal Info
 

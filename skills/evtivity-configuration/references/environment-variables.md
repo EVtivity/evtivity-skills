@@ -152,6 +152,8 @@ Integrations (Stripe, S3, SMTP, Twilio, reCAPTCHA, Google Maps, Plug and Charge)
 | `CSS_ACTION_INTERVAL_MS` | `1000` | Milliseconds between simulated actions. Docker Compose sets `3000` when `.env` does not set it. |
 | `CSS_STATION_LIMIT` | `0` | Max stations chaos mode drives. 0 for all. Every enabled simulated station stays connected and writes heartbeats to `ocpp_message_logs`, also beyond this limit. |
 | `CSS_STATION_PASSWORD` | `password` | Not used. Each simulated station presents the password stored on its simulator record. |
+| `CSS_FILE_TRANSFER_ALLOWED_HOSTS` | (empty) | Comma-separated hosts (`host` or `host:port`) on a loopback or private address that simulated stations may reach for log uploads and firmware downloads. With `NODE_ENV` `development` or `test`, every private address is allowed. Cloud metadata and unroutable addresses are always refused. Docker Compose sets `ftp,sftp,file-receiver`. Helm: `css.env.fileTransferAllowedHosts`. |
+| `CSS_SFTP_HOST_KEY_SHA256` | - | SFTP server host key (OpenSSH `SHA256:` fingerprint) that simulated stations require while they verify server certificates. Without it, SFTP transfers fail in that case. Helm: `css.env.sftpHostKeySha256`. |
 | `OCPP_SERVER_URL` | `ws://localhost:7103` | OCPP server URL the simulator connects to |
 | `OCPP_TLS_SERVER_URL` | `wss://localhost:8443` | TLS OCPP server URL for TLS + Basic Auth and Mutual TLS stations |
 | `TLS_REJECT_UNAUTHORIZED` | `false` | Enable TLS certificate validation. Set to `true` for CA-signed certificates. |

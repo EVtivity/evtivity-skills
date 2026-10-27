@@ -82,12 +82,12 @@ Each row names the reference file for the page (page id `csms/<name>`).
 | NEVI uptime and excluded downtime | `references/nevi-compliance.md` | Reports | `reports:write` |
 | Driver support tickets | `references/support-cases.md` | Support Cases | `support:write` |
 | Operator users, roles, site access | `references/users.md` | Users | `users:write` |
-| Own password, MFA, passkeys | `references/profile.md` | Profile | any user |
+| Own avatar, password, MFA, passkeys | `references/profile.md` | Profile | any user |
 | System configuration, API keys | `references/settings.md` | Settings > tab | `settings.<tab>:write` |
 | Request and worker logs | `references/access-logs.md` | Access Logs | `logs:read` |
 | OCTT conformance runs | `references/conformance-testing.md` | Settings > Conformance | `conformance:write` |
 | Ask AI, Explain a record | `references/ai-assistant.md` | AI button, Explain | `aiAssistant:write` |
-| Automatic insights, confirming insight actions | `references/ai-insights.md` | AI Insights | `aiInsights:write` |
+| Automatic insights, scope, insight actions | `references/ai-insights.md` | AI Insights | `aiInsights:write` |
 | Background AI workers | `references/ai-workers.md` | Settings > AI | `settings.ai:write` |
 | AI tokens and budgets | `references/ai-usage.md` | Settings > AI > Usage | `aiUsage:read` |
 

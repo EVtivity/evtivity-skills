@@ -741,7 +741,7 @@ The consent notice drivers see before they choose is built in and cannot be edit
 
 ### Automatic Insights
 
-This tab holds four cards. The **Automatic Insights and Workers** card sets the model for automatic insights and background workers. They run without a user and use the company provider key, never a personal configuration.
+This tab holds five cards. The **Automatic Insights and Workers** card sets the model for automatic insights and background workers. They run without a user and use the company provider key, never a personal configuration.
 
 - **Turn on system-initiated AI** - off by default (`opsAi.enabled`). Automatic insights and background workers run only while it is on. The card warns: "When this is on, operational data is sent to the configured provider automatically, without a user action."
 - **Provider** (`opsAi.provider`, default Anthropic), **Model (optional)** (`opsAi.model`; blank uses the provider's lowest-cost model), **Effort** (`opsAi.effort`, default Low), and **System prompt (optional)** under **Advanced Options** (`opsAi.systemPrompt`; blank uses the built-in prompt).
@@ -767,7 +767,16 @@ How long insights are kept is set in [Data Retention](#data-retention).
 
 **Reservation insights** shows only while reservations are on. While they are off, the card shows **Reservation insights are off while reservations are turned off.** with a **Turn on reservations** link to [Reservation](#reservation).
 
-Each site also has its own **Automatic Insights** switch on its **AI Usage** tab (see [Sites](https://www.evtivity.com/docs/csms/sites#ai-usage)).
+The **AI Insights Scope** card chooses which sites and stations automatic insights and background workers analyze:
+
+- **All Sites** (default) - every site and station, including ones added later.
+- **Selected Sites** - only the sites you turn on in the site list. The list is searchable and scrolls inside the card. Expand a site to see its stations, and turn off single stations of a selected site. A station switch is disabled while its site is not selected. New sites start unselected, and new stations follow their site. Stations without a site are not analyzed in this mode.
+
+Click **Save** to apply the changes. Sites and stations you take out of the scope get no new insights or suggested actions, their open insights are dismissed, and their waiting actions expire. The detail page of each [station](https://www.evtivity.com/docs/csms/stations#details) and [site](https://www.evtivity.com/docs/csms/sites#details) shows whether insights run there and why. **Suppress** is offered only for sites and stations in the scope. Changing the scope needs access to every site and the `settings.system:write` permission. The API is `GET` and `PUT /v1/settings/ai/insights-scope`.
+
+![AI Insights Scope card](https://www.evtivity.com/screenshots/csms/settings-ai-insights-scope.png)
+
+While **Turn on system-initiated AI** is off, the insight, scope and background worker settings are disabled and the tab says so. Turn it on first to change them.
 
 The **Insight Quality** card shows how users rated insights in your sites over the last 30 days. It lists each insight type that has a vote, with the **Helpful** and **Wrong** vote counts and the **Helpful Rate**. With no votes, it shows "No votes in the last 30 days." Each insight type with a **Wrong** vote links to its insights marked wrong, and the **View Insights Marked Wrong** link opens all of them. The notes show in **Marked Wrong** on each insight page. The card needs the `aiInsights:read` permission. See [Feedback](https://www.evtivity.com/docs/csms/ai-insights#feedback).
 

@@ -12,7 +12,7 @@ The Profile page holds the settings of your own operator account. Open it from t
 
 The page has these tabs:
 
-- **Personal Info** - your name, mobile number, language and timezone.
+- **Personal Info** - your avatar, name, mobile number, language and timezone.
 - **Appearance** - light or dark theme.
 - **Change Password** - your password.
 - **Two-Factor Authentication** - your second factor, passkeys and security keys, and recovery codes.
@@ -20,6 +20,19 @@ The page has these tabs:
 - **Chatbot AI** and **Support AI** - your own AI provider settings, shown when the feature is on. See [AI Assistant](https://www.evtivity.com/docs/csms/ai-assistant#personal-configuration).
 
 ## Personal Info
+
+### Avatar
+
+Your avatar shows in the sidebar user area, on the Users list and on your user page. Without one, your initials show. On the **Personal Info** tab, click **Edit Avatar** to open the editor. The avatar is saved as soon as you save it in the editor, apart from the form below.
+
+The avatar editor has two modes:
+
+- **Create** - pick the hair or headwear, glasses, eyebrows, eyes, mouth, facial hair, clothes, colors, background and direction. **Hair or Headwear**, **Glasses** and **Facial Hair** start with a **None** option. Click **Random** for a new random avatar, then **Save**.
+- **Upload** - click **Choose Image** and pick a JPEG, PNG or WebP image smaller than 1 MB. It is cropped to a centered square, scaled to at most 512 x 512 pixels, saved without its metadata, and stored as soon as it uploads. Uploads need the [S3 bucket](https://www.evtivity.com/docs/csms/settings#s3-bucket).
+
+**Remove Avatar** asks for a confirmation, deletes an uploaded image and shows initials again. One avatar is kept at a time: saving a generated avatar replaces an uploaded image, and the other way around.
+
+### Name, Mobile, Language and Timezone
 
 1. Open the **Personal Info** tab and click **Edit**.
 2. Change **First Name**, **Last Name**, **Mobile**, **Language** or **Timezone**.

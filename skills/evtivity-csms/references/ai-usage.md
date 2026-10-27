@@ -77,7 +77,8 @@ The **AI Usage** tab of a site shows the **AI Usage** card: the site's tokens th
 Users with access to every site and the `sites:write` permission can also change:
 
 - **Monthly token budget**: leave it empty to use **Tokens per site per month**. 0 means no limit.
-- **Automatic Insights**: turn off to stop [automatic insights](https://www.evtivity.com/docs/csms/ai-insights) for this site.
+
+Which sites automatic insights analyze is set in the **AI Insights Scope** card of **Settings > AI > Automatic Insights** (see [Settings](https://www.evtivity.com/docs/csms/settings#automatic-insights)).
 
 ## Your Own Usage
 

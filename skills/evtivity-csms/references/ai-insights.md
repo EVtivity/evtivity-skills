@@ -95,7 +95,7 @@ Done, Rejected, Resolved, Dismissed, and Expired are final. A later event does n
 
 The dashboard card shows Open and Pending insights. Station, session, reservation, and site pages list every insight about the record on their **AI Insights** tab.
 
-While EVtivity analyzes an insight, the card shows **Analyzing**. An insight that was not analyzed shows the reason, such as **Resolved before the analysis**, **Analyzed recently**, the daily limit of the site, insights turned off for the site or in Settings, or a used-up AI budget. When the AI provider fails three times in a row, the card shows **The analysis did not finish.** An insight replaced by **Regenerate**, or merged into a site incident or a group of failed sessions, no longer appears in the list.
+While EVtivity analyzes an insight, the card shows **Analyzing**. An insight that was not analyzed shows the reason, such as **Resolved before the analysis**, **Analyzed recently**, the daily limit of the site, a site or station outside the AI insights scope, insights turned off in Settings, or a used-up AI budget. When the AI provider fails three times in a row, the card shows **The analysis did not finish.** An insight replaced by **Regenerate**, or merged into a site incident or a group of failed sessions, no longer appears in the list.
 
 **Out of date** is not a status: it marks an insight whose record changed after the analysis. Click **Regenerate** for a current one.
 
@@ -270,8 +270,9 @@ To turn it on, open your **Profile**, go to **Notifications**, and turn on **AI 
 2. Open **Settings > AI > Automatic Insights**. In the **Automatic Insights and Workers** card, select the **Provider** and turn on **Turn on system-initiated AI**.
 3. In the **Automatic Insights** card, keep or turn off **Station insights**, **Session insights**, **Authorization insights**, and **Reservation insights**. All four are on by default once system-initiated AI is on. **Reservation insights** shows only while reservations are on.
 4. Click **Save**.
+5. Optional: in the **AI Insights Scope** card, keep **All Sites**, or choose **Selected Sites** and pick the sites and stations to analyze (see [Settings](https://www.evtivity.com/docs/csms/settings#automatic-insights)).
 
-To stop insights for one site, open the site's **AI Usage** tab and turn off **Automatic Insights** (see [Sites](https://www.evtivity.com/docs/csms/sites#ai-usage)). Only users with access to every site and the `sites:write` permission can change it.
+Sites and stations outside the scope get no insights, and their open insights are dismissed when you take them out. To pause insights for a while instead, suppress the [station](https://www.evtivity.com/docs/csms/stations#details) or [site](https://www.evtivity.com/docs/csms/sites#details).
 
 ## Data Sent to the AI Provider
 

@@ -207,8 +207,12 @@ The simulator responds to all 51 CSMS-initiated commands. When the CSMS sends a 
 - **SetChargingProfile** - Stores the profile and applies power limits
 - **SendLocalList** - Updates the local authorization list
 - **TriggerMessage** - Sends the requested message immediately
-- **GetDiagnostics / GetLog** - Returns a simulated upload URL
+- **GetDiagnostics / GetLog** - Uploads a generated log file to the location over FTP, FTPS, SFTP, HTTP or HTTPS and reports Uploading, then Uploaded or UploadFailure.
 - **UnlockConnector** - Resets the connector state
+
+## File Transfers
+
+Log uploads and firmware downloads use the URL the CSMS sends, with the user name and password from the URL. Stations reach loopback and private addresses only when `NODE_ENV` is `development` or `test`, or for a host listed in `CSS_FILE_TRANSFER_ALLOWED_HOSTS`. Cloud metadata and unroutable addresses are always refused. An SFTP server must present the host key set in `CSS_SFTP_HOST_KEY_SHA256` while stations verify server certificates (`TLS_REJECT_UNAUTHORIZED` is not `false`). See [Environment Variables](https://www.evtivity.com/docs/simulator/overview#environment-variables).
 
 ## Notes
 

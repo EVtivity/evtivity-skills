@@ -100,7 +100,7 @@ Account > RFID Cards > **Add RFID Card**, enter the printed number (alphanumeric
 
 ## Account (`references/account.md`)
 
-Avatar (`/account/avatar`: Create with Random, or Upload a JPEG, PNG or WebP under 1 MB), Personal Info (name, email, phone, language, timezone, theme, distance unit, Show prices), Security, Notification preferences, the notification bell, sign out.
+Personal Info (Edit Avatar: Create with Random, or Upload a JPEG, PNG or WebP under 1 MB; name, email, phone, language, timezone, theme, distance unit, Show prices), Security, Notification preferences, the notification bell, sign out.
 
 ## References
 

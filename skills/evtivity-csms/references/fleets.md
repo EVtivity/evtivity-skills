@@ -45,7 +45,7 @@ View vehicles belonging to fleet drivers.
 
 ### Drivers
 
-Add or remove drivers from the fleet. Drivers in a fleet inherit the fleet's pricing group when no driver-specific pricing is assigned.
+Add or remove drivers from the fleet. Each member shows with their avatar, or initials when the driver has none. Drivers in a fleet inherit the fleet's pricing group when no driver-specific pricing is assigned.
 
 To add drivers:
 

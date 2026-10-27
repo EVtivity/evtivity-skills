@@ -33,6 +33,7 @@ Roles provide default permission sets. After creating a user, you can customize 
 | Email | Login email address (must be unique) |
 | Mobile | Phone number for SMS notifications (optional) |
 | Role | Admin, Operator, or Viewer |
+| Avatar | Optional. **Edit Avatar** opens the avatar editor. The avatar is saved right after the user is created. |
 
 ![Create user](https://www.evtivity.com/screenshots/csms/users-create.png)
 
@@ -95,6 +96,12 @@ EVtivity uses 76 granular permissions in `resource:action` format. Actions are e
 Users cannot edit their own permissions. Another user with the `users:write` permission can change them, but only within the permissions it holds itself (see [Manage Other Users](#manage-other-users)).
 
 Operators can manage their SMS notification preferences from the **Notifications** tab of their [Profile](https://www.evtivity.com/docs/csms/profile).
+
+## Avatars
+
+The Users list and each user page show the user's avatar, or initials when the user has none. Each user sets their own avatar on their [Profile](https://www.evtivity.com/docs/csms/profile#avatar).
+
+A user with the `users:write` permission can also set or remove another user's avatar: open the user, click **Edit** on the **Details** tab, and click **Edit Avatar** in the form. The change is saved at once, apart from the form's **Save**, and recorded in the user's **History**. A site-restricted user changes only the avatars of users they may manage. Without `users:write`, avatars are read-only. The avatar editor works as on the [Profile](https://www.evtivity.com/docs/csms/profile#avatar) page. The API is `PUT` and `DELETE /v1/users/:id/avatar`, with `POST /v1/users/:id/avatar/upload-url` and `POST /v1/users/:id/avatar/image` for an upload.
 
 ## Security Tab
 
