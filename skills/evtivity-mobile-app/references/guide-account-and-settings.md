@@ -6,9 +6,17 @@ Manage your profile, security, notification channels, language, units, and legal
 
 ## Overview
 
-The Account tab is the hub for everything about you: your profile, security, payment methods, RFID cards, vehicles, favorites, support, and app information. It shows your name, email, and the date you joined.
+The Account tab is the hub for everything about you: your profile, security, payment methods, RFID cards, vehicles, favorites, support, and app information. It shows your avatar, name, email, and the date you joined.
 
 ![Account hub](https://www.evtivity.com/screenshots/mobile/account.png)
+
+## Avatar
+
+Your avatar shows at the top of the Account hub. Without one, your initials show. Tap it to open the **Avatar** screen. You have one avatar at a time, and the driver portal and the operator see the same one.
+
+- **Create** - pick the hair or headwear, glasses, eyebrows, eyes, mouth, facial hair, clothes, colors, background and direction, or tap **Random**. Tap **Save** to keep it.
+- **Upload** - tap **Choose Image** and pick a photo from your library. Crop it to a square in the picker. The image must be a JPEG, PNG or WebP smaller than 1 MB. It is saved as soon as it uploads, scaled to at most 512 x 512 pixels. **Upload** shows only when the operator has set up file storage.
+- **Remove Avatar** - deletes an uploaded image and shows your initials again.
 
 ## Personal info
 

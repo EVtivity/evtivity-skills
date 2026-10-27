@@ -28,6 +28,12 @@ Clear the email or phone field to remove it. A driver with portal access keeps a
 
 ![Driver detail](https://www.evtivity.com/screenshots/csms/driver-detail.png)
 
+### Avatar
+
+Drivers set their own avatar in the [portal](https://www.evtivity.com/docs/portal/account#avatar) or the [mobile app](https://www.evtivity.com/docs/mobile-app/guide/account-and-settings#avatar): a generated avatar or an uploaded photo. The CSMS shows it on the Drivers list, the fleet **Drivers** tab and the driver detail header. A driver without an avatar shows initials.
+
+Operators cannot set or change a driver's avatar. A user with `drivers:write` can remove it: click **Remove Avatar** in the driver detail header and confirm. An uploaded photo is deleted. The driver gets no notice, sees initials, and can set a new avatar. Erasing a driver also deletes the avatar.
+
 ### Tokens
 
 View and manage the driver's authentication tokens. Add new RFID cards or app-based tokens. Toggle tokens between active and inactive. See [Tokens](https://www.evtivity.com/docs/csms/tokens) for more details on token types and management.

@@ -24,7 +24,7 @@ Every audit table uses the same shape. Tokens, reservations, and pricing (split 
 ## Where to find it
 
 - **Per-entity History tab.** Open any Site, Station, Driver, Fleet, User, Support Case, Roaming Partner, Smart Charging Template, Config Template, or Firmware Campaign detail page. Click the History tab to see every change ever made to that entity, newest first.
-- **Global Audit Log page.** From the operator dashboard nav, choose Audit Log. Filter by entity type, actor, action, entity id, or date range.
+- **Global Audit Log page.** From the operator dashboard nav, choose Audit Log. Filter by entity type, actor, action, entity id, or the **From** and **To** days (both included, in your browser's time zone). The filters stay in the page URL, so they survive a reload, the browser Back button and a shared link.
 
 Both views require the `audit:read` permission. Admins receive it by default; operators do too.
 
@@ -46,6 +46,16 @@ Each row shows:
   - `ocpp` &mdash; a station-initiated OCPP message that triggered the change.
 - **Notes.** Free-text context like "Pushed to 4 station(s)" or "cascade from pricing_group pgr_x".
 - **Before / after.** Full JSON snapshots of the entity before and after the change. For `created` actions `before` is null. For `deleted`, `after` is null.
+
+## Entry details
+
+Click a row on the Audit Log page or on any History tab to open the entry. The dialog shows the action and entity, the time, the entity id (or **Deleted** when the entity no longer exists), the actor, the AI channel when the change came through the AI assistant, MCP or a confirmed AI action, and the notes.
+
+The **Changes** table lists each changed field with its **Before** and **After** value. Nested values show as `address.city`. A created entity shows **After** only, a deleted one **Before** only. Click **Show Unchanged Fields** to list every field. A redacted value reads **Hidden**. Field names show in English in every language.
+
+**Go to Entity** opens the entity's page. It shows when the entity still exists, has its own page, and you have the permission for that page.
+
+![Audit entry details](https://www.evtivity.com/screenshots/csms/audit-entry-detail.png)
 
 ## Sensitive data
 

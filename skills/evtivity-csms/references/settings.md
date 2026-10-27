@@ -14,16 +14,21 @@ The Settings page contains all system-wide configuration organized into tabs. Ea
 
 **Permission:** `settings.system:read` and access to every site.
 
-The **System Information** button at the top of the Settings page opens a read-only dialog with the running configuration:
+The **System Information** button at the top of the Settings page opens a read-only dialog with the settings the CSMS processes run with. Type in **Search settings** to find a setting by name or value, or pick a section in **Section** to show one section. **All Sections** shows every section again.
 
 - **Runtime** - version, `NODE_ENV`, `LOG_LEVEL`, and `SEED_DEMO`.
-- **Network** - `BIND_IP`, the API and OCPP hosts and ports, the TLS port, the metrics port, the CSMS and portal URLs, the cookie domain, and the CORS origin. `BIND_IP` is the address the Docker Compose ports bind to, such as `192.168.1.234`. The row appears on Docker Compose installs only and is hidden on Helm and AWS installs, which have no bind address.
-- **Rate Limits** - the API and auth rate limits and the OCPP per-IP connection and message limits.
-- **OCPP** - `OCPP_INSTANCE_ID` and the registration policy.
+- **Network** - `BIND_IP`, the API host and port, the metrics port, the CSMS and portal URLs, `OCPP_STATION_TLS_URL` (the public `wss://` address stations use for security profiles 2 and 3), the cookie domain, and the CORS origin. `BIND_IP` is the address the Docker Compose ports bind to, such as `192.168.1.234`. The row appears on Docker Compose installs only and is hidden on Helm and AWS installs, which have no bind address.
+- **Rate Limits** - the API and sign-in rate limits.
+- **Security** - whether `TRUST_PROXY` lists the proxies in front of the API, the passkey relying party ID (`WEBAUTHN_RP_ID`), and whether the API counts its rate limits in Redis, shared by every API replica (**Shared Rate Limits**).
+- **OCPP Processes** - the station registration policy, then one group per OCPP process that reported in the last 90 seconds: its connected stations, its start time, and the settings it runs with (version, WebSocket compression, the TLS listener and port, whether a client certificate CA is set, the per-IP connection, message and pending sign-in limits, and whether trusted proxies are set). Each OCPP process reports its own values, so a Helm or AWS install with several OCPP processes lists each of them.
 - **OCPI** - base URL, country code, party ID, and business name.
-- **Simulator** - `CSS_MODE`, the action interval, and the station limit.
+- **Simulator** - `CSS_MODE`, the action interval, the station limit, and the number of simulator stations.
 - **Payments** - the selected payment provider and whether it is ready.
-- **Integrations** - whether each secret and integration is configured: `JWT_SECRET`, `SETTINGS_ENCRYPTION_KEY`, Stripe, Adyen, SMTP, Twilio, S3, reCAPTCHA, Hubject, and Google Maps.
+- **SIM Providers** - whether Hologram is on and configured, the days of SIM sessions fetched, and the low signal monitor switch.
+- **Station Data Plans** - the number of stations on the Wi-Fi or wired and on the cellular data plan, and the number of sites set to each plan.
+- **Integrations** - whether each secret and integration is configured: `JWT_SECRET`, `SETTINGS_ENCRYPTION_KEY`, Stripe, Adyen, SMTP, Twilio, S3, reCAPTCHA, Hubject, Google Maps, the webhook signing secret, and the Hologram API key.
+
+![System Information dialog](https://www.evtivity.com/screenshots/csms/settings-system-information.png)
 
 The dialog never shows secret values. **Configured** only means that a value is set.
 
@@ -37,10 +42,12 @@ Company branding, contact information, and SEO configuration.
 
 **Branding:**
 
-- **Logo** - upload or remove a logo image (max 512 KB). Displayed in emails and portal branding.
+- **Logo** - upload a logo image (max 512 KB). Displayed in emails and portal branding.
 - **QR Code Icon** - upload an SVG icon that appears in the center of station QR codes. Includes a live QR preview.
 - **Favicon** - upload a custom favicon image for the portal (max 512 KB).
 - **Social Share Image** - upload an Open Graph image for social media link previews (max 512 KB).
+
+Uploading a new image replaces the current one.
 
 **SEO and Social:**
 
@@ -461,6 +468,22 @@ Amazon S3 (or S3-compatible) object storage for file attachments and station ima
 Leave both access key fields blank to use the default AWS credential chain. On AWS, that is the task or instance role. If you fill in only one of the two fields, S3 stays disabled until you fill in both or clear both.
 
 Includes expandable sections showing the recommended IAM policy and CORS configuration.
+
+The CSMS uploads support case attachments and station images, and the driver portal uploads driver avatars, straight to the bucket with a presigned `POST`. A self-managed bucket needs a CORS rule that allows `POST` from both the CSMS origin and the driver portal origin, for example:
+
+```json
+[
+  {
+    "AllowedHeaders": ["*"],
+    "AllowedMethods": ["POST", "GET"],
+    "AllowedOrigins": ["https://csms.example.com", "https://portal.example.com"],
+    "ExposeHeaders": [],
+    "MaxAgeSeconds": 300
+  }
+]
+```
+
+Without the portal origin, drivers cannot upload an avatar from the portal. The mobile app does not need a CORS rule. The AWS deployment creates the bucket with this rule.
 
 ### FTP Server
 

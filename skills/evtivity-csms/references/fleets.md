@@ -80,10 +80,12 @@ Create and manage batch reservations for fleet vehicles across multiple stations
 3. Set a name (optional), starts-at, and expires-at.
 4. For each station you want to reserve, add a slot:
    - Search for a station (search-as-you-type).
-   - Pick a connector from the dropdown that appears once a station is chosen.
+   - Pick a connector from the dropdown that appears once a station is chosen. A station without connectors shows **No Connectors**.
    - Optionally assign a driver (search-as-you-type).
-5. Click **Add Station** to add more slots, up to 100 per bulk reservation. Stations already chosen in another slot are filtered out so you cannot pick the same one twice.
+5. Click **Add Station** to add more slots, up to 100 per bulk reservation. A station can be in several slots, one connector each: a connector already chosen in another slot is not offered again.
 6. Click **Create**.
+
+The name does not need to be unique: two bulk reservations of a fleet can have the same name.
 
 #### Validation
 

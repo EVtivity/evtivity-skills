@@ -59,7 +59,7 @@ The server checks every file before it stores it:
 
 Click an attachment to preview an image or download the file. A download always saves the file instead of opening it in the browser.
 
-With a self-managed S3 bucket, add a CORS rule that allows `POST` from the CSMS origin. The browser uploads files straight to the bucket, and uploads fail without this rule.
+With a self-managed S3 bucket, add a CORS rule that allows `POST` from the CSMS origin. The browser uploads files straight to the bucket, and uploads fail without this rule. See [S3 Bucket](https://www.evtivity.com/docs/csms/settings#s3-bucket).
 
 ### Linked Sessions
 

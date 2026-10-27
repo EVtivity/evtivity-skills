@@ -36,6 +36,21 @@ Trend arrows are suppressed when either of the two days has no snapshot data. On
 
 Live updates refresh the numbers as stations and sessions change. Today's numbers are live. All-time totals can take up to a minute to reflect a change to an older record, for example a refund on an old session.
 
+### Customize the Live Dashboard
+
+Each user can arrange the Live dashboard. The layout is saved on the server for your account, so it follows you to every browser.
+
+1. In Live mode, click **Customize**. Every card and chart shows a drag handle and a hide button.
+2. Drag a card or chart by its handle to move it. With the keyboard, press Space or Enter on the handle, move it with the arrow keys, and press Space or Enter to drop it (Escape cancels).
+3. Click the hide button of a card or chart to hide it. Hidden cards and charts are listed under **Hidden** in the bar above the dashboard. Click one there to show it again.
+4. Click **Done** to leave customize mode.
+
+Cards move among the cards and charts move among the charts. **Reset Layout** in the customize bar removes your saved layout after a confirmation, and the Live dashboard returns to the default order with the default cards and charts. When your layout cannot be saved, the dashboard shows an error and keeps the previous layout.
+
+The layout only orders and hides cards and charts. It never shows a card or chart your permissions do not allow, and such cards are not offered in the **Hidden** list. Historical and Trend modes keep the default order and show all their cards, whatever you hide in Live mode.
+
+![Dashboard in customize mode](https://www.evtivity.com/screenshots/csms/dashboard-customize.png)
+
 ### Historical Mode
 
 Historical mode displays snapshot data for a selected date or date range. Use the date picker to choose a specific day or a range. The picker's earliest selectable date is the oldest snapshot date on record, so you can't pick pre-history dates that would only render a `No Data` overlay. Snapshots are collected daily by a background worker job and stored per site.
@@ -103,13 +118,22 @@ The dashboard includes these chart panels:
 - **Peak Usage** - Heatmap showing sessions by hour and day of week
 - **Site Map** - Geographic map of your site locations
 
+Four more charts are hidden by default. Show them in [customize mode](#customize-the-live-dashboard):
+
+- **Locations by City** - Accepted stations per city of your sites, most stations first. The tooltip shows the number of sites. Cities are matched without case or extra spaces. Sites without a city are grouped as **Unknown City**, and the cities past the top 20 as **Other Cities**.
+- **EVSEs by Connector Type** - EVSEs in service per connector type at your accepted stations. An EVSE with connectors of two types counts under each type. The tooltip also shows the number of connectors.
+- **Plug & Charge** - Sessions started with a Plug & Charge contract at your sites and their energy, per day over a date range. Users with access to all sites who can read drivers (`drivers:read`) also see the number of active contracts, which is company-wide. See [Enable Plug and Charge](https://www.evtivity.com/docs/csms/certificates#enable-plug-and-charge).
+- **Free Vend** - [Free vend](https://www.evtivity.com/docs/csms/free-vend) sessions at your sites and their energy, per day over a date range, with the number of your sites that have free vend turned on.
+
+![Locations by City, EVSEs by Connector Type, Plug & Charge and Free Vend charts](https://www.evtivity.com/screenshots/csms/dashboard-new-charts.png)
+
 ![Top Utilization by Site chart](https://www.evtivity.com/screenshots/csms/dashboard-utilization.png)
 
 ### Chart Date Ranges
 
 Chart date ranges are whole calendar days in the system timezone. Days without data show as zero.
 
-The chart date pickers (energy, sessions, revenue, peak usage, utilization) constrain the **start** input to `max = end` and the **end** input to `min = start`, so the UI cannot produce an inverted range. The API mirrors the rule on its side: a zero or negative day count, an invalid custom `from` or `to` date, `from > to`, a range longer than 90 days, or a `from` date in the future gets a `400 VALIDATION_ERROR` instead of silently receiving last-7-days data.
+The chart date pickers (energy, sessions, revenue, peak usage, utilization, Plug & Charge, free vend) constrain the **start** input to `max = end` and the **end** input to `min = start`, so the UI cannot produce an inverted range. The API mirrors the rule on its side: a zero or negative day count, an invalid custom `from` or `to` date, `from > to`, a range longer than 90 days, or a `from` date in the future gets a `400 VALIDATION_ERROR` instead of silently receiving last-7-days data.
 
 ## Active Sessions
 

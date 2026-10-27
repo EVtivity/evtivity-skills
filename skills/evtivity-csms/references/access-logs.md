@@ -17,6 +17,8 @@ The Access Logs page captures every authenticated request and background job run
 - **API** &mdash; all `/v1/*` requests, including both session-authenticated and API-key-authenticated calls. Use the Method and Status filters to narrow results.
 - **Workers** &mdash; background job runs from the BullMQ worker. Filter by queue (`cron-jobs`, `load-management`, `guest-session-events`) or status (`started`, `completed`, `failed`).
 
+Every tab has **From** and **To** day filters. Both days are included and count in your browser's time zone. Set one of them for an open range. **To** cannot be before **From**, and **Clear Dates** removes both. The days stay in the page URL, so a reload or a shared link keeps them.
+
 Server-sent event streams (`/v1/events/stream`) are excluded so long-lived connections don't flood the table.
 
 ## Log Fields
@@ -42,4 +44,4 @@ Access logs and worker job logs are kept for 30 days by default (`logs.access.re
 
 ## API Access
 
-`GET /v1/access-logs` returns the same data the CSMS, Portal, and API tabs render. `GET /v1/worker-logs` powers the Workers tab. Both require the `logs:read` permission. See the [API reference](https://www.evtivity.com/api-reference/access-logs) for query parameters.
+`GET /v1/access-logs` returns the same data the CSMS, Portal, and API tabs render. `GET /v1/worker-logs` powers the Workers tab. Both require the `logs:read` permission and take optional `from` and `to` timestamps, both included. See the [API reference](https://www.evtivity.com/api-reference/access-logs) for query parameters.

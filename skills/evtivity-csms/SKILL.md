@@ -52,7 +52,7 @@ Each row names the reference file for the page (page id `csms/<name>`).
 
 | Task | Reference | Dashboard page | Permission |
 |---|---|---|---|
-| Network overview, revenue, profit | `references/dashboard.md` | Dashboard | `dashboard:read` |
+| Network overview, revenue, layout (Customize) | `references/dashboard.md` | Dashboard | `dashboard:read` |
 | Create and edit sites, rates, QR codes | `references/sites.md` | Sites > site | `sites:write` |
 | Register, approve, enable stations | `references/stations.md` | Stations > station | `stations:write` |
 | Station photos | `references/station-images.md` | Station > Images | `stations:write` |
@@ -69,7 +69,7 @@ Each row names the reference file for the page (page id `csms/<name>`).
 | Station screen messages | `references/display-messages.md` | Station > Display Messages | `stations:write` |
 | Planned maintenance windows | `references/maintenance.md` | Site > Maintenance | `maintenance:write` |
 | Session status, cost, refunds, Bill session | `references/sessions.md` | Sessions > session | `sessions:read`, refunds `payments:write`, Bill session `sessions:write` + `payments:write` |
-| Driver accounts, portal invite, invoices | `references/drivers.md` | Drivers > driver | `drivers:write` |
+| Driver accounts, invite, invoices, avatar | `references/drivers.md` | Drivers > driver | `drivers:write` |
 | RFID cards and app tokens | `references/tokens.md` | Tokens | `drivers:write` |
 | Charge by plugging in (vehicle id) | `references/autocharge.md` | Settings > Integrations & Features > Autocharge, Site > Details | `settings.integrations:write`, site `sites:write` |
 | Fleets and bulk reservations | `references/fleets.md` | Fleets > fleet | `fleets:write`, `reservations:write` |

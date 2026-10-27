@@ -108,7 +108,7 @@ Start with `references/guide-overview.md`: five tabs (Home, Charge, Activity, Re
 | Saved stations | `references/guide-favorites.md` |
 | "Tell me when a charger frees up" | `references/guide-station-watch.md` |
 | Notifications inbox, contacting the operator | `references/guide-support.md` |
-| Language, units, Show prices, notification channels, MFA settings, sign out | `references/guide-account-and-settings.md` |
+| Avatar, language, units, Show prices, notification channels, MFA settings, sign out | `references/guide-account-and-settings.md` |
 
 Common answers:
 

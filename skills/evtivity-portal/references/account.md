@@ -2,13 +2,34 @@ Generated from https://www.evtivity.com/docs/portal/account. Do not edit.
 
 # Account Settings
 
-Manage your personal info, security, notification preferences, and favorites.
+Manage your avatar, personal info, security, notification preferences, and favorites.
 
 ## Overview
 
 The Account page is the fourth tab in the Portal bottom navigation. It lists a row for each account-related setting. Each row opens its own page.
 
 ![Account page](https://www.evtivity.com/screenshots/portal/account.png)
+
+## Avatar
+
+Your avatar shows at the top of the Account page and in the portal header. Without an avatar, your initials show. Tap your avatar on the Account page to open the **Avatar** page. You have one avatar at a time: saving a generated avatar replaces an uploaded image, and the other way around. The operator sees your avatar in the CSMS.
+
+To create an avatar:
+
+1. Tap **Create**.
+2. Pick the hair or headwear, glasses, eyebrows, eyes, mouth, facial hair, clothes, colors, background and direction, or tap **Random** for a new random avatar.
+3. Tap **Save**.
+
+To upload an image:
+
+1. Tap **Upload**.
+2. Tap **Choose Image** and pick a JPEG, PNG or WebP image smaller than 1 MB. The image is cropped to a centered square, scaled to at most 512 x 512 pixels and saved as soon as it uploads.
+
+**Upload** shows only when the operator has set up file storage. Creating an avatar always works.
+
+To remove your avatar, tap **Remove Avatar** and confirm. An uploaded image is deleted, and your initials show instead. The operator can also remove your avatar.
+
+![Avatar page](https://www.evtivity.com/screenshots/portal/account-avatar.png)
 
 ## Personal Info
 
