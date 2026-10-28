@@ -51,7 +51,7 @@ Click any token in the list to view its detail page.
 
 The detail page has four tabs:
 
-- **Token Details** - token value, type, assigned driver, creation date, and active status. Edit and Delete actions live here.
+- **Details** - token value, type, assigned driver, creation date, and active status. Edit and Delete actions live here.
 - **Sessions** - charging sessions whose OCPP Authorize matched this specific token (filtered by `charging_sessions.token_id`, not driver id).
 - **History** - paginated `token_audit_log` showing every lifecycle event (created, updated, activated, deactivated, revoked, deleted, imported) with the actor name (operator or driver, linked to their detail page) and free-text notes.
 - **Authorize Log** - paginated `authorize_attempts` filtered to this token, including the matched outcome (accepted / blocked / expired / concurrent_tx / no_credit / db_error). Useful for forensic triage when a driver reports a swipe was rejected.

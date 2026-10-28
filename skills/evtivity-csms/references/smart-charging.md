@@ -140,7 +140,7 @@ On the station detail page of an OCPP 2.1 station, the **Charging Needs and Moni
 
 When an EV sends its charging needs during a session, the CSMS computes a charging schedule and sends it to the station as a transaction profile for that session, when the ISO 15118 smart charging setting is on and the EV asks for scheduled control. The limit is the lowest of what the EV accepts, the connector maximum and the free capacity of the site power limit. With a departure time and an energy amount, it is also capped at the rate that delivers that energy by the departure time. Without an active session, or for dynamic control, the CSMS sends no schedule and the station uses its default profile.
 
-The **EV Charging Needs** card shows, per EVSE: the energy transfer, control mode, requested energy, departure time and the **CSMS Limit** sent, or **No Profile Sent**. The needs end with the session.
+The **Charging Needs and Monitors** card shows, per EVSE: the energy transfer, control mode, requested energy, departure time and the **CSMS Limit** sent, or **No Profile Sent**. The needs end with the session.
 
 ### EV Charging Schedules
 

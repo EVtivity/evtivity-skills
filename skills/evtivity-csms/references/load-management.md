@@ -53,7 +53,7 @@ A single-phase sub-panel under a three-phase panel can name the parent phases th
 ### Step 1: Create the Electrical Hierarchy
 
 1. Navigate to the site detail page.
-2. Open the **Load Mgmt** tab.
+2. Open the **Load Management** tab.
 3. Click **Add Panel** to create your first electrical panel. Enter:
    - Panel name
    - Breaker rating (amps)
@@ -70,7 +70,7 @@ A single-phase sub-panel under a three-phase panel can name the parent phases th
 
 ### Step 2: Enable Load Management
 
-1. In the Load Mgmt tab, toggle **Enable Load Management**.
+1. In the Load Management tab, toggle **Enable Load Management**.
 2. Select an allocation strategy:
 
 | Strategy | Behavior |
@@ -82,7 +82,7 @@ A single-phase sub-panel under a three-phase panel can name the parent phases th
 
 ### Step 3: Set Station Priorities and Minimums
 
-1. In the Load Mgmt tab, find the **Station Allocations** table.
+1. In the Load Management tab, find the **Station Allocations** table.
 2. Set the **Priority** for each station (1 = lowest, 10 = highest). Priority 5 is the default. The priority orders power in the Priority Based strategy and decides which sessions stop first in both strategies.
 3. Optionally set **Min Power (kW)** for a station: the lowest power a charging session there gets. Many EVs stop charging below about 6 A (1.4 kW on one phase, 4.1 kW on three phases at 230 V). Leave it empty for no minimum.
 
@@ -120,7 +120,7 @@ Changed allocations are logged in the Allocations list. The list keeps entries f
 
 ## View Allocation Status
 
-The Load Mgmt tab displays:
+The Load Management tab displays:
 
 - **Power bar**: Visual representation of total available vs. consumed power.
 - **Station allocations table**: Current allocation per station with actual power consumption, priority, minimum power and limit unit.

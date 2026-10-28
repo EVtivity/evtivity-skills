@@ -253,7 +253,7 @@ A connector without a max power shows a **Max power unknown** badge. Load manage
 
 ![Station connectors tab](https://www.evtivity.com/screenshots/csms/station-connectors-tab.png)
 
-### Commands
+### OCPP Commands
 
 Send OCPP commands to the station and view the real-time OCPP message log. Available commands include Reset, UnlockConnector, ChangeAvailability, TriggerMessage, GetBaseReport (2.0.1 and 2.1), GetConfiguration (1.6), and more.
 

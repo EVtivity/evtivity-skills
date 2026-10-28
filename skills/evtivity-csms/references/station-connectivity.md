@@ -65,7 +65,7 @@ The tab shows the SIM's status, sessions, alerts and fetched days only from the 
 
 ## Refresh
 
-The **SIM and Signal Data** card has one **Refresh** control. One click reads the SIM provider and, while **Read Signal from Stations** is on, the station. Each part reports its own result line, such as the number of sessions and alerts stored or why it was skipped.
+The **Connectivity** card has one **Refresh** control. One click reads the SIM provider and, while **Read Signal from Stations** is on, the station. Each part reports its own result line, such as the number of sessions and alerts stored or why it was skipped.
 
 1. Pick a **Period**: the last 1, 3, 7, 14 or 31 days, or the default period from the settings (7 days unless changed). Periods longer than the provider keeps data (Hologram: 90 days) or than the CSMS keeps it are disabled, with the reason below the select.
 2. Or click **Custom Range** and pick up to 31 days within that window. Days count in the time zone of the station's site, else the system time zone, and the range cannot end in the future. The dialog shows what is already stored for the chosen days.

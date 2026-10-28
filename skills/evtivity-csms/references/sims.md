@@ -114,7 +114,7 @@ The SIM's timeline of data sessions and SIM alerts with the strip of fetched day
 
 ![SIM attachments](https://www.evtivity.com/screenshots/csms/sim-detail-attachments.png)
 
-**Current Attachment** shows the station, its site, the source, who attached the SIM and whether the attachment is confirmed. The source is one of:
+**Attachments** shows the station, its site, the source, who attached the SIM and whether the attachment is confirmed. The source is one of:
 
 - **Reported by the station**: the station reported the ICCID at boot, and a **Refresh** attached it.
 - **Entered on the station**: a user entered the ICCID on the station's **Details** tab.
