@@ -1,6 +1,6 @@
 # EVtivity API routes: NEVI
 
-Generated from EVtivity CSMS v0.1.49-beta.3 (https://github.com/EVtivity/evtivity-csms, commit 8a37e9060eca) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.49-beta.4 (https://github.com/EVtivity/evtivity-csms, commit c35ebdc032de) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
