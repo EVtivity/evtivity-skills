@@ -211,7 +211,11 @@ Shows a cellular station's SIM status, data sessions and SIM alerts on the stati
 
 Confirm: `GET /v1/settings/sim-providers` (filter the key out with jq), then Refresh on one station (the Station Connectivity page of evtivity-csms).
 
-### 13. Troubleshoot a payment failure
+### 13. Payment terminals (`references/payment-terminals.md`)
+
+Credit card readers at a station, run through the ID TECH cloud. Set up the account in Settings > Payment > Payment Terminals (access to every site), then pair each terminal with a station on the Payment Terminals page. The session cost is capped at the hold.
+
+### 14. Troubleshoot a payment failure
 
 ```bash
 curl -s "$EVTIVITY_API/v1/settings/payments" -H "Authorization: Bearer $EVTIVITY_TOKEN" | jq '{provider, providers}'
@@ -220,7 +224,8 @@ docker compose logs --tail 200 api worker | grep -i -E 'payment|webhook|stripe|a
 
 | Symptom or code | Likely cause | Fix (reference) |
 |---|---|---|
-| 400 `PAYMENT_PROVIDER_NOT_CONFIGURED` | No provider selected, or the card's pinned provider lost its credentials | Select a provider, or restore the old keys (payment-providers) |
+| 400 `PAYMENT_PROVIDER_NOT_CONFIGURED` | The selected provider cannot be used (credentials missing): paid sessions stop unbilled | Save the provider credentials (payment-providers) |
+| Session stopped `MissingPaymentMethod`, 400 `PAYMENT_METHOD_REQUIRED` | The saved credit card belongs to a provider no longer set up | The driver adds a new credit card, or restore the old keys (payment-providers) |
 | "Payment processing is not available at this time." | `payments.provider` is `none` | Select a provider (payment-providers) |
 | 500 `WEBHOOK_NOT_CONFIGURED` | Signing secrets or Adyen webhook credentials not stored | Create the webhook again (stripe, adyen) |
 | 400 or 401 `WEBHOOK_SIGNATURE_INVALID` or `WEBHOOK_SIGNATURE_MISSING` | Wrong secret, or an Adyen event for another merchant account or environment | Recreate the webhook in the same mode (webhooks) |
@@ -244,5 +249,6 @@ Generated from the website docs. Never edit them. The first line of each file is
 - `references/test-payment-provider.md`: simulated provider, test cards, sync and async modes.
 - `references/webhooks.md`: incoming payment webhooks, outgoing OCPP event webhooks, SSE streams.
 - `references/energy-management.md`: load management, smart charging profiles, carbon tracking.
+- `references/payment-terminals.md`: ID TECH terminals, pairing, receipts, refunds.
 - `references/sim-providers.md`: Hologram SIM provider, session history, station signal and low signal alert, off by default.
 - `references/mcp-server.md`: MCP server for AI agents (`POST /v1/mcp`, API key with `aiMcp:*`), off by default. Writes run only with **Allow Writes** on.

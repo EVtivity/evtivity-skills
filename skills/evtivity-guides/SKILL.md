@@ -187,6 +187,12 @@ For `SuspendedEV`: first look for a charging profile or load allocation below ab
 - Manual commands: the station OCPP Commands tab, or `/v1/ocpp/commands/{v16|v21}/<Action>`. Ask the user before Reset, ChangeAvailability or ClearCache.
 - After a configuration change: refresh the station configuration, or `GET /v1/stations/{id}/config-drift`.
 
+## 13. How drivers start and pay (`references/how-drivers-start-and-pay.md`)
+
+- Five ways: the portal or the app, an RFID card with a prepaid balance, an RFID card linked to a driver, guest QR checkout, a payment terminal. The reference compares who picks the connector, what pays and when the credit card is checked.
+- At Start, the portal and the app check for a plugged-in cable. With no car detected they show a message with only an OK button, start nothing and place no hold. The driver plugs in and taps Start again.
+- Setup of each way: evtivity-portal and evtivity-integrations.
+
 ## References
 
 Generated from the website docs. Never edit them. The first line of each file is the live page URL: link it when you answer. Every page of this section is named once in the section headings above.
