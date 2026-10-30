@@ -166,6 +166,17 @@ The config can set the SIM provider settings. Leave a key out to keep the value 
 
 Enter the Hologram API key and the 1NCE client secret in the dashboard. The config load refuses `sim.hologram.apiKey`, `sim.1nce.clientSecret` and `sim.1nce.clientSecretEnc`. See [SIM Providers](https://www.evtivity.com/docs/integrations/sim-providers).
 
+### Storage Image Origins
+
+The CSMS and portal allow images from Amazon S3 (`https://*.amazonaws.com`). With an S3-compatible storage provider (MinIO or Wasabi), set `storage.imgSrc` in the config to the origins stored images load from. The stacks set it as `STORAGE_IMG_SRC` on the CSMS and portal tasks, which add the origins to their Content Security Policy.
+
+- A list of at most 20 origins, each `scheme://host[:port]`, with an optional `*.` wildcard. The stacks join them into `STORAGE_IMG_SRC`.
+- The config load fails on any other value. Setting `STORAGE_IMG_SRC` in a service `env` fails the synth.
+- With path-style requests off, images load from `<bucket>.<endpoint host>`, so list that origin.
+- Unset by default. Amazon S3 needs nothing here.
+
+See [S3 Bucket](https://www.evtivity.com/docs/csms/settings#s3-bucket).
+
 ### Client Addresses
 
 The API and OCPI services run behind the Application Load Balancer. The stacks set `TRUST_PROXY` on both to the VPC range, so rate limits, the guest charging limits per IP address, and audit and access logs see the real client address from `X-Forwarded-For`. See [Environment Variables](https://www.evtivity.com/docs/configuration/environment-variables#api-server).

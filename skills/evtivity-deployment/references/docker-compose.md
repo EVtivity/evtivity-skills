@@ -121,3 +121,18 @@ All environment variables except the secrets above have shell defaults defined i
 # Example: override the database password
 DATABASE_URL=postgres://user:pass@localhost:5433/evtivity docker compose up
 ```
+
+## Storage Image Origins
+
+The CSMS and portal containers allow images from Amazon S3 (`https://*.amazonaws.com`). With an S3-compatible storage provider (MinIO or Wasabi), set `STORAGE_IMG_SRC` in `.env` to the origins stored images load from. Docker Compose passes it to the `csms` and `portal` services. At startup, each container adds the origins to the `img-src` of its Content Security Policy.
+
+- Space-separated origins, each `scheme://host[:port]`, with an optional `*.` wildcard, for example `https://s3.example.com http://minio.local:9000`.
+- Any other value, such as a path, a quote, or a semicolon, stops the container.
+- With path-style requests off, images load from `<bucket>.<endpoint host>`, so list that origin.
+- Empty by default. Amazon S3 needs nothing here.
+
+```bash
+STORAGE_IMG_SRC=https://s3.example.com
+```
+
+See [S3 Bucket](https://www.evtivity.com/docs/csms/settings#s3-bucket).

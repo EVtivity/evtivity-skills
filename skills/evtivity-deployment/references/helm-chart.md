@@ -291,6 +291,22 @@ window.__RUNTIME_CONFIG__ = {
 
 Values are derived automatically from the gateway configuration. No separate values key is needed. The frontend `config.ts` module reads `window.__RUNTIME_CONFIG__` with fallbacks to `VITE_*` env vars for local development.
 
+## Storage Image Origins
+
+The CSMS and portal nginx ConfigMaps hold the Content Security Policy of both frontends. It allows images from Amazon S3 (`https://*.amazonaws.com`). With an S3-compatible storage provider (MinIO or Wasabi), set `storage.imgSrc` to the origins stored images load from. The chart adds them to the `img-src` of both frontends.
+
+- Space-separated origins, each `scheme://host[:port]`, with an optional `*.` wildcard, for example `https://s3.example.com https://*.example.net`.
+- The chart fails to render on any other value, such as a path, a quote, or a semicolon.
+- With path-style requests off, images load from `<bucket>.<endpoint host>`, so list that origin.
+- Empty by default. Amazon S3 needs nothing here.
+
+```yaml
+storage:
+  imgSrc: "https://s3.example.com"
+```
+
+See [S3 Bucket](https://www.evtivity.com/docs/csms/settings#s3-bucket).
+
 ## Migration Job
 
 Database migrations run as a Helm hook job with the migrate image:
@@ -435,6 +451,7 @@ Key sections in `values.yaml`:
 | `dependencies.*` | PostgreSQL and Redis host/port for init containers |
 | `initialAdmin.*` | Admin user creation settings |
 | `monitoring.*` | Prometheus, Grafana, Loki, Alloy config |
+| `storage.*` | Image origins of an S3-compatible storage provider (`storage.imgSrc`) |
 | `appSettings.*` | Application settings seeded into the database |
 
 ### Currency and price settings
@@ -517,6 +534,19 @@ appSettings:
     stationSignalEnabled: true
     ocpp16SignalKeys: [RSSI]
 ```
+
+### Storage settings
+
+These keys configure the storage provider. They are also set in Settings > Integrations & Features > S3 Bucket. Leave a key empty to keep the value set in the dashboard. The chart fails to render with an invalid endpoint or a cloud metadata address. See [S3 Bucket](https://www.evtivity.com/docs/csms/settings#s3-bucket).
+
+| Key | Values | Default | Setting |
+|-----|--------|---------|---------|
+| `appSettings.s3.provider` | `s3` or `s3-compatible` | empty (`s3` on a fresh install) | **Provider** |
+| `appSettings.s3.endpoint` | An http or https origin without a path or credentials | empty | **Endpoint URL** |
+| `appSettings.s3.forcePathStyle` | `true` or `false` | empty (off on a fresh install) | Path-style requests |
+| `appSettings.s3.allowedPrivateHosts` | List of at most 20 host names or IP addresses | empty | **Endpoint Hosts on Private Networks** |
+
+Enter the bucket and the access keys in the dashboard.
 
 ### Payment settings
 

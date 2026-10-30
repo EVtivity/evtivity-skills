@@ -87,7 +87,7 @@ The **Layout** tab shows where the site's stations stand. Switch between the **3
 
 ![Site layout in 3D](https://www.evtivity.com/screenshots/csms/site-layout-3d.png)
 
-The 3D view shows the site as a parking lot with painted bays. An AC station shows as an **AC Pedestal** and a DC station as a **DC Fast Charger**. A station is DC when one of its connectors is DC. The status light on each charger has the color of the station's state. Drag to rotate, scroll or pinch to zoom, and right-drag or two-finger drag to pan. **Fit to View** brings every station back into view.
+The 3D view shows the site as a parking lot with painted bays. An AC station shows as an **AC Pedestal** and a DC station as a **DC Fast Charger**. A station is DC when one of its connectors is DC. The status light on each charger has the color of the station's state. Drag to rotate, scroll or pinch to zoom, and right-drag or two-finger drag to pan. The painted bays continue to the horizon, so you can zoom far in and out. **Fit to View** brings every station back into view.
 
 Each station label shows the station ID and a state icon. When several states apply, the icon shows the first in this order: **Faulted**, **Unavailable**, **In Maintenance**, **Offline**, **Reserved**, **Charging**, **Available**. A **4G** badge marks a station with a cellular connection: its data plan is **Cellular**, or a SIM attachment is confirmed on it.
 
@@ -99,9 +99,9 @@ The 2D view shows each station as a card with the same state icon and **4G** bad
 
 ![Site layout in 2D](https://www.evtivity.com/screenshots/csms/site-layout-tab.png)
 
-To move stations, click **Edit Layout** in the 3D view, or drag the cards in the 2D view. In 3D, a station snaps to the nearest free bay and never lands on another station. Click **Done Editing** to leave edit mode. Moves stay pending until you click **Save**. **Reset** drops them. You need `sites:write` to move stations.
+To move stations, click **Edit Layout** in the 3D view, or drag the cards in the 2D view. In 3D, the outlined bays show where a station can go, far past the stations, and a station snaps to the nearest free bay and never lands on another station. Click **Done Editing** to leave edit mode. Moves stay pending until you click **Save**. **Reset** drops them. You need `sites:write` to move stations.
 
-A new station, an imported station and a station moved to this site get the first free spot of the layout automatically. A position the layout picked and you have not saved yet carries a **New** tag. Click **Save** to keep it.
+A new station, an imported station and a station moved to this site get the first free spot of the layout automatically. In the 2D view, a position the layout picked and you have not saved yet carries a **New** tag. Click **Save** to keep it.
 
 ### Load Management
 

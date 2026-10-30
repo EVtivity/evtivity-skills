@@ -461,6 +461,7 @@ The SIM provider accounts (Hologram and 1NCE) and the station signal settings be
 
 Amazon S3 (or S3-compatible) object storage for file attachments and station images.
 
+- **Provider** - **Amazon S3** (the default) or **S3-compatible (MinIO, Wasabi)**.
 - **Bucket Name** - S3 bucket name.
 - **Region** - AWS region (e.g., `us-east-1`).
 - **Access Key ID** - IAM access key ID (stored encrypted).
@@ -468,6 +469,34 @@ Amazon S3 (or S3-compatible) object storage for file attachments and station ima
 - **Test Connection** button - verifies S3 bucket access.
 
 Leave both access key fields blank to use the default AWS credential chain. On AWS, that is the task or instance role. If you fill in only one of the two fields, S3 stays disabled until you fill in both or clear both.
+
+**Test Connection** shows only whether the connection worked. The API log holds the details of a failure.
+
+#### S3-Compatible Providers
+
+With **S3-compatible (MinIO, Wasabi)**, the tab shows more fields:
+
+- **Endpoint URL** - the provider's S3 API address, for example `https://s3.example.com`. Enter the origin only, without a bucket, path, or credentials. A public host must use https.
+- **Path-style requests (the bucket in the URL path, needed by most MinIO setups)** - puts the bucket in the URL path instead of the host name.
+- **Endpoint Hosts on Private Networks** - one host per line. The CSMS refuses an endpoint on a private or internal address unless its host is in this list. A listed host may also use http.
+
+Notes:
+
+- Browsers block http images and uploads on a page served over https. When the CSMS or the driver portal runs over https, the endpoint must use https too, also for a listed host.
+- Cloud metadata addresses (such as `169.254.169.254`) and link-local addresses are always refused, even when listed.
+- The CSMS checks the address the endpoint host resolves to on every connection. A host that resolves to a private address is refused unless it is listed.
+- An S3-compatible provider needs both access keys. The default AWS credential chain reaches AWS only.
+- The supported S3-compatible providers are MinIO and Wasabi.
+- A change of the provider or the endpoint asks you to confirm your sign-in again, and an API key cannot change them.
+- Each stored file keeps its bucket and key, not its provider. After you switch providers, the CSMS looks up files uploaded before the switch at the new provider, the same as after a switch of AWS accounts.
+
+#### Showing Stored Images
+
+The CSMS and the driver portal load stored images straight from the storage provider. Their Content Security Policy allows Amazon S3 hosts (`https://*.amazonaws.com`). For an S3-compatible provider, add the endpoint origin to the image origin setting of your deployment. With path-style requests off, images load from the bucket's own host (`<bucket>.<endpoint host>`), so add that origin instead.
+
+- Docker Compose and Docker: `STORAGE_IMG_SRC` on the CSMS and portal containers. See [Docker Compose](https://www.evtivity.com/docs/deployment/docker-compose).
+- Helm: `storage.imgSrc`. See [Helm Chart](https://www.evtivity.com/docs/deployment/helm-chart).
+- AWS CDK: `storage.imgSrc`. See [AWS Deployment](https://www.evtivity.com/docs/deployment/aws).
 
 Includes expandable sections showing the recommended IAM policy and CORS configuration.
 

@@ -46,6 +46,8 @@ window.__RUNTIME_CONFIG__ = {
 
 Set the `API_URL` environment variable on the container. The entrypoint script generates `/runtime-config.js` before nginx starts.
 
+The entrypoint also renders the security headers into `/tmp`, so the containers run with a read-only root filesystem. Set `STORAGE_IMG_SRC` to add the origins of an S3-compatible storage provider to the `img-src` of the Content Security Policy. It takes space-separated origins, each `scheme://host[:port]`, with an optional `*.` wildcard. Any other value stops the container. See [Environment Variables](https://www.evtivity.com/docs/configuration/environment-variables#frontend).
+
 ## OCPP Image
 
 The OCPP image exposes two ports:

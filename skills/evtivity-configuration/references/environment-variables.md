@@ -172,5 +172,6 @@ Integrations (Stripe, S3, SMTP, Twilio, reCAPTCHA, Google Maps, Plug and Charge)
 | `PORTAL_PORT` | `7101` | Host port for the driver portal |
 | `VITE_CSMS_AUTO_LOGIN` | - | Set to a user email to auto-login to the CSMS in development |
 | `VITE_PORTAL_AUTO_LOGIN` | - | Set to a driver email to auto-login to the portal in development |
+| `STORAGE_IMG_SRC` | (empty) | Space-separated origins (`scheme://host[:port]`, optional `*.` wildcard) added to the CSP `img-src` of the CSMS and portal containers, for images stored with an S3-compatible provider. Any other value stops the container. Amazon S3 needs nothing here. Helm: `storage.imgSrc`. AWS CDK: `storage.imgSrc`. See [S3 Bucket](https://www.evtivity.com/docs/csms/settings#s3-bucket). |
 
 Frontend variables must be prefixed with `VITE_` to be exposed to the browser bundle.
