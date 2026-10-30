@@ -116,6 +116,7 @@ The dashboard includes these chart panels:
 - **Revenue History** - Revenue over time, by the same definition as the revenue cards (payments permission)
 - **Payment Breakdown** - Payment status distribution (captured, pending, failed, refunded) (payments permission)
 - **Peak Usage** - Heatmap showing sessions by hour and day of week
+- **Site Layout** - A 3D view of one site's parking lot and stations, above the Site Map (see [Site Layout](#site-layout))
 - **Site Map** - Geographic map of your site locations
 
 Four more charts are hidden by default. Show them in [customize mode](#customize-the-live-dashboard):
@@ -134,6 +135,14 @@ Four more charts are hidden by default. Show them in [customize mode](#customize
 Chart date ranges are whole calendar days in the system timezone. Days without data show as zero.
 
 The chart date pickers (energy, sessions, revenue, peak usage, utilization, Plug & Charge, free vend) constrain the **start** input to `max = end` and the **end** input to `min = start`, so the UI cannot produce an inverted range. The API mirrors the rule on its side: a zero or negative day count, an invalid custom `from` or `to` date, `from > to`, a range longer than 90 days, or a `from` date in the future gets a `400 VALIDATION_ERROR` instead of silently receiving last-7-days data.
+
+## Site Layout
+
+The **Site Layout** card shows the 3D [layout](https://www.evtivity.com/docs/csms/sites#layout) of one site, read only, above the Site Map. It opens on a view from the front of the chargers. Drag to look around, scroll or pinch to zoom, and click **Reset View** to return to the front view. Click a station for its details, with **Open Station**. The card has no editing: click **Open Site Layout** to change the layout on the site's Layout tab.
+
+Pick the site in the list at the top of the card. Your choice is saved with your dashboard layout and follows you to every browser. Until you pick one, the card shows the first of your sites that has stations. When the site you picked is deleted or you lose access to it, the card shows that site instead and says so. The list shows only the sites you can access.
+
+The card needs the `sites:read` permission. Like the other charts, you can move or hide it in [customize mode](#customize-the-live-dashboard). The 3D view renders only while the card is on screen. When the browser cannot show 3D (WebGL is not available), the card shows a note and the **Open Site Layout** link.
 
 ## Active Sessions
 
