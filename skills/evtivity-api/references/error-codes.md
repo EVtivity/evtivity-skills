@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.49-beta.1 (https://github.com/EVtivity/evtivity-csms, commit a030132e96bd) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.49-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 34c1c1a0b35b) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -235,6 +235,18 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `PAYMENT_PROVIDER_PERMISSION_MISSING` | 400 | The payment provider credential lacks a required permission |
 | `PAYMENT_PROVIDER_UPGRADE_PENDING` | 409 | A process older than v0.1.38 is still connected. Finish the upgrade, then select Adyen. |
 | `PAYMENT_RECORD_NOT_RECOVERABLE` | 409 | Payment record is not in a recoverable state |
+| `PAYMENT_TERMINAL_BUSY` | 409 | The payment terminal already has a payment in progress |
+| `PAYMENT_TERMINAL_DEVICE_TAKEN` | 409 | This device is already registered as a payment terminal |
+| `PAYMENT_TERMINAL_EVSE_TAKEN` | 409 | Another active payment terminal is paired to this connector |
+| `PAYMENT_TERMINAL_HARDWARE_MODE` | 400 | The charging station drives this hardware mode terminal; the CSMS cannot start payments on it |
+| `PAYMENT_TERMINAL_HAS_SIM` | 409 | The payment terminal already has a SIM |
+| `PAYMENT_TERMINAL_HAS_TRANSACTIONS` | 409 | The payment terminal has payments and cannot be deleted; deactivate it instead |
+| `PAYMENT_TERMINAL_INACTIVE` | 409 | The payment terminal is inactive |
+| `PAYMENT_TERMINAL_NOT_FOUND` | 404 | Payment terminal not found |
+| `PAYMENT_TERMINAL_NOT_PAIRED` | 409 | The payment terminal is not paired to a charging station |
+| `PAYMENT_TERMINAL_PROVIDER_ERROR` | 502 | The payment terminal provider request failed |
+| `PAYMENT_TERMINAL_PROVIDER_NOT_CONFIGURED` | 400 | The payment terminal provider is off or has no credentials |
+| `PAYMENT_TERMINAL_PROVIDER_UNVERIFIED` | 400 | The ID TECH integration is not verified for production use yet |
 | `PAYMENT_TOP_UP_FAILED` | 502 | Payment top-up rejected |
 | `PAYMENT_WEBHOOK_EXISTS` | 409 | An EVtivity webhook already exists for this provider |
 | `PAYOUT_ACCOUNT_EXISTS` | 409 | The site already has a payout account |
@@ -357,6 +369,8 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `TARIFF_NOT_FOUND` | 404 | Tariff not found |
 | `TARIFF_OVERLAP` | 409 | Tariff overlaps with an existing tariff |
 | `TEMPLATE_NOT_FOUND` | 404 | Template not found |
+| `TERMINAL_TRANSACTION_NOT_FOUND` | 404 | Terminal payment not found |
+| `TERMINAL_TRANSACTION_STATE` | 409 | The terminal payment cannot do this in its current state |
 | `TOKEN_BLOCKED_BY_OPERATOR` | 403 | This card was deactivated by the operator. Contact the operator to reactivate it. |
 | `TOKEN_DUPLICATE` | 409 | Token already registered |
 | `TOKEN_IN_USE` | 409 | Token is currently in use by an active charging session |

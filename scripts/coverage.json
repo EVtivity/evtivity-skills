@@ -75,6 +75,7 @@
   "evtivity-guides": [
     "guides/audit-logs",
     "guides/ev-charging-behaviors",
+    "guides/how-drivers-start-and-pay",
     "guides/notifications",
     "guides/ocpp-testing",
     "guides/portal-setup",
@@ -95,6 +96,7 @@
     "integrations/energy-management",
     "integrations/mcp-server",
     "integrations/payment-providers",
+    "integrations/payment-terminals",
     "integrations/sim-providers",
     "integrations/stripe",
     "integrations/test-payment-provider",

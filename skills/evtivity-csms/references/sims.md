@@ -135,6 +135,8 @@ The SIM's timeline of data sessions and SIM alerts with the strip of fetched day
 
 A SIM is attached to one station at a time, and a station has one SIM at a time.
 
+A SIM can also sit in a payment terminal that has its own cellular connection. It is then attached to the terminal instead of a station, and a SIM the terminal reports is attached to it automatically. See [Payment Terminals](https://www.evtivity.com/docs/integrations/payment-terminals).
+
 **Attach to Station** attaches an unattached SIM to the station you pick and confirms it at once. It is refused when the station already has a SIM (`409 STATION_HAS_SIM`), the SIM is attached to another station (`409 SIM_ATTACHED_ELSEWHERE`) or the SIM is inactive (`409 SIM_INACTIVE`). To move a SIM, detach it first.
 
 **Confirm SIM** confirms an unconfirmed attachment, after you checked that this SIM is in that station. Until then nothing is fetched from the provider for the station and no network reset is possible from the station's **Connectivity** tab. An attachment is confirmed at once when a user with access to every site entered the ICCID on the station, attached the SIM on this page or imported it with the station. See [Confirm SIM](https://www.evtivity.com/docs/csms/station-connectivity#confirm-sim).

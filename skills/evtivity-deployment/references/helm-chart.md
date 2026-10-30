@@ -496,6 +496,8 @@ These keys configure the SIM provider and the station signal reads. They are als
 |-----|--------|---------|---------|
 | `appSettings.sim.hologramEnabled` | `true` or `false` | empty (off on a fresh install) | **Enable Hologram** |
 | `appSettings.sim.hologramOrgId` | 1 to 15 digits. Quote it, for example `"123456"`. | empty | **Organization ID** |
+| `appSettings.sim.oneNceEnabled` | `true` or `false` | empty (off on a fresh install) | **Enable 1NCE** |
+| `appSettings.sim.oneNceClientId` | 1 to 128 printable characters without a space or colon | empty | **Client ID** |
 | `appSettings.sim.sessionsFetchDays` | Whole number, 1 to 31 | empty (7 on a fresh install) | **Default Refresh Period (Days)** |
 | `appSettings.sim.stationSignalEnabled` | `true` or `false` | empty (off on a fresh install) | **Read Signal from Stations** |
 | `appSettings.sim.signalAlertBelowDbm` | Whole number, -140 to -40 | empty (off on a fresh install) | **Low Signal Alert (dBm)**. Turn the alert off in the dashboard. |
@@ -503,13 +505,15 @@ These keys configure the SIM provider and the station signal reads. They are als
 | `appSettings.sim.signalFairDbm` | Whole number, -140 to -40, below `signalGoodDbm` | empty (-85 on a fresh install) | **Fair Signal From (dBm)** |
 | `appSettings.sim.ocpp16SignalKeys` | List of at most 20 configuration key names, each listed once, 1 to 50 characters, for example `[RSSI]` | `[]` (keeps the dashboard value, none on a fresh install) | **OCPP 1.6 Signal Keys** |
 
-Enter the Hologram API key in the dashboard. The chart has no value for it.
+Enter the Hologram API key and the 1NCE client secret in the dashboard. The chart has no value for them, and `appSettings.sim.oneNceClientSecret` fails the render.
 
 ```yaml
 appSettings:
   sim:
     hologramEnabled: true
     hologramOrgId: "123456"
+    oneNceEnabled: true
+    oneNceClientId: "my-api-client"
     stationSignalEnabled: true
     ocpp16SignalKeys: [RSSI]
 ```

@@ -14,7 +14,7 @@ The Users page manages operator accounts that access the CSMS dashboard. Each us
 
 | Role | Default Access |
 |------|----------------|
-| Admin | All 76 permissions. Full access to every page and setting. |
+| Admin | All 78 permissions. Full access to every page and setting. |
 | Operator | Operational subset. No settings access, no user write permissions. |
 | Viewer | Read-only access. |
 
@@ -44,17 +44,18 @@ Roles provide default permission sets. After creating a user, you can customize 
 
 ## Permissions
 
-EVtivity uses 76 granular permissions in `resource:action` format. Actions are either `read` or `write`. Write permission implies read for the same resource.
+EVtivity uses 78 granular permissions in `resource:action` format. Actions are either `read` or `write`. Write permission implies read for the same resource.
 
-### Page Permissions (54)
+### Page Permissions (56)
 
-27 resources with read and write:
+28 resources with read and write:
 
 | Resource | Controls Access To |
 |----------|--------------------|
 | dashboard | Dashboard page and stats |
 | stations | Station list, detail, and commands |
 | sims | SIM list and SIM pages |
+| paymentTerminals | Payment terminals and their payments |
 | sites | Site list and detail |
 | sessions | Session list and detail |
 | drivers | Driver list, detail, and driver tokens |

@@ -92,7 +92,7 @@ When the whole station is unavailable, the page shows "This station is unavailab
 Before starting, the Portal sends a TriggerMessage to the station to request a fresh StatusNotification.
 
 1. The system triggers a status refresh from the station.
-2. If the connector status is **available** (no cable detected), a warning dialog asks you to plug in your EV before proceeding. You can dismiss the warning and start anyway.
+2. If no cable is detected, the **EV Not Detected** dialog asks you to plug in your vehicle. It has only an **OK** button. The Portal sends nothing to the station and places no hold. Plug in your vehicle and tap **Start Charging** again.
 3. If the connector is ready (cable connected), the session starts immediately.
 
 This check prevents failed start attempts when the cable is not plugged in.

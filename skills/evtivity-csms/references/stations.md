@@ -221,6 +221,8 @@ View and manage EVSEs and connectors. Each connector shows its current status wi
 
 EVSE numbers are unique per station, and connector numbers are unique per EVSE.
 
+A payment terminal is paired to one connector of a station, or to the whole station. Pairing needs `paymentTerminals:write` and `stations:write`. See [Payment Terminals](https://www.evtivity.com/docs/integrations/payment-terminals#add-and-pair-a-terminal).
+
 #### OCPP 1.6 stations
 
 An OCPP 1.6 station has no EVSEs. The CSMS stores connector N as EVSE N with a single connector N.

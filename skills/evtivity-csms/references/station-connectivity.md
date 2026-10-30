@@ -67,7 +67,7 @@ The tab shows the SIM's status, sessions, alerts and fetched days only from the 
 
 The **Connectivity** card has one **Refresh** control. One click reads the SIM provider and, while **Read Signal from Stations** is on, the station. Each part reports its own result line, such as the number of sessions and alerts stored or why it was skipped.
 
-1. Pick a **Period**: the last 1, 3, 7, 14 or 31 days, or the default period from the settings (7 days unless changed). Periods longer than the provider keeps data (Hologram: 90 days) or than the CSMS keeps it are disabled, with the reason below the select.
+1. Pick a **Period**: the last 1, 3, 7, 14 or 31 days, or the default period from the settings (7 days unless changed). Periods longer than the provider keeps data (Hologram: 90 days, 1NCE: about 7 days) or than the CSMS keeps it are disabled, with the reason below the select.
 2. Or click **Custom Range** and pick up to 31 days within that window. Days count in the time zone of the station's site, else the system time zone, and the range cannot end in the future. The dialog shows what is already stored for the chosen days.
 3. Click **Refresh**.
 
@@ -82,7 +82,7 @@ The card shows the SIM as the provider reported it at the last **Refresh**:
 - **Provider**, **State** (**Active**, **Pending**, **Suspended**, **Inactive**, **Deactivated**, **Test** or **Unknown**, with the provider's own state name)
 - **In Session**: whether a data session is open, and since when
 - **Network** with its radio access technology (for example LTE), **Cell ID**, **APN**, **Profile**
-- **Last Session** and **Data This Period**, with the end of the billing period
+- **Last Session** and **Data This Period**, with the end of the billing period. For a 1NCE SIM it shows the lifetime data quota, used of total.
 - a warning when the SIM used more than 80 percent of the data limit the provider reports. The provider may pause it at the limit.
 - **Recent SIM Alerts**: the five newest stored alerts
 
@@ -112,7 +112,7 @@ Pick a **Range** (**Last Hour**, **Last 24 Hours**, **Last 7 Days**, **Last 31 D
 - SIM alerts: **Data Limit Reached**, **Data Warning**, **Moved to Another Device**, **Device Model Changed**, **First Device**
 - **Low Signal** and **Signal Restored**, from the low signal alert
 
-The note above the timeline says when SIM data was last fetched and that the provider reports a data session only after it closes (Hologram: up to 6 hours later).
+The note above the timeline says when SIM data was last fetched and that the provider reports a data session only after it closes (Hologram: up to 6 hours later, 1NCE: about 1 hour later).
 
 ### Data coverage
 
@@ -150,6 +150,7 @@ Each **Disconnected** row shows a likely cause, worked out from stored data when
 - It shows only when the provider supports a network reset.
 - One reset per SIM a minute, counted together with the SIM page. A second one answers `429 SIM_PROVIDER_RATE_LIMITED` with the time to wait.
 - An inactive SIM cannot be reset (`409 SIM_INACTIVE`).
+- For a 1NCE SIM, 1NCE queues the reset and the tab shows **Network reset queued, it runs within a few minutes.** A reset 1NCE refuses shows an error.
 - The station **History** tab records each reset (command `SimNetworkReset`) with its outcome.
 
 ## Error codes

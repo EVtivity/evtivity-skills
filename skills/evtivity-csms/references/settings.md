@@ -24,9 +24,9 @@ The **System Information** button at the top of the Settings page opens a read-o
 - **OCPI** - base URL, country code, party ID, and business name.
 - **Simulator** - `CSS_MODE`, the action interval, the station limit, and the number of simulator stations.
 - **Payments** - the selected payment provider and whether it is ready.
-- **SIM Providers** - whether Hologram is on and configured, the days of SIM sessions fetched, and the low signal monitor switch.
+- **SIM Providers** - whether Hologram and 1NCE are on and configured, the days of SIM sessions fetched, and the low signal monitor switch.
 - **Station Data Plans** - the number of stations on the Wi-Fi or wired and on the cellular data plan, and the number of sites set to each plan.
-- **Integrations** - whether each secret and integration is configured: `JWT_SECRET`, `SETTINGS_ENCRYPTION_KEY`, Stripe, Adyen, SMTP, Twilio, S3, reCAPTCHA, Hubject, Google Maps, the webhook signing secret, and the Hologram API key.
+- **Integrations** - whether each secret and integration is configured: `JWT_SECRET`, `SETTINGS_ENCRYPTION_KEY`, Stripe, Adyen, SMTP, Twilio, S3, reCAPTCHA, Hubject, Google Maps, the webhook signing secret, the Hologram API key, and the 1NCE client secret.
 
 ![System Information dialog](https://www.evtivity.com/screenshots/csms/settings-system-information.png)
 
@@ -228,7 +228,9 @@ Parameters for CO₂ emissions calculations on the sustainability report.
 
 **Permission:** `settings.payment:read` / `settings.payment:write`. Creating webhooks, saving Adyen settings, and site payout actions also need `payments:write`. Without it, those controls are hidden.
 
-Card payment configuration with four sub-tabs: General, Stripe, Adyen, and Site Configurations. The tab opens on General. Saving a provider's keys does not select it: select the provider on the General tab. See [Payment Providers](https://www.evtivity.com/docs/integrations/payment-providers) for the providers and how the active one is chosen.
+Card payment configuration with five sub-tabs: General, Stripe, Adyen, Payment Terminals, and Site Configurations. The tab opens on General. Saving a provider's keys does not select it: select the provider on the General tab. See [Payment Providers](https://www.evtivity.com/docs/integrations/payment-providers) for the providers and how the active one is chosen.
+
+The **Payment Terminals** sub-tab holds the ID TECH account of the card readers at the chargers: environment, merchant ID, API key, API secret and webhook secret. Changing the environment, the merchant ID or a credential asks you to confirm your sign-in again, and an API key cannot change them. See [Payment Terminals](https://www.evtivity.com/docs/integrations/payment-terminals#settings).
 
 ![Payment settings, General tab](https://www.evtivity.com/screenshots/csms/settings-payment-general.png)
 
@@ -249,7 +251,7 @@ Card payment configuration with four sub-tabs: General, Stripe, Adyen, and Site 
 
 ![Invoice settings](https://www.evtivity.com/screenshots/csms/settings-payment-terms.png)
 
-A site-restricted user does not see the provider, Stripe, and Adyen settings. It sees the **Site Configurations** sub-tab, and the **Prepaid Cards** and **Invoices** cards read-only when it can read system settings. See [Company-Wide Features](https://www.evtivity.com/docs/csms/users#company-wide-features).
+A site-restricted user does not see the provider, Stripe, Adyen, and Payment Terminals settings. It sees the **Site Configurations** sub-tab, and the **Prepaid Cards** and **Invoices** cards read-only when it can read system settings. See [Company-Wide Features](https://www.evtivity.com/docs/csms/users#company-wide-features).
 
 Save sends only the changed fields. When the selection is refused, the previous provider stays selected and the panel shows the details.
 
@@ -453,7 +455,7 @@ OCPP 1.6 stations have no native equivalent. They receive the Idle screen (Avail
 
 ### SIM Providers
 
-The SIM provider account (Hologram) and the station signal settings behind the **SIMs** page and the station **Connectivity** tab. Needs access to every site. Off by default: while Hologram and **Read Signal from Stations** are both off, nothing changes. See [SIM Providers](https://www.evtivity.com/docs/integrations/sim-providers).
+The SIM provider accounts (Hologram and 1NCE) and the station signal settings behind the **SIMs** page and the station **Connectivity** tab. Needs access to every site. Off by default: while Hologram, 1NCE and **Read Signal from Stations** are all off, nothing changes. See [SIM Providers](https://www.evtivity.com/docs/integrations/sim-providers).
 
 ### S3 Bucket
 

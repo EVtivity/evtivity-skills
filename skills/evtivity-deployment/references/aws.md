@@ -157,13 +157,14 @@ See [Multi-Factor Authentication](https://www.evtivity.com/docs/configuration/au
 
 The config can set the SIM provider settings. Leave a key out to keep the value set in the dashboard (Settings > Integrations & Features > SIM Providers). The config load fails with an unsupported value.
 
-- `appSettings['sim.hologram.enabled']` and `appSettings['sim.stationSignal.enabled']` (true or false).
+- `appSettings['sim.hologram.enabled']`, `appSettings['sim.1nce.enabled']` and `appSettings['sim.stationSignal.enabled']` (true or false).
 - `appSettings['sim.hologram.orgId']`, the Hologram organization ID: a quoted string of 1 to 15 digits, as in `'123456'`.
+- `appSettings['sim.1nce.clientId']`, the 1NCE client ID: a quoted string of 1 to 128 printable characters without a space or colon.
 - `appSettings['sim.sessions.fetchDays']` (whole number, 1 to 31). The SIM retention is set in **Settings > Data Retention**.
 - `appSettings['sim.signal.alertBelowDbm']`, `appSettings['sim.signal.goodDbm']` and `appSettings['sim.signal.fairDbm']` (whole numbers, -140 to -40). The good threshold must be above the fair one.
 - `appSettings['sim.ocpp16.signalKeys']`, a list of at most 20 configuration key names, each listed once and 1 to 50 characters long, as in `sim.ocpp16.signalKeys: [RSSI]`.
 
-Enter the Hologram API key in the dashboard. The config load refuses `sim.hologram.apiKey`. See [SIM Providers](https://www.evtivity.com/docs/integrations/sim-providers).
+Enter the Hologram API key and the 1NCE client secret in the dashboard. The config load refuses `sim.hologram.apiKey`, `sim.1nce.clientSecret` and `sim.1nce.clientSecretEnc`. See [SIM Providers](https://www.evtivity.com/docs/integrations/sim-providers).
 
 ### Client Addresses
 

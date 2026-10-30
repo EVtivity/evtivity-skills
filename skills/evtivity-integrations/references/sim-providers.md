@@ -6,15 +6,17 @@ Connect the SIM provider of your cellular stations to see their SIM status, data
 
 ## Overview
 
-A SIM provider account lets the CSMS show the SIM status, the cellular data sessions and the SIM alerts of each cellular station on the station's **Connectivity** tab, beside the station's own OCPP connects and disconnects, and of each SIM on the [SIMs](https://www.evtivity.com/docs/csms/sims) page. Hologram is the supported provider.
+A SIM provider account lets the CSMS show the SIM status, the cellular data sessions and the SIM alerts of each cellular station on the station's **Connectivity** tab, beside the station's own OCPP connects and disconnects, and of each SIM on the [SIMs](https://www.evtivity.com/docs/csms/sims) page. Hologram and 1NCE are the supported providers.
 
 Configure it under **Settings > Integrations & Features > SIM Providers**.
 
 ![SIM Providers settings](https://www.evtivity.com/screenshots/csms/settings-sim-providers.png)
 
-The feature is off by default. While Hologram and **Read Signal from Stations** are both off, the CSMS calls no SIM provider and sends no SIM related OCPP request, the station pages show no **Connectivity** tab and no ICCID field, and the **SIMs** page is hidden. Turning either one on shows them.
+The feature is off by default. While Hologram, 1NCE and **Read Signal from Stations** are all off, the CSMS calls no SIM provider and sends no SIM related OCPP request, the station pages show no **Connectivity** tab and no ICCID field, and the **SIMs** page is hidden. Turning any one of them on shows them.
 
-For the station side (Refresh, Confirm SIM, the timeline and the network reset), see [Station Connectivity](https://www.evtivity.com/docs/csms/station-connectivity). For the SIM records (import, export, attach, detach and deactivate), see [SIMs](https://www.evtivity.com/docs/csms/sims).
+Both providers can be on at once. The CSMS looks up a station's ICCID at Hologram first, then at 1NCE. A station may report the 20-digit ICCID with its check digit. The CSMS finds the 1NCE SIM either way.
+
+For the station side (Refresh, Confirm SIM, the timeline and the network reset), see [Station Connectivity](https://www.evtivity.com/docs/csms/station-connectivity). For the SIM records (import, export, attach, detach and deactivate), see [SIMs](https://www.evtivity.com/docs/csms/sims). A SIM can also sit in a payment terminal with its own cellular connection. See [Payment Terminals](https://www.evtivity.com/docs/integrations/payment-terminals).
 
 ## Permissions
 
@@ -23,6 +25,7 @@ For the station side (Refresh, Confirm SIM, the timeline and the network reset),
 | View the SIM Providers settings | `settings.integrations:read` and access to every site |
 | Save the settings, Test Connection | `settings.integrations:write` and access to every site |
 | See the stored API key | `settings.system:read` (other users see only that a key is stored) |
+| See the stored client secret | `settings.system:read` (other users see only that a secret is stored) |
 
 The settings apply to every site. A user with access to some sites only sees a note instead of the settings, and the API answers `404` to that user.
 
@@ -53,6 +56,43 @@ Test Connection runs at most 6 times a minute. While Hologram asks the CSMS to s
 - Hologram keeps 90 days of data. A Refresh cannot fetch older periods.
 - A SIM alert (data limit reached, data warning, the SIM moved to another device, device model changed, first device) reaches the CSMS only with a Refresh.
 - When Hologram answers `429`, the CSMS calls Hologram again only after the wait it gives, at most one hour (60 seconds when it gives none).
+
+## 1NCE
+
+The 1NCE card reads the SIM status, the data quota, sessions from network events and SIM alerts through the 1NCE Management API. 1NCE Insights is not needed.
+
+### 1. Create an API client
+
+In the 1NCE Portal, open **Account > Management API Access** and create an API client.
+
+### 2. Enter the account
+
+1. Turn on **Enable 1NCE**.
+2. Enter the **Client ID**: 1 to 128 printable characters without spaces or colons.
+3. Enter the **Client Secret**.
+4. Click **Save**.
+
+The CSMS stores the client secret encrypted. It never appears in logs, and the settings audit log records it as `<redacted>`.
+
+### 3. Test the connection
+
+Click **Test Connection**. It uses the saved values, so save your changes first. On success it shows **Connected. The account has N SIMs.**
+
+Test Connection runs at most 6 times a minute. While 1NCE asks the CSMS to slow down, the test answers `429 SIM_PROVIDER_RATE_LIMITED` with the time to wait.
+
+### 1NCE data
+
+- Sessions come from the SIM's network events: the start and the end of each data session.
+- The CSMS reads about 7 days of history. Refresh periods longer than that are disabled.
+- A session shows about 1 hour after it ends. The newest hour shows as **Pending** until then.
+- Data usage is the SIM's lifetime data quota, shown as used of total. The usage warning shows at 80 percent.
+- SIM alerts: data warning (less than 20 percent of the quota left), data limit (the quota is used up) and the SIM moved to another device. They reach the CSMS only with a Refresh.
+- The network name, the radio type and the cell ID of a 1NCE session are not shown yet.
+- A SIM that is Disabled in 1NCE shows as **Suspended**.
+- A Refresh reads at most 10000 events. When a SIM has more in the period, the coverage starts at the oldest event read.
+- When 1NCE answers `429`, the CSMS calls 1NCE again only after the wait it gives, at most one hour (60 seconds when it gives none).
+- 1NCE allows 10 API requests a second per account, shared with your other 1NCE tools. One Refresh makes 3 calls plus up to 10 event pages.
+- **Reset Network**: 1NCE queues the reset, and the CSMS shows **Network reset queued, it runs within a few minutes.** A reset 1NCE refuses shows an error.
 
 ## Session History
 

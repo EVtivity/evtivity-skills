@@ -28,7 +28,7 @@ The token type is the OCPP 2.1 IdToken type. Every form offers the same list.
 | DirectPayment | A payment terminal reference. |
 | NoAuthorization | A marker for charging without authorization. |
 
-Drivers who add a card in the portal choose from ISO14443, ISO15693, KeyCode, eMAID, EVCCID, MacAddress, VIN and Local.
+Drivers who add an RFID card in the portal or the mobile app choose from ISO14443, ISO15693, KeyCode, eMAID and Local. The portal and the app refuse the vehicle id types EVCCID, MacAddress and VIN. A driver adds those to a vehicle on the Vehicles page instead. Operators can add a token of every type.
 
 ## Create a Token
 

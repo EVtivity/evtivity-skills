@@ -1,6 +1,6 @@
 # EVtivity API routes: Settings
 
-Generated from EVtivity CSMS v0.1.49-beta.1 (https://github.com/EVtivity/evtivity-csms, commit a030132e96bd) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.49-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 34c1c1a0b35b) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -29,6 +29,9 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/settings/sim-providers` | settings.integrations:read | Get SIM provider settings |
 | PUT | `/v1/settings/sim-providers` | settings.integrations:write | Update SIM provider settings |
 | POST | `/v1/settings/sim-providers/{provider}/test` | settings.integrations:write | Test a SIM provider connection |
+| GET | `/v1/settings/payment-terminals` | settings.payment:read | Get payment terminal settings |
+| PUT | `/v1/settings/payment-terminals` | settings.payment:write | Update payment terminal settings |
+| POST | `/v1/settings/payment-terminals/{provider}/test` | settings.payment:write | Test a payment terminal provider connection |
 | GET | `/v1/settings/data-retention` | settings.system:read | Get data retention settings |
 | PUT | `/v1/settings/data-retention` | settings.system:write | Update data retention settings |
 | GET | `/v1/settings/ai/insights-scope` | settings.system:read | Get the AI insights scope |

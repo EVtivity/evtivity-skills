@@ -1,6 +1,6 @@
 # EVtivity API routes: Webhooks
 
-Generated from EVtivity CSMS v0.1.49-beta.1 (https://github.com/EVtivity/evtivity-csms, commit a030132e96bd) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.49-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 34c1c1a0b35b) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -12,3 +12,4 @@ A `write` permission includes `read` for the same resource.
 |---|---|---|---|
 | POST | `/v1/webhooks/payments/stripe` | public | Handle Stripe webhook events |
 | POST | `/v1/webhooks/payments/adyen` | public | Handle Adyen webhook events |
+| POST | `/v1/webhooks/payment-terminals/idtech` | public | Handle ID TECH payment terminal events |

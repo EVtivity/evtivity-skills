@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.49-beta.1 (https://github.com/EVtivity/evtivity-csms, commit a030132e96bd) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.49-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 34c1c1a0b35b) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
@@ -27,7 +27,7 @@ A `write` permission includes `read` for the same resource.
 | Fleets | 34 | `references/routes-fleets.md` |
 | Tokens | 12 | `references/routes-tokens.md` |
 | Dashboard | 21 | `references/routes-dashboard.md` |
-| Settings | 42 | `references/routes-settings.md` |
+| Settings | 45 | `references/routes-settings.md` |
 | Documentation | 1 | `references/routes-documentation.md` |
 | Payments | 38 | `references/routes-payments.md` |
 | Events | 1 | `references/routes-events.md` |
@@ -47,7 +47,7 @@ A `write` permission includes `read` for the same resource.
 | Display Messages | 4 | `references/routes-display-messages.md` |
 | Reports | 13 | `references/routes-reports.md` |
 | NEVI | 6 | `references/routes-nevi.md` |
-| Webhooks | 2 | `references/routes-webhooks.md` |
+| Webhooks | 3 | `references/routes-webhooks.md` |
 | Invoices | 12 | `references/routes-invoices.md` |
 | Support Cases | 16 | `references/routes-support-cases.md` |
 | Portal Vehicles | 6 | `references/routes-portal-vehicles.md` |
@@ -59,6 +59,7 @@ A `write` permission includes `read` for the same resource.
 | Portal Events | 1 | `references/routes-portal-events.md` |
 | OCPI | 23 | `references/routes-ocpi.md` |
 | PnC | 14 | `references/routes-pnc.md` |
+| Payment Terminals | 17 | `references/routes-payment-terminals.md` |
 | Local Auth List | 5 | `references/routes-local-auth-list.md` |
 | Fleet Operations | 21 | `references/routes-fleet-operations.md` |
 | Event Alert Rules | 4 | `references/routes-event-alert-rules.md` |

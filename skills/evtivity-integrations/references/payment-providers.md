@@ -16,6 +16,8 @@ EVtivity takes card payments through a payment provider. Every payment flow (car
 
 Each provider has its own step-by-step setup page.
 
+Card readers at the charger, where drivers pay without an account, run through a terminal provider instead. See [Payment Terminals](https://www.evtivity.com/docs/integrations/payment-terminals).
+
 ## Choosing the Active Provider
 
 The `payments.provider` setting selects the provider of new payments:
@@ -44,7 +46,7 @@ These settings apply to every provider. Set them in Settings > Payment > General
 
 ### Provider Pinning
 
-Existing payments stay with their provider. A saved card, and every hold, capture, top-up, refund, and fee on a payment, always goes to the provider that created it, never to the active one. Switching the active provider affects only new cards and new holds. Keep the credentials of the previous provider set until its open payments are settled and no more refunds are expected. When a pinned provider is not configured, a hold on that card is skipped with a warning, and a capture or refund answers 400 `PAYMENT_PROVIDER_NOT_CONFIGURED`.
+Existing payments stay with their provider. A saved card, and every hold, capture, top-up, refund, and fee on a payment, always goes to the provider that created it, never to the active one. Switching the active provider affects only new cards and new holds. Keep the credentials of the previous provider set until its open payments are settled and no more refunds are expected. When a saved credit card belongs to a provider that is no longer set up, while another provider is active, the CSMS stops a session that needs a hold on it as `MissingPaymentMethod`. A portal start with that credit card answers 400 `PAYMENT_METHOD_REQUIRED` and asks the driver to add a new credit card. When the selected provider cannot be used, for example because its credentials are missing, the CSMS stops paid sessions and bills nothing, and a portal start of a paid session answers 400 `PAYMENT_PROVIDER_NOT_CONFIGURED`. A capture or refund on a payment whose provider is not set up answers 400 `PAYMENT_PROVIDER_NOT_CONFIGURED`.
 
 ## Payment Lifecycle
 
