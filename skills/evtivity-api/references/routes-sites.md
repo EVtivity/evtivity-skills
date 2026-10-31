@@ -1,6 +1,6 @@
 # EVtivity API routes: Sites
 
-Generated from EVtivity CSMS v0.1.49-beta.5 (https://github.com/EVtivity/evtivity-csms, commit faa640e387de) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.49-beta.6 (https://github.com/EVtivity/evtivity-csms, commit 96666efb0392) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -31,6 +31,7 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/sites/{id}/sessions` | sites:read | List charging sessions at a site |
 | GET | `/v1/sites/{id}/layout` | sites:read | Get station layout positions for a site |
 | PUT | `/v1/sites/{id}/layout` | sites:write | Update station layout positions for a site |
+| GET | `/v1/sites/{id}/layout/replay` | sites:read | Replay one day of the site layout |
 | GET | `/v1/sites/{id}/pricing-groups` | sites:read | Get the pricing group for a site |
 | POST | `/v1/sites/{id}/pricing-groups` | sites:write | Assign a pricing group to a site |
 | DELETE | `/v1/sites/{id}/pricing-groups/{pricingGroupId}` | sites:write | Remove a pricing group from a site |
