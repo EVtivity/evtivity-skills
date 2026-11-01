@@ -5,8 +5,8 @@ license: MIT
 compatibility: Docker Compose targets need Docker with Compose v2. Kubernetes targets need kubectl, Helm 3, Kubernetes 1.27+ and a Gateway API implementation (Istio or Envoy Gateway), plus minikube and optionally istioctl for local clusters. AWS needs Node.js with npm, the AWS CLI and the AWS CDK, run against your own account.
 metadata:
   evtivity-version: "0.1.49"
-  evtivity-release: "v0.1.49-beta.7"
-  evtivity-commit: "7979765123c72306e008fe774fdc2864796e1ada"
+  evtivity-release: "v0.1.49-beta.8"
+  evtivity-commit: "0a0f5ce442650169741419f215b676663162cc71"
   evtivity-docs-section: deployment
 ---
 
