@@ -16,9 +16,14 @@ Adding your vehicles lets the app estimate the range each session adds and feed 
 2. Tap **Add Vehicle**.
 3. Choose the make, then the model, from the lists.
 4. Optionally enter the year.
-5. Tap **Add**.
+5. Optionally choose the color and the body type, or leave **Not Set**.
+6. Tap **Add**.
 
 The vehicle appears in your list with its make, model, and year.
+
+## Change the color or body type
+
+Tap the pencil icon next to a vehicle, choose a color and a body type (**Sedan**, **Hatchback**, **SUV**, **Pickup Truck**, **Van**, **Box Truck**, **Bus** or **Semi Truck**), or **Not Set** to remove one, and tap **Save**. The list shows each vehicle's year, color and body type.
 
 ## Remove a vehicle
 

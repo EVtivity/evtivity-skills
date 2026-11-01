@@ -463,7 +463,7 @@ Amazon S3 (or S3-compatible) object storage for file attachments and station ima
 
 - **Provider** - **Amazon S3** (the default) or **S3-compatible (MinIO, Wasabi)**.
 - **Bucket Name** - S3 bucket name.
-- **Region** - AWS region (e.g., `us-east-1`).
+- **Region** - the bucket's region, for example `us-east-1`. Required for Amazon S3. Optional for an S3-compatible provider: left empty, the CSMS uses `us-east-1`. Some providers, such as Wasabi, need the bucket's own region.
 - **Access Key ID** - IAM access key ID (stored encrypted).
 - **Secret Access Key** - IAM secret access key (stored encrypted).
 - **Test Connection** button - verifies S3 bucket access.
@@ -474,11 +474,16 @@ Leave both access key fields blank to use the default AWS credential chain. On A
 
 #### S3-Compatible Providers
 
-With **S3-compatible (MinIO, Wasabi)**, the tab shows more fields:
+With **S3-compatible (MinIO, Wasabi)**, the tab also shows the endpoint:
 
 - **Endpoint URL** - the provider's S3 API address, for example `https://s3.example.com`. Enter the origin only, without a bucket, path, or credentials. A public host must use https.
+
+**Advanced Options** starts closed and holds two more settings. Its title line names the ones that are set.
+
 - **Path-style requests (the bucket in the URL path, needed by most MinIO setups)** - puts the bucket in the URL path instead of the host name.
 - **Endpoint Hosts on Private Networks** - one host per line. The CSMS refuses an endpoint on a private or internal address unless its host is in this list. A listed host may also use http.
+
+![S3 Bucket tab with an S3-compatible provider](https://www.evtivity.com/screenshots/csms/settings-s3-compatible.png)
 
 Notes:
 
@@ -490,6 +495,87 @@ Notes:
 - A change of the provider or the endpoint asks you to confirm your sign-in again, and an API key cannot change them.
 - Each stored file keeps its bucket and key, not its provider. After you switch providers, the CSMS looks up files uploaded before the switch at the new provider, the same as after a switch of AWS accounts.
 
+For an S3-compatible provider, the tab shows one note in place of the Amazon S3 IAM policy and CORS examples. It lists the permissions the access key needs on the bucket, lists the CSMS and driver portal origins that the bucket's CORS rules must allow for `POST` and `GET` (each with a copy button), and links to the steps below. The permissions are:
+
+| Permission   | S3 action         |
+| ------------ | ----------------- |
+| Upload files | `s3:PutObject`    |
+| Read files   | `s3:GetObject`    |
+| Delete files | `s3:DeleteObject` |
+| List files   | `s3:ListBucket`   |
+
+#### MinIO and Wasabi Setup
+
+These steps give the access key the four permissions above on one bucket, and allow browser uploads from the CSMS and the driver portal. Replace `csms-files` with your bucket name, and `https://csms.example.com` and `https://portal.example.com` with the origins the storage tab shows.
+
+Both providers take this policy. Save it as `evtivity-storage.json`:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:ListBucket"],
+      "Resource": ["arn:aws:s3:::csms-files"]
+    },
+    {
+      "Effect": "Allow",
+      "Action": ["s3:PutObject", "s3:GetObject", "s3:DeleteObject"],
+      "Resource": ["arn:aws:s3:::csms-files/*"]
+    }
+  ]
+}
+```
+
+##### MinIO
+
+These steps use the MinIO client `mc` with an alias for your deployment, here `myminio`. See the [MinIO AIStor documentation](https://docs.min.io/aistor/) for `mc admin policy`, `mc admin user` and `mc cors`.
+
+1. Create the policy: `mc admin policy create myminio evtivity-storage evtivity-storage.json`.
+2. Create a user for the CSMS: `mc admin user add myminio evtivity-csms <secret key>`. The secret key needs at least 8 characters.
+3. Attach the policy to the user: `mc admin policy attach myminio evtivity-storage --user evtivity-csms`.
+4. In the storage tab, enter `evtivity-csms` as the **Access Key ID** and the secret key as the **Secret Access Key**.
+5. Save this CORS rule as `cors.xml` and apply it with `mc cors set myminio/csms-files cors.xml`:
+
+```xml
+<CORSConfiguration>
+  <CORSRule>
+    <AllowedOrigin>https://csms.example.com</AllowedOrigin>
+    <AllowedOrigin>https://portal.example.com</AllowedOrigin>
+    <AllowedMethod>POST</AllowedMethod>
+    <AllowedMethod>GET</AllowedMethod>
+    <AllowedHeader>*</AllowedHeader>
+    <MaxAgeSeconds>300</MaxAgeSeconds>
+  </CORSRule>
+</CORSConfiguration>
+```
+
+A bucket without its own CORS rule uses the server-wide `MINIO_API_CORS_ALLOW_ORIGIN` setting, which allows every origin by default. Most MinIO deployments also need **Path-style requests** under **Advanced Options**. A MinIO server on a private network needs its host under **Endpoint Hosts on Private Networks**.
+
+##### Wasabi
+
+These steps use the Wasabi Console. See the [Wasabi documentation](https://docs.wasabi.com/) for policies, users and bucket CORS.
+
+1. Open Policies, click Create Policy, and enter the policy above.
+2. Open Users and click Create User. Enter a user name, select Programmatic access, and continue to the policies step. Click + beside the new policy, then create the user.
+3. Copy the access key and secret key that Wasabi shows. In the storage tab, enter them as the **Access Key ID** and **Secret Access Key**.
+4. Enter the service URL of the bucket's region as the **Endpoint URL**, for example `https://s3.eu-central-1.wasabisys.com` (US East 1: `https://s3.wasabisys.com`), and the region code as the **Region**, here `eu-central-1`.
+5. Wasabi answers browser requests from every origin by default, so uploads work without a CORS change. To allow only your two origins, open the bucket's Settings, then the Permissions tab, then Cross-Origin Resource Sharing (CORS). Click Edit, enter one rule that allows `POST` and `GET` from the CSMS and driver portal origins, and save.
+
+   The editor takes a JSON array of rules, for example:
+
+   ```json
+   [
+     {
+       "AllowedHeaders": ["*"],
+       "AllowedMethods": ["POST", "GET"],
+       "AllowedOrigins": ["https://csms.example.com", "https://portal.example.com"],
+       "ExposeHeaders": []
+     }
+   ]
+   ```
+
 #### Showing Stored Images
 
 The CSMS and the driver portal load stored images straight from the storage provider. Their Content Security Policy allows Amazon S3 hosts (`https://*.amazonaws.com`). For an S3-compatible provider, add the endpoint origin to the image origin setting of your deployment. With path-style requests off, images load from the bucket's own host (`<bucket>.<endpoint host>`), so add that origin instead.
@@ -498,7 +584,7 @@ The CSMS and the driver portal load stored images straight from the storage prov
 - Helm: `storage.imgSrc`. See [Helm Chart](https://www.evtivity.com/docs/deployment/helm-chart).
 - AWS CDK: `storage.imgSrc`. See [AWS Deployment](https://www.evtivity.com/docs/deployment/aws).
 
-Includes expandable sections showing the recommended IAM policy and CORS configuration.
+For Amazon S3, the tab includes expandable sections showing the recommended IAM policy and CORS configuration.
 
 The CSMS uploads support case attachments and station images, and the driver portal uploads driver avatars, straight to the bucket with a presigned `POST`. A self-managed bucket needs a CORS rule that allows `POST` from both the CSMS origin and the driver portal origin, for example:
 

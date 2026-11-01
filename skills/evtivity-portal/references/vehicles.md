@@ -24,9 +24,14 @@ These estimates help you track how far your EV travels on the energy you consume
 
 1. Open **Account** > **Vehicles**, or tap the **Vehicles** card on the Home page.
 2. Enter the make, model, and optional year.
-3. Tap **Add Vehicle**.
-4. The system looks up the vehicle's efficiency from a built-in table of 24 common EVs, including Tesla Model 3, Chevy Bolt, Nissan Leaf, BMW i4, Ford Mustang Mach-E, Hyundai Ioniq 5, and others. A year-specific entry is preferred when one exists; otherwise the lookup falls back to the year-agnostic row for the make and model.
-5. If no match is found, a default efficiency of 3.5 mi/kWh is used.
+3. Optionally choose the color and the body type.
+4. Tap **Add Vehicle**.
+5. The system looks up the vehicle's efficiency from a built-in table of 24 common EVs, including Tesla Model 3, Chevy Bolt, Nissan Leaf, BMW i4, Ford Mustang Mach-E, Hyundai Ioniq 5, and others. A year-specific entry is preferred when one exists; otherwise the lookup falls back to the year-agnostic row for the make and model.
+6. If no match is found, a default efficiency of 3.5 mi/kWh is used.
+
+## Color and Body Type
+
+Each vehicle card has a **Color** and a **Body Type** selector (**Sedan**, **Hatchback**, **SUV**, **Pickup Truck**, **Van**, **Box Truck**, **Bus** or **Semi Truck**). A change saves at once; **Not Set** removes the value. While you charge, the operator's site map can show your car in this color and shape.
 
 ## How Miles Are Calculated
 

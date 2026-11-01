@@ -116,7 +116,7 @@ The dashboard includes these chart panels:
 - **Revenue History** - Revenue over time, by the same definition as the revenue cards (payments permission)
 - **Payment Breakdown** - Payment status distribution (captured, pending, failed, refunded) (payments permission)
 - **Peak Usage** - Heatmap showing sessions by hour and day of week
-- **Site Layout** - A 3D view of one site, its stations and their surroundings (a parking lot, or the car park in front of a building), above the Site Map (see [Site Layout](#site-layout))
+- **Site Layout** - A 3D view of one site, its stations and their surroundings (a parking lot, an office or retail site, or a curbside street), above the Site Map (see [Site Layout](#site-layout))
 - **Site Map** - Geographic map of your site locations
 
 Four more charts are hidden by default. Show them in [customize mode](#customize-the-live-dashboard):
@@ -138,7 +138,9 @@ The chart date pickers (energy, sessions, revenue, peak usage, utilization, Plug
 
 ## Site Layout
 
-The **Site Layout** card shows the 3D [layout](https://www.evtivity.com/docs/csms/sites#layout) of one site, read only, above the Site Map. It opens on a view in front of the chargers, at about eye height. Drag to look around, scroll or pinch to zoom, and click **Reset View** to return to the front view. Click a station for its details, with **Open Station**. The card has no editing: click **Open Site Layout** to change the layout on the site's Layout tab.
+The **Site Layout** card shows the 3D [layout](https://www.evtivity.com/docs/csms/sites#layout) of one site, read only, above the Site Map. It opens on a view in front of the chargers, at about eye height. Drag to look around, scroll or pinch to zoom, and click **Reset View** to return to the front view. **Full Screen** fills the screen with the view, with its labels, popups, summary chip and station list; press Escape or click **Exit Full Screen** to return (on an iPhone the view fills the browser window instead). Click a station for its details, with **Open Station**. The card has no editing: click **Open Site Layout** to change the layout on the site's Layout tab.
+
+![Site Layout card](https://www.evtivity.com/screenshots/csms/dashboard-site-layout.png)
 
 The card updates live, like the Layout tab. It shows the same live power on the load management links and panel bars, the beacons of faulted stations, the AI insight markers, the summary chip, the station list and the driver avatars over charging cars with their session details (see [Layout](https://www.evtivity.com/docs/csms/sites#layout)). Day replay is on the Layout tab only.
 

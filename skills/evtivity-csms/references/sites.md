@@ -15,6 +15,7 @@ A site represents a physical location (parking garage, office building, retail c
 1. Navigate to **Sites** in the sidebar.
 2. Click **Create Site**.
 3. Fill in the required fields: name and address.
+   Pick the **Site Type**: **Parking Lot** (the default), **Office or Retail**, **Curbside**, **Depot** or **Custom**. It decides how the [layout](#layout) shows the site.
 4. Optionally add coordinates (latitude/longitude) for map display, contact information, and hours of operation.
    The **Country** field takes an ISO 3166-1 code (for example `US` or `DE`) or an English country name (for example `Germany`).
 5. Click **Create**.
@@ -33,11 +34,13 @@ Click any site in the list to open the detail page. The site detail page has the
 
 ### Details
 
-Edit the site's name, address, coordinates, contact information, and hours of operation. Hours of operation is a free-form text field displayed in the driver portal's location detail page. Assign a carbon region (EPA eGRID subregion or Ember country-level) for CO₂ tracking on completed sessions.
+Edit the site's name, address, coordinates, contact information, hours of operation and **Site Type**. Hours of operation is a free-form text field displayed in the driver portal's location detail page. Assign a carbon region (EPA eGRID subregion or Ember country-level) for CO₂ tracking on completed sessions.
 
 **Station Display Language** sets the language of the station screens at this site. **Company default** follows the display language under Settings > Integrations & Features > Messages. A change updates the screens of the site's online stations. See [Station display messages](https://www.evtivity.com/docs/guides/station-display-messages).
 
 Contact information has a **Make contact info public** toggle. When off (the default) the contact name, email, and phone are visible only to operators and never to drivers. When on, the same three fields appear on the driver portal's charger and location detail pages, and the operator name is published to OCPI roaming partners. The toggle change is captured in the site audit log so a later compliance query can find when each site started or stopped publishing contact details.
+
+The Details tab also shows a read-only summary of the layout, for example **Parking Lot, 2 x 10 spots, 2 transformers**, **Office or Retail, 12 wall chargers**, **Curbside, 4 + 6 chargers**, **Depot, 6 bus bays, 3 truck lanes** or **Custom, stations placed freely**. It links to the **Layout** tab. Changing the site type moves stations outside the new layout to the nearest free position; a station with no free position left stands off the lot. You need `sites:write` to change the site type.
 
 To remove an address, coordinate, or contact detail, empty the field and save. A removed contact email or phone no longer appears to drivers. Changes to the name, address, coordinates, timezone, hours, or public contact reach roaming partners right away.
 
@@ -87,7 +90,45 @@ The **Layout** tab shows where the site's stations stand. Switch between the **3
 
 ![Site layout in 3D](https://www.evtivity.com/screenshots/csms/site-layout-3d.png)
 
-The 3D view shows the site by its site type. A **Parking Lot** is an outdoor hub: a paved lot with painted spots and a curb, on grass that fills the whole view at any zoom and angle. An **Office or Retail** site is the car park in front of a building: the lot runs along the building front, with a sidewalk between them, and the building has its windows and an entrance with a canopy. An AC station shows as an **AC Pedestal** at the curb, and on an Office or Retail site as a wall box on the building facade when it stands in the row along the building. A DC station shows as a **DC Fast Charger**. A station is DC when one of its connectors is DC. The status light on each charger has the color of the station's state. A charging station has a car parked in its spot on the charging cable, nose to the charger, and a light around its screen or connector that glows in the charging color. The glow pulses gently, and stays steady when your system reduces motion. A reserved station has a **Reserved** sign on a concrete footing, and a station in maintenance a traffic cone. The back panel of every charger carries your company logo from **Settings** > **Company**, or stays plain without one. Drag to rotate, scroll or pinch to zoom, and right-drag or two-finger drag to pan along the ground. **Fit to View** brings the lot and everything on it back into view. On an Office or Retail site it looks at the lot from the open side, with the building behind it.
+The 3D view shows the site by its site type, drawn with standard real dimensions: 2.6 by 5.5 m spots, a 7 m two-way drive aisle, 2.4 by 6 m parallel spots and 3.5 m travel lanes.
+
+- A **Parking Lot** is an outdoor hub: a paved lot with painted spots and a curb, on grass that fills the whole view at any zoom and angle. The chargers stand at the curb of paired rows. Transformers, batteries, solar canopies and load management panels show only on a Parking Lot, a Depot and a Custom site.
+- An **Office or Retail** site is one row of spots along a building, with a sidewalk between them and a drive aisle in front. The building has its windows and an entrance with a canopy. With **Wall** mounting, an AC charger is a wall box on the facade, with its cable across the sidewalk to the car; a DC charger still stands at the curb. With **Stall** mounting, every charger stands on a post at the head of its spot, with its cable straight to the car.
+- A **Curbside** site is a street with lane markings, curbs and sidewalks. Cars park parallel to the curb, and the chargers stand on posts at the curb on one or both sides of the street.
+
+![Office or Retail site in 3D](https://www.evtivity.com/screenshots/csms/site-layout-3d-office-retail.png)
+
+![Curbside site in 3D](https://www.evtivity.com/screenshots/csms/site-layout-3d-curbside.png)
+
+A **Depot** is a fenced fleet yard for buses and trucks, with a gate at the end of its drive lane. Buses park nose in to a row of straight 4.3 by 14 m bus bays, with their chargers on a strip at the head of the bays. Trucks drive through 5 by 25 m pull-through lanes beside them and never reverse: each lane has its dispenser on an island on the driver's left, as CharIN recommends for drive-through bays (4.7 to 5.05 m wide, charger on the left), and arrows mark the one-way roads into and out of the lanes. A 15 m two-way drive lane runs along the front. One station charges at each bus bay or truck lane:
+
+- A station with a pantograph connector (OCPP connector type **OppCharge**, pantograph down, or **Pan**, pantograph up) shows a depot pantograph pole with its boom over the bay.
+- A plug-in DC station in a bus bay shows a dispenser with a cable arm above the bus.
+- A DC station in a truck lane shows a megawatt dispenser with its short heavy cable and connector holder.
+
+Like a Parking Lot, a Depot shows transformers, batteries, solar canopies, and load management switchboards and links, on the grass beside the yard. A solar canopy stands where you place it, over staff parking behind the yard until you move it.
+
+In a bus bay or a truck lane, the 3D layout draws the session's vehicle at its real size and in its color: a box truck, a bus, or a semi truck with its trailer. A bus stands nose in. A truck stands in its lane in the driving direction. The charging cable or the pantograph is connected. A car never shows in a bus bay or a truck lane: a bus bay holds a bus or a box truck, and a truck lane a semi truck, a box truck or a bus. A session without such a vehicle shows a bus in a bus bay and a semi truck in a truck lane.
+
+The demo data includes the Depot **Northgate Fleet Depot**, with pantograph poles and plug-in dispensers in its bus bays, megawatt and box truck dispensers in its truck lanes, a substation, a battery and load managed switchboards.
+
+![Northgate Fleet Depot in 3D](https://www.evtivity.com/screenshots/csms/site-layout-3d-fleet-depot.png)
+
+![A depot pantograph pole over its bus bay](https://www.evtivity.com/screenshots/csms/site-layout-3d-fleet-depot-bus.png)
+
+![A megawatt dispenser at its truck lane](https://www.evtivity.com/screenshots/csms/site-layout-3d-fleet-depot-truck.png)
+
+A **Custom** site has no lot, street or building: the stations stand on grass wherever you place them, each turned its own way, for example along a curved access road. Each station has its own parking spots in front of it on a paved apron, one for each EVSE and two at most, side by side with the charger between them. The spots of two stations may touch but never overlap. Like a Parking Lot, a Custom site shows transformers, batteries, solar canopies, and load management switchboards and links. A solar canopy stands where you place it, and its length follows its peak power.
+
+![Custom site in 3D](https://www.evtivity.com/screenshots/csms/site-layout-3d-custom.png)
+
+An AC station shows as an **AC Pedestal** (or a wall box or curbside post, as above), a DC station as a **DC Fast Charger**. A station is DC when one of its connectors is DC. The status light on each charger has the color of the station's state. A charging station has a car parked in its spot on the charging cable, and a light around its screen or connector that glows in the charging color. The glow pulses gently, and stays steady when your system reduces motion. A reserved station has a **Reserved** sign on a concrete footing, and a station in maintenance a traffic cone. The back panel of every charger carries your company logo from **Settings** > **Company**, or stays plain without one. Drag to rotate, scroll or pinch to zoom, and right-drag or two-finger drag to pan along the ground. **Fit to View** brings the site and everything on it back into view. On an Office or Retail site it looks at the lot from the open side, with the building behind it.
+
+A charging car has the body type and color of the session's vehicle: a sedan, hatchback, SUV, pickup truck, van, box truck, bus or semi truck in its color. The layout takes the session's vehicle, else the driver's only vehicle, else the vehicle the driver used last. Without a vehicle, color or body type it shows a grey sedan. The color and body type show with `sessions:read`, also without `drivers:read`; the make, model and license plate never show on the layout.
+
+Click **Full Screen** to fill the screen with the 3D view. The labels, popups, summary chip, station list and day replay bar all work in full screen. Press Escape or click **Exit Full Screen** to return. On an iPhone, the view fills the browser window instead.
+
+![Site layout in full screen](https://www.evtivity.com/screenshots/csms/site-layout-3d-full-screen.png)
 
 Each station label shows the station ID followed by its state in the state's color, for example **CS-0981 · Charging**. When several states apply, the label shows the first in this order: **Faulted**, **Unavailable**, **In Maintenance**, **Offline**, **Reserved**, **Charging**, **Available**. A **4G** badge marks a station with a cellular connection: its data plan is **Cellular**, or a SIM attachment is confirmed on it.
 
@@ -97,35 +138,66 @@ The summary chip in the corner of the view counts the **Faulted**, **Offline** a
 
 A charging car carries its driver's avatar above it. Click the avatar to open the session: the driver's avatar and name, the energy and cost so far, the duration, the station, **Open Session** and **Open Driver**. The energy and cost update live. You need `sessions:read` to see session data. Without it, the car shows a plain marker that opens nothing. You need `drivers:read` to see the driver's name and avatar. Without it, the session shows a person icon instead. An avatar that would cover a station label moves higher, or hides when there is no room.
 
-On a Parking Lot, transformers stand on the grass next to the lot, each with its name and rated kVA when you set them. They are for information only and link to nothing. A site that never saved its layout shows one transformer. An Office or Retail site shows no transformers. The ones you set are kept and show again when you switch the site back to Parking Lot.
+On a Parking Lot, transformers stand on the grass next to the lot, each with its name and rated kVA when you set them. They are for information only and link to nothing. A site that never saved its layout shows one transformer. Office or Retail and Curbside sites show no transformers. The ones you set are kept and show again when you switch the site back to Parking Lot.
 
-Batteries and solar canopies show the storage and solar the site has. They are for information only and show no live data. A battery is a container cabinet on a pad on the grass, on both site types. A solar canopy is a carport roof over one row of a Parking Lot. An Office or Retail site shows no solar canopies. They are kept and show again when you switch the site back to Parking Lot. Each one has a label with its name and its capacity in kWh or kWp.
+Batteries and solar canopies show the storage and solar the site has, on a Parking Lot. They are for information only and show no live data. A battery is a container cabinet on a pad on the grass. A solar canopy is a carport roof over one row of the lot. Office or Retail and Curbside sites show neither. They are kept and show again when you switch the site back to Parking Lot. Each one has a label with its name and its capacity in kWh or kWp.
 
-When the site's load management is on, each load management panel shows as its own model with its name, breaker amps and limit: on a Parking Lot a switchboard cabinet on a concrete pad, in a row on the grass left of the lot, and on an Office or Retail site a panel on the building facade left of the first spot. A sub-panel stands next to its parent. The panels are placed automatically. Glowing links run from a panel to its sub-panels and its circuits, and from a circuit to each of its stations. The labels show the circuit limits (breaker amps and kW) and each station's allocated limit. The links move gently unless your system reduces motion. A site without load management shows no panels and no links. Panels and links never take a click or a drag.
+When the site's load management is on, a Parking Lot shows each load management panel as a switchboard cabinet on a concrete pad, with its name, breaker amps and limit, in a row on the grass left of the lot. A sub-panel stands next to its parent. The panels are placed automatically. Glowing links run from a panel to its sub-panels and its circuits, and from a circuit to each of its stations. The labels show the circuit limits (breaker amps and kW) and each station's allocated limit. The links move gently unless your system reduces motion. A site without load management shows no panels and no links. Panels and links never take a click or a drag. On Office or Retail and Curbside sites the panels sit behind walls or in cabinets, so the layout shows no panels or links; the station details show the **Allocated Limit**.
 
 The links also show live power. A station link carries the station's draw, a circuit link the sum of its stations, and a panel link everything under it. A link grows brighter and thicker as its share of the limit grows. Each panel label carries a bar of its live draw against its limit. The bar is green below 80 percent of the limit, amber from 80 percent (near the limit) and red from 100 percent (at the limit).
 
-A payment terminal paired to a station shows as a small card reader on the front of the charger: on the left for connector 1, on the right for connector 2, and in the middle when it is paired to the whole station. A reader with its own screen (VP6825) shows the screen; a VP7200 shows its contactless area. The light on the reader is green while it is online and grey otherwise. Click the reader to open its station. You need `paymentTerminals:read` to see terminals.
+A payment terminal paired to a station shows as a small card reader on the front of the charger, on every site type: on the left for connector 1, on the right for connector 2, and in the middle when it is paired to the whole station. A reader with its own screen (VP6825) shows the screen; a VP7200 shows its contactless area. The light on the reader is green while it is online and grey otherwise. Click the reader to open its station. You need `paymentTerminals:read` to see terminals.
 
 Click a station or its label to open its details. The 2D and 3D views show the same popup: the model with **DC Fast**, **Level 2**, **Level 1** or **AC**, the **Status** and its **Reason**, the **Power** now and the maximum, the **Allocated Limit** when load management sets one, the **Session Energy**, the **Connection** (with the signal for a cellular station), the display message, and each connector with its state. **Open Station** goes to the station page. Press Escape to close the popup. The popup also lists the payment terminals paired to the station, each with its connector and whether it is online.
 
 ![Station details in the 3D layout](https://www.evtivity.com/screenshots/csms/site-layout-3d-popup.png)
 
-The 2D view shows each station as a card with the same state icon and **4G** badge. Click + on a card to open the same details popup as in the 3D view. The dashed area is the parking lot, and cards stay inside it. On an Office or Retail site, a bar along the top edge of the lot marks the building.
+A lit charger shows its station's display message on its screen: the large screen of a DC charger or the small screen of an AC charger. It is the same active message as in the details popup, and it changes live. A short message fits on the screen. A longer one scrolls across it, and stays still when your system reduces motion. Up close the text is readable, and from far away the screen glows.
+
+![Display message on a charger screen](https://www.evtivity.com/screenshots/csms/site-layout-3d-screen-message.png)
+
+The 2D view shows each station as a card with the same state icon and **4G** badge. Click + on a card to open the same details popup as in the 3D view. The dashed area holds the spots of the layout, and cards stay inside it. On an Office or Retail site, a bar along the top edge marks the building. On a Curbside site, a street runs between the left side (top row) and the right side (bottom row).
 
 ![Site layout in 2D](https://www.evtivity.com/screenshots/csms/site-layout-tab.png)
+
+On a Custom site, the 2D view draws every station's spots from above, placed and turned as in 3D, with a chip at the charger that opens the details. When the site is load managed, the **Power Draw** strip sits above the board and never covers a station.
+
+![Custom site in 2D](https://www.evtivity.com/screenshots/csms/site-layout-2d-custom.png)
+
+On a Depot, the 2D view draws the yard from above: the bus bays, the truck lanes with their islands and arrows, the roads, the drive lane and the gate. Each station's chip stands in its bus bay or at its lane's dispenser and opens the details. With `sites:write`, drag a chip to another free bay or lane, or select it and use the arrow keys: left and right along its row, up and down between the bus bays and the truck lanes.
+
+![Depot in 2D](https://www.evtivity.com/screenshots/csms/site-layout-2d-fleet-depot.png)
 
 Click **Replay Day** to see the layout as it was at any moment of a past day, in the 3D and the 2D view. Pick a day from today back 90 days. The day runs in the site's time zone. Drag the timeline slider to a time of day, or click **Play**. The speed sets how many minutes of the day pass each second: 5, 15 or 60. The replay shows each station's online state, connector statuses, session energy and power, averaged over 5 minutes. Data that exists only live does not show: the display message, maintenance, sessions and drivers, and AI insights. A replay of today stops at the current time. **Edit Layout** is hidden while you replay. Click **Back to Live** to return to the live layout.
 
 Sites of 100 to 200 stations stay smooth to rotate and zoom. On a site of 40 or more stations, the labels and avatars of stations far from the view hide until you zoom closer.
 
-To move stations, click **Edit Layout** in the 3D view, or drag the cards in the 2D view. In 3D, the outlined spots show where a station can go, and a station snaps to the nearest free spot of the lot and never lands on another station. Drag a transformer or a battery to move it on the grass. Click **Done Editing** to leave edit mode. Moves stay pending until you click **Save**, which stores them and leaves edit mode. When the save fails, edit mode stays on with your changes, and the error shows above the layout. **Reset** drops them. You need `sites:write` to edit the layout.
+When labels crowd each other, the selected station places its label first, then faulted, then charging stations. A label without room becomes a small dot in its state's color. Click a dot to open the station's details. On a phone, the labels of far stations also show as dots, and **Fit to View** frames the busiest part of a wide site, such as an Office or Retail row or a street, so the stations stay readable. Click **Fit to View** again, or zoom out, to see the whole site.
 
-In edit mode, the **Site Settings** panel sets the site: **Site Type** (**Parking Lot** or **Office or Retail**), **Spots per Row** and **Rows** (1 to 100 each), **Spot Width** (2 to 6 m), **Spot Depth** (4 to 10 m), **Lane Width** between two rows (0 to 15 m, 0 puts the rows back to back) and **Facing** (0°, 90°, 180° or 270°, which turns the rows and chargers, and the building with them). On a Parking Lot, under **Transformers**, click **Add Transformer** and give each one an optional name and **Rated kVA**, or remove it. Under **Batteries and Solar**, click **Add Battery** or, on a Parking Lot, **Add Solar Canopy**. Give each one an optional name and a **Capacity (kWh)** for a battery or a **Peak Power (kWp)** for a canopy, pick the canopy's **Row**, or remove it. The 3D view shows every change at once, and **Save** stores it with the station moves. A site that never saved its lot is a Parking Lot with 2 rows of 10 spots of 3.2 by 5.6 m with a 6 m lane, grown to hold the stations it already has.
+To move stations, click **Edit Layout** in the 3D view, or drag the cards in the 2D view. In 3D, the outlined spots show where a station can go, and a station snaps to the nearest free spot of the layout and never lands on another station. On a Parking Lot or a Depot, drag a transformer or a battery to move it on the grass. Click **Done Editing** to leave edit mode. Moves stay pending until you click **Save**, which stores them and leaves edit mode. When the save fails, edit mode stays on with your changes, and the error shows above the layout. **Reset** drops them. You need `sites:write` to edit the layout.
 
-When you make the lot smaller, a station outside it moves to the nearest free spot inside, and the save stores its new place. When the lot has fewer spots than the site has stations, **Save** is not available until you add spots or rows. A transformer or a battery that would stand on the lot moves to the grass beside it. A solar canopy over a row the lot no longer has moves to the last row.
+In edit mode, the **Site Settings** panel shows the **Site Type** with a link to the **Details** tab, where you change it, and only the settings of that type. Spot sizes are standard and have no settings.
 
-A new station, an imported station and a station moved to this site get the first free spot of the lot automatically. When every spot is taken, the station stands on the grass below the lot until you move it or make the lot larger.
+- **Parking Lot**: **Spots per Row** and **Rows** (1 to 100 each) and **Facing** (0°, 90°, 180° or 270°, which turns the rows and chargers). Under **Transformers**, click **Add Transformer** and give each one an optional name and **Rated kVA**, or remove it. Under **Batteries and Solar**, click **Add Battery** or **Add Solar Canopy**. Give each one an optional name and a **Capacity (kWh)** for a battery or a **Peak Power (kWp)** for a canopy, pick the canopy's **Row**, or remove it.
+- **Office or Retail**: **Chargers**, the number of charger positions along the building, one spot each (1 to 100; until you set it, one per station at the site), and **Charger Mounting**: **Wall** (the default) or **Stall**.
+- **Curbside**: **Chargers on the Left Side** and **Chargers on the Right Side** (0 to 100 each, at least 1 in all), left and right as seen driving along the street.
+- **Depot**: **Bus Bays** and **Truck Lanes** (0 to 100 each, at least 1 in all; until you set them, one bus bay for each station at the site without a Megawatt Charging System (MCS) connector and one truck lane for each station with one), and **Facing**. **Transformers** and **Batteries and Solar** work as on a Parking Lot, and a solar canopy has no row.
+- **Custom**: no counts. **Transformers** and **Batteries and Solar** work as on a Parking Lot, and a solar canopy has no row.
+
+The values of the other site types are kept, and come back when you switch the type back. The 3D view shows every change at once, and **Save** stores it with the station moves. A site that never saved its layout is a Parking Lot with 2 rows of 10 spots, grown to hold the stations it already has.
+
+When you make the layout smaller, a station outside it moves to the nearest free position, and the save stores its new place. When the layout has fewer positions than the site has stations, **Save** is not available until you add positions. A transformer or a battery that would stand on the lot moves to the grass beside it. A solar canopy over a row the lot no longer has moves to the last row.
+
+A new station, an imported station and a station moved to this site get the first free position of the layout automatically. When every position is taken, the station stands off the lot until you move it or add positions.
+
+On a Custom site, drag a station anywhere in 3D. It snaps to 0.5 m steps, and dashed guides show when it lines up with another station. Click a station, or Tab to its label, to select it. Drag the ring handle in front of its spots to turn it in 15° steps, or hold Shift to turn it to any angle. Press R to turn the selected station by 15°, Shift+R by 1°, and the arrow keys to move it by 0.5 m. A station whose spots would overlap another station's goes back where it was, and a note says why. Drag transformers, batteries and solar canopies anywhere. Select a canopy and press R to turn it. In the 2D view, drag a station, or select it and use the same keys. A new station stands to the right of the others until you move it. When you switch a site to Custom, every station keeps its place, and a station whose spots would overlap a neighbor's slides along its row until they are free. When you switch the site back, the stations return to their spots.
+
+![Editing a Custom site in 3D](https://www.evtivity.com/screenshots/csms/site-layout-3d-custom-edit.png)
+
+On a Depot, drag a station in 3D to another bus bay or truck lane. It snaps to the nearest free one. When you switch a site to Depot, the stations with a Megawatt Charging System (MCS) connector move into the truck lanes and the others into the bus bays. A new station takes a free spot of its own kind first.
+
+![Site Settings of a Depot](https://www.evtivity.com/screenshots/csms/site-layout-3d-fleet-depot-settings.png)
+
 ### Load Management
 
 Configure site-level power limits for dynamic load distribution. Set the maximum site power capacity, configure panels and circuits, and add unmanaged loads. The system distributes available power to active sessions based on the allocation strategy (equal share or priority-based). See [Load Management](https://www.evtivity.com/docs/csms/load-management) for details.

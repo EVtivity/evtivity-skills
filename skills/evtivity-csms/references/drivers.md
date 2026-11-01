@@ -55,6 +55,8 @@ Operators can also add a card for a driver with **Create Payment Method**, set t
 
 View the driver's registered vehicles. Vehicles are used to estimate miles driven based on energy consumed and the vehicle's efficiency rating. The system includes a lookup table of common EV models with their mi/kWh efficiency values.
 
+Each vehicle can have a **Color** and a **Body Type** (**Sedan**, **Hatchback**, **SUV**, **Pickup Truck**, **Van**, **Box Truck**, **Bus** or **Semi Truck**). Set them when you add or edit a vehicle, or choose **Not Set** to remove one. The [site layout](https://www.evtivity.com/docs/csms/sites#layout) draws the driver's car in this color and shape while the driver charges.
+
 ![Driver vehicles](https://www.evtivity.com/screenshots/csms/driver-vehicles-tab.png)
 
 ### Sessions
