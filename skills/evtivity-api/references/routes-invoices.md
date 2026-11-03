@@ -1,6 +1,6 @@
 # EVtivity API routes: Invoices
 
-Generated from EVtivity CSMS v0.1.49-beta.10 (https://github.com/EVtivity/evtivity-csms, commit 112e22f69950) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.49 (https://github.com/EVtivity/evtivity-csms, commit 4ef429ad15fb) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no

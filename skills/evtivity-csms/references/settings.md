@@ -59,6 +59,8 @@ Uploading a new image replaces the current one.
 - **Theme Color** - hex color picker that sets the portal's primary brand color. Default `#2563eb`.
 - **AC Charger Plate Color** and **DC Charger Plate Color** - hex colors of the front plate of AC and DC chargers in the 3D site layout and in the station pictures of the 2D layout. Empty uses the theme color.
 
+![Theme color and charger plate colors](https://www.evtivity.com/screenshots/csms/settings-company-theme.png)
+
 **Company Details:**
 
 - **Company Name** - used in emails, portal header, and receipts.
