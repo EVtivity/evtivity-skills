@@ -1,6 +1,6 @@
 # EVtivity API routes: AI
 
-Generated from EVtivity CSMS v0.1.49-beta.8 (https://github.com/EVtivity/evtivity-csms, commit 0a0f5ce44265) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.49-beta.9 (https://github.com/EVtivity/evtivity-csms, commit a22bb4671807) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no

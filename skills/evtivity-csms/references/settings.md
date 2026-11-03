@@ -57,6 +57,7 @@ Uploading a new image replaces the current one.
 **Theme:**
 
 - **Theme Color** - hex color picker that sets the portal's primary brand color. Default `#2563eb`.
+- **AC Charger Plate Color** and **DC Charger Plate Color** - hex colors of the front plate of AC and DC chargers in the 3D site layout and in the station pictures of the 2D layout. Empty uses the theme color.
 
 **Company Details:**
 
