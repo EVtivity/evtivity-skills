@@ -64,6 +64,7 @@ Each row names the reference file for the page (page id `csms/<name>`).
 | Firmware campaigns, signed firmware | `references/firmware-updates.md` | Settings > Firmware Campaign | `settings.firmware:write` |
 | Charging profile templates | `references/smart-charging.md` | Settings > Smart Charging | `smartCharging:write` (tab: `settings.smartCharging:read`) |
 | Panels, circuits, power allocation | `references/load-management.md` | Site > Load Mgmt | `loadManagement:write` |
+| Depot departures, charging plans, readiness | `references/route-aware-charging.md` | Fleets > fleet, Site > Fleet Readiness | `fleets:write`, plan `loadManagement:read` |
 | Charge without ID or payment | `references/free-vend.md` | Site > Free Vend | `sites:write` |
 | Offline token list on a station | `references/local-auth-list.md` | Station > Local Auth List | `stations:write` |
 | Station screen messages | `references/display-messages.md` | Station > Display Messages | `stations:write` |

@@ -209,7 +209,7 @@ Shows a cellular station's SIM status, data sessions and SIM alerts on the stati
 2. **Test Connection** checks the saved account. Then set Session History (Refresh period; the retention is in Settings > Data Retention) and, optionally, Station Signal and the low signal alert.
 3. Only a person's click calls Hologram: Refresh on the Connectivity tab, Test Connection, Reset Network. A SIM attached from the ICCID the station reported fetches nothing until a user with access to every site confirms the attachment (Confirm SIM). SIM records, CSV import and attachments: evtivity-csms (SIMs page).
 
-Confirm: `GET /v1/settings/sim-providers` (filter the key out with jq), then Refresh on one station (the Station Connectivity page of evtivity-csms).
+Confirm: `GET /v1/settings/sim-providers` (filter the key out with jq), then Refresh on one station (evtivity-csms, Station Connectivity).
 
 ### 13. Payment terminals (`references/payment-terminals.md`)
 
@@ -234,7 +234,7 @@ docker compose logs --tail 200 api worker | grep -i -E 'payment|webhook|stripe|a
 | 409 `PAYMENT_PROVIDER_UPGRADE_PENDING` | An older process is connected | Finish the upgrade, wait 10 minutes (adyen) |
 | Adyen card form fails | Missing company country or allowed origin | Company Info > Country and the client key origins (adyen) |
 | Adyen payments stuck awaiting confirmation | Webhook missing or failing | Customer Area webhook event log (adyen) |
-| Adyen hold adjustment never confirmed | The answer to the raise was lost | Wait for the daily reconciliation, which re-sends it after 1 hour with the same idempotency key, or run it now with `POST /v1/payments/reconciliation/run`. Act only when listed as `pending_confirmation` after 24 hours (adyen) |
+| Adyen hold adjustment never confirmed | The answer to the raise was lost | The daily reconciliation re-sends it after 1 hour with the same idempotency key; run it now with `POST /v1/payments/reconciliation/run`. Act only when listed as `pending_confirmation` after 24 hours (adyen) |
 | Test provider events never arrive | Worker not running | Start the worker (test-payment-provider) |
 
 Run reconciliation on demand (also daily over the last 48 hours): `POST /v1/payments/reconciliation/run`. Stack failures: evtivity-troubleshoot. Never include keys, card numbers or webhook secrets in a bug report.
@@ -250,5 +250,6 @@ Generated from the website docs. Never edit them. The first line of each file is
 - `references/webhooks.md`: incoming payment webhooks, outgoing OCPP event webhooks, SSE streams.
 - `references/energy-management.md`: load management, smart charging profiles, carbon tracking.
 - `references/payment-terminals.md`: ID TECH terminals, pairing, receipts, refunds.
+- `references/bus-depot-systems.md`: connecting a bus depot management system or ITCS over the VDV 463 interface.
 - `references/sim-providers.md`: Hologram SIM provider, session history, station signal and low signal alert, off by default.
-- `references/mcp-server.md`: MCP server for AI agents (`POST /v1/mcp`, API key with `aiMcp:*`), off by default. Writes run only with **Allow Writes** on.
+- `references/mcp-server.md`: MCP server for AI agents (`POST /v1/mcp`, API key with `aiMcp:*`), off by default.
