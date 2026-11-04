@@ -1,6 +1,6 @@
 # EVtivity API routes: Fleets
 
-Generated from EVtivity CSMS v0.1.49 (https://github.com/EVtivity/evtivity-csms, commit 4ef429ad15fb) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.50-beta.1 (https://github.com/EVtivity/evtivity-csms, commit fdd6da7911e6) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -34,6 +34,15 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/fleets/{id}/pricing-groups` | fleets:read | Get the pricing group for a fleet |
 | POST | `/v1/fleets/{id}/pricing-groups` | fleets:write | Add a pricing group to a fleet |
 | DELETE | `/v1/fleets/{id}/pricing-groups/{pricingGroupId}` | fleets:write | Remove a pricing group from a fleet |
+| GET | `/v1/fleets/{id}/departure-schedules` | fleets:read | List departure schedules of a fleet |
+| POST | `/v1/fleets/{id}/departure-schedules` | fleets:write | Create a departure schedule |
+| PATCH | `/v1/departure-schedules/{id}` | fleets:write | Update a departure schedule |
+| DELETE | `/v1/departure-schedules/{id}` | fleets:write | Delete a departure schedule |
+| GET | `/v1/fleets/{id}/departures` | fleets:read | List departures of a fleet |
+| POST | `/v1/fleets/{id}/departures` | fleets:write | Create a departure |
+| PATCH | `/v1/departures/{id}` | fleets:write | Update a departure |
+| POST | `/v1/departures/{id}/cancel` | fleets:write | Cancel a departure |
+| POST | `/v1/fleets/{id}/departures/import` | fleets:write | Import departures from CSV |
 | GET | `/v1/fleets/{id}/billing/unbilled` | payments:read | Preview the fleet invoice of a period |
 | GET | `/v1/fleets/{id}/invoices` | payments:read | List a fleet's invoices and credit notes |
 | POST | `/v1/fleets/{id}/invoices` | payments:write | Generate the fleet invoice of a period |

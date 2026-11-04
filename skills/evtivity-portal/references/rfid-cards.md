@@ -34,11 +34,14 @@ With app-based charging, you select a specific connector, choose a payment metho
 3. Enter the card number printed on your RFID card. The number has 4 to 64 letters, digits or dashes. Choose the **Token type** (ISO14443 for most cards) and tap **Add**. A MAC address (12 hexadecimal digits) or a 17-character vehicle identification number is a vehicle id, not a card number: add it to your vehicle on the Vehicles page instead.
 4. The card is added in an active state and ready to use.
 
+In the portal you can also enter an optional **Label** when you add a card.
+
 Duplicate card numbers are rejected. Each card number can only be linked to one account. Adding a card you turned off earlier turns it back on.
 
 ## Managing Cards
 
 - **Toggle active/inactive** - turn a card's toggle off and confirm with **Deactivate** to disable it, or turn it on to reactivate it. When a card is deactivated, the station rejects authorization attempts with that card. You can reactivate a card you turned off at any time.
+- **Rename** - select **Rename RFID Card** (the pencil button in the portal) to give a card a label of up to 100 characters, such as "Company RFID card". The label shows in place of the masked number, with the number below it. Leave it empty to show the card number again. The operator can set the label too, and you can rename a card the operator deactivated.
 - **Deactivated by the operator** - a card the operator deactivated shows this note and its toggle is locked. Contact the operator to reactivate it.
 - **Expired** - a card past the expiry the operator set shows **Expired**. Stations reject it.
 - **Masked display** - card numbers are displayed with partial masking for security.

@@ -1,6 +1,6 @@
 # EVtivity API routes: Stations
 
-Generated from EVtivity CSMS v0.1.49 (https://github.com/EVtivity/evtivity-csms, commit 4ef429ad15fb) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.50-beta.1 (https://github.com/EVtivity/evtivity-csms, commit fdd6da7911e6) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -81,7 +81,7 @@ A `write` permission includes `read` for the same resource.
 | DELETE | `/v1/stations/{id}/web-payments` | stations:write | Disable dynamic QR code payments on a station |
 | GET | `/v1/stations/{id}/web-payments/support` | stations:read | Check whether a station supports dynamic QR codes |
 | GET | `/v1/stations/{id}/images` | stations:read | List all images for a station |
-| POST | `/v1/stations/{id}/images` | stations:write | Confirm a station image upload after the S3 POST |
+| POST | `/v1/stations/{id}/images` | stations:write | Confirm an uploaded station image |
 | POST | `/v1/stations/{id}/images/upload-url` | stations:write | Get a presigned S3 upload URL for a station image |
 | PATCH | `/v1/stations/{id}/images/{imageId}` | stations:write | Update station image metadata |
 | DELETE | `/v1/stations/{id}/images/{imageId}` | stations:write | Delete a station image |

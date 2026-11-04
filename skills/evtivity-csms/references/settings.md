@@ -57,9 +57,6 @@ Uploading a new image replaces the current one.
 **Theme:**
 
 - **Theme Color** - hex color picker that sets the portal's primary brand color. Default `#2563eb`.
-- **AC Charger Plate Color** and **DC Charger Plate Color** - hex colors of the front plate of AC and DC chargers in the 3D site layout and in the station pictures of the 2D layout. Empty uses the theme color.
-
-![Theme color and charger plate colors](https://www.evtivity.com/screenshots/csms/settings-company-theme.png)
 
 **Company Details:**
 
@@ -464,7 +461,7 @@ The SIM provider accounts (Hologram and 1NCE) and the station signal settings be
 
 Amazon S3 (or S3-compatible) object storage for file attachments and station images.
 
-- **Provider** - **Amazon S3** (the default) or **S3-compatible (MinIO, Wasabi)**.
+- **Provider** - **Amazon S3** (the default), **S3-compatible (MinIO, Wasabi)** or **Cloudflare R2**.
 - **Bucket Name** - S3 bucket name.
 - **Region** - the bucket's region, for example `us-east-1`. Required for Amazon S3. Optional for an S3-compatible provider: left empty, the CSMS uses `us-east-1`. Some providers, such as Wasabi, need the bucket's own region.
 - **Access Key ID** - IAM access key ID (stored encrypted).
@@ -579,9 +576,32 @@ These steps use the Wasabi Console. See the [Wasabi documentation](https://docs.
    ]
    ```
 
+#### Cloudflare R2 Setup
+
+With **Cloudflare R2**, the tab shows **S3 API URL**, **Bucket Name** and the two access keys. R2 has no region to enter (it always uses `auto`) and always puts the bucket in the URL path.
+
+1. In the Cloudflare dashboard, create a bucket under **R2**.
+2. Copy the bucket's **S3 API** URL from its settings, `https://<account id>.r2.cloudflarestorage.com` (with `.eu` or `.fedramp` for those jurisdictions), into **S3 API URL**. A bucket name at the end is accepted only when it is the bucket you enter in **Bucket Name**, and it is not stored. A custom domain or an `r2.dev` address does not work: presigned URLs work only on the S3 API address.
+3. Under **R2 > Manage API tokens**, create a token with the **Object Read & Write** permission, limited to this bucket. Enter its **Access Key ID** and **Secret Access Key**.
+4. Under the bucket's **Settings > CORS Policy**, add a rule that allows `PUT` and `GET` from the CSMS and driver portal origins. The tab shows the rule with your origins:
+
+```json
+[
+  {
+    "AllowedHeaders": ["content-type"],
+    "AllowedMethods": ["PUT", "GET"],
+    "AllowedOrigins": ["https://csms.example.com", "https://portal.example.com"],
+    "ExposeHeaders": [],
+    "MaxAgeSeconds": 300
+  }
+]
+```
+
+R2 has no upload policy, so the CSMS and the driver portal upload each file with a presigned `PUT` signed for the exact size and type of that file. R2 refuses a file of another size or type.
+
 #### Showing Stored Images
 
-The CSMS and the driver portal load stored images straight from the storage provider. Their Content Security Policy allows Amazon S3 hosts (`https://*.amazonaws.com`). For an S3-compatible provider, add the endpoint origin to the image origin setting of your deployment. With path-style requests off, images load from the bucket's own host (`<bucket>.<endpoint host>`), so add that origin instead.
+The CSMS and the driver portal load stored images straight from the storage provider. Their Content Security Policy allows Amazon S3 hosts (`https://*.amazonaws.com`). For an S3-compatible provider, add the endpoint origin to the image origin setting of your deployment. For Cloudflare R2, add the S3 API URL without the bucket, `https://<account id>.r2.cloudflarestorage.com`. With path-style requests off, images load from the bucket's own host (`<bucket>.<endpoint host>`), so add that origin instead.
 
 - Docker Compose and Docker: `STORAGE_IMG_SRC` on the CSMS and portal containers. See [Docker Compose](https://www.evtivity.com/docs/deployment/docker-compose).
 - Helm: `storage.imgSrc`. See [Helm Chart](https://www.evtivity.com/docs/deployment/helm-chart).

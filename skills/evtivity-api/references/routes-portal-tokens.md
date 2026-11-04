@@ -1,6 +1,6 @@
 # EVtivity API routes: Portal Tokens
 
-Generated from EVtivity CSMS v0.1.49 (https://github.com/EVtivity/evtivity-csms, commit 4ef429ad15fb) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.50-beta.1 (https://github.com/EVtivity/evtivity-csms, commit fdd6da7911e6) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -12,5 +12,5 @@ A `write` permission includes `read` for the same resource.
 |---|---|---|---|
 | GET | `/v1/portal/tokens` | driver | List driver RFID tokens |
 | POST | `/v1/portal/tokens` | driver | Add RFID card |
-| PATCH | `/v1/portal/tokens/{id}` | driver | Toggle RFID token active status |
+| PATCH | `/v1/portal/tokens/{id}` | driver | Update RFID card status or label |
 | DELETE | `/v1/portal/tokens/{id}` | driver | Deactivate (soft-delete) an RFID card |

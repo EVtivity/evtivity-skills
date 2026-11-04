@@ -52,6 +52,7 @@ The daily `log-retention-prune` job deletes rows older than these settings. Each
 | `logs.connection.retentionDays` | 90 | Station connection log (`connection_logs`) |
 | `logs.notifications.retentionDays` | 90 | Notification history (`notifications`) |
 | `logs.loadAllocation.retentionDays` | 90 | Allocations list of [Load Management](https://www.evtivity.com/docs/csms/load-management) (`load_allocation_log`) |
+| `logs.departures.retentionDays` | 365 | Completed and cancelled departures of fleet vehicles of [Route Aware Charging](https://www.evtivity.com/docs/csms/route-aware-charging) (`vehicle_departures`) |
 | `logs.loginAudit.retentionDays` | 90 | Sign-in rows (`login_succeeded`, `login_failed`) of the user and driver audit logs. Range 0 or 30 to 3,650. |
 | `logs.securityEvents.retentionDays` | 365 | Station security events (`security_events`). Range 0 or 30 to 3,650. |
 | `sim.sessions.retentionDays` | 90 | SIM sessions, SIM alerts and fetched periods (`sim_sessions`, `sim_alerts`, `sim_fetch_coverage`). Range 7 to 730. |

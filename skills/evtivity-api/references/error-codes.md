@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.49 (https://github.com/EVtivity/evtivity-csms, commit 4ef429ad15fb) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.50-beta.1 (https://github.com/EVtivity/evtivity-csms, commit fdd6da7911e6) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -78,6 +78,13 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `CSS_ACTION_REJECTED` | 400 | Charging Station Simulator rejected the action |
 | `CSS_ACTION_TIMEOUT` | 504 | Simulator did not respond within 5s |
 | `DATA_PLAN_SETTING_IN_TEMPLATE` | 400 | Heartbeat and meter value settings come from Settings > Integrations & Features > OCPP and the station data plan, not from a configuration template. |
+| `DEPARTURE_MANAGED_BY_DEPOT_SYSTEM` | 409 | This departure is managed by a bus depot system; change it there, or disable the depot system. |
+| `DEPARTURE_NOT_FOUND` | 404 | Departure not found |
+| `DEPARTURE_NOT_SCHEDULED` | 409 | Only a scheduled departure can change. |
+| `DEPARTURE_SCHEDULE_NOT_FOUND` | 404 | Departure schedule not found |
+| `DEPOT_SYSTEM_ID_IN_USE` | 409 | Another bus depot system uses this system ID. |
+| `DEPOT_SYSTEM_NOT_FOUND` | 404 | Bus depot system not found. |
+| `DEPOT_SYSTEM_SITE_NOT_DEPOT` | 400 | A bus depot system serves depot sites only. |
 | `DOWNTIME_NOT_FOUND` | 404 | Excluded downtime record not found |
 | `DRIVER_AI_NOTICE_OUTDATED` | 409 | The AI notice has changed. Read it and choose again |
 | `DRIVER_ALREADY_IN_FLEET` | 409 | Driver is already in this fleet |
@@ -103,6 +110,8 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `EMAIL_REQUIRED` | 400 | Email required for paid charging |
 | `EMAIL_SEND_FAILED` | 500 | Failed to send email |
 | `ENCRYPTION_KEY_MISSING` | 500 | SETTINGS_ENCRYPTION_KEY not configured on server |
+| `ENERGY_ASSET_NOT_FOUND` | 404 | Battery or solar array not found |
+| `ENERGY_ASSET_READING_OUTDATED` | 409 | A newer reading of this battery or solar array is already stored |
 | `EVSE_HAS_HISTORY` | 409 | The EVSE or connector has charging history and cannot be deleted. Retire it instead. |
 | `EVSE_IN_USE` | 409 | Another session is already active on this connector |
 | `EVSE_NOT_FOUND` | 404 | EVSE not found on this station |
@@ -112,8 +121,9 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `FLEET_BILLING_CONTACT_REQUIRED` | 400 | The fleet needs at least one billing contact for automatic invoicing and invoice emails. |
 | `FLEET_BILLING_OLD_PODS_CONNECTED` | 409 | A process of an older release is still connected. Finish the upgrade, then change the fleet billing. |
 | `FLEET_BILLING_VERSION_CHECK_STALE` | 409 | The worker's version check has not run recently, so the upgrade cannot be confirmed. Check that the worker is running, then change the fleet billing. |
+| `FLEET_CHARGING_DISABLED` | 400 | Fleet charging is turned off. Turn it on in Settings before you use departure planning. |
 | `FLEET_CREDIT_LIMIT_REACHED` | 402 | The credit limit of the fleet your sessions are billed to is reached. Contact your fleet manager. |
-| `FLEET_DISABLED` |  | Fleet is disabled |
+| `FLEET_DISABLED` | 403 | Fleet is disabled |
 | `FLEET_HAS_OPEN_BILLING` | 409 | The fleet has sessions billed to its account and cannot be deleted. Turn off account billing instead. |
 | `FLEET_HAS_RESERVATIONS` | 409 | The fleet has fleet reservations and cannot be deleted. Reservations are kept as history. |
 | `FLEET_INVOICE_NOTHING_TO_BILL` | 409 | The fleet has no unbilled sessions with a cost to invoice for this period. |
@@ -316,6 +326,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `SESSION_REBILL_PAYMENT_PENDING` | 409 | The session has a payment the provider has not settled yet. Try again later. |
 | `SESSION_REQUIRED` | 403 | This action needs a signed-in session. API keys cannot use it. |
 | `SESSION_STOP_REJECTED` | 409 | The station rejected the stop request. The session is still charging. |
+| `SESSION_VEHICLE_OPERATOR_ASSIGNED` | 409 | An operator assigned the vehicle of this session for the depot charging plan; only an operator can change it. |
 | `SETTING_NOT_FOUND` | 404 | Setting not found |
 | `SIM_ACTION_UNSUPPORTED` | 409 | The SIM provider does not support this action for this SIM |
 | `SIM_ATTACHED` | 409 | Detach the SIM from its station before deleting it |
@@ -378,6 +389,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `TOO_MANY_WATCHES` | 409 | You are watching too many stations |
 | `TOTP_NOT_CONFIGURED` | 400 | TOTP not set up |
 | `TRANSACTION_NOT_FOUND` | 404 | Transaction not found |
+| `TRANSFORMER_NOT_FOUND` | 404 | Transformer not found |
 | `UNAUTHORIZED` | 401 | Unauthorized |
 | `UNKNOWN_ACTION` | 404 | Unknown OCPP action |
 | `UNSUPPORTED_MEDIA_TYPE` |  | Unsupported content type |
@@ -388,6 +400,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `VEHICLE_ID_IN_USE` | 409 | Another vehicle already uses this VIN or EVCCID for Autocharge. |
 | `VEHICLE_ID_REQUIRED` | 400 | Autocharge needs a VIN or an EVCCID on the vehicle. |
 | `VEHICLE_NOT_FOUND` | 404 | Vehicle not found |
+| `VEHICLE_NOT_IN_FLEET` | 400 | The vehicle does not belong to a driver of this fleet. |
 | `VENDOR_NOT_FOUND` | 404 | Vendor not found |
 | `VERIFICATION_RESEND_LIMITED` | 429 | Too many verification emails. Wait before you request another one. |
 | `WEAK_PASSWORD` | 400 | Password does not meet complexity requirements |

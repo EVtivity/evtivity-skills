@@ -1,6 +1,6 @@
 # EVtivity API routes: Sessions
 
-Generated from EVtivity CSMS v0.1.49 (https://github.com/EVtivity/evtivity-csms, commit 4ef429ad15fb) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.50-beta.1 (https://github.com/EVtivity/evtivity-csms, commit fdd6da7911e6) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -12,6 +12,7 @@ A `write` permission includes `read` for the same resource.
 |---|---|---|---|
 | GET | `/v1/sessions` | sessions:read | List charging sessions |
 | GET | `/v1/sessions/{id}` | sessions:read | Get charging session details |
+| PUT | `/v1/sessions/{id}/vehicle` | sessions:write | Assign the vehicle of an active session |
 | POST | `/v1/sessions/{id}/vehicle-claim` | drivers:write | Store the session's captured vehicle id on a vehicle of the session's driver |
 | GET | `/v1/sessions/{id}/transaction-events` | sessions:read | List transaction events for a charging session |
 | GET | `/v1/sessions/{id}/meter-values` | sessions:read | List meter values for a charging session |

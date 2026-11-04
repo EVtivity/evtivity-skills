@@ -135,6 +135,14 @@ Read by the API, OCPP server, and worker.
 |---|---|---|
 | `PAYMENTS_ALLOW_SIMULATED` | `true` when `NODE_ENV` is `development` or `test`, otherwise `false` | Allows the test (simulated) payment provider, which moves no money. Docker Compose sets `true`. Required for demo data. Never enable it in production. See [Payment Providers](https://www.evtivity.com/docs/integrations/test-payment-provider). |
 
+## Load Management
+
+Read by the API and worker.
+
+| Variable | Default | Description |
+|---|---|---|
+| `ENERGY_ASSETS_ALLOW_SIMULATED` | `true` when `NODE_ENV` is `development` or `test`, otherwise `false` | Allows simulated battery and solar readings (**Simulated (Development and Demos)**), which credit supply that no real equipment gives. Docker Compose sets `true`. In Helm set it with `loadManagement.allowSimulatedEnergyAssets` (default `false`). The CDK sets it with `loadManagement.allowSimulatedEnergyAssets` and refuses it in the `prod` environment. Never enable it in production. See [Energy Storage and Solar](https://www.evtivity.com/docs/csms/load-management#energy-storage-and-solar). |
+
 ## Integrations
 
 Integrations (Stripe, S3, SMTP, Twilio, reCAPTCHA, Google Maps, Plug and Charge) are configured in the dashboard Settings page, including the Stripe webhook signing secret. There is no `STRIPE_WEBHOOK_SECRET` environment variable. Credentials are stored AES-256-GCM encrypted in the database. One environment variable remains:

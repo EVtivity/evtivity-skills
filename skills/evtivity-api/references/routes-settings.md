@@ -1,6 +1,6 @@
 # EVtivity API routes: Settings
 
-Generated from EVtivity CSMS v0.1.49 (https://github.com/EVtivity/evtivity-csms, commit 4ef429ad15fb) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.50-beta.1 (https://github.com/EVtivity/evtivity-csms, commit fdd6da7911e6) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -32,6 +32,13 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/settings/payment-terminals` | settings.payment:read | Get payment terminal settings |
 | PUT | `/v1/settings/payment-terminals` | settings.payment:write | Update payment terminal settings |
 | POST | `/v1/settings/payment-terminals/{provider}/test` | settings.payment:write | Test a payment terminal provider connection |
+| GET | `/v1/depot-systems` | settings.integrations:read | List bus depot systems |
+| POST | `/v1/depot-systems` | settings.integrations:write | Create a bus depot system |
+| GET | `/v1/depot-systems/{id}` | settings.integrations:read | Get a bus depot system |
+| PATCH | `/v1/depot-systems/{id}` | settings.integrations:write | Update a bus depot system |
+| DELETE | `/v1/depot-systems/{id}` | settings.integrations:write | Delete a bus depot system |
+| GET | `/v1/depot-systems/{id}/identifiers` | settings.integrations:read | Identifiers for a bus depot system |
+| POST | `/v1/depot-systems/{id}/password` | settings.integrations:write | Set a new password for a bus depot system |
 | GET | `/v1/settings/data-retention` | settings.system:read | Get data retention settings |
 | PUT | `/v1/settings/data-retention` | settings.system:write | Update data retention settings |
 | GET | `/v1/settings/ai/insights-scope` | settings.system:read | Get the AI insights scope |

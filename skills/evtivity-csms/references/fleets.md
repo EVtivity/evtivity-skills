@@ -43,6 +43,12 @@ View vehicles belonging to fleet drivers.
 
 ![Fleet vehicles](https://www.evtivity.com/screenshots/csms/fleet-vehicles-tab.png)
 
+### Departures
+
+Enter when each fleet vehicle leaves a Depot and how much energy its next route needs: **Weekly Schedules** for repeating departures, one-off departures with **Add Departure**, or a file with **Import CSV**. With **Fleet Charging** on and the Depot on the **Departure Aware** strategy, each departure shows its state, delivered energy and predicted ready time. Departures a [bus depot system](https://www.evtivity.com/docs/integrations/bus-depot-systems) sends show here too and are read-only while that system is enabled. See [Route Aware Charging](https://www.evtivity.com/docs/csms/route-aware-charging).
+
+![Fleet Departures tab](https://www.evtivity.com/screenshots/csms/fleet-departures-tab.png)
+
 ### Drivers
 
 Add or remove drivers from the fleet. Each member shows with their avatar, or initials when the driver has none. Drivers in a fleet inherit the fleet's pricing group when no driver-specific pricing is assigned.

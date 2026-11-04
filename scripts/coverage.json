@@ -44,6 +44,7 @@
     "csms/reports",
     "csms/reservations",
     "csms/roaming",
+    "csms/route-aware-charging",
     "csms/sessions",
     "csms/settings",
     "csms/sims",
@@ -93,6 +94,7 @@
   ],
   "evtivity-integrations": [
     "integrations/adyen",
+    "integrations/bus-depot-systems",
     "integrations/energy-management",
     "integrations/mcp-server",
     "integrations/payment-providers",

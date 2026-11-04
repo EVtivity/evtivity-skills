@@ -127,6 +127,10 @@ ocppTls:
 
 The Helm chart offers the same three entry points. See [Helm Chart](https://www.evtivity.com/docs/deployment/helm-chart#ocpp-tls).
 
+### Load Management
+
+- `loadManagement.allowSimulatedEnergyAssets` (default `false`) allows simulated battery and solar readings, which credit supply that no real equipment gives. It sets `ENERGY_ASSETS_ALLOW_SIMULATED` on the API and worker and is refused in the `prod` environment. See [Energy Storage and Solar](https://www.evtivity.com/docs/csms/load-management#energy-storage-and-solar).
+
 ### Payments
 
 Enter payment credentials in the dashboard (Settings > Payment), not in the config. Leave a key out to keep the value set in the dashboard. The config validates these payment keys:
@@ -165,6 +169,10 @@ The config can set the SIM provider settings. Leave a key out to keep the value 
 - `appSettings['sim.ocpp16.signalKeys']`, a list of at most 20 configuration key names, each listed once and 1 to 50 characters long, as in `sim.ocpp16.signalKeys: [RSSI]`.
 
 Enter the Hologram API key and the 1NCE client secret in the dashboard. The config load refuses `sim.hologram.apiKey`, `sim.1nce.clientSecret` and `sim.1nce.clientSecretEnc`. See [SIM Providers](https://www.evtivity.com/docs/integrations/sim-providers).
+
+### Bus Depot Interface
+
+Bus depot systems connect to `wss://<api host>/vdv463`. The ALB sends every path of the API host to the API service, `/vdv463` and its WebSocket upgrade included, and ends TLS there. The API trusts the ALB through `TRUST_PROXY`. In qa and prod the WAF lets `/vdv463` skip the country rule, so a depot system in another country can connect. Every other WAF rule still applies to the upgrade request, the anonymous IP list included, which blocks VPN exits. Turn the interface on in the dashboard, or set `appSettings['vdv463.enabled']` (true or false) in the config. Leave it out to keep the value set in the dashboard. See [Bus Depot Systems](https://www.evtivity.com/docs/integrations/bus-depot-systems).
 
 ### Storage Image Origins
 

@@ -99,6 +99,12 @@ Envoy Gateway is a lightweight alternative that handles ingress routing only. No
 
 The Gateway creates a `type: LoadBalancer` Service. DNS records for each hostname must point to the LoadBalancer's external IP. Configure this manually or with [external-dns](https://github.com/kubernetes-sigs/external-dns).
 
+### Bus Depot Interface
+
+Bus depot systems connect to `wss://<api host>/vdv463`. The API route carries it, WebSocket upgrades included, so it needs no route of its own. The API accepts these connections only over TLS: end TLS at the gateway and set `api.env.trustProxy` to the gateway pod range, so the API trusts the forwarded protocol.
+
+`appSettings.features.vdv463Enabled` turns the interface on or off. It is empty by default, which keeps the value set in the dashboard (off on a fresh install). The chart writes it only when you set `true` or `false`. See [Bus Depot Systems](https://www.evtivity.com/docs/integrations/bus-depot-systems).
+
 ## OCPP TLS
 
 OCPP TLS is enabled by default for station connections on port 8443. The chart creates a separate LoadBalancer Service for direct TLS access, supporting both Mutual TLS (client certificate validation) and No Auth through TLS + Basic Auth (no client certificate) on the same port.
@@ -541,12 +547,18 @@ These keys configure the storage provider. They are also set in Settings > Integ
 
 | Key | Values | Default | Setting |
 |-----|--------|---------|---------|
-| `appSettings.s3.provider` | `s3` or `s3-compatible` | empty (`s3` on a fresh install) | **Provider** |
-| `appSettings.s3.endpoint` | An http or https origin without a path or credentials | empty | **Endpoint URL** |
+| `appSettings.s3.provider` | `s3`, `s3-compatible` or `r2` | empty (`s3` on a fresh install) | **Provider** |
+| `appSettings.s3.endpoint` | An http or https origin without a path or credentials. For `r2`: the S3 API URL of the account, `https://<account id>.r2.cloudflarestorage.com` | empty | **Endpoint URL** |
 | `appSettings.s3.forcePathStyle` | `true` or `false` | empty (off on a fresh install) | Path-style requests |
 | `appSettings.s3.allowedPrivateHosts` | List of at most 20 host names or IP addresses | empty | **Endpoint Hosts on Private Networks** |
 
 Enter the bucket and the access keys in the dashboard.
+
+### Load management settings
+
+| Key | Values | Default | Setting |
+|-----|--------|---------|---------|
+| `loadManagement.allowSimulatedEnergyAssets` | `true` or `false` | `false` | Sets `ENERGY_ASSETS_ALLOW_SIMULATED` on the API and worker. Allows simulated battery and solar readings, which credit supply that no real equipment gives. Keep it `false` in production. The chart fails to render with any other value. See [Energy Storage and Solar](https://www.evtivity.com/docs/csms/load-management#energy-storage-and-solar). |
 
 ### Payment settings
 

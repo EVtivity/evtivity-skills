@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.49 (https://github.com/EVtivity/evtivity-csms, commit 4ef429ad15fb) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.50-beta.1 (https://github.com/EVtivity/evtivity-csms, commit fdd6da7911e6) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
@@ -16,7 +16,7 @@ A `write` permission includes `read` for the same resource.
 | Sites | 35 | `references/routes-sites.md` |
 | Stations | 82 | `references/routes-stations.md` |
 | SIMs | 18 | `references/routes-sims.md` |
-| Sessions | 9 | `references/routes-sessions.md` |
+| Sessions | 10 | `references/routes-sessions.md` |
 | Users | 64 | `references/routes-users.md` |
 | Drivers | 32 | `references/routes-drivers.md` |
 | Pricing | 19 | `references/routes-pricing.md` |
@@ -24,14 +24,14 @@ A `write` permission includes `read` for the same resource.
 | OCPP 1.6 Commands | 27 | `references/routes-ocpp-1-6-commands.md` |
 | OCPP | 1 | `references/routes-ocpp.md` |
 | Transactions | 3 | `references/routes-transactions.md` |
-| Fleets | 34 | `references/routes-fleets.md` |
+| Fleets | 43 | `references/routes-fleets.md` |
 | Tokens | 12 | `references/routes-tokens.md` |
 | Dashboard | 21 | `references/routes-dashboard.md` |
-| Settings | 45 | `references/routes-settings.md` |
+| Settings | 52 | `references/routes-settings.md` |
 | Documentation | 1 | `references/routes-documentation.md` |
 | Payments | 38 | `references/routes-payments.md` |
 | Events | 1 | `references/routes-events.md` |
-| Load Management | 19 | `references/routes-load-management.md` |
+| Load Management | 30 | `references/routes-load-management.md` |
 | Notifications | 13 | `references/routes-notifications.md` |
 | Reservations | 9 | `references/routes-reservations.md` |
 | Maintenance | 11 | `references/routes-maintenance.md` |

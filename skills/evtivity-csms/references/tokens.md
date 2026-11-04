@@ -36,8 +36,9 @@ Drivers who add an RFID card in the portal or the mobile app choose from ISO1444
 2. Click **Create Token**.
 3. Enter the **Token Value**. For an RFID card, this is the card UID.
 4. Choose the **Token Type**.
-5. Optionally select the **Driver** to assign the token to.
-6. Click **Create**.
+5. Optionally enter a **Label**, at most 100 characters, such as "Pool RFID card, fleet 3". The driver sees the label in the portal and the app and can change it. A token moved to another driver loses its label.
+6. Optionally select the **Driver** to assign the token to.
+7. Click **Create**.
 
 ![Create token](https://www.evtivity.com/screenshots/csms/tokens-create.png)
 
@@ -51,7 +52,7 @@ Click any token in the list to view its detail page.
 
 The detail page has four tabs:
 
-- **Details** - token value, type, assigned driver, creation date, and active status. Edit and Delete actions live here.
+- **Details** - token value, type, assigned driver, creation date, and active status. Edit and Delete actions live here. The page header shows the label under the token value; edit it here.
 - **Sessions** - charging sessions whose OCPP Authorize matched this specific token (filtered by `charging_sessions.token_id`, not driver id).
 - **History** - paginated `token_audit_log` showing every lifecycle event (created, updated, activated, deactivated, revoked, deleted, imported) with the actor name (operator or driver, linked to their detail page) and free-text notes.
 - **Authorize Log** - paginated `authorize_attempts` filtered to this token, including the matched outcome (accepted / blocked / expired / concurrent_tx / no_credit / db_error). Useful for forensic triage when a driver reports a swipe was rejected.
@@ -114,7 +115,7 @@ Three surfaces expose this log:
 
 ## Import and Export
 
-**Export CSV** downloads the tokens the list shows, with the same search and filters, in the columns `idToken`, `tokenType`, `driverEmail`, `isActive` and `expiresAt`. **Import CSV** reads the same columns. A row with a problem, such as an unknown token type, an unknown or inactive driver, or a token that already exists, is listed as an error, and the other rows are imported.
+**Export CSV** downloads the tokens the list shows, with the same search and filters, in the columns `idToken`, `tokenType`, `driverEmail`, `isActive`, `expiresAt` and `label`. **Import CSV** reads the same columns. A row with a problem, such as an unknown token type, an unknown or inactive driver, or a token that already exists, is listed as an error, and the other rows are imported.
 
 ## Prepaid Cards
 
