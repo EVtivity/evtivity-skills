@@ -35,7 +35,7 @@ Drivers set their own avatar in the [portal](https://www.evtivity.com/docs/porta
 
 A user with the `drivers:write` permission can also set or remove a driver's avatar, for example to remove an unsuitable photo: click **Edit** on the **Details** tab and click **Edit Avatar** in the form. The change is saved at once, apart from the form's **Save**, and recorded in the driver's **History**. The driver gets no notice and can set a new avatar. Without `drivers:write`, the avatar is read-only. Erasing a driver deletes the avatar.
 
-The editor has **Create** (a generated avatar with **Random**, where **Hair or Headwear**, **Glasses** and **Facial Hair** offer **None**) and **Upload** (a JPEG, PNG or WebP image smaller than 1 MB, cropped to a square and scaled to at most 512 x 512 pixels). **Remove Avatar** asks for a confirmation. Uploads need the [S3 bucket](https://www.evtivity.com/docs/csms/settings#s3-bucket). The API is `PUT` and `DELETE /v1/drivers/:id/avatar`, with `POST /v1/drivers/:id/avatar/upload-url` and `POST /v1/drivers/:id/avatar/image` for an upload.
+The editor has **Create** (a generated avatar with **Random**, where **Hair or Headwear**, **Glasses** and **Facial Hair** offer **None**) and **Upload** (a JPEG, PNG or WebP image smaller than 1 MB, cropped to a square and scaled to at most 512 x 512 pixels). **Remove Avatar** asks for a confirmation. Uploads need [storage](https://www.evtivity.com/docs/csms/settings#storage). The API is `PUT` and `DELETE /v1/drivers/:id/avatar`, with `POST /v1/drivers/:id/avatar/upload-url` and `POST /v1/drivers/:id/avatar/image` for an upload.
 
 ### Tokens
 

@@ -141,7 +141,7 @@ Click **Attach files**, drop files on the panel, or paste them into the message 
 - CSV, plain text, and log files
 - JSON and JSONL (for example, OCPP message traces)
 
-The maximum size and the number of files per message come from the AI limits in Settings (10 MB and 5 files by default). Attachments need S3 storage (see [Settings](https://www.evtivity.com/docs/csms/settings#s3-bucket)).
+The maximum size and the number of files per message come from the AI limits in Settings (10 MB and 5 files by default). Attachments need storage (see [Settings](https://www.evtivity.com/docs/csms/settings#storage)).
 
 Attachments go through the same checks as support case attachments. The server checks each file's content against its declared type and refuses a mismatch. It re-encodes images and removes their metadata (such as location data) before storing them. If the selected model cannot read a file type, the assistant says so instead of answering.
 

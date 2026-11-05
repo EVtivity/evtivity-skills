@@ -457,45 +457,88 @@ OCPP 1.6 stations have no native equivalent. They receive the Idle screen (Avail
 
 The SIM provider accounts (Hologram and 1NCE) and the station signal settings behind the **SIMs** page and the station **Connectivity** tab. Needs access to every site. Off by default: while Hologram, 1NCE and **Read Signal from Stations** are all off, nothing changes. See [SIM Providers](https://www.evtivity.com/docs/integrations/sim-providers).
 
-### S3 Bucket
+### Storage
 
-Amazon S3 (or S3-compatible) object storage for file attachments and station images.
+Object storage for station images, avatars, and support case and AI chat attachments. The tab has one tab per provider: **Amazon S3**, **Cloudflare R2**, **Wasabi** and **S3-Compatible** (MinIO and other services with an S3-compatible API). Each provider tab shows only the fields that provider asks for.
 
-- **Provider** - **Amazon S3** (the default), **S3-compatible (MinIO, Wasabi)** or **Cloudflare R2**.
-- **Bucket Name** - S3 bucket name.
-- **Region** - the bucket's region, for example `us-east-1`. Required for Amazon S3. Optional for an S3-compatible provider: left empty, the CSMS uses `us-east-1`. Some providers, such as Wasabi, need the bucket's own region.
-- **Access Key ID** - IAM access key ID (stored encrypted).
-- **Secret Access Key** - IAM secret access key (stored encrypted).
-- **Test Connection** button - verifies S3 bucket access.
+- The tab of the provider that stores the files carries an **Active** badge and says so at the top. While no bucket is saved, every tab says storage is not set up.
+- **Save** on the active tab saves its changes. Every other tab has a button named after its provider, such as **Save and Use Cloudflare R2**, the one way to switch providers: saving it makes that provider store new files.
+- **Test Connection** shows on the active tab and tests the saved settings. It shows only whether the connection worked. The API log holds the details of a failure.
+- Each tab keeps its own unsaved changes while you open another tab. A tab of another provider starts empty: the stored keys never show there and never move to another provider.
+- **Access Key ID** and **Secret Access Key** are stored encrypted. The form needs both. An AWS deployment that sets the bucket in its app settings without keys uses the default AWS credential chain (the task or instance role) instead.
+- A change of the provider, the endpoint, the Cloudflare R2 account or jurisdiction, or the Wasabi region asks you to confirm your sign-in again and needs both keys again. An API key cannot make these changes.
+- Each stored file keeps its bucket and key, not its provider. After you switch providers, the CSMS looks up files uploaded before the switch at the new provider, so copy them there first.
 
-Leave both access key fields blank to use the default AWS credential chain. On AWS, that is the task or instance role. If you fill in only one of the two fields, S3 stays disabled until you fill in both or clear both.
+#### Amazon S3
 
-**Test Connection** shows only whether the connection worked. The API log holds the details of a failure.
+- **Bucket Name** - the S3 bucket.
+- **Region** - the AWS Region the bucket was created in, picked from the list of AWS commercial Regions.
+- **Access Key ID** and **Secret Access Key** - the access key of an IAM user.
 
-#### S3-Compatible Providers
+The tab shows two expandable sections: the IAM policy the user needs on the bucket, and the bucket's CORS configuration.
 
-With **S3-compatible (MinIO, Wasabi)**, the tab also shows the endpoint:
+The CSMS uploads support case attachments and station images, and the driver portal uploads driver avatars, straight to the bucket with a presigned `POST`. A self-managed bucket needs a CORS rule that allows `POST` from both the CSMS origin and the driver portal origin, for example:
 
-- **Endpoint URL** - the provider's S3 API address, for example `https://s3.example.com`. Enter the origin only, without a bucket, path, or credentials. A public host must use https.
+```json
+[
+  {
+    "AllowedHeaders": ["*"],
+    "AllowedMethods": ["POST", "GET"],
+    "AllowedOrigins": ["https://csms.example.com", "https://portal.example.com"],
+    "ExposeHeaders": [],
+    "MaxAgeSeconds": 300
+  }
+]
+```
 
-**Advanced Options** starts closed and holds two more settings. Its title line names the ones that are set.
+Without the portal origin, drivers cannot upload an avatar from the portal. The mobile app does not need a CORS rule. The AWS deployment creates the bucket with this rule.
 
-- **Path-style requests (the bucket in the URL path, needed by most MinIO setups)** - puts the bucket in the URL path instead of the host name.
-- **Endpoint Hosts on Private Networks** - one host per line. The CSMS refuses an endpoint on a private or internal address unless its host is in this list. A listed host may also use http.
+#### Cloudflare R2 Setup
 
-![S3 Bucket tab with an S3-compatible provider](https://www.evtivity.com/screenshots/csms/settings-s3-compatible.png)
+The **Cloudflare R2** tab shows **Account ID**, **Jurisdiction**, **Bucket Name** and the two access keys. R2 has no region to enter (it always uses `auto`) and always puts the bucket in the URL path. The CSMS builds the bucket's S3 API URL from the account ID and the jurisdiction, `https://<account id>.r2.cloudflarestorage.com` (with `.eu`, `.fedramp` or `.us` before `r2` for those jurisdictions), and shows it under the fields.
+
+1. In the Cloudflare dashboard, create a bucket under **R2 object storage**. Note the jurisdiction you pick: a bucket keeps it.
+2. Copy the 32-character **Account ID** from **R2 object storage > Overview**, under **Account Details**, into **Account ID**, and pick the bucket's **Jurisdiction**: **Default**, **European Union (EU)**, **FedRAMP** or **United States (US)**.
+3. On the same page, select **Manage** next to **API Tokens** and create a token with the **Object Read & Write** permission, limited to this bucket. Enter its **Access Key ID** and **Secret Access Key**. Cloudflare shows the secret only once.
+4. Under the bucket's **Settings > CORS Policy**, add a rule that allows `PUT` and `GET` from the CSMS and driver portal origins. The tab shows the rule with your origins:
+
+```json
+[
+  {
+    "AllowedHeaders": ["content-type"],
+    "AllowedMethods": ["PUT", "GET"],
+    "AllowedOrigins": ["https://csms.example.com", "https://portal.example.com"],
+    "ExposeHeaders": [],
+    "MaxAgeSeconds": 300
+  }
+]
+```
+
+R2 has no upload policy, so the CSMS and the driver portal upload each file with a presigned `PUT` signed for the exact size and type of that file. R2 refuses a file of another size or type. A custom domain or an `r2.dev` address does not work: presigned URLs work only on the S3 API address.
+
+#### Wasabi and S3-Compatible Tabs
+
+The **Wasabi** tab shows **Bucket Name**, **Region** and the two access keys. Pick the region the bucket was created in: the CSMS uses that region's service URL, for example `https://s3.eu-central-1.wasabisys.com`, and shows it under the field. Requests put the bucket in the URL path, as Wasabi recommends.
+
+The **S3-Compatible** tab is for MinIO and other services with an S3-compatible API:
+
+- **Endpoint URL** - the service's S3 API address, for example `https://s3.example.com`. Enter the origin only, without a bucket, path, or credentials. A public host must use https.
+- **Bucket Name**.
+- **Region** - optional. Left empty, the CSMS uses `us-east-1`.
+- **Access Key ID** and **Secret Access Key**.
+- **Path-Style Addressing** - puts the bucket in the URL path instead of the host name. On for a new setup. MinIO needs it unless it runs with `MINIO_DOMAIN` set.
+- **Advanced Options** starts closed and holds **Endpoint Hosts on Private Networks**: one host per line. The CSMS refuses an endpoint on a private or internal address unless its host is in this list. A listed host may also use http. Its title line names how many hosts are set.
+
+![Storage tab with the S3-Compatible provider](https://www.evtivity.com/screenshots/csms/settings-s3-compatible.png)
 
 Notes:
 
 - Browsers block http images and uploads on a page served over https. When the CSMS or the driver portal runs over https, the endpoint must use https too, also for a listed host.
 - Cloud metadata addresses (such as `169.254.169.254`) and link-local addresses are always refused, even when listed.
 - The CSMS checks the address the endpoint host resolves to on every connection. A host that resolves to a private address is refused unless it is listed.
-- An S3-compatible provider needs both access keys. The default AWS credential chain reaches AWS only.
 - The supported S3-compatible providers are MinIO and Wasabi.
-- A change of the provider or the endpoint asks you to confirm your sign-in again, and an API key cannot change them.
-- Each stored file keeps its bucket and key, not its provider. After you switch providers, the CSMS looks up files uploaded before the switch at the new provider, the same as after a switch of AWS accounts.
 
-For an S3-compatible provider, the tab shows one note in place of the Amazon S3 IAM policy and CORS examples. It lists the permissions the access key needs on the bucket, lists the CSMS and driver portal origins that the bucket's CORS rules must allow for `POST` and `GET` (each with a copy button), and links to the steps below. The permissions are:
+Both tabs list the permissions the access key needs on the bucket, list the CSMS and driver portal origins that the bucket's CORS rules must allow for `POST` and `GET` (each with a copy button), and link to the steps below. The permissions are:
 
 | Permission   | S3 action         |
 | ------------ | ----------------- |
@@ -551,7 +594,7 @@ These steps use the MinIO client `mc` with an alias for your deployment, here `m
 </CORSConfiguration>
 ```
 
-A bucket without its own CORS rule uses the server-wide `MINIO_API_CORS_ALLOW_ORIGIN` setting, which allows every origin by default. Most MinIO deployments also need **Path-style requests** under **Advanced Options**. A MinIO server on a private network needs its host under **Endpoint Hosts on Private Networks**.
+A bucket without its own CORS rule uses the server-wide `MINIO_API_CORS_ALLOW_ORIGIN` setting, which allows every origin by default. Most MinIO deployments also need **Path-Style Addressing**, which is on for a new setup. A MinIO server on a private network needs its host under **Endpoint Hosts on Private Networks**.
 
 ##### Wasabi
 
@@ -560,7 +603,7 @@ These steps use the Wasabi Console. See the [Wasabi documentation](https://docs.
 1. Open Policies, click Create Policy, and enter the policy above.
 2. Open Users and click Create User. Enter a user name, select Programmatic access, and continue to the policies step. Click + beside the new policy, then create the user.
 3. Copy the access key and secret key that Wasabi shows. In the storage tab, enter them as the **Access Key ID** and **Secret Access Key**.
-4. Enter the service URL of the bucket's region as the **Endpoint URL**, for example `https://s3.eu-central-1.wasabisys.com` (US East 1: `https://s3.wasabisys.com`), and the region code as the **Region**, here `eu-central-1`.
+4. In the **Wasabi** tab, pick the bucket's region under **Region**, for example `eu-central-1`. The CSMS uses its service URL, here `https://s3.eu-central-1.wasabisys.com`.
 5. Wasabi answers browser requests from every origin by default, so uploads work without a CORS change. To allow only your two origins, open the bucket's Settings, then the Permissions tab, then Cross-Origin Resource Sharing (CORS). Click Edit, enter one rule that allows `POST` and `GET` from the CSMS and driver portal origins, and save.
 
    The editor takes a JSON array of rules, for example:
@@ -576,54 +619,13 @@ These steps use the Wasabi Console. See the [Wasabi documentation](https://docs.
    ]
    ```
 
-#### Cloudflare R2 Setup
-
-With **Cloudflare R2**, the tab shows **S3 API URL**, **Bucket Name** and the two access keys. R2 has no region to enter (it always uses `auto`) and always puts the bucket in the URL path.
-
-1. In the Cloudflare dashboard, create a bucket under **R2**.
-2. Copy the bucket's **S3 API** URL from its settings, `https://<account id>.r2.cloudflarestorage.com` (with `.eu` or `.fedramp` for those jurisdictions), into **S3 API URL**. A bucket name at the end is accepted only when it is the bucket you enter in **Bucket Name**, and it is not stored. A custom domain or an `r2.dev` address does not work: presigned URLs work only on the S3 API address.
-3. Under **R2 > Manage API tokens**, create a token with the **Object Read & Write** permission, limited to this bucket. Enter its **Access Key ID** and **Secret Access Key**.
-4. Under the bucket's **Settings > CORS Policy**, add a rule that allows `PUT` and `GET` from the CSMS and driver portal origins. The tab shows the rule with your origins:
-
-```json
-[
-  {
-    "AllowedHeaders": ["content-type"],
-    "AllowedMethods": ["PUT", "GET"],
-    "AllowedOrigins": ["https://csms.example.com", "https://portal.example.com"],
-    "ExposeHeaders": [],
-    "MaxAgeSeconds": 300
-  }
-]
-```
-
-R2 has no upload policy, so the CSMS and the driver portal upload each file with a presigned `PUT` signed for the exact size and type of that file. R2 refuses a file of another size or type.
-
 #### Showing Stored Images
 
-The CSMS and the driver portal load stored images straight from the storage provider. Their Content Security Policy allows Amazon S3 hosts (`https://*.amazonaws.com`). For an S3-compatible provider, add the endpoint origin to the image origin setting of your deployment. For Cloudflare R2, add the S3 API URL without the bucket, `https://<account id>.r2.cloudflarestorage.com`. With path-style requests off, images load from the bucket's own host (`<bucket>.<endpoint host>`), so add that origin instead.
+The CSMS and the driver portal load stored images straight from the storage provider. Their Content Security Policy allows Amazon S3 hosts (`https://*.amazonaws.com`). For Cloudflare R2, Wasabi and S3-compatible providers, add the origin that the provider tab shows (with a copy button) to the image origin setting of your deployment: the S3 API URL for R2, the endpoint origin with path-style addressing, or the bucket's own host (`<bucket>.<endpoint host>`) without it.
 
 - Docker Compose and Docker: `STORAGE_IMG_SRC` on the CSMS and portal containers. See [Docker Compose](https://www.evtivity.com/docs/deployment/docker-compose).
 - Helm: `storage.imgSrc`. See [Helm Chart](https://www.evtivity.com/docs/deployment/helm-chart).
 - AWS CDK: `storage.imgSrc`. See [AWS Deployment](https://www.evtivity.com/docs/deployment/aws).
-
-For Amazon S3, the tab includes expandable sections showing the recommended IAM policy and CORS configuration.
-
-The CSMS uploads support case attachments and station images, and the driver portal uploads driver avatars, straight to the bucket with a presigned `POST`. A self-managed bucket needs a CORS rule that allows `POST` from both the CSMS origin and the driver portal origin, for example:
-
-```json
-[
-  {
-    "AllowedHeaders": ["*"],
-    "AllowedMethods": ["POST", "GET"],
-    "AllowedOrigins": ["https://csms.example.com", "https://portal.example.com"],
-    "ExposeHeaders": [],
-    "MaxAgeSeconds": 300
-  }
-]
-```
-
-Without the portal origin, drivers cannot upload an avatar from the portal. The mobile app does not need a CORS rule. The AWS deployment creates the bucket with this rule.
 
 ### FTP Server
 

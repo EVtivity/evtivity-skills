@@ -183,7 +183,7 @@ The CSMS and portal allow images from Amazon S3 (`https://*.amazonaws.com`). Wit
 - With path-style requests off, images load from `<bucket>.<endpoint host>`, so list that origin.
 - Unset by default. Amazon S3 needs nothing here.
 
-See [S3 Bucket](https://www.evtivity.com/docs/csms/settings#s3-bucket).
+See [Storage](https://www.evtivity.com/docs/csms/settings#storage).
 
 ### Client Addresses
 

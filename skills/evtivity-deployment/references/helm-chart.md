@@ -311,7 +311,7 @@ storage:
   imgSrc: "https://s3.example.com"
 ```
 
-See [S3 Bucket](https://www.evtivity.com/docs/csms/settings#s3-bucket).
+See [Storage](https://www.evtivity.com/docs/csms/settings#storage).
 
 ## Migration Job
 
@@ -543,7 +543,7 @@ appSettings:
 
 ### Storage settings
 
-These keys configure the storage provider. They are also set in Settings > Integrations & Features > S3 Bucket. Leave a key empty to keep the value set in the dashboard. The chart fails to render with an invalid endpoint or a cloud metadata address. See [S3 Bucket](https://www.evtivity.com/docs/csms/settings#s3-bucket).
+These keys configure the storage provider. They are also set in Settings > Integrations & Features > Storage. Leave a key empty to keep the value set in the dashboard. The chart fails to render with an invalid endpoint or a cloud metadata address. See [Storage](https://www.evtivity.com/docs/csms/settings#storage).
 
 | Key | Values | Default | Setting |
 |-----|--------|---------|---------|

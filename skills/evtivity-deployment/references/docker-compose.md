@@ -135,4 +135,4 @@ The CSMS and portal containers allow images from Amazon S3 (`https://*.amazonaws
 STORAGE_IMG_SRC=https://s3.example.com
 ```
 
-See [S3 Bucket](https://www.evtivity.com/docs/csms/settings#s3-bucket).
+See [Storage](https://www.evtivity.com/docs/csms/settings#storage).

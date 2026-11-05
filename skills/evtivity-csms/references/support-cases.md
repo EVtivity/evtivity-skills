@@ -40,7 +40,7 @@ System messages are automatically generated when the case status, priority, or a
 
 ### Attachments
 
-Attach files to any message. Click the paperclip icon when composing a message, select files, and send. Attachments need S3 storage (see [Settings](https://www.evtivity.com/docs/csms/settings#s3-bucket)).
+Attach files to any message. Click the paperclip icon when composing a message, select files, and send. Attachments need storage (see [Settings](https://www.evtivity.com/docs/csms/settings#storage)).
 
 Allowed file types:
 
@@ -59,7 +59,7 @@ The server checks every file before it stores it:
 
 Click an attachment to preview an image or download the file. A download always saves the file instead of opening it in the browser.
 
-With a self-managed S3 bucket, add a CORS rule that allows `POST` from the CSMS origin. The browser uploads files straight to the bucket, and uploads fail without this rule. See [S3 Bucket](https://www.evtivity.com/docs/csms/settings#s3-bucket).
+With a self-managed S3 bucket, add a CORS rule that allows `POST` from the CSMS origin. The browser uploads files straight to the bucket, and uploads fail without this rule. See [Storage](https://www.evtivity.com/docs/csms/settings#storage).
 
 ### Linked Sessions
 
