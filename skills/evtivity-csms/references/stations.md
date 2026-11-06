@@ -343,6 +343,8 @@ Generate and download QR codes for each EVSE on the station. QR codes link to th
 
 ![Station QR codes tab](https://www.evtivity.com/screenshots/csms/station-qr-tab.png)
 
+Turn off **List in the driver portal** in the **Driver Portal** card to hide the station from the portal search, map and location pages. Drivers still open it by its QR code, a link or their favorites, drivers with an RFID card or the app still start charging there, and roaming partners still see it while its site is published to them. When every station of a site is hidden, the station's portal page shows no site name, address or contact.
+
 #### Dynamic QR codes
 
 A static QR code is printed once and never changes. A dynamic QR code is shown on the station's display and changes over time. Its URL holds a time-based one-time password (TOTP). The station makes a new password every validity period, and the portal checks the password when a driver scans the code. A photo or copy of the code stops working once its password expires.

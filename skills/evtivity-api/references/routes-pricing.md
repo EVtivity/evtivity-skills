@@ -1,6 +1,6 @@
 # EVtivity API routes: Pricing
 
-Generated from EVtivity CSMS v0.1.50-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 4790ef78f05f) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.50-beta.3 (https://github.com/EVtivity/evtivity-csms, commit 409b704aabe1) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
