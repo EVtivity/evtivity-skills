@@ -32,6 +32,8 @@ Turn on **Fleet Charging** and choose the **Departure Aware** strategy on the de
 
 Open **Settings** > **Integrations & Features** > **Bus Depot Systems** and turn on the bus depot interface. It is off by default. While it is off, EVtivity refuses every bus depot system connection. Turning it off closes the open connections at once.
 
+![Bus Depot Systems tab with the Bus Depot Interface and the list of depot systems](https://www.evtivity.com/screenshots/csms/settings-depot-systems.png)
+
 ### Step 3: Create a Depot System
 
 On the same tab, create a depot system:
@@ -151,6 +153,8 @@ On the depot system page you can:
 - Turn it on or off. Off closes its connection.
 - Set a new password. The old one stops working at once.
 - Delete it. Its connection closes.
+
+![Depot system page with its connection and settings](https://www.evtivity.com/screenshots/csms/settings-depot-system-detail.png)
 
 Removing a depot, disabling the system, a new password and a delete close its open connection. Two depot systems cannot share a presystem ID (`409 DEPOT_SYSTEM_ID_IN_USE`).
 

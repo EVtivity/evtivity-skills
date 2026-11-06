@@ -475,6 +475,8 @@ Object storage for station images, avatars, and support case and AI chat attachm
 - **Region** - the AWS Region the bucket was created in, picked from the list of AWS commercial Regions.
 - **Access Key ID** and **Secret Access Key** - the access key of an IAM user.
 
+![Storage tab with the Amazon S3 provider](https://www.evtivity.com/screenshots/csms/settings-storage-aws-s3.png)
+
 The tab shows two expandable sections: the IAM policy the user needs on the bucket, and the bucket's CORS configuration.
 
 The CSMS uploads support case attachments and station images, and the driver portal uploads driver avatars, straight to the bucket with a presigned `POST`. A self-managed bucket needs a CORS rule that allows `POST` from both the CSMS origin and the driver portal origin, for example:
@@ -496,6 +498,8 @@ Without the portal origin, drivers cannot upload an avatar from the portal. The 
 #### Cloudflare R2 Setup
 
 The **Cloudflare R2** tab shows **Account ID**, **Jurisdiction**, **Bucket Name** and the two access keys. R2 has no region to enter (it always uses `auto`) and always puts the bucket in the URL path. The CSMS builds the bucket's S3 API URL from the account ID and the jurisdiction, `https://<account id>.r2.cloudflarestorage.com` (with `.eu`, `.fedramp` or `.us` before `r2` for those jurisdictions), and shows it under the fields.
+
+![Storage tab with the Cloudflare R2 provider](https://www.evtivity.com/screenshots/csms/settings-storage-r2.png)
 
 1. In the Cloudflare dashboard, create a bucket under **R2 object storage**. Note the jurisdiction you pick: a bucket keeps it.
 2. Copy the 32-character **Account ID** from **R2 object storage > Overview**, under **Account Details**, into **Account ID**, and pick the bucket's **Jurisdiction**: **Default**, **European Union (EU)**, **FedRAMP** or **United States (US)**.

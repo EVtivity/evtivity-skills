@@ -126,6 +126,10 @@ The **Energy Storage and Solar** card lists the batteries and solar arrays of th
    - **Reading Lifetime (Seconds)**: how long a reading stays fresh, 15 to 600 seconds, default 60
 3. Save the form.
 
+![Edit Battery or Solar form for a battery](https://www.evtivity.com/screenshots/csms/site-energy-asset-battery.png)
+
+![Edit Battery or Solar form for a solar array](https://www.evtivity.com/screenshots/csms/site-energy-asset-solar.png)
+
 ### Where the Credit Counts
 
 The credit counts only on the equipment above the connection point:
