@@ -86,14 +86,20 @@ The Security section shows your current MFA status, your passkeys and security k
 
 ## Notification Preferences
 
-Control how you receive notifications from the charging network.
+Choose which notifications you get on each channel.
+
+![Notification preferences](https://www.evtivity.com/screenshots/portal/notification-preferences.png)
 
 1. Tap **Notifications**.
-2. Toggle **Email notifications** on or off.
-3. Toggle **SMS notifications** on or off.
+2. Each group has a table: **Charging Sessions**, **Payments**, **Reservations**, **Invoices**, **Support Cases**, **RFID Cards**, **Maintenance**, **Station Watch**, **Prepaid Balance** and **Fleet Billing**. Each row is one notification, with one checkbox per channel.
+3. Check or uncheck a notification for **Email** or **SMS**. The top row, **All Notifications**, turns every notification of a channel on or off. It shows a mixed state when only some are on.
 4. Tap **Save** to apply changes.
 
-Notification preferences apply to session events (started, completed, idling, payment received) and system events (receipts, support case updates). Language, timezone, theme, and distance unit live under **Personal Info**, not here.
+The portal shows the channels your operator has set up. When the operator has set up none, a note says so. Push notifications are set in the mobile app.
+
+A checkbox with a lock is **Required by your operator**. It stays checked, and the notification is always sent on that channel. Account and security messages, such as password resets and sign-in codes, are always sent and have no row. The operator decides which notifications exist and which are required. See [How It Decides](https://www.evtivity.com/docs/csms/notifications#how-it-decides).
+
+Language, timezone, theme, and distance unit live under **Personal Info**, not here.
 
 ## Invoices
 

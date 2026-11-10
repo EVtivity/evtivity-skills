@@ -136,6 +136,14 @@ Chart date ranges are whole calendar days in the system timezone. Days without d
 
 The chart date pickers (energy, sessions, revenue, peak usage, utilization, Plug & Charge, free vend) constrain the **start** input to `max = end` and the **end** input to `min = start`, so the UI cannot produce an inverted range. The API mirrors the rule on its side: a zero or negative day count, an invalid custom `from` or `to` date, `from > to`, a range longer than 90 days, or a `from` date in the future gets a `400 VALIDATION_ERROR` instead of silently receiving last-7-days data.
 
+## Security Events
+
+The **Security Events** card shows the security events your stations reported (OCPP security event notifications) by severity and by station. It shows full width, right after the Station Status chart. The donut counts the events of each severity: critical, high, medium, low and info. The table lists the stations with events, the worst severity first, then the stations with the most events. Rows of stations with a critical event are red. Click a station to open its [Security](https://www.evtivity.com/docs/csms/stations#security) tab.
+
+Pick the range: **Last 24 Hours**, **Last 7 Days** (the default) or **Last 30 Days**. With access to more than one site you can pick a site. The **Severity** filter narrows only the station table: the donut always shows every severity. The table shows at most 50 stations and says when there are more.
+
+The card needs the `securityEvents:read` permission, which operators have by default and viewers do not. A station's events count from the time the CSMS received them, and a site-restricted user sees a station's events only from the time it stands at one of their sites.
+
 ## Site Layout
 
 The **Site Layout** card shows the 3D [layout](https://www.evtivity.com/docs/csms/sites#layout) of one site, read only, above the Site Map. It opens on a view in front of the chargers, at about eye height. Drag to look around, scroll or pinch to zoom, and click **Reset View** to return to the front view. **Full Screen** fills the screen with the view, with its labels, popups, summary chip and station list; press Escape or click **Exit Full Screen** to return (on an iPhone the view fills the browser window instead). Click a station for its details, with **Open Station**. The card has no editing: click **Open Site Layout** to change the layout on the site's Layout tab.

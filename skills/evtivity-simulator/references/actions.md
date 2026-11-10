@@ -111,6 +111,8 @@ Simulates a hardware fault on the connector.
 
 No-op if the connector is already in `faulted`.
 
+The 1.6 and 2.1 rows apply to OCPP 2.0.1 too, unless noted. In the Simulate tab, **Fault Type** picks the error: **Internal Error** or **High Temperature**. A High Temperature fault on an OCPP 1.6 station sends StatusNotification(Faulted, errorCode=HighTemperature). An OCPP 2.0.1 or 2.1 station sends StatusNotification(Faulted) and a NotifyEvent of the EVSE's `TemperatureSensor` component (variable `Temperature`, 95 C); Clear Fault sends the same event with 40 C and `cleared`. A high temperature is a fault, not a security event.
+
 #### Clear Fault
 
 Clears a previously injected fault.
@@ -124,6 +126,20 @@ Clears a previously injected fault.
 | 2.1 | StatusNotification(Available) | `available` |
 
 No-op if the connector is not currently in `faulted` (avoids forcing a healthy connector back to Available).
+
+#### Security Event
+
+Sends a security event from the station, as a real charger reports one.
+
+- **Action**: `securityEvent`
+- **Body**: `{ "stationId": "CS-001", "type": "TamperDetectionActivated", "techInfo": "door sensor" }`
+
+| OCPP | Messages emitted | Connector status |
+|---|---|---|
+| 1.6 | SecurityEventNotification (Security Whitepaper) | unchanged |
+| 2.0.1, 2.1 | SecurityEventNotification | unchanged |
+
+In the Simulate tab, **Security Event** lists every OCPP security event of the station's version, grouped by severity, with plain titles (for example **Charger Opened (Tamper Sensor)** for `TamperDetectionActivated`), plus the vendor tamper events `TiltDetected` and `CableCutDetected`. **Tech Info (Optional)** adds up to 255 characters. Click **Send Security Event**. A type outside the station's version answers `400 VALIDATION_ERROR`. The CSMS stores the event with its severity, so a critical event can disable the station when that setting is on.
 
 #### Go Offline
 

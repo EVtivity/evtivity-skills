@@ -1,6 +1,6 @@
 # EVtivity API routes: CSS Actions
 
-Generated from EVtivity CSMS v0.1.50 (https://github.com/EVtivity/evtivity-csms, commit 30a32d6998ae) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.51-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 859ba3ecb5d9) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -17,6 +17,7 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/css/actions/unplug` | stations:write | Unplug charging cable |
 | POST | `/v1/css/actions/injectFault` | stations:write | Inject a fault on an EVSE |
 | POST | `/v1/css/actions/clearFault` | stations:write | Clear a fault on an EVSE |
+| POST | `/v1/css/actions/securityEvent` | stations:write | Send a security event (SecurityEventNotification) from the station |
 | POST | `/v1/css/actions/suspendCharging` | stations:write | Suspend the energy transfer (EV or EVSE) |
 | POST | `/v1/css/actions/resumeCharging` | stations:write | Resume the energy transfer |
 | POST | `/v1/css/actions/evFull` | stations:write | EV battery full: suspend, then end |

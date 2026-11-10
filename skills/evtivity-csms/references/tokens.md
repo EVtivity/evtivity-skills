@@ -80,6 +80,10 @@ A driver can turn a card back on in the portal only when the driver turned it of
 
 When a driver is deactivated, the driver's tokens are deactivated. While the driver is inactive, you cannot create a token for the driver, reactivate one of the driver's tokens, or assign an active token to the driver. The CSMS also refuses an active token of an inactive driver at authorization.
 
+### Driver Self-Service
+
+Under **Settings** > **Integrations & Features** > **RFID Cards**, turn off **Drivers Manage Their RFID Cards** to manage every driver card yourself. Drivers then see their cards in the portal and the mobile app but cannot add, rename, deactivate, reactivate or remove one. Deactivate a lost card for the driver on this page.
+
 ## Delete a Token
 
 Operator delete from the dashboard is a hard delete - the `driver_tokens` row is removed. To preserve historical session linkage and the audit trail, the system blocks deletion when an active charging session still references the token: `DELETE /v1/tokens/:id` returns `409 TOKEN_IN_USE` until the session ends. Cancel or finish the session, then retry.

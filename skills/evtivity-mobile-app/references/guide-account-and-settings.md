@@ -49,9 +49,13 @@ Tap **Security** to protect your account. Here you can:
 
 ## Notifications
 
-![Notification settings](https://www.evtivity.com/screenshots/mobile/notifications.png)
+![Notification settings](https://www.evtivity.com/screenshots/mobile/notification-preferences.png)
 
-Tap **Notifications** to choose how the operator reaches you. Toggle email, SMS, and push notifications on or off. These control delivery; the bell in the header always keeps an in-app copy. See [Support](https://www.evtivity.com/docs/mobile-app/guide/support) for the notification inbox.
+Tap **Notifications** to choose which notifications you get on each channel: **Email**, **SMS** and **Push**. The screen lists the notifications in groups, with one checkbox per notification and channel. The top row, **All Notifications**, turns every notification of a channel on or off.
+
+The app shows email and SMS only when the operator has set them up. A row with a lock is **Required by your operator** and is always sent on that channel. Account and security messages, such as password resets and sign-in codes, are always sent. See [How It Decides](https://www.evtivity.com/docs/csms/notifications#how-it-decides).
+
+These choices control delivery. The bell in the header always keeps an in-app copy. See [Support](https://www.evtivity.com/docs/mobile-app/guide/support) for the notification inbox.
 
 ## About
 

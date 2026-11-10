@@ -15,7 +15,7 @@ Drivers are EV owners who charge at your stations. Each driver has an account wi
 1. Navigate to **Drivers** in the sidebar.
 2. Click **Create Driver**.
 3. Enter the driver's name, email, and phone number.
-4. Optionally set the driver's language. The portal, notifications, and invoice PDFs use it.
+4. Optionally change the driver's language, timezone, and distance unit. They start at the driver defaults of [Settings > Company Info](https://www.evtivity.com/docs/csms/settings#company-info). The portal, notifications, and invoice PDFs use the language.
 5. Optionally click **Edit Avatar** to give the driver an avatar. It is saved right after the driver is created.
 6. Click **Create**.
 
@@ -23,7 +23,7 @@ Drivers are EV owners who charge at your stations. Each driver has an account wi
 
 ## Driver Detail
 
-Click any driver in the list to open the detail page. The default Details view edits the driver's name, email, phone, and language.
+Click any driver in the list to open the detail page. The default Details view edits the driver's name, email, phone, language, timezone, and distance unit.
 
 Clear the email or phone field to remove it. A driver with portal access keeps an email address, because they sign in with it. Changing the email cancels any open invitation, password reset, and email verification link sent to the old address. The new address counts as unverified: a driver with portal access gets a verification link at the new address and can still sign in. A change of letter case only keeps the address verified.
 
@@ -174,4 +174,4 @@ Driver emails are case-insensitive and globally unique. `Alice@example.com` and 
 
 ## Timezone
 
-The timezone field accepts any IANA timezone name (`America/New_York`, `Europe/Berlin`, `Asia/Tokyo`). Unknown values are rejected with `400 VALIDATION_ERROR`.
+The timezone field accepts any IANA timezone name (`America/New_York`, `Europe/Berlin`, `Asia/Tokyo`). Unknown values are rejected with `400 VALIDATION_ERROR`. A driver created without a timezone, distance unit, or language (in the CSMS, through `POST /v1/drivers`, or by portal or app registration) gets the defaults of Settings > Company: `system.timezone`, `system.distanceUnit` and `system.driverLanguage`. `GET /v1/drivers/defaults` returns them. Portal and app registration send the language the visitor uses, so the company language applies only to a registration that sends none.

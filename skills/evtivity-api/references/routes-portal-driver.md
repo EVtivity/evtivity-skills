@@ -1,6 +1,6 @@
 # EVtivity API routes: Portal Driver
 
-Generated from EVtivity CSMS v0.1.50 (https://github.com/EVtivity/evtivity-csms, commit 30a32d6998ae) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.51-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 859ba3ecb5d9) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -14,8 +14,6 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/portal/driver/phone-verification` | driver | Send a code to confirm a new phone number |
 | PATCH | `/v1/portal/driver/billing-address` | driver | Update the authenticated driver billing address |
 | PATCH | `/v1/portal/driver/password` | driver | Change the authenticated driver password |
-| GET | `/v1/portal/driver/notification-preferences` | driver | Get driver notification preferences |
-| PUT | `/v1/portal/driver/notification-preferences` | driver | Update driver notification preferences |
 | GET | `/v1/portal/driver/mfa` | driver | Get current MFA status |
 | DELETE | `/v1/portal/driver/mfa` | driver | Disable MFA |
 | POST | `/v1/portal/driver/mfa/setup` | driver | Start MFA setup |
@@ -33,6 +31,8 @@ A `write` permission includes `read` for the same resource.
 | DELETE | `/v1/portal/driver/avatar` | driver | Remove the driver avatar |
 | POST | `/v1/portal/driver/avatar/upload-url` | driver | Get a presigned upload for an avatar image |
 | POST | `/v1/portal/driver/avatar/image` | driver | Confirm an uploaded avatar image |
+| GET | `/v1/portal/driver/notification-preferences` | driver | Get driver notification preferences |
+| PUT | `/v1/portal/driver/notification-preferences` | driver | Update driver notification preferences |
 | GET | `/v1/portal/favorites` | driver | List favorite stations |
 | POST | `/v1/portal/favorites` | driver | Add a station to favorites |
 | GET | `/v1/portal/favorites/check/{stationId}` | driver | Check if a station is favorited |

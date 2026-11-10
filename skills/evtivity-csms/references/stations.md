@@ -277,13 +277,13 @@ The **OCPP Message Log** shows all OCPP messages exchanged between the station a
 
 ### Simulate
 
-Available for simulator stations only. Trigger physical actions on the simulated station: plug in, authorize, start charging, stop charging, unplug, inject fault, and power cycle. See [Simulator Actions](https://www.evtivity.com/docs/simulator/actions) for details.
+Available for simulator stations only. Trigger physical actions on the simulated station: plug in, authorize, start charging, stop charging, unplug, inject fault (an internal error or a high temperature), send a security event, and power cycle. See [Simulator Actions](https://www.evtivity.com/docs/simulator/actions) for details.
 
 ![Station simulate tab](https://www.evtivity.com/screenshots/csms/station-simulate-tab.png)
 
 ### Security
 
-Manage the station's authentication credentials. Change the security profile, set or rotate the Basic Auth password (Basic Auth and TLS + Basic Auth), and cancel a pending profile upgrade. View the security event log: connection attempts, password changes, profile changes and the security events the station reports. Filter it by source, event, severity and date range, and click a row to see its details as formatted JSON. For Mutual TLS stations, the password section is hidden and a note directs to the Certificates tab. See [Security Profiles](#security-profiles) for how changes reach the station.
+Manage the station's authentication credentials. Change the security profile, set or rotate the Basic Auth password (Basic Auth and TLS + Basic Auth), and cancel a pending profile upgrade. View the security event log: connection attempts, password changes, profile changes and the security events the station reports. Filter it by source, event, severity and date range, and click a row to see its details as formatted JSON. The security events the station reports need the `securityEvents:read` permission, which operators have by default and viewers do not; without it the log shows the connection events only. For Mutual TLS stations, the password section is hidden and a note directs to the Certificates tab. See [Security Profiles](#security-profiles) for how changes reach the station.
 
 ![Station security tab](https://www.evtivity.com/screenshots/csms/station-security-tab.png)
 

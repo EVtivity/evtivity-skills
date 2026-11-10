@@ -51,6 +51,10 @@ Duplicate card numbers are rejected. Each card number can only be linked to one 
 
 When you tap a deactivated card on a station reader, the station sends an authorization request to the CSMS. The CSMS rejects the request because the card is inactive. The station displays an authorization failure and does not start charging.
 
+## When the Operator Manages Your Cards
+
+Your operator can choose to manage RFID cards for you. The RFID Cards page then lists your cards with a note, and shows no **Add RFID Card**, rename or toggle. To add, change or remove a card, or to block a lost card, contact the operator.
+
 ## System Integration
 
 Added cards appear as driver tokens with the type you chose. Operators can also see and manage these tokens from the CSMS Tokens page. Cards are shared between portal self-service and operator management - changes made by either side take effect immediately.

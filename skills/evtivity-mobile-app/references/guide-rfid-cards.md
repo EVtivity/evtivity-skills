@@ -31,3 +31,7 @@ When you deactivate a card, the app asks you to confirm. The toggle then settles
 > **Tip:**
 >
 > Deactivate a lost card right away. A deactivated card cannot start a session, so no one else can charge on your account with it.
+
+## When the operator manages your cards
+
+Your operator can choose to manage RFID cards for you. The RFID Cards screen then lists your cards with a note, and shows no **Add RFID Card**, rename or toggle. To add, change or remove a card, or to block a lost card, contact the operator.

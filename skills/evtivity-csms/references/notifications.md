@@ -6,13 +6,13 @@ Configure notification templates, channels, and delivery settings for OCPP, driv
 
 ## Overview
 
-The notification system dispatches messages to operators and drivers via email, SMS, and webhooks. You configure which events trigger notifications, customize message templates with a WYSIWYG editor, and review sent notifications. The notification page has five tabs: Driver Events, System Events, OCPP Events, Sent Notifications, and History. The History tab lists notification template changes.
+The notification system dispatches messages to operators and drivers via email, SMS, and webhooks. You configure which events trigger notifications, customize message templates with a WYSIWYG editor, and review sent notifications. The notification page has five tabs: Driver Events, System Events, OCPP Events, Sent Notifications, and History. The History tab lists notification template changes and **Driver Choice** changes.
 
 ![Notifications](https://www.evtivity.com/screenshots/csms/notifications.png)
 
 ## Driver Events
 
-Driver events are notifications sent to drivers about their sessions, account, payments, reservations, invoices, support cases, tokens, maintenance, station watches, and prepaid cards. You turn each event type on or off with its **Active** switch. When an event type is on, each driver's notification preferences apply. You customize the message template for each event type.
+Driver events are notifications sent to drivers about their sessions, account, payments, reservations, invoices, support cases, tokens, maintenance, station watches, and prepaid cards. You turn each event type on or off with its **Active** switch. An event type that is off is never sent, and drivers do not see it in their notification preferences. When an event type is on, the **Driver Choice** card decides whether each driver chooses it or always gets it (see [How It Decides](#how-it-decides)). You customize the message template for each event type.
 
 The **Driver Events** tab groups them:
 
@@ -47,6 +47,21 @@ They are sent by email with the invoice or credit note PDF attached, and as a pu
 ![Driver event with a locked Active switch](https://www.evtivity.com/screenshots/csms/notifications-driver-event-detail.png)
 
 Channels: email and SMS.
+
+### Driver Choice
+
+The **Driver Choice** card shows below the settings of an event that is on, next to its template. It has one row per channel: **Email**, **SMS** and **Push**. Set each channel to **Optional** or **Mandatory**:
+
+- **Optional**: each driver decides in the portal and the mobile app.
+- **Mandatory**: every driver gets the event on that channel, whatever they chose. Drivers see it checked and locked, marked as required by you.
+
+No event is mandatory until you set it. A channel without its provider shows **Not configured: nothing is sent on this channel.** Email needs SMTP and SMS needs Twilio. Push needs no setup.
+
+Account and security notices, such as password resets, sign-in codes, email verification, the portal invitation, security notices and the welcome email, have no choice. Their card says **Drivers always get this notification.** An event that is off shows that drivers get it on no channel, mandatory or not.
+
+Changing the card needs the `notifications:write` permission and access to every site. Each change shows in the **History** tab.
+
+![Driver Choice card](https://www.evtivity.com/screenshots/csms/notifications-driver-choice.png)
 
 ### Editing a Template
 
@@ -168,7 +183,17 @@ If you save a wrapper with a Handlebars syntax error, the dispatcher logs a warn
 
 ## Driver Notification Preferences
 
-Drivers control their own notification preferences from the portal's Account page. They can independently enable or disable email and SMS channels. When a driver disables a channel, notifications for that channel are skipped even if the event type is enabled system-wide. The always-on event types listed under Driver Events are sent anyway.
+Drivers choose their notifications per event and channel: in the portal under **Account > Notifications** (email and SMS), and in the mobile app (email, SMS and push). See [Notification Preferences](https://www.evtivity.com/docs/portal/account#notification-preferences) and [Notifications in the mobile app](https://www.evtivity.com/docs/mobile-app/guide/account-and-settings#notifications). Drivers see only the events that are on and the channels you configured. The always-on event types listed under Driver Events are sent anyway.
+
+## How It Decides
+
+For each driver event and channel, the CSMS decides in this order:
+
+1. **Active switch.** An event that is off is never sent, even when a channel is mandatory. Off wins.
+2. **Driver Choice.** A mandatory channel sends the event to every driver, whatever they chose, as long as the channel is configured. Account and security notices are always sent.
+3. **The driver's choice.** Otherwise the driver's choice for the event and channel applies. An event without its own choice follows the driver's switch for the whole channel.
+
+When a driver tries to turn off a mandatory channel, the API refuses with `400 NOTIFICATION_EVENT_MANDATORY`.
 
 ## Operator Notification Preferences
 

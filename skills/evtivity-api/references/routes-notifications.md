@@ -1,6 +1,6 @@
 # EVtivity API routes: Notifications
 
-Generated from EVtivity CSMS v0.1.50 (https://github.com/EVtivity/evtivity-csms, commit 30a32d6998ae) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.51-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 859ba3ecb5d9) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -19,6 +19,8 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/notifications/test` | notifications:write | Send a test notification |
 | GET | `/v1/driver-event-settings` | notifications:read | List driver event settings |
 | PUT | `/v1/driver-event-settings` | notifications:write | Turn a driver event type on or off |
+| GET | `/v1/driver-event-settings/channels` | notifications:read | List the configured driver notification channels |
+| PUT | `/v1/driver-event-settings/mandatory` | notifications:write | Make a driver event mandatory or optional per channel |
 | GET | `/v1/notification-templates` | notifications:read | Get a notification template |
 | PUT | `/v1/notification-templates` | notifications:write | Create or update a notification template |
 | DELETE | `/v1/notification-templates` | notifications:write | Delete a notification template |

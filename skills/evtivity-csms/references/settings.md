@@ -67,6 +67,8 @@ Uploading a new image replaces the current one.
 - **Currency** - the one currency for all tariffs, card payments, and invoices. Changing it does not relabel past sessions, payments, or invoices. Supports 31 currencies (USD, EUR, GBP, CAD, AUD, CHF, CNY, INR, BRL, MXN, SEK, NOK, DKK, NZD, SGD, HKD, ZAR, ILS, AED, SAR, TWD, THB, PLN, CZK, HUF, TRY, COP, ARS, PHP, MYR, IDR).
 - **Prices in the driver portal** - **Including tax (gross)** or **Excluding tax (net)** (`company.priceDisplay`, default net). See Price display below.
 - **Tariff prices are entered** - **Excluding tax (net)** or **Including tax (gross)** (`company.taxBasis`, default net). See Tax calculation method below.
+- **Timezone** - the company timezone (`system.timezone`, default America/New_York). Dashboard days, invoices and reports use it, and new drivers start with it unless one is set when they are created. Existing drivers keep theirs.
+- **Driver Language** and **Driver Distance Unit** - the language (`system.driverLanguage`, default English) and distance unit (`system.distanceUnit`, miles or kilometers, default miles) a new driver starts with when none is set at creation, together with the system timezone (`system.timezone`). They apply to drivers created in the CSMS, through the API and by portal or app registration. Existing drivers keep their own.
 - **Contact Email** - general contact email for the company.
 - **Support Email** - displayed in support communications.
 - **Support Phone** - displayed in support communications and email footers.
@@ -143,6 +145,12 @@ The **PDF branding** section sets the logo and the footer of every PDF the platf
 Changing these settings needs `settings.system:write` and access to all sites.
 
 ![PDF branding](https://www.evtivity.com/screenshots/csms/settings-pdf-branding.png)
+
+### Update check
+
+The **Update Check** card tells admins when a newer EVtivity CSMS release is out. While **Check for New Releases** is on (the default), the worker reads `https://evtivity.com/csms-version.txt` once a day and when it starts, at most once in 23 hours, and users with `users:write` see a notice on the dashboard when a newer stable release exists. The request comes from the server and sends only its IP address: the browsers of your staff never contact evtivity.com, and no details of your installation are sent. Turn the switch off to stop the request; the dashboard then shows no notice. Deployments can set it with the `system.updateCheckEnabled` app setting (Helm `appSettings.system.updateCheckEnabled`).
+
+Changing this setting needs `settings.system:write` and access to all sites.
 
 ## Marketing
 
@@ -402,6 +410,12 @@ Reservation feature toggle and settings.
 Support cases feature toggle.
 
 - **Enable Support** - toggle for the support case system. When disabled, support nav items and endpoints are hidden.
+
+### RFID Cards
+
+Whether drivers manage their own RFID cards.
+
+- **Drivers Manage Their RFID Cards** - on (the default): drivers add, rename, deactivate, reactivate and remove their own RFID cards in the portal and the mobile app. Off: drivers only see their cards, with a note to contact you, also to block a lost card. You manage the cards on the [Tokens](https://www.evtivity.com/docs/csms/tokens) page. Existing cards keep working either way.
 
 ### Fleet
 

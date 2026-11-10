@@ -1,6 +1,6 @@
 # EVtivity API routes: Settings
 
-Generated from EVtivity CSMS v0.1.50 (https://github.com/EVtivity/evtivity-csms, commit 30a32d6998ae) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.51-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 859ba3ecb5d9) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -51,6 +51,7 @@ A `write` permission includes `read` for the same resource.
 | PUT | `/v1/security/mfa` | settings.security:write | Update MFA method availability, passkeys and required MFA |
 | GET | `/v1/security/public` | public | Get public security configuration for login pages |
 | GET | `/v1/system/info` | settings.system:read | Runtime version and environment configuration (no secret values) |
+| GET | `/v1/system/update-check` | users:write | Latest released CSMS version found by the daily update check |
 | GET | `/v1/sso/settings` | settings.security:read | Get SSO (SAML 2.0) settings |
 | PUT | `/v1/sso/settings` | settings.security:write | Update SSO (SAML 2.0) settings |
 | GET | `/v1/auth/sso/login` | public | Initiate SAML SSO login |

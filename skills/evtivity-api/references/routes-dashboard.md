@@ -1,6 +1,6 @@
 # EVtivity API routes: Dashboard
 
-Generated from EVtivity CSMS v0.1.50 (https://github.com/EVtivity/evtivity-csms, commit 30a32d6998ae) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.51-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 859ba3ecb5d9) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -31,3 +31,4 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/dashboard/snapshots/available-dates` | dashboard:read | Get dates that have snapshot data |
 | GET | `/v1/dashboard/snapshots` | dashboard:read | Get historical dashboard snapshot for a date |
 | GET | `/v1/dashboard/carbon-stats` | dashboard:read | Get carbon impact statistics |
+| GET | `/v1/dashboard/security-events` | securityEvents:read | Get station security events by severity and by station |

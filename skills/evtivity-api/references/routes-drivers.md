@@ -1,6 +1,6 @@
 # EVtivity API routes: Drivers
 
-Generated from EVtivity CSMS v0.1.50 (https://github.com/EVtivity/evtivity-csms, commit 30a32d6998ae) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.51-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 859ba3ecb5d9) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -18,6 +18,7 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/drivers/{id}/portal-invite` | drivers:write | Invite a driver to the driver portal |
 | GET | `/v1/drivers/{id}/billing-address` | drivers:read | Get the driver billing address |
 | PATCH | `/v1/drivers/{id}/billing-address` | drivers:write | Update the driver billing address |
+| GET | `/v1/drivers/defaults` | drivers:read | Get the preferences new drivers start with |
 | GET | `/v1/drivers/{id}/tokens` | drivers:read | List tokens for a driver |
 | POST | `/v1/drivers/{id}/tokens` | drivers:write | Create a token for a driver |
 | GET | `/v1/drivers/{id}/vehicles` | drivers:read | List vehicles for a driver |

@@ -143,7 +143,7 @@ helm list -n evtivity
 The latest CSMS release is published in three places:
 
 - The [GitHub releases page](https://github.com/EVtivity/evtivity-csms/releases)
-- `https://evtivity.com/csms-version.txt` - a plain-text mirror used by the dashboard
+- `https://evtivity.com/csms-version.txt` - a plain-text file the CSMS worker reads once a day for the dashboard notice. Only the server's IP address reaches evtivity.com; browsers never contact it. Turn it off with **Check for New Releases** in Settings > Company Info ([Update check](https://www.evtivity.com/docs/csms/settings#update-check)).
 - The CSMS dashboard itself shows an "Update available" toast to admin users when a newer version exists
 
 Prereleases (tags such as `v0.1.38-alpha.1` or `v0.1.38-beta.1`) are marked **Pre-release** on the GitHub releases page and publish images under their exact version only. They are not announced: `csms-version.txt` and the dashboard toast only name stable releases, and the chart's `appVersion` does not move to a prerelease. A dashboard running a prerelease is told when the stable release of that version ships.

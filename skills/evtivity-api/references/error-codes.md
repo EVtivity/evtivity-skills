@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.50 (https://github.com/EVtivity/evtivity-csms, commit 30a32d6998ae) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.51-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 859ba3ecb5d9) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -199,6 +199,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `MFA_TOTP_NO_RESEND` | 400 | Cannot resend TOTP codes |
 | `MISSING_PAYMENT_INTENT` | 400 | Payment intent missing |
 | `MISSING_VERSION_URL` | 400 | Partner version URL is required for registration |
+| `NOTIFICATION_EVENT_MANDATORY` | 400 | Your operator requires this notification on this channel, so it cannot be turned off |
 | `NOTIFICATION_EVENT_REQUIRED` | 400 | This notification is required for account access and cannot be turned off |
 | `NOT_BLOCKED` | 409 | Station is not blocked |
 | `NOT_CHARGING` | 400 | Session is not currently charging |
@@ -305,6 +306,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `RESERVATION_TIMEOUT` | 504 | Reservation command timed out |
 | `RESERVATION_TOO_LONG` | 400 | Reservation cannot exceed ... hours |
 | `RESERVATION_WINDOW_TOO_SHORT` | 400 | Reservation must end at least 60 seconds after it starts |
+| `RFID_SELF_SERVICE_DISABLED` | 403 | Your operator manages your RFID cards. Contact the operator to add, change, deactivate or remove a card. |
 | `ROAMING_DISABLED` |  | Roaming is disabled |
 | `ROLE_NOT_FOUND` | 400 | Role does not exist |
 | `ROTATION_NOT_APPLICABLE` | 400 | Credential rotation only applies to security profiles 1 and 2 |

@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.50 (https://github.com/EVtivity/evtivity-csms, commit 30a32d6998ae) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.51-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 859ba3ecb5d9) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
@@ -18,7 +18,7 @@ A `write` permission includes `read` for the same resource.
 | SIMs | 18 | `references/routes-sims.md` |
 | Sessions | 10 | `references/routes-sessions.md` |
 | Users | 64 | `references/routes-users.md` |
-| Drivers | 32 | `references/routes-drivers.md` |
+| Drivers | 33 | `references/routes-drivers.md` |
 | Pricing | 19 | `references/routes-pricing.md` |
 | OCPP 2.1 Commands | 57 | `references/routes-ocpp-2-1-commands.md` |
 | OCPP 1.6 Commands | 27 | `references/routes-ocpp-1-6-commands.md` |
@@ -26,13 +26,13 @@ A `write` permission includes `read` for the same resource.
 | Transactions | 3 | `references/routes-transactions.md` |
 | Fleets | 43 | `references/routes-fleets.md` |
 | Tokens | 12 | `references/routes-tokens.md` |
-| Dashboard | 21 | `references/routes-dashboard.md` |
-| Settings | 52 | `references/routes-settings.md` |
+| Dashboard | 22 | `references/routes-dashboard.md` |
+| Settings | 53 | `references/routes-settings.md` |
 | Documentation | 1 | `references/routes-documentation.md` |
 | Payments | 38 | `references/routes-payments.md` |
 | Events | 1 | `references/routes-events.md` |
 | Load Management | 30 | `references/routes-load-management.md` |
-| Notifications | 13 | `references/routes-notifications.md` |
+| Notifications | 15 | `references/routes-notifications.md` |
 | Reservations | 9 | `references/routes-reservations.md` |
 | Maintenance | 11 | `references/routes-maintenance.md` |
 | Portal Auth | 18 | `references/routes-portal-auth.md` |
@@ -65,7 +65,7 @@ A `write` permission includes `read` for the same resource.
 | Event Alert Rules | 4 | `references/routes-event-alert-rules.md` |
 | API Keys | 6 | `references/routes-api-keys.md` |
 | CSS Management | 7 | `references/routes-css-management.md` |
-| CSS Actions | 14 | `references/routes-css-actions.md` |
+| CSS Actions | 15 | `references/routes-css-actions.md` |
 | CSS OCPP 1.6 Actions | 15 | `references/routes-css-ocpp-1-6-actions.md` |
 | CSS OCPP 2.1 Actions | 43 | `references/routes-css-ocpp-2-1-actions.md` |
 | Smart Charging | 12 | `references/routes-smart-charging.md` |
