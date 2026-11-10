@@ -8,7 +8,7 @@ Keep one record per SIM card, import and export SIMs as CSV, attach them to stat
 
 The **SIMs** page lists the SIM cards of your cellular stations and the SIMs not attached to a station. Each SIM has one record with its ICCID, IMSI, label, notes, provider, status and the history of the stations it was attached to. Its data sessions, SIM alerts and fetched days belong to the SIM, so they stay with it when it moves to another station.
 
-Open it from **SIMs** in the navigation, below **Stations**.
+Open it from **SIMs** in the navigation, below **Stations**. The entry shows once at least one SIM you may see exists. Before that, add or import the first SIM from the **SIMs page** link in **Settings > Integrations & Features > SIM Providers**, or by entering an ICCID on a station.
 
 ![SIMs list](https://www.evtivity.com/screenshots/csms/sims-list.png)
 

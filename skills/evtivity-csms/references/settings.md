@@ -2,7 +2,7 @@ Generated from https://www.evtivity.com/docs/csms/settings. Do not edit.
 
 # Settings
 
-Configure company info, marketing, content, notifications, sustainability, payments, integrations, security, API keys, firmware, station configurations, smart charging, AI, and data retention.
+Configure company info, marketing, content, notifications, sustainability, payments, integrations, security, API keys, firmware, station configurations, smart charging, AI, data retention, and system.
 
 ## Overview
 
@@ -145,12 +145,6 @@ The **PDF branding** section sets the logo and the footer of every PDF the platf
 Changing these settings needs `settings.system:write` and access to all sites.
 
 ![PDF branding](https://www.evtivity.com/screenshots/csms/settings-pdf-branding.png)
-
-### Update check
-
-The **Update Check** card tells admins when a newer EVtivity CSMS release is out. While **Check for New Releases** is on (the default), the worker reads `https://evtivity.com/csms-version.txt` once a day and when it starts, at most once in 23 hours, and users with `users:write` see a notice on the dashboard when a newer stable release exists. The request comes from the server and sends only its IP address: the browsers of your staff never contact evtivity.com, and no details of your installation are sent. Turn the switch off to stop the request; the dashboard then shows no notice. Deployments can set it with the `system.updateCheckEnabled` app setting (Helm `appSettings.system.updateCheckEnabled`).
-
-Changing this setting needs `settings.system:write` and access to all sites.
 
 ## Marketing
 
@@ -1039,6 +1033,18 @@ The tab starts with a warning: chaos mode and large networks need large storage.
 | **SIM Data** | **SIM Sessions and Alerts** | `sim.sessions.retentionDays` | 90 | 7 to 730 |
 
 A value of 0 keeps the data forever for the settings whose range starts at 0. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention) for the tables each setting covers and the prune jobs.
+
+## System
+
+**Permission:** `settings.system:read` / `settings.system:write` and access to every site.
+
+The **System** tab holds the settings of the CSMS installation itself.
+
+### Update check
+
+The **Update Check** card tells admins when a newer EVtivity CSMS release is out. While **Check for New Releases** is on (the default), the worker reads `https://evtivity.com/csms-version.txt` once a day and when it starts, at most once in 23 hours, and users with `users:write` see a notice on the dashboard when a newer stable release exists. The request comes from the server and sends only its IP address: the browsers of your staff never contact evtivity.com, and no details of your installation are sent. Turn the switch off to stop the request; the dashboard then shows no notice. Deployments can set it with the `system.updateCheckEnabled` app setting (Helm `appSettings.system.updateCheckEnabled`).
+
+Changing this setting needs `settings.system:write` and access to all sites.
 
 ## Conformance
 

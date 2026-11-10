@@ -139,7 +139,7 @@ Sends a security event from the station, as a real charger reports one.
 | 1.6 | SecurityEventNotification (Security Whitepaper) | unchanged |
 | 2.0.1, 2.1 | SecurityEventNotification | unchanged |
 
-In the Simulate tab, **Security Event** lists every OCPP security event of the station's version, grouped by severity, with plain titles (for example **Charger Opened (Tamper Sensor)** for `TamperDetectionActivated`), plus the vendor tamper events `TiltDetected` and `CableCutDetected`. **Tech Info (Optional)** adds up to 255 characters. Click **Send Security Event**. A type outside the station's version answers `400 VALIDATION_ERROR`. The CSMS stores the event with its severity, so a critical event can disable the station when that setting is on.
+In the Simulate tab, click **Send Security Event** in the **Security Event** group. The dialog lists every OCPP security event of the station's version, grouped by severity, with plain titles (for example **Charger Opened (Tamper Sensor)** for `TamperDetectionActivated`), plus the vendor tamper events `TiltDetected` and `CableCutDetected`. **Tech Info (Optional)** adds up to 255 characters. Click **Send**: the dialog closes once the event is sent, and an error shows inside the dialog. A type outside the station's version answers `400 VALIDATION_ERROR`. The CSMS stores the event with its severity, so a critical event can disable the station when that setting is on.
 
 #### Go Offline
 

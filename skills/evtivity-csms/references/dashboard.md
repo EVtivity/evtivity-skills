@@ -138,7 +138,7 @@ The chart date pickers (energy, sessions, revenue, peak usage, utilization, Plug
 
 ## Security Events
 
-The **Security Events** card shows the security events your stations reported (OCPP security event notifications) by severity and by station. It shows full width, right after the Station Status chart. The donut counts the events of each severity: critical, high, medium, low and info. The table lists the stations with events, the worst severity first, then the stations with the most events. Rows of stations with a critical event are red. Click a station to open its [Security](https://www.evtivity.com/docs/csms/stations#security) tab.
+The **Security Events** card shows the security events your stations reported (OCPP security event notifications) by severity and by station. It is hidden by default: add it in [customize mode](#customize-the-live-dashboard) with **Customize**, and it shows full width, right after the Station Status chart. The donut counts the events of each severity: critical, high, medium, low and info. The table lists the stations with events, the worst severity first, then the stations with the most events. Rows of stations with a critical event are red. Click a station to open its [Security](https://www.evtivity.com/docs/csms/stations#security) tab.
 
 Pick the range: **Last 24 Hours**, **Last 7 Days** (the default) or **Last 30 Days**. With access to more than one site you can pick a site. The **Severity** filter narrows only the station table: the donut always shows every severity. The table shows at most 50 stations and says when there are more.
 
@@ -146,11 +146,11 @@ The card needs the `securityEvents:read` permission, which operators have by def
 
 ## Site Layout
 
-The **Site Layout** card shows the 3D [layout](https://www.evtivity.com/docs/csms/sites#layout) of one site, read only, above the Site Map. It opens on a view in front of the chargers, at about eye height. Drag to look around, scroll or pinch to zoom, and click **Reset View** to return to the front view. **Full Screen** fills the screen with the view, with its labels, popups, summary chip and station list; press Escape or click **Exit Full Screen** to return (on an iPhone the view fills the browser window instead). Click a station for its details, with **Open Station**. The card has no editing: click **Open Site Layout** to change the layout on the site's Layout tab.
+The **Site Layout** card shows the 3D [layout](https://www.evtivity.com/docs/csms/sites#layout) of one site, read only, above the Site Map. It opens on a view in front of the chargers, at about eye height. Drag to look around, scroll or pinch to zoom toward the pointer, double-click or double-tap a charger to glide in to it, and click **Reset View** to return to the front view. **Full Screen** fills the screen with the view, with its labels, popups, summary chip and station list; press Escape or click **Exit Full Screen** to return (on an iPhone the view fills the browser window instead). Click a station for its details, with **Open Station**. The card has no editing: click **Open Site Layout** to change the layout on the site's Layout tab.
 
 ![Site Layout card](https://www.evtivity.com/screenshots/csms/dashboard-site-layout.png)
 
-The card updates live, like the Layout tab. It shows the same live power on the load management links and panel bars, the beacons of faulted stations, the AI insight markers, the summary chip, the station list and the driver avatars over charging cars with their session details (see [Layout](https://www.evtivity.com/docs/csms/sites#layout)). Day replay is on the Layout tab only.
+The card updates live, like the Layout tab. It shows the same live power on the load management links and panel bars, the blinking status lights of faulted stations, the AI insight markers, the summary chip, the station list and the driver avatars over charging cars with their session details (see [Layout](https://www.evtivity.com/docs/csms/sites#layout)). Day replay is on the Layout tab only.
 
 Pick the site in the list at the top of the card. Your choice is saved with your dashboard layout and follows you to every browser. Until you pick one, the card shows the first of your sites that has stations. When the site you picked is deleted or you lose access to it, the card shows that site instead and says so. The list shows only the sites you can access.
 
