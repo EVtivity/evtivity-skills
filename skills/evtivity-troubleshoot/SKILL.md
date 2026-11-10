@@ -50,6 +50,7 @@ Start at the first symptom that matches.
 - The database disk fills up, or Postgres stops with `No space left on device`: go to I.
 - A session is `faulted` with stopped reason `EndRequestFailed` (Session End Failed alert): this is a field problem, not a stack failure. Bill it with the evtivity-csms skill (Bill session), or see evtivity-guides field troubleshooting.
 - Reports stay `pending`, or the worker log shows `NOPERM` on `report_generate` or `ocpp:conn:*` after an upgrade to v0.1.40: go to D.
+- A driver does not get a notification (v0.1.51 and later): go to J.
 - None of these: collect diagnostics and use the evtivity-report-issue skill.
 
 ### A. Migrate container failed
@@ -166,6 +167,18 @@ Confirm: list the largest tables with `docker compose exec postgres psql -U evti
 Fix: lower **OCPP Messages** (`logs.ocppMessage.retentionDays`, default 30) and **Meter Values** (`logs.meterValues.retentionDays`, default 90) in Settings > Data Retention, run fewer simulated stations (every enabled one stays connected, also in standby), or add disk. The daily `log-retention-prune` job deletes the old rows at 03:30 UTC. PostgreSQL reuses the freed space, the files do not shrink.
 
 Detail: evtivity-configuration (Data Retention).
+
+### J. A driver does not get a notification
+
+From v0.1.51 three settings decide each channel, in this order:
+
+1. Notifications > Driver Events: an event switched off is never sent, also when it is mandatory.
+2. The Driver Choice card of the event: a Mandatory channel is sent to every driver, whatever they chose.
+3. The driver's own choice in the portal or the app (Account > Notifications), else the driver's All switch of that channel.
+
+Confirm: in Notifications > History, a row with `smtp_not_configured` or `twilio_not_configured` means the channel is not set up (Settings > Notifications); no row at all means a setting above stopped it. Account and security messages (password reset, sign-in codes) are always sent.
+
+Detail: evtivity-csms (Notifications), evtivity-portal (Notification Preferences).
 
 ## 3. After the fix
 
