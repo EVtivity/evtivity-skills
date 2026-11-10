@@ -10,6 +10,8 @@ Load management prevents electrical infrastructure overload by dynamically distr
 
 Load management is configured per site from the site detail page.
 
+Load management shares power within the limits you enter. It does not replace breakers or correctly sized wiring, so make sure every panel and circuit rating matches the installed equipment. The Load Management tab shows this warning while load management is on.
+
 ![Load management tab](https://www.evtivity.com/screenshots/csms/site-load-management-tab.png)
 
 ## Electrical Safety

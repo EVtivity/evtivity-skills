@@ -4,8 +4,8 @@ description: "Operate the EVtivity operator dashboard: sites, stations, sessions
 license: MIT
 metadata:
   evtivity-version: "0.1.50"
-  evtivity-release: "v0.1.50-beta.4"
-  evtivity-commit: "a0313065741f21e635d50ba75f42dec8327a9d74"
+  evtivity-release: "v0.1.50"
+  evtivity-commit: "30a32d6998ae3c94837ba12802dcee714d06b4f5"
   evtivity-docs-section: csms
 ---
 
