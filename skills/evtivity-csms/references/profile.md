@@ -13,7 +13,7 @@ The Profile page holds the settings of your own operator account. Open it from t
 The page has these tabs:
 
 - **Personal Info** - your avatar, name, mobile number, language and timezone.
-- **Appearance** - light or dark theme.
+- **Appearance** - your theme and mode.
 - **Change Password** - your password.
 - **Two-Factor Authentication** - your second factor, passkeys and security keys, and recovery codes.
 - **Notifications** - your SMS notifications and the AI insight action digest email.
@@ -41,6 +41,23 @@ The avatar editor has two modes:
 Your email address is shown but cannot change here. Ask another admin to change it on the Users page.
 
 When your account has a second factor, a new mobile number needs a proof first: a code of your method or one of your passkeys. When you sign in with SMS codes, also click **Send Code to New Number** and enter the code from the text message under **Code Sent to the New Number**. The number is saved only once confirmed.
+
+## Appearance
+
+The **Appearance** tab holds the **Appearance** card with two fields. A change applies at once, with no Save button.
+
+- **Theme** - **Default**, **Soft** or **High Contrast**. A description under the field explains the theme you picked. The **Theme** item in the user menu of the sidebar picks it too.
+- **Mode** - **Light** or **Dark**. The **Mode** item in the user menu of the sidebar switches it too.
+
+### Themes
+
+A theme sets the look of the app. Every CSMS user and every driver picks one for their own account.
+
+- **Default** - the standard look.
+- **Soft** - rounder corners, lighter borders and softer shadows.
+- **High Contrast** - plain black and white surfaces, strong borders and heavier text. Body text meets the WCAG AAA contrast level in light and dark mode.
+
+Mode is separate from the theme: each theme comes in **Light** and **Dark**. Your theme and mode are saved on your account, so they follow you to every browser and device and apply as the page loads. Operators cannot create or edit themes. Drivers set theirs in the [driver portal](https://www.evtivity.com/docs/portal/account#personal-info) and the [mobile app](https://www.evtivity.com/docs/mobile-app/guide/account-and-settings#personal-info).
 
 ## Change Password
 

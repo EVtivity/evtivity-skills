@@ -42,7 +42,8 @@ The Personal Info page holds your profile and display settings.
    - **Phone** (used for SMS notifications and MFA)
    - **Language** (English, Deutsch, Español, 한국어, 简体中文, or 繁體中文)
    - **Timezone** (affects how timestamps are displayed)
-   - **Theme** (Light or Dark)
+   - **Theme** (Default, Soft, or High Contrast, see [Themes](https://www.evtivity.com/docs/csms/profile#themes))
+   - **Mode** (Light or Dark)
    - **Distance Unit** (miles or km, affects vehicle range estimates and session summaries)
    - **Show prices** (**Operator default**, **Including tax (gross)**, or **Excluding tax (net)**)
 3. Tap **Save** to apply changes. All fields persist in one request, and the language bundle reloads in place if you switched it.
@@ -99,7 +100,7 @@ The portal shows the channels your operator has set up. When the operator has se
 
 A checkbox with a lock is **Required by your operator**. It stays checked, and the notification is always sent on that channel. Account and security messages, such as password resets and sign-in codes, are always sent and have no row. The operator decides which notifications exist and which are required. See [How It Decides](https://www.evtivity.com/docs/csms/notifications#how-it-decides).
 
-Language, timezone, theme, and distance unit live under **Personal Info**, not here.
+Language, timezone, theme, mode, and distance unit live under **Personal Info**, not here.
 
 ## Invoices
 

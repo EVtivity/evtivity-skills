@@ -54,12 +54,12 @@ Uploading a new image replaces the current one.
 - **Meta Description** - description tag for the portal's HTML head.
 - **Meta Keywords** - keywords tag for the portal's HTML head.
 
-**Theme:**
+**Colors:**
 
-- **Theme Color** - hex color picker that sets the portal's primary brand color. Default `#2563eb`.
-- **AC Charger Plate Color** and **DC Charger Plate Color** - hex colors of the front plate of AC and DC chargers in the 3D site layout and in the station pictures of the 2D layout. Empty uses the theme color.
+- **Brand Color** - hex color picker that sets the portal's primary brand color. Default `#2563eb`.
+- **AC Charger Plate Color** and **DC Charger Plate Color** - hex colors of the front plate of AC and DC chargers in the 3D site layout and in the station pictures of the 2D layout. Empty uses the brand color.
 
-![Theme color and charger plate colors](https://www.evtivity.com/screenshots/csms/settings-company-theme.png)
+![Brand color and charger plate colors](https://www.evtivity.com/screenshots/csms/settings-company-theme.png)
 
 **Company Details:**
 

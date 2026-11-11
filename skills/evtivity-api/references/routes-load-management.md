@@ -1,6 +1,6 @@
 # EVtivity API routes: Load Management
 
-Generated from EVtivity CSMS v0.1.51-beta.3 (https://github.com/EVtivity/evtivity-csms, commit d553b77bd2ec) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.51-beta.4 (https://github.com/EVtivity/evtivity-csms, commit aacea543e172) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no

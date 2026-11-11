@@ -21,7 +21,7 @@ White labeling for your own network is single-tenant and falls under the free pa
 | Surface | What changes | Where |
 |---|---|---|
 | Driver portal | Logo, colors, name, footer, favicon, OG image | Settings &rarr; Company Info |
-| Operator dashboard | Logo, name, theme color | Settings &rarr; Company Info |
+| Operator dashboard | Logo, name, brand color | Settings &rarr; Company Info |
 | Email notifications | From-address, sender name, layout, footer | Settings &rarr; Notification |
 | SMS notifications | Sender ID, brand prefix in body | Settings &rarr; Notification &rarr; Twilio SMS |
 | Station displays | Per-state text on the EVSE screen | Settings &rarr; Integrations & Features &rarr; Messages |
@@ -89,7 +89,7 @@ Settings &rarr; Company Info:
 | QR Code Icon | Center of every station QR code (SVG only) |
 | Favicon | Portal browser tab |
 | OG Image | Social media link previews |
-| Theme Color | Portal primary buttons, accents, links |
+| Brand Color | Portal primary buttons, accents, links |
 | Currency | Currency for all tariffs, Stripe charges, and invoices |
 | Prices in the driver portal | Prices shown excluding tax (net) or including tax (gross) in the portal, mobile app, and station screens |
 | Contact / Support email | Email footers, support pages |
@@ -98,7 +98,7 @@ Settings &rarr; Company Info:
 
 Image upload limits: 512 KB per file. SVG recommended for the logo and QR icon (scales without artifacts).
 
-Theme color cascades to the operator dashboard and the driver portal. Pick a hex value (e.g., `#0f7a3e`) and the rest of the UI re-tints automatically.
+Brand color cascades to the operator dashboard and the driver portal. Pick a hex value (e.g., `#0f7a3e`) and the rest of the UI re-tints automatically.
 
 ## 3. Email Notifications
 
@@ -193,7 +193,7 @@ A driver who signs up sees:
 - Your company name in the welcome email subject.
 - Your support email in the email footer.
 - Your privacy policy and terms when signing up.
-- Your theme color throughout.
+- Your brand color throughout.
 - Your station name on the QR landing page.
 
 Test this end-to-end: register a fresh driver account, verify the welcome email, complete a guest charging session, request a password reset. Every email and screen should carry your brand.

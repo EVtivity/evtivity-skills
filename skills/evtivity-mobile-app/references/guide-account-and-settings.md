@@ -27,6 +27,7 @@ An operator with the permission can also set or remove your avatar in the CSMS.
 Tap **Personal Info** to edit your first and last name and your phone number. Your email is shown but cannot be changed here. When your account uses two-factor authentication, the app tells you to change the phone number in the driver portal, where you confirm the change. Below that, set your preferences:
 
 - **Language** - the app updates immediately when you change it.
+- **Theme** - **Default**, **Soft** or **High Contrast**, with a description of the selected one. See [Themes](https://www.evtivity.com/docs/csms/profile#themes). The app follows the light or dark setting of your phone.
 - **Distance unit** - miles or kilometers.
 - **Timezone** - used for session and statement times.
 - **Show prices** - **Including tax (gross)**, **Excluding tax (net)**, or the operator default. It sets whether charger prices and session costs are shown with or without tax. You pay the same amount either way. The choice is saved on your account, so the driver portal uses it too.
