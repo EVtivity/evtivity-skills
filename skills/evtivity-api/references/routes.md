@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.51-beta.4 (https://github.com/EVtivity/evtivity-csms, commit aacea543e172) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.51-beta.5 (https://github.com/EVtivity/evtivity-csms, commit 514a35157d5e) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
