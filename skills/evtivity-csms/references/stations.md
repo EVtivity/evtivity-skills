@@ -325,6 +325,10 @@ View the station's current OCPP configuration as a read-only table. Click **Refr
 
 ![Station configurations tab](https://www.evtivity.com/screenshots/csms/station-configurations-tab.png)
 
+### Data Plan
+
+Set the data plan of the station, **Wi-Fi or Wired** or **Cellular**, or choose **Use the Site's Plan** (`stations:write`). The tab shows the plan the station uses, where it came from (set on the station, a confirmed SIM, the site, or the default), and whether the station gets the AC or the DC values. See [Pick the Cellular plan](https://www.evtivity.com/docs/configuration/cellular-stations#pick-the-cellular-plan).
+
 ### Firmware Updates
 
 View the firmware update operations for this station, including status (downloading, downloaded, installing, installed, failed) and timestamps. A station that is installing firmware is unavailable. A failed install marks the station faulted until the next install or until an operator enables the station.

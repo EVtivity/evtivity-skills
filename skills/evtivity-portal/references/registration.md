@@ -10,7 +10,7 @@ The EVtivity Portal requires a driver account for authenticated charging, sessio
 
 ## Create an Account
 
-1. Open the Portal and tap **Create One** on the login screen.
+1. Open the Portal and tap **Create One** on the login screen. The link shows only while your charging provider allows self-registration.
 2. Fill in the registration form:
    - **First name** and **Last name**
    - **Email** (used for login and notifications)
@@ -25,7 +25,7 @@ The portal then asks you to check your inbox. Open the verification link, then s
 
 A phone number can be used for at most three new accounts in 24 hours.
 
-If the operator has disabled portal self-registration (`portal.registrationEnabled = false`), the endpoint returns `PORTAL_REGISTRATION_DISABLED` and the form shows a "contact your operator to be invited" message. In that case, the operator creates your account and sends you an invitation. See [Accept an Invitation](#accept-an-invitation).
+If the operator has disabled portal self-registration (`portal.registrationEnabled = false`), the login screen shows no **Create One** link, opening `/register` takes you to the login screen, and the API refuses a registration with `PORTAL_REGISTRATION_DISABLED`. The mobile app behaves the same. In that case, the operator creates your account and sends you an invitation. See [Accept an Invitation](#accept-an-invitation).
 
 ## Accept an Invitation
 

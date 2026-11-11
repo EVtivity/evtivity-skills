@@ -13,7 +13,7 @@ Authenticated drivers can start charging sessions by scanning a QR code at a sta
 Every charging station has a QR code that links to the Portal.
 
 1. Scan the QR code with your phone camera. The URL format is `/charge/:stationId/:evseId` (specific connector) or `/charge/:stationId` (station level).
-2. If you are logged in, the Portal redirects you to the authenticated charging page at `/start/:stationId`. If a specific connector was in the QR code, it is preselected.
+2. If you are logged in, the Portal redirects you to the authenticated charging page at `/start/:stationId`. If a specific connector was in the QR code, the page shows only that connector, preselected. Tap **Show All N Connectors** to see the others. The mobile app does the same.
 3. If you are not logged in, you see the guest landing page. Tap **Sign In** to log in and continue with authenticated charging, or charge as a guest (see [Guest Charging](https://www.evtivity.com/docs/portal/guest-charging)).
 
 ## Search for a Station
@@ -40,7 +40,7 @@ The station detail page at `/start/:stationId` shows everything you need to star
 - **Address** - tap to view the [Location Detail](https://www.evtivity.com/docs/portal/location-detail) page with map and popular times
 - **Site contact information** - shown when the operator marks the contact as public
 - **Favorites star** - tap to add or remove the station from your [Favorites](https://www.evtivity.com/docs/portal/favorites)
-- **Report Issue** - link to create a support case about this station
+- **Report Issue** - link to create a support case about this station, shown while the operator has Support turned on
 
 ### Pricing
 
@@ -86,6 +86,7 @@ When the whole station is unavailable, the page shows "This station is unavailab
 1. On the station detail page, tap an available connector tile.
 2. Only connectors with a startable status (available, occupied, preparing, or ev_connected) can be selected. A connector you reserved can also be selected. A connector reserved by another driver cannot. No connector can be selected while the station is unavailable.
 3. The selected connector is highlighted with a border.
+4. After a QR scan, only the scanned connector is shown. Tap **Show All N Connectors** to pick another one.
 
 ## Pre-Start Status Check
 

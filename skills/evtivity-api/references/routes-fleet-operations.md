@@ -1,6 +1,6 @@
 # EVtivity API routes: Fleet Operations
 
-Generated from EVtivity CSMS v0.1.51-beta.5 (https://github.com/EVtivity/evtivity-csms, commit 514a35157d5e) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.51-beta.6 (https://github.com/EVtivity/evtivity-csms, commit 80d98bfea603) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no

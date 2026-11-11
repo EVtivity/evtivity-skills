@@ -72,7 +72,7 @@ The session detail page shows:
 - **CO₂ avoided** - Carbon savings in kg (when available)
 - **Station details** - Station ID, location, connector type
 - **Start and end timestamps**
-- **Report Issue button** - Opens a new support case pre-filled with the session details (see [Support Cases](https://www.evtivity.com/docs/portal/support-cases))
+- **Report Issue button** - Opens a new support case pre-filled with the session details (see [Support Cases](https://www.evtivity.com/docs/portal/support-cases)), shown while the operator has Support turned on
 - **Fleet Billing** - For a session billed to your fleet: the fleet and the state (Not invoiced yet, Invoiced to the fleet, or Paid by the fleet). The fleet invoice goes to the fleet, not to you.
 - **Fleet Billing** for a session your fleet invoices to you - "Billed to you via" and the fleet name, the state (Not invoiced yet, Invoiced to you, or Paid), and once the session is on an invoice, the **Invoice** row with a link to it. See [Invoices](https://www.evtivity.com/docs/portal/invoices).
 

@@ -8,6 +8,8 @@ Report charging issues, communicate with the operator, and track case resolution
 
 The support case system lets drivers report problems with charging sessions and communicate with the network operator. Cases are tracked with a unique case number and support a threaded message history.
 
+While the operator has Support turned off, the Portal and the mobile app hide **Report Issue** and the Support Cases entry, and the support pages open the home page instead.
+
 ## Create a Support Case
 
 The most common way to create a case is from a session detail page.

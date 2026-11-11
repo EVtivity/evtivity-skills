@@ -15,7 +15,7 @@ Each plan has AC and DC values for the readings a station sends while it charges
 
 A station uses the first plan that applies:
 
-1. The plan set on the station, on its **Configurations** tab.
+1. The plan set on the station, on its **Data Plan** tab.
 2. **Cellular** when a SIM attachment is confirmed on the station.
 3. The plan set on the station's site, on the site's **Details** tab.
 4. **Wi-Fi or Wired**.
