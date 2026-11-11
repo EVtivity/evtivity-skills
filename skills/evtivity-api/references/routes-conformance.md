@@ -1,6 +1,6 @@
 # EVtivity API routes: Conformance
 
-Generated from EVtivity CSMS v0.1.51-beta.6 (https://github.com/EVtivity/evtivity-csms, commit 80d98bfea603) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.51-beta.7 (https://github.com/EVtivity/evtivity-csms, commit a57402af9a66) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no

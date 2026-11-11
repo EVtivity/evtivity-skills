@@ -5,8 +5,8 @@ license: MIT
 compatibility: Per the docs, needs the latest Node.js LTS, Git, npx expo and npx eas-cli, Android Studio with JDK 17 for Android, macOS with Xcode for iOS, a development build (not Expo Go), and a running EVtivity CSMS API reachable from the device.
 metadata:
   evtivity-version: "0.1.51"
-  evtivity-release: "v0.1.51-beta.6"
-  evtivity-commit: "80d98bfea6039c632ee20adf8edca10077e955e1"
+  evtivity-release: "v0.1.51-beta.7"
+  evtivity-commit: "a57402af9a667b9be0afd1f8e33f1e5d6a54daeb"
   evtivity-docs-section: mobile-app
 ---
 

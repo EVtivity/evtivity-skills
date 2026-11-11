@@ -5,8 +5,8 @@ license: MIT
 compatibility: Needs a running EVtivity CSMS (v0.1.38 or later for Adyen and the provider-neutral payment API). API examples use curl and jq. Stripe or Adyen setup needs an account with that provider. Provider webhooks need a public HTTPS URL for the API.
 metadata:
   evtivity-version: "0.1.51"
-  evtivity-release: "v0.1.51-beta.6"
-  evtivity-commit: "80d98bfea6039c632ee20adf8edca10077e955e1"
+  evtivity-release: "v0.1.51-beta.7"
+  evtivity-commit: "a57402af9a667b9be0afd1f8e33f1e5d6a54daeb"
   evtivity-docs-section: integrations
 ---
 
