@@ -36,6 +36,8 @@ Shown when the operator has set hours in the site settings. This is a free-form 
 
 Displays the total number of chargers at the location and how many are currently available. This gives a quick read on whether the site has open connectors.
 
+A station the operator divided into units (separate charger boxes of one station) counts one charger per unit, and each unit is listed with the station ID and the unit name.
+
 ### Image Carousel
 
 Horizontal row of thumbnail images. Tap any thumbnail to open a full-screen overlay viewer. Only driver-visible images are shown - operators control which images are visible to drivers in the CSMS site settings.

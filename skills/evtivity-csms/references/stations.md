@@ -10,6 +10,10 @@ Stations represent physical charging hardware that communicates with the CSMS ov
 
 ![Stations list](https://www.evtivity.com/screenshots/csms/stations-list.png)
 
+The list shows each station's connectors as icons. For a station with [units](#units), the icons are grouped by unit and the unit count, such as **8 Units**, shows under the model.
+
+![Stations list with a station divided into units](https://www.evtivity.com/screenshots/csms/stations-list-units.png)
+
 ## Create a Station
 
 1. Navigate to **Stations** in the sidebar.
@@ -155,6 +159,35 @@ Through the API, an upgrade of a connected OCPP 2.0.1 station needs `ocppInterfa
 
 OCPP does not allow lowering the security profile of a connected station. Lower profiles are disabled while the station is online. To downgrade, take the station offline, change the profile, and reconfigure the station on site.
 
+## Units
+
+Some charging hardware is one OCPP station spread over several physical charger boxes, for example a master box and its extenders under one Charge Point ID. Units group the EVSEs of such a station by box, so you and your drivers see each box as a charger. For example, the OCPP 1.6 demo station `EM4-MASTER-01` at the site Parkhaus Lindenhof has 8 units, **Box 1** to **Box 8**, with 2 AC EVSEs each. Units are optional: a station without units shows its EVSEs in one grid, and drivers see it as one charger. Each box is one charger with two ports, one EVSE each, and both ports can charge at the same time.
+
+A unit is a grouping in the CSMS only. The station keeps one OCPP connection, and sessions, OCPP commands, configuration, firmware updates, load management, QR codes and billing stay with the station and its EVSE numbers.
+
+### Manage units
+
+Open the station's **Connectors** tab. The **Units** card lists the units of the station. You need `stations:write` to change them; without it the card is read-only.
+
+1. Click **Add Unit**, enter a **Unit Name**, such as Box 1, and save. A name has 1 to 50 characters and is unique per station, whatever its case. A station holds at most 64 units.
+2. Under **EVSE Units**, pick the unit of each EVSE, or **No Unit**.
+3. To change a unit, use the **Rename Unit** or **Delete Unit** button on its row. Deleting a unit asks for confirmation. Its EVSEs stay on the station without a unit, and drivers' favorites and watches of that unit are removed.
+
+With units, the EVSE grid of the Connectors tab shows one collapsible section per unit with its EVSEs and the unit's status, then **EVSEs Without a Unit**. A unit shows offline while its station is offline. Each unit change is recorded in the station's **History** tab as **Unit changed**. The session details show a **Unit** row with the unit of the session's EVSE.
+
+![Connectors tab with units](https://www.evtivity.com/screenshots/csms/station-connectors-units.png)
+
+![Add Unit dialog](https://www.evtivity.com/screenshots/csms/station-unit-dialog.png)
+
+### What drivers and partners see
+
+- In the [portal](https://www.evtivity.com/docs/portal/charging#search-for-a-station) and the [mobile app](https://www.evtivity.com/docs/mobile-app/guide/find-a-charger), each unit is its own charger in search, nearby, the station page, the location page, favorites and Station Watch. The EVSEs without a unit of a station with units form one more charger, named by the station. A unit without an EVSE in service does not show.
+- Roaming partners receive each EVSE's unit name as its physical reference (see [Roaming](https://www.evtivity.com/docs/csms/roaming#evse-identifiers)).
+
+### API
+
+`GET /v1/stations/:id/units` lists the units (`stations:read`). `POST /v1/stations/:id/units`, `PATCH /v1/stations/:id/units/:unitId` and `DELETE /v1/stations/:id/units/:unitId` create, rename or reorder, and delete a unit, and `PUT /v1/stations/:id/evses/:evseId/unit` moves an EVSE into a unit or out of it (`stations:write`). Requests name EVSEs by their OCPP EVSE number.
+
 ## Connector Types
 
 | Type | Description |
@@ -220,6 +253,8 @@ View and manage EVSEs and connectors. Each connector shows its current status wi
 **Retire EVSE** and **Retire Connector** take hardware out of service and keep its history. Drivers and roaming partners no longer see it, it takes no new sessions or reservations, the station status and uptime leave it out, and the station is told it is Inoperative. A retired EVSE or connector shows a **Retired** badge, and **Restore EVSE** or **Restore Connector** puts it back in service. Retire is refused while the hardware is in use or holds an active or upcoming reservation. Delete is only for hardware without history: retire an EVSE or connector that sessions, reservations or meter values refer to. A status report the station sends for a retired connector is stored, and the connector stays retired until you restore it.
 
 EVSE numbers are unique per station, and connector numbers are unique per EVSE.
+
+To group the EVSEs of the station by physical charger box, add [units](#manage-units) on this tab.
 
 A payment terminal is paired to one connector of a station, or to the whole station. Pairing needs `paymentTerminals:write` and `stations:write`. See [Payment Terminals](https://www.evtivity.com/docs/integrations/payment-terminals#add-and-pair-a-terminal).
 

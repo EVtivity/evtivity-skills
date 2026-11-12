@@ -4,9 +4,9 @@ description: "Deploy and upgrade EVtivity in production: Docker images and tags,
 license: MIT
 compatibility: Docker Compose targets need Docker with Compose v2. Kubernetes targets need kubectl, Helm 3, Kubernetes 1.27+ and a Gateway API implementation (Istio or Envoy Gateway), plus minikube and optionally istioctl for local clusters. AWS needs Node.js with npm, the AWS CLI and the AWS CDK, run against your own account.
 metadata:
-  evtivity-version: "0.1.51"
-  evtivity-release: "v0.1.51"
-  evtivity-commit: "8b9dd7fb416f20321d49ff5345e9096a4fcbb47a"
+  evtivity-version: "0.1.52"
+  evtivity-release: "v0.1.52-beta.1"
+  evtivity-commit: "b847ffe444e01b12ed48257e12e579677a75691c"
   evtivity-docs-section: deployment
 ---
 

@@ -1,6 +1,6 @@
 # EVtivity API routes: Stations
 
-Generated from EVtivity CSMS v0.1.51 (https://github.com/EVtivity/evtivity-csms, commit 8b9dd7fb416f) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.52-beta.1 (https://github.com/EVtivity/evtivity-csms, commit b847ffe444e0) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -70,6 +70,11 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/stations/{id}/event-alerts` | stations:read | List event alerts for a station |
 | POST | `/v1/stations/{id}/event-alerts/{alertId}/acknowledge` | stations:write | Acknowledge an event alert |
 | GET | `/v1/stations/{id}/standalone-meter-values` | stations:read | List standalone meter values for a station |
+| GET | `/v1/stations/{id}/units` | stations:read | List the units of a station |
+| POST | `/v1/stations/{id}/units` | stations:write | Create a station unit |
+| PATCH | `/v1/stations/{id}/units/{unitId}` | stations:write | Rename or reorder a station unit |
+| DELETE | `/v1/stations/{id}/units/{unitId}` | stations:write | Delete a station unit |
+| PUT | `/v1/stations/{id}/evses/{evseId}/unit` | stations:write | Move an EVSE into a unit |
 | GET | `/v1/stations/{id}/sim` | stations:read | Get a station's SIM |
 | GET | `/v1/stations/{id}/sim/timeline` | stations:read | Get a station's connectivity timeline |
 | POST | `/v1/stations/{id}/sim/refresh` | stations:read | Refresh a station's SIM data |

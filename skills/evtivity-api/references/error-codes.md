@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.51 (https://github.com/EVtivity/evtivity-csms, commit 8b9dd7fb416f) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.52-beta.1 (https://github.com/EVtivity/evtivity-csms, commit b847ffe444e0) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -367,6 +367,9 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `STATION_TIMEOUT` | 504 | Station did not respond |
 | `STATION_TLS_URL_NOT_CONFIGURED` | 400 | The public TLS address for stations (OCPP_STATION_TLS_URL) is not configured |
 | `STATION_UNAVAILABLE` | 409 | This station is unavailable right now. Try another station. |
+| `STATION_UNIT_LIMIT_REACHED` | 400 | A station holds at most 64 units |
+| `STATION_UNIT_NAME_IN_USE` | 409 | Another unit of this station has this name |
+| `STATION_UNIT_NOT_FOUND` | 404 | Unit not found |
 | `STATION_WATCH_NOT_FOUND` | 404 | Watch not found |
 | `STATUS_CHECK_REJECTED` | 502 | Station rejected the status check |
 | `STATUS_CHECK_TIMEOUT` | 504 | Status check timed out. Replug the connector and try again. |

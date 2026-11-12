@@ -17,6 +17,8 @@ Favorites are the stations you charge at often. Save one and it is a tap away fr
 
 The star at the top of the home and charge screens highlights in orange once you have at least one favorite.
 
+On the detail of a unit (a separate charger box of a station), the star saves that unit only, and its entry names the station and the unit. If the operator deletes the unit, it leaves your favorites.
+
 ## Open your favorites
 
 Tap the star icon in the header, or open the **Account** tab and tap **Favorites**. Each entry shows the station name, address, whether it is online, and how many connectors are available. Tap one to go straight to its detail and start charging.

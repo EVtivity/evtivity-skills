@@ -75,7 +75,9 @@
   ],
   "evtivity-guides": [
     "guides/audit-logs",
+    "guides/charging-site-connection-setups",
     "guides/ev-charging-behaviors",
+    "guides/evses-and-connectors",
     "guides/how-drivers-start-and-pay",
     "guides/notifications",
     "guides/ocpp-testing",

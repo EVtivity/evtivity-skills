@@ -88,6 +88,12 @@ List of all charging stations at this site with their online/offline status, sta
 
 The **Layout** tab shows where the site's stations stand. Switch between the **3D** and **2D** views in the tab header. **3D** is the default, and the browser remembers your choice.
 
+A station with [units](https://www.evtivity.com/docs/csms/stations#units) is drawn as one charger per unit: each unit has its own charger model, spots, status and cars, and its own card in the 2D view. In 3D each unit charger carries a box number plate in the unit order, so the first unit is Box 1 and the units after it are numbered on from there. Point at the plate to see the unit name. A unit with two AC EVSEs is drawn as one dual-port charger with both ports, never as two chargers.
+
+![A station with units in the 3D layout](https://www.evtivity.com/screenshots/csms/site-layout-3d-units.png)
+
+![A station with units in the 2D layout](https://www.evtivity.com/screenshots/csms/site-layout-2d-units.png)
+
 ![Site layout in 3D](https://www.evtivity.com/screenshots/csms/site-layout-3d.png)
 
 The 3D view shows the site by its site type, drawn with standard real dimensions: 2.6 by 5.5 m spots, a 7.3 m (24 ft) two-way drive aisle, 2.4 by 6 m parallel spots and 3.5 m travel lanes.

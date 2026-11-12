@@ -33,4 +33,5 @@ Tap the eye icon in the header, to the right of the favorites star. The icon sho
 - A watch expires on its own after 24 hours if the station never frees up.
 - You can watch up to 25 stations at once.
 - Starting a charge at a station you are watching clears that watch automatically.
+- On the detail of a unit (a separate charger box of a station), the watch covers that unit: you are notified only when a connector of that unit becomes free, and the notification names the station and the unit. If the operator deletes the unit, the watch is removed.
 - Watches are tied to your driver account and are separate from favorites.

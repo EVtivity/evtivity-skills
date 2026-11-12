@@ -75,8 +75,11 @@ Published locations include all EVSE and connector details, transformed to OCPI 
 |-------|--------|---------|
 | `uid` | The EVSE's internal id: `evs_` plus 12 characters. Unique across your network. | `evs_a1b2c3d4e5f6` |
 | `evse_id` | `{stationId}-EVSE-{n}`, where `stationId` is the OCPP station id | `CS-001-EVSE-1` |
+| `physical_reference` | The name of the EVSE's [unit](https://www.evtivity.com/docs/csms/stations#units), cut to 16 characters. Sent only for an EVSE in a unit. | `Box 3` |
 
 Partners address an EVSE by its `uid` in commands and in the EVSE and connector endpoints. The EVSE must belong to the location in the request.
+
+Moving an EVSE into a unit, out of it or renaming its unit updates the EVSE's `last_updated` and pushes the location to partners. The `uid` and `evse_id` stay the same.
 
 ## Roaming Sessions
 

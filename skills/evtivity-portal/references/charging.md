@@ -13,7 +13,7 @@ Authenticated drivers can start charging sessions by scanning a QR code at a sta
 Every charging station has a QR code that links to the Portal.
 
 1. Scan the QR code with your phone camera. The URL format is `/charge/:stationId/:evseId` (specific connector) or `/charge/:stationId` (station level).
-2. If you are logged in, the Portal redirects you to the authenticated charging page at `/start/:stationId`. If a specific connector was in the QR code, the page shows only that connector, preselected. Tap **Show All N Connectors** to see the others. The mobile app does the same.
+2. If you are logged in, the Portal redirects you to the authenticated charging page at `/start/:stationId`. If a specific connector was in the QR code, the page shows only that connector, preselected. Tap **Show All Ports** to see the others. The mobile app does the same.
 3. If you are not logged in, you see the guest landing page. Tap **Sign In** to log in and continue with authenticated charging, or charge as a guest (see [Guest Charging](https://www.evtivity.com/docs/portal/guest-charging)).
 
 ## Search for a Station
@@ -29,9 +29,17 @@ If location access is denied, a banner prompts you to enable location services. 
 
 Nearby station results are cached in localStorage for 24 hours.
 
+When the operator has divided a station into units (separate charger boxes of one station), each unit is its own result, with the unit name under the station ID. Tap a unit to open the station detail page for that unit.
+
+![Search results with units](https://www.evtivity.com/screenshots/portal/portal-search-units.png)
+
 ## Station Detail Page
 
 The station detail page at `/start/:stationId` shows everything you need to start a session.
+
+For a unit, the page opens at `/start/:stationId?unit=<unit id>`. It shows the unit name at the top with the station ID below it, and the EVSE grid shows only the connectors of that unit. The favorites star and **Notify me when free** apply to that unit. A QR code of a connector opens the page with that connector's unit named at the top. Starting, the session and billing stay with the station and its connector, as at any other station.
+
+![Station detail page of a unit](https://www.evtivity.com/screenshots/portal/portal-charger-unit.png)
 
 ### Station Information
 
@@ -86,7 +94,7 @@ When the whole station is unavailable, the page shows "This station is unavailab
 1. On the station detail page, tap an available connector tile.
 2. Only connectors with a startable status (available, occupied, preparing, or ev_connected) can be selected. A connector you reserved can also be selected. A connector reserved by another driver cannot. No connector can be selected while the station is unavailable.
 3. The selected connector is highlighted with a border.
-4. After a QR scan, only the scanned connector is shown. Tap **Show All N Connectors** to pick another one.
+4. After a QR scan, only the scanned connector is shown. Tap **Show All Ports** to pick another one.
 
 ## Pre-Start Status Check
 
@@ -129,7 +137,7 @@ When the operator has turned on reservations, you can hold a connector before yo
 1. Tap the **Reserve** tab, then **New reservation**.
 2. Search for the station and select it.
 3. Optionally select a connector, then set **Starts at** and **Expires at**.
-4. Tap **Reserve Connector**.
+4. Tap **Reserve Port**.
 
 A reservation that starts now is sent to the station, and the Portal waits for the station to confirm the hold. If the station refuses or does not answer, the Portal shows an error and the reservation is cancelled with no fee. A reservation that starts later is sent to the station at its start time.
 
