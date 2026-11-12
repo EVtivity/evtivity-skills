@@ -1,6 +1,6 @@
 # EVtivity API routes: Portal Payout Onboarding
 
-Generated from EVtivity CSMS v0.1.52-beta.2 (https://github.com/EVtivity/evtivity-csms, commit 9561c5360402) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.52-beta.3 (https://github.com/EVtivity/evtivity-csms, commit b4c190f4e95c) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no

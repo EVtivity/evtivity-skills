@@ -53,7 +53,7 @@ New stations start with a **pending** onboarding status. Operators can approve o
 
 ### Deleting a station
 
-Stations cannot be permanently deleted. The **Delete** button blocks the station instead of deleting it from the database and closes its OCPP connection. This preserves all historical data (sessions, meter values, logs). You can unblock it later to restore it to pending status. While a charging session is active at the station, **Delete** is refused with `409 STATION_HAS_ACTIVE_SESSION`: stop the session first (**Connectors** tab, **Stop Active Session**).
+Stations cannot be permanently deleted. The **Delete** button blocks the station instead of deleting it from the database and closes its OCPP connection. This preserves all historical data (sessions, meter values, logs). You can unblock it later to restore it to pending status. While a charging session is active at the station, **Delete** is refused with `409 STATION_HAS_ACTIVE_SESSION`: stop the session first (**EVSE & Connectors** tab, **Stop Active Session**).
 
 Approve, Reject, Unblock and Delete need the `stations:write` permission. Without it, the station page shows the onboarding notice without the buttons.
 
@@ -167,19 +167,23 @@ A unit is a grouping in the CSMS only. The station keeps one OCPP connection, an
 
 ### Manage units
 
-Open the station's **Connectors** tab. With units, each unit is a card that holds the cards of its EVSEs and shows the unit's status and EVSE count. The EVSEs without a unit are in the **EVSEs Without a Unit** card, shown while there are any. A unit shows offline while its station is offline. You need `stations:write` to change units; without it the unit buttons are hidden and each EVSE card shows its unit as text.
+Open the station's **EVSE & Connectors** tab. The tab header shows **Add Unit** before **Create EVSE**. While the station has no units, the header says so. With units, each unit is a card that holds the cards of its EVSEs and shows the unit's status and EVSE count. The EVSEs without a unit are in the **EVSEs Without a Unit** card, shown while there are any. A unit shows offline while its station is offline. You need `stations:write` to change units. Without it, **Add Unit** and the unit buttons are hidden.
 
-1. In the **Units** card, click **Add Unit**, enter a **Unit Name**, such as Box 1, and save. A name has 1 to 50 characters and is unique per station, whatever its case. A station holds at most 64 units.
-2. Put each EVSE in its unit. Pick the unit, or **No Unit**, in the **Unit** field of the EVSE card. Or click **Assign EVSE** on the unit card and pick an EVSE: the list shows the EVSEs without a unit first, then the EVSEs of other units, each with its current unit. An EVSE belongs to one unit only, so an EVSE from another unit moves out of that unit. The EVSE card moves into the card of its unit.
+1. Click **Add Unit** in the tab header, enter a **Unit Name**, such as Box 1, and save. A name has 1 to 50 characters and is unique per station, whatever its case. A station holds at most 64 units.
+2. Put each EVSE in its unit. Click **Assign EVSE** on the unit card and pick an EVSE. The list shows the EVSEs without a unit first, then the EVSEs of other units, each with its current unit. An EVSE belongs to one unit only, so an EVSE from another unit moves out of that unit. The EVSE card moves into the card of its unit.
 3. To change a unit, use the **Rename Unit** or **Delete Unit** button on its card. Deleting a unit asks for confirmation. Its EVSEs stay on the station without a unit, and drivers' favorites and watches of that unit are removed.
 
-While a station with units has EVSEs without a unit, the tab shows a warning with the number of such EVSEs. Drivers see them as one more charger named after the station. **Manage Units** scrolls to the **EVSEs Without a Unit** card. Each unit change is recorded in the station's **History** tab as **Unit changed**. The session details show a **Unit** row with the unit of the session's EVSE.
+To take an EVSE out of a unit, click **Remove EVSE** on the unit card, pick the EVSE and save. The EVSE moves to the **EVSEs Without a Unit** card and stays on the station. The button is disabled while the unit has no EVSEs.
 
-![Connectors tab with units](https://www.evtivity.com/screenshots/csms/station-connectors-units.png)
+While a station with units has EVSEs without a unit, the tab shows a warning with the number of such EVSEs. Drivers see them as one more charger named after the station. **Manage Units** scrolls to the unit cards, where **Assign EVSE** puts an EVSE in a unit. Each unit change is recorded in the station's **History** tab as **Unit changed**. The session details show a **Unit** row with the unit of the session's EVSE.
+
+![EVSE & Connectors tab with units](https://www.evtivity.com/screenshots/csms/station-connectors-units.png)
 
 ![Add Unit dialog](https://www.evtivity.com/screenshots/csms/station-unit-dialog.png)
 
 ![Assign EVSE dialog of a unit](https://www.evtivity.com/screenshots/csms/station-unit-assign-evse.png)
+
+![Remove EVSE dialog of a unit](https://www.evtivity.com/screenshots/csms/station-unit-remove-evse.png)
 
 ### What drivers and partners see
 
@@ -248,7 +252,7 @@ Paginated list of all charging sessions for this station. Filterable by status a
 
 ![Station sessions tab](https://www.evtivity.com/screenshots/csms/station-sessions-tab.png)
 
-### Connectors
+### EVSE & Connectors
 
 View and manage EVSEs and connectors. Each connector shows its current status with a color-coded badge. Add new EVSEs and connectors, edit connector types and power ratings, or delete unused ones (blocked if in use).
 
@@ -257,8 +261,6 @@ View and manage EVSEs and connectors. Each connector shows its current status wi
 EVSE numbers are unique per station, and connector numbers are unique per EVSE.
 
 To group the EVSEs of the station by physical charger box, add [units](#manage-units) on this tab.
-
-A payment terminal is paired to one connector of a station, or to the whole station. Pairing needs `paymentTerminals:write` and `stations:write`. See [Payment Terminals](https://www.evtivity.com/docs/integrations/payment-terminals#add-and-pair-a-terminal).
 
 #### OCPP 1.6 stations
 
@@ -290,7 +292,11 @@ A connector without a max power shows a **Max power unknown** badge. Load manage
 | faulted | Red | Hardware fault |
 | unavailable | Red | Out of service |
 
-![Station connectors tab](https://www.evtivity.com/screenshots/csms/station-connectors-tab.png)
+![Station EVSE & Connectors tab](https://www.evtivity.com/screenshots/csms/station-connectors-tab.png)
+
+### Payment Terminals
+
+Lists the payment terminals paired to the station. **Pair** pairs an active unpaired terminal to one connector or to the whole station, and **New Payment Terminal** adds a terminal for the station. The tab shows with `paymentTerminals:read` while payment terminals are available, and pairing also needs `paymentTerminals:write` and `stations:write`. See [Payment Terminals](https://www.evtivity.com/docs/integrations/payment-terminals#add-and-pair-a-terminal).
 
 ### OCPP Commands
 

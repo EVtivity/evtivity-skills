@@ -63,11 +63,11 @@ A master charger and its extenders report as one station with many EVSEs. See [C
 - **OCPP 2.0.1 and 2.1:** EVtivity stores the EVSE and connector numbers as the station reports them. An EVSE or connector the station reports for the first time in a StatusNotification is created automatically and marked as auto-created. Its connector type starts as Unknown, and EVtivity asks the station for its base report, which fills the connector type and maximum power of existing connectors. A status for evseId 0 becomes the station's reported status.
 - **OCPP 1.6:** each 1.6 connector is stored as an EVSE with one connector, both with the 1.6 number: connector 3 becomes EVSE 3 with connector 3. A 1.6 EVSE always holds exactly one connector, so a 1.6 DC charger with CCS and CHAdeMO shows as two EVSEs. A status for connectorId 0 becomes the station's reported status. Auto-created 1.6 connectors keep the type Unknown until an operator sets it, since OCPP 1.6 has no base report.
 - **Commands:** EVtivity addresses EVSEs. For a 1.6 station it sends the EVSE number as the connectorId.
-- Operators can also add EVSEs and connectors by hand on the station's **Connectors** tab.
+- Operators can also add EVSEs and connectors by hand on the station's **EVSE & Connectors** tab.
 
 ## What Operators and Drivers See
 
-- **Connectors tab:** one card per EVSE, with its connectors inside. See [Connectors](https://www.evtivity.com/docs/csms/stations#connectors) and [OCPP 1.6 stations](https://www.evtivity.com/docs/csms/stations#ocpp-16-stations).
+- **EVSE & Connectors tab:** one card per EVSE, with its connectors inside. See [EVSE & Connectors](https://www.evtivity.com/docs/csms/stations#connectors) and [OCPP 1.6 stations](https://www.evtivity.com/docs/csms/stations#ocpp-16-stations).
 - **Driver portal:** the station page shows one tile per EVSE with the connector types of that EVSE. The driver picks an EVSE, and the charge starts on that station and EVSE number. See [EVSE Grid](https://www.evtivity.com/docs/portal/charging#evse-grid).
 - **2D site layout:** each station card shows the connector pictograms grouped by EVSE.
 - **3D site layout:** a charger with two or more EVSEs shows a number plate per EVSE, and a charger with a light per port shows each port in its own EVSE's state. A car stands at each EVSE with a connector plugged in. A charger model draws at most two EVSEs: one connector each for AC, up to two each for DC. See [Layout](https://www.evtivity.com/docs/csms/sites#layout).

@@ -70,7 +70,7 @@ Each station has one or more EVSEs, and each EVSE has one or more connectors. Yo
 
 The CSMS keeps an EVSE or connector that has charging history. Deleting one that sessions, reservations or meter values refer to fails with `409 EVSE_HAS_HISTORY`: retire it instead. Deleting one that is in use fails with `409 CONNECTOR_OCCUPIED`. The page shows the reason.
 
-Retiring an EVSE or connector takes it out of service and keeps its history. Drivers and roaming partners no longer see it (OCPI reports a retired EVSE as `REMOVED`), it takes no new sessions or reservations, and the station status, availability and uptime leave it out. The CSMS tells the station it is Inoperative. Restoring puts it back in service. See [Connectors](https://www.evtivity.com/docs/csms/stations#connectors).
+Retiring an EVSE or connector takes it out of service and keeps its history. Drivers and roaming partners no longer see it (OCPI reports a retired EVSE as `REMOVED`), it takes no new sessions or reservations, and the station status, availability and uptime leave it out. The CSMS tells the station it is Inoperative. Restoring puts it back in service. See [EVSE & Connectors](https://www.evtivity.com/docs/csms/stations#connectors).
 
 On a simulator station, the paired simulator follows these changes: an added, edited or deleted EVSE or connector is changed in the simulator too, so a deleted plug does not come back with the simulator's next status report.
 
@@ -88,7 +88,7 @@ Supported connector types:
 
 Set the power rating (kW) and voltage for each connector.
 
-Connectors the CSMS creates from a station status report start without a max power. OCPP 2.1 stations fill it in from their configuration report, and never replace a value you set. For OCPP 1.6 stations, set it yourself. Until then the Connectors tab shows a **Max power unknown** badge. See [Max power](https://www.evtivity.com/docs/csms/stations#connectors).
+Connectors the CSMS creates from a station status report start without a max power. OCPP 2.1 stations fill it in from their configuration report, and never replace a value you set. For OCPP 1.6 stations, set it yourself. Until then the **EVSE & Connectors** tab shows a **Max power unknown** badge. See [Max power](https://www.evtivity.com/docs/csms/stations#connectors).
 
 ## Station Images
 

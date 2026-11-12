@@ -45,7 +45,7 @@ The active session record blocks new starts on the same EVSE - the `EVSE_IN_USE`
 
 ### Fix
 
-On the station's **Connectors** tab, click the red **Stop active session** icon (square in a circle) on the EVSE row. Confirm the prompt. The CSMS dispatches an OCPP `RequestStopTransaction` to the station for that transaction. When the station acknowledges, it sends back the missing end event and the session is closed normally - final cost, energy, and duration are computed the same way as a driver-initiated stop.
+On the station's **EVSE & Connectors** tab, click the red **Stop active session** icon (square in a circle) on the EVSE row. Confirm the prompt. The CSMS dispatches an OCPP `RequestStopTransaction` to the station for that transaction. When the station acknowledges, it sends back the missing end event and the session is closed normally - final cost, energy, and duration are computed the same way as a driver-initiated stop.
 
 The button is enabled only when the CSMS has an active session recorded for that EVSE. If the EVSE is free, there's nothing to stop.
 
@@ -59,7 +59,7 @@ The button is enabled only when the CSMS has an active session recorded for that
 
 ### Symptom
 
-The Connectors tab on a station shows a status that doesn't match physical reality:
+The **EVSE & Connectors** tab on a station shows a status that doesn't match physical reality:
 
 - A connector still shows **Charging** several minutes after the driver pressed Stop.
 - A connector shows **Occupied** or **EVConnected** long after the cable was unplugged.
@@ -76,7 +76,7 @@ If the station never sends a follow-up `StatusNotification` after a state change
 
 ### Fix
 
-Click the **Refresh connector status** icon (circular arrow) on the EVSE row in the station's **Connectors** tab. The button dispatches an OCPP `TriggerMessage` to the station, waits up to ~10 seconds for the station to report back, and refreshes the dashboard with the latest value.
+Click the **Refresh connector status** icon (circular arrow) on the EVSE row in the station's **EVSE & Connectors** tab. The button dispatches an OCPP `TriggerMessage` to the station, waits up to ~10 seconds for the station to report back, and refreshes the dashboard with the latest value.
 
 The CSMS picks the right `requestedMessage` based on protocol and whether a transaction is active, because OCPP 2.1 splits the state across two channels:
 

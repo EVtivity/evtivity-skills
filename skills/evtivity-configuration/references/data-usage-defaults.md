@@ -82,7 +82,7 @@ The CSMS decides AC or DC from the connector types of the station's EVSEs:
 - `GBT`, `Tesla` and `NACS` are DC when the connector's maximum power is above 22 kW, else AC.
 - `Type1`, `Type2` and a connector without a type are AC.
 
-A station with at least one DC connector gets the DC values. The reading settings apply to the whole station in OCPP 1.6, 2.0.1 and 2.1, so a station with AC and DC EVSEs reads at the DC interval on every EVSE. Set the connector types on the station's **Connectors** tab: a station whose connectors have no type gets the AC values. When a connector type change turns a station from AC to DC, or back, an online station gets the new values at once.
+A station with at least one DC connector gets the DC values. The reading settings apply to the whole station in OCPP 1.6, 2.0.1 and 2.1, so a station with AC and DC EVSEs reads at the DC interval on every EVSE. Set the connector types on the station's **EVSE & Connectors** tab: a station whose connectors have no type gets the AC values. When a connector type change turns a station from AC to DC, or back, an online station gets the new values at once.
 
 ### CSMS ping
 

@@ -39,7 +39,7 @@ Three ways to do this:
    - **Model** (optional, auto-populated from BootNotification).
    - **Site** (optional): assign to a site for grouping and policy inheritance.
    - **Latitude** and **Longitude** (optional).
-   EVSEs and connectors are auto-created from the first StatusNotification. To pre-define them (type, max power), open the station's **Connectors** tab and click **Create EVSE**. Do this when you want the dashboard populated immediately or when the firmware doesn't emit a StatusNotification per connector at boot.
+   EVSEs and connectors are auto-created from the first StatusNotification. To pre-define them (type, max power), open the station's **EVSE & Connectors** tab and click **Create EVSE**. Do this when you want the dashboard populated immediately or when the firmware doesn't emit a StatusNotification per connector at boot.
 4. Click **Create**.
 
 The station now exists in `charging_stations` with `onboarding_status = pending`. With the `open` registration policy it becomes `accepted` at its first BootNotification (see Step 4).
@@ -142,7 +142,7 @@ If another operator changed the station first (for example rejected it while you
 
 1. **Dashboard**: the station's row should show **Online** (green dot) within seconds of the first successful boot.
 2. **OCPP Commands tab**: `BootNotification`, `Heartbeat`, and `StatusNotification` rows should appear in the inbound message log.
-3. **Connectors tab**: connector rows reflect the actual hardware (auto-created from the first `StatusNotification` if you didn't pre-define them). Auto-created connectors have no max power. OCPP 2.1 stations fill it in from their configuration report. For OCPP 1.6 stations, edit the EVSE to set it, or load management cannot cap the connector at its rating.
+3. **EVSE & Connectors tab**: connector rows reflect the actual hardware (auto-created from the first `StatusNotification` if you didn't pre-define them). Auto-created connectors have no max power. OCPP 2.1 stations fill it in from their configuration report. For OCPP 1.6 stations, edit the EVSE to set it, or load management cannot cap the connector at its rating.
 4. **Send a test command**: real stations support the `TriggerMessage` OCPP command. On the station detail page, open the **OCPP Commands** tab, pick `TriggerMessage` from the command list, set the requested message to `StatusNotification`, and click **Send**. The station re-emits a `StatusNotification` immediately so you can confirm round-trip CSMS-to-station messaging works.
 
 ## Common issues
@@ -160,7 +160,7 @@ If another operator changed the station first (for example rejected it while you
 
 **Station goes online briefly, then offline.** Heartbeat watchdog is timing out. Check the configured `HeartbeatInterval` value (returned in the BootNotification response): 900 seconds on the Wi-Fi or wired data plan and 3600 on the Cellular plan (see [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults#plan-settings)). If the station's firmware doesn't honor that interval, set it explicitly via OCPP `ChangeConfiguration` (1.6) or `SetVariables` (2.1).
 
-**Connectors don't appear after the station is online.** Some 1.6 firmware doesn't emit `StatusNotification` for every connector at boot. Either pre-define EVSEs and connectors with **Create EVSE** on the station's **Connectors** tab, or send a `TriggerMessage(StatusNotification)` for each connector ID to force the station to report.
+**Connectors don't appear after the station is online.** Some 1.6 firmware doesn't emit `StatusNotification` for every connector at boot. Either pre-define EVSEs and connectors with **Create EVSE** on the station's **EVSE & Connectors** tab, or send a `TriggerMessage(StatusNotification)` for each connector ID to force the station to report.
 
 ## Next steps
 

@@ -68,6 +68,8 @@ Enter this URL on your API host at the gateway, and enter the signing secret of 
 2. Pair it to a station. By default a terminal is paired to one connector. A station-wide terminal serves every connector of the station: the driver picks the connector on the terminal screen, or on the station display for a VP7200.
 3. A terminal with its own cellular SIM can have the SIM attached, as a station can. See [SIMs](https://www.evtivity.com/docs/csms/sims).
 
+The **Payment Terminals** tab of a station lists the terminals paired to it. **Pair** pairs an active unpaired terminal, and **New Payment Terminal** adds a terminal for that station.
+
 ![New Payment Terminal with the device and the pairing](https://www.evtivity.com/screenshots/csms/payment-terminals-create.png)
 
 A connector has at most one active terminal. A terminal that is set to inactive takes no payments. A terminal with payments cannot be deleted. Set it to inactive instead.
@@ -78,7 +80,7 @@ The API is `/v1/payment-terminals` (`GET`, `POST`, `PATCH`, `DELETE`), with `POS
 
 ![SIM Card tab of a payment terminal](https://www.evtivity.com/screenshots/csms/payment-terminal-sim.png)
 
-![Payment Terminals card on the Connectors tab of a station](https://www.evtivity.com/screenshots/csms/station-payment-terminals.png)
+![Payment Terminals tab of a station](https://www.evtivity.com/screenshots/csms/station-payment-terminals.png)
 
 ## How a Driver Pays
 
