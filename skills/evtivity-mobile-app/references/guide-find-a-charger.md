@@ -18,6 +18,8 @@ The Charge tab is where you find a place to charge. You can search by name or ad
 
 Each result shows the station name, its site, how many connectors are available, and a status badge.
 
+When the operator has divided a station into units (separate charger boxes of one station), each unit is its own result in search and in Nearby, with the unit name. Opening a unit shows only its connectors.
+
 ## See chargers near you
 
 Under the search box is a **Nearby** section. The first time you use it, the app asks for permission to use your location. Allow it, and nearby stations appear automatically, closest first. If you do not grant location access, the Nearby list stays empty and you can still search by name.
@@ -39,3 +41,5 @@ The app reads the code, opens that station, and preselects the connector printed
 ## What you see at a station
 
 Opening a result takes you to the station detail: the address, the price, your default payment card, and a tile for each connector with its type, power, and live status. Prices are shown with or without tax as your **Show prices** choice in [Account and settings](https://www.evtivity.com/docs/mobile-app/guide/account-and-settings) sets, with a note such as "Prices include 19% tax". From there you select an available connector and start. See [Start and stop a charge](https://www.evtivity.com/docs/mobile-app/guide/start-and-stop-a-charge).
+
+For a unit, the detail shows the unit name with the station ID, and only the connectors of that unit. Starting, the session and billing stay with the station and its connector, as at any other station.

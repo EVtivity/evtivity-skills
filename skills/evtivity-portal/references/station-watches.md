@@ -20,6 +20,8 @@ To watch a station:
 
 The **Notify me when free** button is shown only when the station has no available connector. If a connector is already free, the button is hidden because there is nothing to wait for and you can start charging right away.
 
+When the station detail page shows one unit of a station (a separate charger box the operator set up), the watch covers that unit: the button shows when the unit has no available connector, and you are notified only when a connector of that unit becomes free. The notification and the Watching card name the station and the unit.
+
 ## Getting Notified
 
 When a connector at a watched station becomes available, you receive a notification. Delivery follows your notification preferences, the same ones used for every other driver alert. The watch is one-shot: it clears itself the moment it notifies you. If the station fills up again, open it and tap **Notify me when free** to start a new watch.
@@ -40,6 +42,7 @@ Tap the trash icon on a card to stop watching that station.
 
 - A watch expires automatically after 24 hours if the station does not free up.
 - You can watch up to 25 stations at the same time.
-- Starting a charging session at a station you are watching clears that watch automatically.
+- Starting a charging session at a station you are watching clears that watch automatically, and so does starting at a unit you are watching.
+- If the operator deletes a unit you are watching, the watch is removed.
 - Watches are tied to your driver account and are independent of favorites.
 - Station Watch is always available to authenticated drivers; the operator can still disable the notification globally from the Notifications settings.

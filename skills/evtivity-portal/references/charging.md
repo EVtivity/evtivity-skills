@@ -29,9 +29,17 @@ If location access is denied, a banner prompts you to enable location services. 
 
 Nearby station results are cached in localStorage for 24 hours.
 
+When the operator has divided a station into units (separate charger boxes of one station), each unit is its own result, with the unit name under the station ID. Tap a unit to open the station detail page for that unit.
+
+![Search results with units](https://www.evtivity.com/screenshots/portal/portal-search-units.png)
+
 ## Station Detail Page
 
 The station detail page at `/start/:stationId` shows everything you need to start a session.
+
+For a unit, the page opens at `/start/:stationId?unit=<unit id>`. It shows the unit name at the top with the station ID below it, and the EVSE grid shows only the connectors of that unit. The favorites star and **Notify me when free** apply to that unit. A QR code of a connector opens the page with that connector's unit named at the top. Starting, the session and billing stay with the station and its connector, as at any other station.
+
+![Station detail page of a unit](https://www.evtivity.com/screenshots/portal/portal-charger-unit.png)
 
 ### Station Information
 

@@ -20,6 +20,8 @@ To add a station to your favorites:
 
 Favorited stations show a filled star icon on the Station Detail page. Stations that have not been favorited show an outlined star.
 
+When the station detail page shows one unit of a station (a separate charger box the operator set up), the star saves that unit only. Its card shows the station ID and the unit name, and the counts cover the unit's connectors.
+
 ## Favorites Page
 
 The Favorites page lists all saved stations as cards. Each card displays the following information:
@@ -55,3 +57,4 @@ You can also unfavorite a station by tapping the filled star icon on the Station
 - Favorites are tied to your driver account and persist across devices.
 - The Favorites page is only available to authenticated drivers.
 - If a station is taken offline or removed by the operator, it still appears in your favorites with an offline indicator.
+- If the operator deletes a unit you saved, it is removed from your favorites.
