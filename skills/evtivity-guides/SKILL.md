@@ -1,6 +1,6 @@
 ---
 name: evtivity-guides
-description: "Step-by-step EVtivity how-to guides: onboard a station, station lifecycle, session monitoring, RFID cards, reservations, charging profiles, notifications, display messages, users and audit, white-labeling, fix stuck sessions and SuspendedEV, EVSEs and connectors, charging site connection setups. Use for an end-to-end procedure or walkthrough. Not for one dashboard page in detail (evtivity-csms)."
+description: "Step-by-step EVtivity how-to guides: onboard a station, station lifecycle, session monitoring, RFID cards, reservations, charging profiles, notifications, display messages, users and audit, white-labeling, fix stuck sessions and SuspendedEV, EVSEs and site setups. Use for an end-to-end procedure or walkthrough. Not for one dashboard page in detail (evtivity-csms)."
 license: MIT
 metadata:
   evtivity-version: "0.1.51"
