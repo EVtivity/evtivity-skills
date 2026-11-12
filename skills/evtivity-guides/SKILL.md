@@ -1,6 +1,6 @@
 ---
 name: evtivity-guides
-description: "Step-by-step EVtivity how-to guides: onboard a station, station lifecycle, session monitoring, RFID cards, reservations, charging profiles, notifications, display messages, users and audit, white-labeling, fix stuck sessions and SuspendedEV. Use for an end-to-end procedure or walkthrough. Not for one dashboard page in detail (evtivity-csms)."
+description: "Step-by-step EVtivity how-to guides: onboard a station, station lifecycle, session monitoring, RFID cards, reservations, charging profiles, notifications, display messages, users and audit, white-labeling, fix stuck sessions and SuspendedEV, EVSEs and connectors, charging site connection setups. Use for an end-to-end procedure or walkthrough. Not for one dashboard page in detail (evtivity-csms)."
 license: MIT
 metadata:
   evtivity-version: "0.1.51"
@@ -192,6 +192,12 @@ For `SuspendedEV`: first look for a charging profile or load allocation below ab
 - Five ways: the portal or the app, an RFID card with a prepaid balance, an RFID card linked to a driver, guest QR checkout, a payment terminal. The reference compares who picks the connector, what pays and when the credit card is checked.
 - At Start, the portal and the app check for a plugged-in cable. With no car detected they show a message with only an OK button, start nothing and place no hold. The driver plugs in and taps Start again.
 - Setup of each way: evtivity-portal and evtivity-integrations.
+
+## 14. EVSEs, connectors and site setups (`references/evses-and-connectors.md`, `references/charging-site-connection-setups.md`)
+
+- OCPP 2.0.1 and 2.1 have three levels (station, EVSE, connector); one EVSE charges one car at a time. OCPP 1.6 has connectors only, and EVtivity stores each 1.6 connector as an EVSE with one connector of the same number.
+- Five site setups: a station with its own link, stations behind one router, a local proxy, a local controller with OCPP chargers, and a master with non-OCPP extenders. Only the last one, in its one-station form, shows many chargers as one station with many EVSEs.
+- For that form, station units group the EVSEs by physical charger so the portal, the app, the site layout and OCPI (`physical_reference`) name each charger. Sessions, commands and billing stay with the station. Setup: evtivity-csms (Stations, Units).
 
 ## References
 
