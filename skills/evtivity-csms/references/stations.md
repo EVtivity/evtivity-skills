@@ -167,17 +167,19 @@ A unit is a grouping in the CSMS only. The station keeps one OCPP connection, an
 
 ### Manage units
 
-Open the station's **Connectors** tab. The **Units** card lists the units of the station. You need `stations:write` to change them; without it the card is read-only.
+Open the station's **Connectors** tab. With units, each unit is a card that holds the cards of its EVSEs and shows the unit's status and EVSE count. The EVSEs without a unit are in the **EVSEs Without a Unit** card, shown while there are any. A unit shows offline while its station is offline. You need `stations:write` to change units; without it the unit buttons are hidden and each EVSE card shows its unit as text.
 
-1. Click **Add Unit**, enter a **Unit Name**, such as Box 1, and save. A name has 1 to 50 characters and is unique per station, whatever its case. A station holds at most 64 units.
-2. Under **EVSE Units**, pick the unit of each EVSE, or **No Unit**.
-3. To change a unit, use the **Rename Unit** or **Delete Unit** button on its row. Deleting a unit asks for confirmation. Its EVSEs stay on the station without a unit, and drivers' favorites and watches of that unit are removed.
+1. In the **Units** card, click **Add Unit**, enter a **Unit Name**, such as Box 1, and save. A name has 1 to 50 characters and is unique per station, whatever its case. A station holds at most 64 units.
+2. Put each EVSE in its unit. Pick the unit, or **No Unit**, in the **Unit** field of the EVSE card. Or click **Assign EVSE** on the unit card and pick an EVSE: the list shows the EVSEs without a unit first, then the EVSEs of other units, each with its current unit. An EVSE belongs to one unit only, so an EVSE from another unit moves out of that unit. The EVSE card moves into the card of its unit.
+3. To change a unit, use the **Rename Unit** or **Delete Unit** button on its card. Deleting a unit asks for confirmation. Its EVSEs stay on the station without a unit, and drivers' favorites and watches of that unit are removed.
 
-With units, the EVSE grid of the Connectors tab shows one collapsible section per unit with its EVSEs and the unit's status, then **EVSEs Without a Unit**. A unit shows offline while its station is offline. Each unit change is recorded in the station's **History** tab as **Unit changed**. The session details show a **Unit** row with the unit of the session's EVSE.
+While a station with units has EVSEs without a unit, the tab shows a warning with the number of such EVSEs. Drivers see them as one more charger named after the station. **Manage Units** scrolls to the **EVSEs Without a Unit** card. Each unit change is recorded in the station's **History** tab as **Unit changed**. The session details show a **Unit** row with the unit of the session's EVSE.
 
 ![Connectors tab with units](https://www.evtivity.com/screenshots/csms/station-connectors-units.png)
 
 ![Add Unit dialog](https://www.evtivity.com/screenshots/csms/station-unit-dialog.png)
+
+![Assign EVSE dialog of a unit](https://www.evtivity.com/screenshots/csms/station-unit-assign-evse.png)
 
 ### What drivers and partners see
 
