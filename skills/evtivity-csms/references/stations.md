@@ -167,19 +167,21 @@ A unit is a grouping in the CSMS only. The station keeps one OCPP connection, an
 
 ### Manage units
 
-Open the station's **EVSE & Connectors** tab. The tab header shows **Add Unit** before **Create EVSE**. While the station has no units, the header says so. With units, each unit is a card that holds the cards of its EVSEs and shows the unit's status and EVSE count. The EVSEs without a unit are in the **EVSEs Without a Unit** card, shown while there are any. A unit shows offline while its station is offline. You need `stations:write` to change units. Without it, **Add Unit** and the unit buttons are hidden.
+Open the station's **EVSE & Connectors** tab. The tab header shows **Create Unit** before **Create EVSE**. With units, each unit is a card that holds the cards of its EVSEs and shows the unit's status and EVSE count. The EVSEs without a unit are in the **EVSEs Without a Unit** card, shown while there are any. A unit shows offline while its station is offline. You need `stations:write` to change units. Without it, **Create Unit** and the unit buttons are hidden.
 
-1. Click **Add Unit** in the tab header, enter a **Unit Name**, such as Box 1, and save. A name has 1 to 50 characters and is unique per station, whatever its case. A station holds at most 64 units.
+1. Click **Create Unit** in the tab header, enter a **Unit Name**, such as Box 1, and save. A name has 1 to 50 characters and is unique per station, whatever its case. A station holds at most 64 units. You can also enter the box's **Serial Number** (up to 64 characters) and **IP Address** (one IPv4 or IPv6 address, without a port). Both are optional and for your records: the unit card shows them, and drivers and roaming partners never see them.
 2. Put each EVSE in its unit. Click **Assign EVSE** on the unit card and pick an EVSE. The list shows the EVSEs without a unit first, then the EVSEs of other units, each with its current unit. An EVSE belongs to one unit only, so an EVSE from another unit moves out of that unit. The EVSE card moves into the card of its unit.
-3. To change a unit, use the **Rename Unit** or **Delete Unit** button on its card. Deleting a unit asks for confirmation. Its EVSEs stay on the station without a unit, and drivers' favorites and watches of that unit are removed.
+3. To change a unit's name, serial number or IP address, use the **Edit Unit** button on its card. An empty field clears the value. **Delete Unit** removes the unit. Deleting a unit asks for confirmation. Its EVSEs stay on the station without a unit, and drivers' favorites and watches of that unit are removed.
 
 To take an EVSE out of a unit, click **Remove EVSE** on the unit card, pick the EVSE and save. The EVSE moves to the **EVSEs Without a Unit** card and stays on the station. The button is disabled while the unit has no EVSEs.
+
+On a station with units, the **Create EVSE** dialog has an optional **Unit** field, **No Unit** by default, that puts the new EVSE straight into the unit you pick.
 
 While a station with units has EVSEs without a unit, the tab shows a warning with the number of such EVSEs. Drivers see them as one more charger named after the station. **Manage Units** scrolls to the unit cards, where **Assign EVSE** puts an EVSE in a unit. Each unit change is recorded in the station's **History** tab as **Unit changed**. The session details show a **Unit** row with the unit of the session's EVSE.
 
 ![EVSE & Connectors tab with units](https://www.evtivity.com/screenshots/csms/station-connectors-units.png)
 
-![Add Unit dialog](https://www.evtivity.com/screenshots/csms/station-unit-dialog.png)
+![Create Unit dialog](https://www.evtivity.com/screenshots/csms/station-unit-dialog.png)
 
 ![Assign EVSE dialog of a unit](https://www.evtivity.com/screenshots/csms/station-unit-assign-evse.png)
 
@@ -192,7 +194,7 @@ While a station with units has EVSEs without a unit, the tab shows a warning wit
 
 ### API
 
-`GET /v1/stations/:id/units` lists the units (`stations:read`). `POST /v1/stations/:id/units`, `PATCH /v1/stations/:id/units/:unitId` and `DELETE /v1/stations/:id/units/:unitId` create, rename or reorder, and delete a unit, and `PUT /v1/stations/:id/evses/:evseId/unit` moves an EVSE into a unit or out of it (`stations:write`). Requests name EVSEs by their OCPP EVSE number.
+`GET /v1/stations/:id/units` lists the units (`stations:read`). `POST /v1/stations/:id/units`, `PATCH /v1/stations/:id/units/:unitId` and `DELETE /v1/stations/:id/units/:unitId` create, rename or reorder, and delete a unit, and `PUT /v1/stations/:id/evses/:evseId/unit` moves an EVSE into a unit or out of it (`stations:write`). Requests name EVSEs by their OCPP EVSE number. A unit carries the optional `serialNumber` and `ipAddress`. An empty string or null clears one, and an invalid IP address answers 400 `VALIDATION_ERROR` with `field` `ipAddress`. The portal, the site layout and roaming partners never receive them.
 
 ## Connector Types
 

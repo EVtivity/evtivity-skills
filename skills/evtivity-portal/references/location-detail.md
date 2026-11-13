@@ -36,7 +36,11 @@ Shown when the operator has set hours in the site settings. This is a free-form 
 
 Displays the total number of chargers at the location and how many are currently available. This gives a quick read on whether the site has open connectors.
 
-A station the operator divided into units (separate charger boxes of one station) counts one charger per unit, and each unit is listed with the station ID and the unit name.
+A station the operator divided into units (separate charger boxes of one station) counts one charger per unit, and each unit is listed with the unit name as its title and the station ID under it.
+
+Every row is one charger: a station, or one unit of a station divided into units, with the connectors without a unit as one more row named after the station. A row shows its ports as port cards with their port number, status and one line per connector with its type and power, and the number of available ports. Tap the row to open that charger's page, or tap an available port to open it.
+
+![Location page with one row per unit](https://www.evtivity.com/screenshots/portal/portal-location-units.png)
 
 ### Image Carousel
 

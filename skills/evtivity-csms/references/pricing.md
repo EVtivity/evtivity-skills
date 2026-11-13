@@ -98,6 +98,19 @@ Restrictions determine when a tariff is active. Each restriction type has an aut
 | 40 | Holiday | Applies on configured holiday dates only |
 | 50 | Energy threshold | Above 50 kWh per session |
 
+**Which Tariff in the Group Wins**
+
+1. Check the tariffs of the group.
+2. Priority 50: Session reached an energy threshold? Yes: Highest threshold reached applies (Billed only with split billing).
+3. Priority 40: Today is a holiday? Yes: Holiday tariff applies.
+4. Priority 30: Date is in a seasonal date range? Yes: Seasonal tariff applies.
+5. Priority 20: Day and time match a day and time window? Yes: Day and time tariff applies.
+6. Priority 10: Time matches a time-only window? Yes: Time-only tariff applies.
+7. Otherwise: Default tariff applies, if the group has one (Priority 0).
+
+- The highest priority that matches wins. Tariffs at the same priority may not overlap, so at most one tariff matches at each level.
+- With split billing on, a running session moves between the tariffs of its group as the time, date or energy changes. It never leaves its group.
+
 ### Time Windows
 
 - The end time is exclusive. An end time of `00:00` means midnight, so `18:00-00:00` runs from 18:00 to the end of the day.
@@ -154,6 +167,19 @@ Assign pricing groups to stations, sites, fleets, or drivers. The tariff resolut
 5. **Default group** (lowest) - Applies when no other assignment matches.
 
 A group passes to the next group in this order when it has no active tariff that applies at that moment. When no group has a tariff that applies, the session is not priced.
+
+**Which Group Prices a Session**
+
+1. Session starts.
+2. Driver has a pricing group? Yes: Driver group prices the session.
+3. Driver is in a fleet with a pricing group? Yes: Fleet group prices the session (Oldest fleet membership wins).
+4. Station has a pricing group? Yes: Station group prices the session.
+5. Site has a pricing group? Yes: Site group prices the session.
+6. A default pricing group is set? Yes: Default group prices the session.
+7. Otherwise: Session is not priced.
+
+- A group counts as Yes only when it has an active tariff that applies at that moment. Otherwise the check passes to the next step.
+- The session keeps this group until it ends.
 
 Assign pricing from the Pricing tab on the respective detail page (station, site, fleet, or driver). Every assignment change (create, update, remove) is recorded in the pricing audit log.
 

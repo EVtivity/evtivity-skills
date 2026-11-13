@@ -139,5 +139,5 @@ At the bottom of the Account page, tap **Sign out** to log out of the Portal.
 ## Notes
 
 - Each row on the Account page opens its own page. Tap the back arrow to return.
-- Payment Methods and Support Cases sections link to their respective full pages. Support Cases shows only while the operator has Support turned on.
+- Payment Methods and Support sections link to their respective full pages. Support shows only while the operator has Support turned on.
 - Language changes take effect immediately across the entire Portal.

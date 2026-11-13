@@ -29,7 +29,7 @@ If location access is denied, a banner prompts you to enable location services. 
 
 Nearby station results are cached in localStorage for 24 hours.
 
-When the operator has divided a station into units (separate charger boxes of one station), each unit is its own result, with the unit name under the station ID. Tap a unit to open the station detail page for that unit.
+When the operator has divided a station into units (separate charger boxes of one station), each unit is its own result, with the unit name as its title and the station ID under it. Tap a unit to open the station detail page for that unit.
 
 ![Search results with units](https://www.evtivity.com/screenshots/portal/portal-search-units.png)
 
@@ -64,13 +64,11 @@ A tariff shows as free when all its prices are zero, whatever its tax rate.
 
 ### EVSE Grid
 
-The EVSE grid shows all connectors at the station. Each tile displays:
+The EVSE grid shows every port (EVSE) at the station. Each tile displays:
 
-- **Connector type** - CCS2, CHAdeMO, Type 2, J1772, etc.
-- **Power rating** - maximum power output in kW
-- **Amperage** - maximum current in amps
+- **Status badge** - color-coded availability status of the port
+- **One line per connector** - the connector face, the connector type (J1772, Type 2, CCS1, CCS2, CHAdeMO, NACS and other standards), and that connector's maximum power in kW and current in amps. A port with two connectors, such as CCS1 and CHAdeMO, shows two lines. The port charges one vehicle at a time through any of its connectors.
 - **Port number** - the physical port identifier on the station
-- **Status badge** - color-coded availability status
 
 #### Connector Status Colors
 
@@ -101,7 +99,7 @@ When the whole station is unavailable, the page shows "This station is unavailab
 Before starting, the Portal sends a TriggerMessage to the station to request a fresh StatusNotification.
 
 1. The system triggers a status refresh from the station.
-2. If no cable is detected, the **EV Not Detected** dialog asks you to plug in your vehicle. It has only an **OK** button. The Portal sends nothing to the station and places no hold. Plug in your vehicle and tap **Start Charging** again.
+2. If no cable is detected, the **EV Not Detected** dialog asks you to plug in your vehicle. It has only an **OK** button. The Portal sends nothing to the station and places no hold. Plug in your vehicle and tap **Start Charging** again. The dialog shows a short animation of a charging handle plugging into a car, with the inlet of the connector type of the port. With reduced motion turned on in your system settings, it shows the handle plugged in without moving.
 3. If the connector is ready (cable connected), the session starts immediately.
 
 This check prevents failed start attempts when the cable is not plugged in.

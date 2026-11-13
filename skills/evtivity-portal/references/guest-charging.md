@@ -42,7 +42,7 @@ This page shows the details for a specific connector:
 ![Guest landing page](https://www.evtivity.com/screenshots/portal/guest-charging.png)
 
 - **Station name** - the operator-assigned station identifier
-- **Connector type** - CCS2, CHAdeMO, Type 2, or other standard
+- **Connector type** - one line per connector of the port: CCS2, CHAdeMO, Type 2, J1772 or another standard
 - **Power rating** - maximum output in kW
 - **Status badge** - current connector availability
 - **Pricing breakdown** - tariff components (per-kWh, per-minute, flat fee, etc.). Guests see prices excluding or including tax as the operator's price display setting sets, with a note naming the tax rate.
@@ -54,9 +54,21 @@ Two buttons appear at the bottom:
 
 If the driver is already logged in, the page redirects automatically to the authenticated charging flow at `/start/:stationId`.
 
+On a station divided into units, the page names the unit charger as the signed-in page does: the unit name as the title, then the station ID and the site name, and the connector shows its port number.
+
+When the charger does not take guest payment, the page shows **Sign In** and **Register** in place of **Pay with card**, so the guest charges with an account. **Register** appears only while drivers may create their own account. After sign-in the driver returns to the same charger.
+
+![Guest page of a unit charger](https://www.evtivity.com/screenshots/portal/portal-guest-unit.png)
+
 ### Station Landing (`/charge/:stationId`)
 
 This page shows all EVSEs at the station in a grid layout. Each tile displays the connector type, power rating, and current status. Tap an available connector to navigate to the single connector landing page.
+
+For a unit, the page opens at `/charge/:stationId?unit=<unit id>` and shows only the connectors of that unit, with the unit name as the title and the station ID and site name below it.
+
+Each port uses the same card as the signed-in charger page: status, one line per connector with its type and power, and the port number.
+
+![Guest page of a unit's ports](https://www.evtivity.com/screenshots/portal/portal-guest-unit-ports.png)
 
 Connectors that are faulted or unavailable are shown but cannot be selected.
 

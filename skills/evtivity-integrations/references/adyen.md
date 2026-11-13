@@ -59,7 +59,7 @@ Open Settings > Payment > Adyen and fill in the fields:
 
 The secret fields show the stored value, hidden until you click the eye icon. Edit a field to replace the value, or empty it to remove the value when you save. Click **Save**, then **Test connection**. The test calls Adyen Checkout with your API key and lists the roles of the credential. A warning appears when the webhook role is missing.
 
-Set the company country too. Adyen's card form does not start without a country, so open **Settings > Company Info** and enter **Country** as a two-letter ISO code (`company.country`), for example `NL` or `US`. Without it, adding a card in the portal shows "Card setup failed" and guest checkout shows "Payment is not configured for this charger".
+Set the company country too. Adyen's card form does not start without a country, so open **Settings > Company Info** and enter **Country** as a two-letter ISO code (`company.country`), for example `NL` or `US`. Without it, adding a card in the portal shows "Card setup failed", and the guest charger page offers only **Sign In** and **Register**.
 
 On Helm, set the plain values under `appSettings.adyen.*` and the secrets under `appSettings.sensitive.adyenApiKey`, `adyenHmacKey`, `adyenHmacKeyPrevious`, and `adyenWebhookPassword`. On AWS (CDK), enter the secrets in the dashboard. See [Helm Chart](https://www.evtivity.com/docs/deployment/helm-chart) and [AWS](https://www.evtivity.com/docs/deployment/aws).
 

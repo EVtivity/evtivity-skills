@@ -34,7 +34,7 @@ Click any site in the list to open the detail page. The site detail page has the
 
 ### Details
 
-Edit the site's name, address, coordinates, contact information, hours of operation and **Site Type**. Hours of operation is a free-form text field displayed in the driver portal's location detail page. Assign a carbon region (EPA eGRID subregion or Ember country-level) for CO₂ tracking on completed sessions.
+Edit the site's name, address, coordinates, contact information, hours of operation and **Site Type**. Hours of operation is a free-form text field displayed in the driver portal's location detail page.
 
 **Station Display Language** sets the language of the station screens at this site. **Company default** follows the display language under Settings > Integrations & Features > Messages. A change updates the screens of the site's online stations. See [Station display messages](https://www.evtivity.com/docs/guides/station-display-messages).
 
@@ -43,12 +43,6 @@ Contact information has a **Make contact info public** toggle. When off (the def
 The Details tab also shows a read-only summary of the layout, for example **Parking Lot, 2 x 10 spots, 2 transformers**, **Office or Retail, 12 wall chargers**, **Curbside, 4 + 6 chargers**, **Depot, 6 bus bays, 3 truck lanes** or **Custom, stations placed freely**. A Parking Lot with Lot Edge adds **chargers along the lot edge**. It links to the **Layout** tab. Changing the site type moves stations outside the new layout to the nearest free position; a station with no free position left stands off the lot. You need `sites:write` to change the site type.
 
 To remove an address, coordinate, or contact detail, empty the field and save. A removed contact email or phone no longer appears to drivers. Changes to the name, address, coordinates, timezone, hours, or public contact reach roaming partners right away.
-
-#### Data Plan
-
-The **Data Plan** card sets the data plan of the site's stations: **Not Set**, **Wi-Fi or Wired** or **Cellular**. A station uses, in this order, a plan set on the station, **Cellular** when a SIM attachment is confirmed on it, the site's plan, and **Wi-Fi or Wired**. So the site's plan reaches the stations that have neither their own plan nor a confirmed SIM.
-
-Choose a plan and click **Save**. The confirmation names how many stations change plan. Online stations get the new plan's settings at once, offline stations at their next boot. The change is recorded in the site's **History**. You need `sites:write`, and a user with access to some sites changes only those sites. See [Cellular Stations](https://www.evtivity.com/docs/configuration/cellular-stations#pick-the-cellular-plan) and [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults).
 
 **Delete** asks for confirmation. A site with stations cannot be deleted. This includes stations deleted from the site, which keep their site for their history: move them to another site first. A site whose payment configuration has payments cannot be deleted either.
 
@@ -317,6 +311,26 @@ Turning free vend off pushes authorization back to the online stations. The **Au
 Turning free vend on or off asks for confirmation first.
 
 ![Site free vend tab](https://www.evtivity.com/screenshots/csms/site-free-vend-tab.png)
+
+### Autocharge
+
+The **Autocharge** tab turns Autocharge on or off for this site's stations. **Use Company Setting** follows **Settings** > **Integrations & Features** > **Autocharge**; **On** and **Off** override it for this site. You need `sites:write`. See [Autocharge](https://www.evtivity.com/docs/csms/autocharge).
+
+![Site Autocharge tab](https://www.evtivity.com/screenshots/csms/site-autocharge-tab.png)
+
+### Data Plan
+
+The **Data Plan** tab sets the data plan of the site's stations: **Not Set**, **Wi-Fi or Wired** or **Cellular**. A station uses, in this order, a plan set on the station, **Cellular** when a SIM attachment is confirmed on it, the site's plan, and **Wi-Fi or Wired**. So the site's plan reaches the stations that have neither their own plan nor a confirmed SIM.
+
+Choose a plan and click **Save**. The confirmation names how many stations change plan. Online stations get the new plan's settings at once, offline stations at their next boot. The change is recorded in the site's **History**. You need `sites:write`, and a user with access to some sites changes only those sites. See [Cellular Stations](https://www.evtivity.com/docs/configuration/cellular-stations#pick-the-cellular-plan) and [Data Usage Defaults](https://www.evtivity.com/docs/configuration/data-usage-defaults).
+
+![Site Data Plan tab](https://www.evtivity.com/screenshots/csms/site-data-plan-tab.png)
+
+### Carbon Region
+
+The **Carbon Region** tab assigns the grid region (EPA eGRID subregion or Ember country-level) used for CO₂ tracking on completed sessions. Regions are grouped by country, and the selected region shows its carbon intensity. **No carbon region assigned** leaves new sessions at the site without a CO₂ value. You need `sites:write`. See [Reports](https://www.evtivity.com/docs/csms/reports).
+
+![Site Carbon Region tab](https://www.evtivity.com/screenshots/csms/site-carbon-region-tab.png)
 
 ### Maintenance
 

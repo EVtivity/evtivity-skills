@@ -81,7 +81,7 @@ Trees equivalent is calculated as: `CO₂ avoided / 21.77 kg per tree per year`.
 
 ### Configuration
 
-Each site is assigned a carbon region that determines which emission factor to use. Set this in the site settings.
+Each site is assigned a carbon region that determines which emission factor to use. Set it on the site's **Carbon Region** tab.
 
 ### Reporting
 

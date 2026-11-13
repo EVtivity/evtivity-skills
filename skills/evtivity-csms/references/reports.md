@@ -70,7 +70,7 @@ Trees equivalent is calculated as `co2AvoidedKg / 21.77` (EPA estimate of kg COâ
 
 Before carbon tracking works, each site needs a carbon region assignment.
 
-1. Navigate to the site detail page.
+1. Open the site and click its **Carbon Region** tab.
 2. Find the **Carbon Region** dropdown.
 3. Select a region from the list. Regions are grouped by country and include:
    - 27 EPA eGRID US subregions (e.g., CAMX, RFCW, SRSO)

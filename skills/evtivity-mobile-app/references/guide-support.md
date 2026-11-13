@@ -75,3 +75,9 @@ The case header shows the case number, the category, and a status badge so you a
 > **Tip:**
 >
 > Open a case from the charging session that had the problem. The operator sees the station, connector, and time without you having to describe them.
+
+## Close a case
+
+When your issue is solved, tap **Close Case** under the case details and confirm. The case shows **Resolved**, the chat shows **Closed by the driver**, and the support team is notified. A resolved or closed case keeps its message box with the note **Sending a message reopens this case.** Send a message and the case opens again for the support team.
+
+Back from a case returns to the Support list, and back from the list returns to the screen you opened it from, home or Account.

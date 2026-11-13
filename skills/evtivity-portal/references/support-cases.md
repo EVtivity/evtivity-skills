@@ -8,7 +8,7 @@ Report charging issues, communicate with the operator, and track case resolution
 
 The support case system lets drivers report problems with charging sessions and communicate with the network operator. Cases are tracked with a unique case number and support a threaded message history.
 
-While the operator has Support turned off, the Portal and the mobile app hide **Report Issue** and the Support Cases entry, and the support pages open the home page instead.
+While the operator has Support turned off, the Portal and the mobile app hide **Report Issue** and the **Support** entry, and the support pages open the home page instead.
 
 ## Create a Support Case
 
@@ -35,7 +35,7 @@ The case is assigned a number (e.g., CASE-00001) and the operator is notified.
 
 ### From the Support Page
 
-1. Navigate to the support cases page from the Account tab or directly via `/support`.
+1. Open the **Account** tab and tap **Support**, or go directly to `/support`.
 2. Tap **New Case**.
 3. Fill in the category, subject, and description.
 4. Tap **Submit Case**.
@@ -138,6 +138,20 @@ The operator is notified of your reply via email.
 ### Attached Sessions
 
 If a session was attached to the case, it appears in the case info section with a link to the session detail.
+
+## Close a Case
+
+When your issue is solved, close the case yourself.
+
+1. Open the case.
+2. Tap **Close Case**.
+3. Confirm with **Close Case**.
+
+The case shows **Resolved**, and a system message **Closed by the driver** appears in the thread. The support team is notified. You get no notification for your own close.
+
+### Reopen a Case
+
+A resolved or closed case keeps its message box, with the note **Sending a message reopens this case.** When you send a message, the case opens again (status **Open**) with the system message **Reopened by the driver**, and the support team gets your message.
 
 ## Case Statuses
 
