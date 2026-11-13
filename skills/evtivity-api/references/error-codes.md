@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.52-beta.4 (https://github.com/EVtivity/evtivity-csms, commit e94e36642ba9) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.52-beta.5 (https://github.com/EVtivity/evtivity-csms, commit 0533047444fd) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -274,6 +274,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `PRE_AUTH_FAILED` |  | Payment pre-authorization failed |
 | `PRICING_ASSIGNMENT_NOT_FOUND` | 404 | No pricing group is assigned to this entity |
 | `PRICING_GROUP_DEFAULT_EXISTS` | 409 | Another pricing group is already the default |
+| `PRICING_GROUP_HAS_SITE_LIMITED_TARIFFS` | 409 | This pricing group has tariffs limited to selected sites and cannot be assigned to a station or site |
 | `PRICING_GROUP_NOT_FOUND` | 404 | Pricing group not found |
 | `PRICING_GROUP_TARIFFS_IN_USE` | 409 | Pricing group has tariffs referenced by charging sessions |
 | `PRICING_NOT_FOUND` | 404 | No pricing found |
@@ -384,6 +385,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `TARIFF_IN_USE` | 409 | Tariff is referenced by charging sessions and cannot be deleted |
 | `TARIFF_NOT_FOUND` | 404 | Tariff not found |
 | `TARIFF_OVERLAP` | 409 | Tariff overlaps with an existing tariff |
+| `TARIFF_SITE_AVAILABILITY_NOT_ALLOWED` | 409 | Site Availability is only for tariffs of driver and fleet pricing groups |
 | `TEMPLATE_NOT_FOUND` | 404 | Template not found |
 | `TERMINAL_TRANSACTION_NOT_FOUND` | 404 | Terminal payment not found |
 | `TERMINAL_TRANSACTION_STATE` | 409 | The terminal payment cannot do this in its current state |

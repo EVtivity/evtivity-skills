@@ -35,6 +35,31 @@ The pricing system uses pricing groups that contain one or more tariffs. Each ta
 
 ![Create tariff](https://www.evtivity.com/screenshots/csms/pricing-create.png)
 
+## Charging Type and Site Availability
+
+Every tariff has a **Charging Type** and, in driver and fleet pricing groups, a **Site Availability**. Both are set in the tariff form next to the prices.
+
+![Create tariff with charging type and site availability](https://www.evtivity.com/screenshots/csms/tariff-create.png)
+
+### Charging Type
+
+- **AC and DC** (the default) applies to every session. Tariffs created before this setting existed are AC and DC.
+- **AC** applies only on EVSEs whose connectors are AC (Type 1, Type 2 and other AC sockets).
+- **DC** applies only on EVSEs whose connectors are DC (CCS1, CCS2, CHAdeMO, MCS). NACS, GB/T and Tesla connectors are DC above 22 kW and AC at 22 kW or less, so their maximum power is required.
+- An EVSE that has both AC and DC connectors uses the kind of the connector the station reports for the session. Until the station names the connector, only the group's tariffs set to AC and DC apply, not the AC-only or DC-only ones. When it names the connector later, the session is priced from its start with that connector's tariff.
+- The default tariff is always AC and DC. A group can hold the default next to an AC and a DC tariff without restrictions, for example AC 0.30 and DC 0.60 per kWh.
+
+### Site Availability
+
+- **All Sites** (the default) applies wherever the group prices a session.
+- **Selected Sites** applies only at stations of the sites you select. Elsewhere the other tariffs of the group, or its default, apply. A tariff whose sites were all deleted applies nowhere.
+- Only tariffs of driver and fleet pricing groups can use Selected Sites. A group that is the default pricing group, or that is assigned to a station or a site, cannot hold such a tariff, and a group that holds one cannot be assigned to a station or a site. Both are refused with `409`.
+- Site-restricted users see only the selected sites they have access to.
+
+### AC and DC Prices for Drivers
+
+Where a price is shown before the EVSE is known, a station whose EVSEs are all AC or all DC shows that price. A station with AC and DC EVSEs shows the AC and DC prices side by side in the Portal when they differ.
+
 ## Default Tariff
 
 A pricing group with active tariffs needs exactly one active default tariff, and the default has no restrictions. It applies whenever no tariff with restrictions matches, so every time of day and every amount of energy has a price.
@@ -110,6 +135,8 @@ Restrictions determine when a tariff is active. Each restriction type has an aut
 
 - The highest priority that matches wins. Tariffs at the same priority may not overlap, so at most one tariff matches at each level.
 - With split billing on, a running session moves between the tariffs of its group as the time, date or energy changes. It never leaves its group.
+- Only tariffs whose charging type matches the session (AC, DC, or AC and DC) and whose sites include the station's site take part.
+- At one priority, an AC or DC tariff wins over an AC and DC tariff, and a Selected Sites tariff wins over an All Sites tariff.
 
 ### Time Windows
 
@@ -146,9 +173,13 @@ The system validates that tariffs within the same priority level do not conflict
 
 Tariffs at different priority levels never conflict with each other.
 
+- Tariffs are compared only when their charging types and sites overlap and neither is more specific. AC and DC tariffs never conflict, and an AC tariff without restrictions sits next to the default. A second AC tariff without restrictions is refused.
+
 ## Pricing Group Detail
 
 ![Pricing detail](https://www.evtivity.com/screenshots/csms/pricing-detail.png)
+
+![Pricing group tariffs](https://www.evtivity.com/screenshots/csms/pricing-tariffs.png)
 
 The detail page has three tabs:
 
@@ -180,6 +211,7 @@ A group passes to the next group in this order when it has no active tariff that
 
 - A group counts as Yes only when it has an active tariff that applies at that moment. Otherwise the check passes to the next step.
 - The session keeps this group until it ends.
+- A tariff of a driver or fleet group that applies at selected sites counts only at those sites.
 
 Assign pricing from the Pricing tab on the respective detail page (station, site, fleet, or driver). Every assignment change (create, update, remove) is recorded in the pricing audit log.
 
@@ -251,6 +283,8 @@ OCPP 2.1 stations that calculate the cost locally receive the driver's tariff in
 When split billing moves a session to another tariff, at a time window or an energy threshold, the CSMS sends `ChangeTransactionTariff` to an online station that reports local cost calculation (`TariffCostCtrlr.Enabled`) when the station's tariff no longer describes the session. A station that holds the group's tariffs with their conditions moves to the new window by itself, so nothing is sent.
 
 The station reports its tariff ID and its cost in its `TransactionEvent` messages. The CSMS stores both and compares the station's total with the bill when the session ends. See [Sessions](https://www.evtivity.com/docs/csms/sessions).
+
+- **AC and DC tariffs.** A station whose EVSEs are all AC or all DC gets that kind's tariff. A station with AC and DC EVSEs whose prices differ gets the AC prices with `evseKind` AC, the DC prices with `evseKind` DC, and the AC and DC default as the fallback. A station without condition support gets no tariff in the `Authorize` response, and the session's tariff follows with `ChangeTransactionTariff` after the transaction starts.
 
 ## Tariff Delete Protection
 

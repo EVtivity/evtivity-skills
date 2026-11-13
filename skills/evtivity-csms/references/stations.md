@@ -278,6 +278,8 @@ A connector the CSMS creates automatically, because the station reported a conne
 
 A connector without a max power shows a **Max power unknown** badge. Load management cannot cap the connector at its rating until you set it, so it caps the connector at its equal share of the circuit. Click **Edit EVSE** to set the max power.
 
+NACS, GB/T and Tesla connectors need a max power when you create or edit them, because the power decides whether the connector is AC (22 kW or less) or DC (above 22 kW), and so which AC or DC tariffs price it. The form says so below the **Max Power** field. Connectors the station reports are not refused.
+
 | Status | Color | Description |
 |--------|-------|-------------|
 | available | Green | Ready for use |

@@ -5,8 +5,8 @@ license: MIT
 compatibility: Examples use curl and jq against a running EVtivity API (default http://localhost:7102 with Docker Compose).
 metadata:
   evtivity-version: "0.1.52"
-  evtivity-release: "v0.1.52-beta.4"
-  evtivity-commit: "e94e36642ba91830f0049ac28272a3ba73de6c71"
+  evtivity-release: "v0.1.52-beta.5"
+  evtivity-commit: "0533047444fd94d5c81f33bff485381bb751bc8e"
 ---
 
 # EVtivity REST API
