@@ -26,7 +26,17 @@ const MARKER = 'Generated from https://www.evtivity.com/docs/';
 
 // ------------------------------------------------------------------ converter
 
-const KNOWN_BLOCKS = new Set(['Callout', 'Steps', 'Step', 'Tabs', 'Tab', 'CodeBlock']);
+const KNOWN_BLOCKS = new Set([
+  'Callout',
+  'Steps',
+  'Step',
+  'Tabs',
+  'Tab',
+  'CodeBlock',
+  'DecisionFlow',
+  'FlowCheck',
+  'FlowNote',
+]);
 const OCTT = new Set([
   'OcttSummary',
   'OcttModuleSummary',
@@ -162,6 +172,16 @@ export function convertMdx(body, { page = '', octt = null } = {}) {
         rendered = ['', ...inner, ''];
         break;
       }
+      case 'FlowNote': {
+        if (stack.length === 0 || stack[stack.length - 1].name !== 'DecisionFlow') {
+          throw new Error(`${page}: <FlowNote> outside <DecisionFlow>`);
+        }
+        rendered = [{ flowNote: inner.map((l) => l.trim()).join(' ') }];
+        break;
+      }
+      case 'DecisionFlow':
+        rendered = renderDecisionFlow(block, page);
+        break;
       default:
         throw new Error(`${page}: unknown block <${name}>`);
     }
@@ -211,6 +231,14 @@ export function convertMdx(body, { page = '', octt = null } = {}) {
         continue;
       }
       if (!KNOWN_BLOCKS.has(name)) throw new Error(`${page}: unknown component <${name}>`);
+      if (name === 'FlowCheck') {
+        if (!selfClose) throw new Error(`${page}: <FlowCheck> must be self-closing`);
+        if (stack.length === 0 || stack[stack.length - 1].name !== 'DecisionFlow') {
+          throw new Error(`${page}: <FlowCheck> outside <DecisionFlow>`);
+        }
+        emit({ flowCheck: attrs });
+        continue;
+      }
       if (selfClose) continue;
       stack.push({ name, attrs, lines: [] });
       // Content on the same line as the opening tag, and possibly its closing tag.
@@ -232,6 +260,34 @@ export function convertMdx(body, { page = '', octt = null } = {}) {
   if (fence) throw new Error(`${page}: unterminated code fence`);
   if (stack.length > 0) throw new Error(`${page}: <${stack[stack.length - 1].name}> is not closed`);
   return collapseBlank(out).join('\n').trim() + '\n';
+}
+
+/**
+ * A decision flow (title, start, checks in order, end) as a numbered list: each
+ * check names its question and what applies on yes; a no goes to the next check,
+ * and the end applies when no check matched. Flow notes follow as a list.
+ */
+function renderDecisionFlow(block, page) {
+  const { title, start, end, endBadge } = block.attrs;
+  const yes = block.attrs.yesLabel ?? 'Yes';
+  const checks = block.lines.filter((l) => typeof l === 'object' && l !== null && 'flowCheck' in l);
+  const notes = block.lines.filter((l) => typeof l === 'object' && l !== null && 'flowNote' in l);
+  const text = block.lines.filter((l) => typeof l === 'string' && l.trim() !== '');
+  if (text.length > 0) throw new Error(`${page}: text inside <DecisionFlow> outside a <FlowNote>`);
+  if (checks.length === 0) throw new Error(`${page}: <DecisionFlow> without a <FlowCheck>`);
+  const out = [''];
+  if (title) out.push(`**${title}**`, '');
+  let n = 0;
+  if (start) out.push(`${++n}. ${start}.`);
+  for (const { flowCheck: c } of checks) {
+    const badge = c.badge ? `${c.badge}: ` : '';
+    const note = c.note ? ` (${c.note})` : '';
+    out.push(`${++n}. ${badge}${c.question ?? ''} ${yes}: ${c.result ?? ''}${note}.`);
+  }
+  if (end) out.push(`${++n}. Otherwise: ${end}${endBadge ? ` (${endBadge})` : ''}.`);
+  if (notes.length > 0) out.push('', ...notes.map(({ flowNote }) => `- ${flowNote}`));
+  out.push('');
+  return out;
 }
 
 function trimBlank(lines) {

@@ -83,6 +83,36 @@ test('fails on an unknown component', () => {
   assert.throws(() => convertMdx('<Widget foo="1" />\n', { page: 'x/y' }), /unknown component <Widget>/);
 });
 
+test('renders a decision flow as a numbered list with its notes', () => {
+  const md = convertMdx(
+    [
+      '<DecisionFlow title="Which Tariff Wins" start="Check the tariffs" end="Default tariff applies" endBadge="Priority 0" yesLabel="Yes" noLabel="No">',
+      '  <FlowCheck badge="Priority 50" question="Energy threshold reached?" note="Split billing only" result="Threshold tariff applies" />',
+      '  <FlowCheck badge="Priority 40" question="Today is a holiday?" result="Holiday tariff applies" />',
+      '  <FlowNote>The highest priority that matches wins.</FlowNote>',
+      '</DecisionFlow>',
+      '',
+    ].join('\n'),
+    { page: 'csms/pricing' },
+  );
+  assert.equal(
+    md,
+    [
+      '**Which Tariff Wins**',
+      '',
+      '1. Check the tariffs.',
+      '2. Priority 50: Energy threshold reached? Yes: Threshold tariff applies (Split billing only).',
+      '3. Priority 40: Today is a holiday? Yes: Holiday tariff applies.',
+      '4. Otherwise: Default tariff applies (Priority 0).',
+      '',
+      '- The highest priority that matches wins.',
+      '',
+    ].join('\n'),
+  );
+  assert.throws(() => convertMdx('<FlowCheck question="x" />\n', { page: 'x/y' }), /outside <DecisionFlow>/);
+  assert.throws(() => convertMdx('<DecisionFlow>\n</DecisionFlow>\n', { page: 'x/y' }), /without a <FlowCheck>/);
+});
+
 test('fails on unbalanced blocks and fences', () => {
   assert.throws(() => convertMdx('<Callout>\ntext\n', { page: 'x/y' }), /not closed/);
   assert.throws(() => convertMdx('</Callout>\n', { page: 'x/y' }), /without a matching/);
