@@ -121,7 +121,7 @@ A station uses the first plan that applies:
 3. The plan set on the station's site.
 4. **Wi-Fi or Wired**.
 
-Set the plan for a whole site on the site's **Details** tab, in the **Data Plan** card: **Not Set**, **Wi-Fi or Wired** or **Cellular**. You need `sites:write`. Before you save, the confirmation names how many stations change plan. Stations with their own plan or a confirmed SIM keep theirs. See [Sites](https://www.evtivity.com/docs/csms/sites#data-plan).
+Set the plan for a whole site on the site's **Data Plan** tab: **Not Set**, **Wi-Fi or Wired** or **Cellular**. You need `sites:write`. Before you save, the confirmation names how many stations change plan. Stations with their own plan or a confirmed SIM keep theirs. See [Sites](https://www.evtivity.com/docs/csms/sites#data-plan).
 
 Set the plan for one station on its **Data Plan** tab. You need `stations:write`. The tab shows the plan the station uses and where it came from: set on the station, a confirmed SIM, the site, or the default. It also shows whether the station gets the AC or the DC values. Choose **Wi-Fi or Wired** or **Cellular** and click **Save**. A plan set on the station wins over a SIM and the site. Choose **Use the Site's Plan** to remove the station's own choice.
 

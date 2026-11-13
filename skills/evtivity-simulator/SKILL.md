@@ -5,8 +5,8 @@ license: MIT
 compatibility: Needs a running EVtivity CSMS with the simulator service (Docker Compose service "simulator"), curl and jq for the API examples.
 metadata:
   evtivity-version: "0.1.52"
-  evtivity-release: "v0.1.52-beta.3"
-  evtivity-commit: "b4c190f4e95c9a390e257130f06644e1e5d8c98d"
+  evtivity-release: "v0.1.52-beta.4"
+  evtivity-commit: "e94e36642ba91830f0049ac28272a3ba73de6c71"
   evtivity-docs-section: simulator
 ---
 

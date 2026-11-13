@@ -69,6 +69,8 @@ The dashboard displays three rows of stat cards.
 
 **Station Health**: Total stations, online percentage, active sessions, energy delivered, faulted stations, total ports. **Total Stations** and the online percentage count accepted stations. Pending and blocked stations (see [Onboarding Status](https://www.evtivity.com/docs/csms/stations#onboarding-status)) show as a small note under **Total Stations**.
 
+**Charging Units** shows when a station of your sites has [units](https://www.evtivity.com/docs/csms/stations#units), right after **Total Stations**. Without units, the dashboard shows no such card. It counts the physical chargers of the accepted stations. A station without [units](https://www.evtivity.com/docs/csms/stations#units) counts as one. A station with units counts each unit that has an EVSE in service, plus one when it has EVSEs in service without a unit. For example, one station with 8 boxes of 2 EVSEs shows **Total Stations** 1, **Charging Units** 8 and **Total Ports** 16.
+
 **OCPP and Infrastructure**: Connected stations, uptime percentage over the last 30 days, average ping latency, ping success rate. The ping cards show only to users with access to all sites.
 
 **Financials**: **Total Revenue (incl. tax)** and **Today's Revenue (incl. tax)**, transaction count, **Revenue/Session**, **Total Revenue (excl. tax)**, **Total Tax Collected**, total electricity cost, and **Total Profit**, each with a today value. This row shows only to users with the payments permission. On a phone, the financial cards scroll sideways, one group at a time. Electricity cost and profit are populated from the per-site electricity rate periods configured on each site's Electricity Rates tab. See [Sites](https://www.evtivity.com/docs/csms/sites) for how to configure rate periods.
@@ -140,7 +142,7 @@ The chart date pickers (energy, sessions, revenue, peak usage, utilization, Plug
 
 The **Security Events** card shows the security events your stations reported (OCPP security event notifications) by severity and by station. It is hidden by default: add it in [customize mode](#customize-the-live-dashboard) with **Customize**, and it shows full width, right after the Station Status chart. The donut counts the events of each severity: critical, high, medium, low and info. The table lists the stations with events, the worst severity first, then the stations with the most events. Rows of stations with a critical event are red. Click a station to open its [Security](https://www.evtivity.com/docs/csms/stations#security) tab.
 
-Pick the range: **Last 24 Hours**, **Last 7 Days** (the default) or **Last 30 Days**. With access to more than one site you can pick a site. The **Severity** filter narrows only the station table: the donut always shows every severity. The table shows at most 50 stations and says when there are more.
+Pick the range: **Last 24 Hours**, **Last 7 Days** (the default) or **Last 30 Days**. With access to more than one site you can pick a site. The **Severity** filter narrows only the station table: the donut always shows every severity. The table shows 20 stations a page, with **Prev** and **Next** below it when there are more. The donut counts every event in the range on every page.
 
 The card needs the `securityEvents:read` permission, which operators have by default and viewers do not. A station's events count from the time the CSMS received them, and a site-restricted user sees a station's events only from the time it stands at one of their sites.
 

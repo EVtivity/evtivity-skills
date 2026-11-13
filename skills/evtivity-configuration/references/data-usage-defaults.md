@@ -17,7 +17,7 @@ A station uses the first plan that applies:
 
 1. The plan set on the station, on its **Data Plan** tab.
 2. **Cellular** when a SIM attachment is confirmed on the station.
-3. The plan set on the station's site, on the site's **Details** tab.
+3. The plan set on the station's site, on the site's **Data Plan** tab.
 4. **Wi-Fi or Wired**.
 
 You change the values of each plan in **Settings > Integrations & Features > OCPP**, on the **Wi-Fi or Wired** and **Cellular** tabs.

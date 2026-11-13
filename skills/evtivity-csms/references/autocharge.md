@@ -8,7 +8,7 @@ Start charging when a driver plugs in, identified by the vehicle id the charger 
 
 Autocharge (charge by plugging in) starts a session for a driver without a card or the app. During the plug-in handshake (DIN 70121 or ISO 15118), a DC charger learns the vehicle id of the EV: its charging controller id (EVCCID, usually the MAC address) or its VIN. When the charger sends that id and a vehicle with Autocharge on holds it, the session starts as the vehicle's driver.
 
-Autocharge is off by default. Turn it on company-wide under **Settings** > **Integrations & Features** > **Autocharge**, or for one site on the site's **Details** tab (**Autocharge**: **Use Company Setting**, **On** or **Off**).
+Autocharge is off by default. Turn it on company-wide under **Settings** > **Integrations & Features** > **Autocharge**, or for one site on the site's **Autocharge** tab (**Autocharge**: **Use Company Setting**, **On** or **Off**).
 
 ## What the Charger Sends
 
