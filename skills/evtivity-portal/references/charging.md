@@ -62,7 +62,7 @@ When the price can change during the session, a note says so: "The price can cha
 
 A tariff shows as free when all its prices are zero, whatever its tax rate.
 
-When a station has AC and DC EVSEs with different prices, the pricing section shows the AC and DC prices side by side. On a station whose EVSEs are all AC or all DC, it shows that price.
+When a station has AC and DC EVSEs with different prices, the pricing section shows the AC and DC prices side by side. On a station whose EVSEs are all AC or all DC, it shows that price. Each kind lists its energy, time, session fee and idle fee. The station shows as free only when charging is free at both kinds, and the payment method follows the EVSE you pick.
 
 ### EVSE Grid
 

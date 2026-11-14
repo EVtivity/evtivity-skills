@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.52-beta.5 (https://github.com/EVtivity/evtivity-csms, commit 0533047444fd) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.52-beta.6 (https://github.com/EVtivity/evtivity-csms, commit 1dc1e0364d31) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -379,6 +379,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `STREAM_LIMIT_REACHED` |  | Too many live station updates are open from this device. Close other tabs and try again. |
 | `SUPPORT_AI_NOT_CONFIGURED` | 400 | Support AI is not configured |
 | `SUPPORT_CASE_AI_NOT_AWAITING_FEEDBACK` | 409 | This support case is not waiting for feedback on an automatic answer |
+| `SUPPORT_CASE_CHANGED` | 409 | The case status changed since you opened it. Reload the case and try again. |
 | `SUPPORT_CASE_NOT_FOUND` | 404 | Support case not found |
 | `SUPPORT_DISABLED` |  | Support is disabled |
 | `TARIFF_DEFAULT_REQUIRED` | 409 | A pricing group with tariffs needs one active default tariff without restrictions |

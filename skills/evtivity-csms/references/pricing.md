@@ -60,6 +60,11 @@ Every tariff has a **Charging Type** and, in driver and fleet pricing groups, a 
 
 Where a price is shown before the EVSE is known, a station whose EVSEs are all AC or all DC shows that price. A station with AC and DC EVSEs shows the AC and DC prices side by side in the Portal when they differ.
 
+- When the AC and DC prices agree, the Portal and the app show one price.
+- Each kind lists its energy, time, session fee and idle fee, with its own tax note when the AC and DC tax rates differ.
+- A station shows as free only when charging is free at every kind. The payment method is asked for, or not, by the EVSE the driver picks.
+- The idle station screens show the AC and DC prices side by side too, as "AC: ... | DC: ...". Their tax note shows only when both kinds have the same tax rate.
+
 ## Default Tariff
 
 A pricing group with active tariffs needs exactly one active default tariff, and the default has no restrictions. It applies whenever no tariff with restrictions matches, so every time of day and every amount of energy has a price.

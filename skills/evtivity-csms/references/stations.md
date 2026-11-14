@@ -177,7 +177,7 @@ To take an EVSE out of a unit, click **Remove EVSE** on the unit card, pick the 
 
 On a station with units, the **Create EVSE** dialog has an optional **Unit** field, **No Unit** by default, that puts the new EVSE straight into the unit you pick.
 
-While a station with units has EVSEs without a unit, the tab shows a warning with the number of such EVSEs. Drivers see them as one more charger named after the station. **Manage Units** scrolls to the unit cards, where **Assign EVSE** puts an EVSE in a unit. Each unit change is recorded in the station's **History** tab as **Unit changed**. The session details show a **Unit** row with the unit of the session's EVSE.
+On a station with units, put every EVSE in a unit. The EVSEs without a unit show to drivers as one more charger named after the station, and a driver's favorite or watch of that charger covers the whole station. To avoid that, click **Assign EVSE** on a unit card for each EVSE in the **EVSEs Without a Unit** card. Each unit change is recorded in the station's **History** tab as **Unit changed**. The session details show a **Unit** row with the unit of the session's EVSE.
 
 ![EVSE & Connectors tab with units](https://www.evtivity.com/screenshots/csms/station-connectors-units.png)
 
