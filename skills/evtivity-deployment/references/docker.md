@@ -4,6 +4,10 @@ Generated from https://www.evtivity.com/docs/deployment/docker. Do not edit.
 
 Docker images for each EVtivity service, registry details, and resource recommendations.
 
+> **Upgrading to a New Minor Version:**
+>
+> Each new minor version upgrades directly from any release of the minor version just before it. For example, you can upgrade any 0.2.x release straight to 0.3.0. If you run an older version, such as 0.1.x, upgrade to any 0.2.x release first, then to 0.3.0.
+
 ## Image Registry
 
 All images are published to `ghcr.io/evtivity/evtivity-csms`. Each service has its own image built from a multi-stage Dockerfile.

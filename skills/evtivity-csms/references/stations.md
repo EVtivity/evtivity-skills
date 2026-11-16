@@ -163,7 +163,7 @@ OCPP does not allow lowering the security profile of a connected station. Lower 
 
 Some charging hardware is one OCPP station spread over several physical charger boxes, for example a master box and its extenders under one Charge Point ID. Units group the EVSEs of such a station by box, so you and your drivers see each box as a charger. For example, the OCPP 1.6 demo station `EM4-MASTER-01` at the site Parkhaus Lindenhof has 8 units, **Box 1** to **Box 8**, with 2 AC EVSEs each. Units are optional: a station without units shows its EVSEs in one grid, and drivers see it as one charger. Each box is one charger with two ports, one EVSE each, and both ports can charge at the same time.
 
-A unit is a grouping in the CSMS only. The station keeps one OCPP connection, and sessions, OCPP commands, configuration, firmware updates, load management, QR codes and billing stay with the station and its EVSE numbers.
+A unit is a grouping in the CSMS only. The station keeps one OCPP connection, and sessions, OCPP commands, configuration, firmware updates, load management, QR codes and billing stay with the station and its EVSE numbers. When a station has units, the **Details** tab shows its vendor, model, serial number and firmware under **OCPP Endpoint**: they belong to the box that holds the OCPP connection.
 
 ### Manage units
 

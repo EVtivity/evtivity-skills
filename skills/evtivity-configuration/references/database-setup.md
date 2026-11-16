@@ -59,6 +59,8 @@ Run these from the repository root:
 
 Write each migration by hand. A schema change in `packages/database/src/schema/` needs a migration in the same change: the next numbered, idempotent SQL file in `packages/database/src/migrations/` (guarded statements such as `CREATE TABLE IF NOT EXISTS` and `ADD COLUMN IF NOT EXISTS`) and its entry in `packages/database/src/migrations/meta/_journal.json`. Do not use `npm run generate`: the Drizzle snapshot baseline is frozen, so it cannot diff the schema correctly. Run `npm run check:migrations`, then `npm run db:migrate`.
 
+At each new minor version, the migrations of older minor versions are combined into one baseline, so a new install runs fewer files. Existing installs keep their database as it is. See [Upgrading to a New Minor Version](https://www.evtivity.com/docs/deployment/docker) for the upgrade path.
+
 ### Rules
 
 - Never create new `postgres()` connections. Use the shared database client from `@evtivity/database`.
