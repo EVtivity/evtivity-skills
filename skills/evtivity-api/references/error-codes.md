@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.52-beta.7 (https://github.com/EVtivity/evtivity-csms, commit 06fed2db44db) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.52-beta.8 (https://github.com/EVtivity/evtivity-csms, commit 6c1595fa71ae) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -362,12 +362,17 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `STATION_OFFLINE` | 400, 403, 409 | Station is offline |
 | `STATION_ONLINE` | 409 | The station is online. Stop the session at the station instead. |
 | `STATION_REJECTED` | 502 | Station rejected start: ... |
+| `STATION_REPORTED_FIELD_LOCKED` | 409 | The station reports this value when it boots, so it cannot be changed here. |
 | `STATION_SECURITY_CHANGE_REJECTED` | 502 | The station did not accept the security change; its current settings are unchanged |
 | `STATION_SECURITY_ROUTE_REQUIRED` | 400 | Station security profiles and network profiles are changed with PATCH /v1/stations/:id, not with a configuration template |
 | `STATION_SITE_SUPPRESSED` | 409 | The AI insights of the station's site are suppressed. Resume the site to resume its stations |
 | `STATION_TIMEOUT` | 504 | Station did not respond |
 | `STATION_TLS_URL_NOT_CONFIGURED` | 400 | The public TLS address for stations (OCPP_STATION_TLS_URL) is not configured |
 | `STATION_UNAVAILABLE` | 409 | This station is unavailable right now. Try another station. |
+| `STATION_UNITS_DISABLED` | 409 | This station does not use units. Turn on Uses Station Units first. |
+| `STATION_UNITS_FEATURE_IN_USE` | 409 | Stations still use units. Turn off Uses Station Units on every station before turning off Enable Station Units. |
+| `STATION_UNITS_FEATURE_OFF` | 409 | Station units are turned off. Turn on Enable Station Units in Settings > Integrations & Features first. |
+| `STATION_UNITS_IN_USE` | 409 | Delete the units of this station before turning off Uses Station Units. |
 | `STATION_UNIT_LIMIT_REACHED` | 400 | A station holds at most 64 units |
 | `STATION_UNIT_NAME_IN_USE` | 409 | Another unit of this station has this name |
 | `STATION_UNIT_NOT_FOUND` | 404 | Unit not found |

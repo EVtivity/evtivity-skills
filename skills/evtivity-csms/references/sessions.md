@@ -12,7 +12,7 @@ Sessions represent individual charging transactions between a driver and a stati
 
 ## Session List
 
-The sessions list shows all charging sessions with filters for site, station, status, and electricity cost, and a search by session ID, transaction ID, station, or driver name. Each row displays the station name, driver, status, energy delivered, duration, and cost.
+The sessions list shows all charging sessions with filters for site, station, status, and electricity cost, and a search by session ID, transaction ID, station, or driver name. Each row displays the charging point on one line (site, station, unit, EVSE, and connector type, such as `Parkhaus Lindenhof / EM4-MASTER-01 / Box 3 / EVSE 5 / CCS2`), driver, status, energy delivered, duration, and cost.
 
 Free vend sessions show a "Free Vend" label in the driver column instead of a driver name.
 
@@ -47,7 +47,7 @@ Click any session to view its full detail page. While the session is active and 
 
 ### Details
 
-The overview of the session including station, EVSE, driver, start/end times, energy delivered, duration, idle time, cost, and CO₂ avoided (when the site has a carbon region configured).
+The overview of the session including its charging point on one line in the **Station** row (site, station, unit, EVSE and connector type, linked to the station), driver, start/end times, energy delivered, duration, idle time, cost, and CO₂ avoided (when the site has a carbon region configured).
 
 Faulted and failed sessions show their final cost.
 

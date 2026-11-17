@@ -39,7 +39,7 @@ The By Site table adds **Energy (kWh)**, and a **Payments** table totals payment
 
 ### Sessions report
 
-One row per session, with **Cost (incl. tax)** (the final cost, or the running cost while the session is active), **Cost Final** (`yes` once the session has its final cost), **Net**, **Tax**, **Tax Rate (%)**, **Refunded**, and **Currency**. Net and tax are the split stored with the session's cost. Each session's amounts are in its own currency.
+One row per session, with **Cost (incl. tax)** (the final cost, or the running cost while the session is active), **Cost Final** (`yes` once the session has its final cost), **Net**, **Tax**, **Tax Rate (%)**, **Refunded**, and **Currency**. Net and tax are the split stored with the session's cost. Each session's amounts are in its own currency. After the station, the CSV and Excel files list **Unit**, **EVSE**, **Connector**, and **Connector Type**, empty when unknown.
 
 ### Driver Activity report
 

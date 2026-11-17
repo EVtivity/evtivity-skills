@@ -41,8 +41,7 @@ If you have not added a vehicle, the Distance metric uses a default efficiency o
 Each row in the session list shows:
 
 - **Status dot** - color-coded by session status
-- **Station ID** - the identifier of the station used
-- **Site name** - the location name
+- **Charging point** - the site, station, unit, EVSE, and connector type of the session on one line
 - **Date and time** - when the session occurred
 - **Energy** - total kWh delivered
 - **Cost** - total session cost, followed by "incl. tax" when the session's tariff has tax

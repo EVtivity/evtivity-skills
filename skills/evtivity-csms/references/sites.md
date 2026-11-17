@@ -26,6 +26,8 @@ A site represents a physical location (parking garage, office building, retail c
 
 **Export CSV** downloads the sites that match the current search and filters, with their stations, EVSEs, and connectors. **Template** downloads an example file. **Import CSV** creates sites by name and, from rows with a station ID, creates stations with their EVSEs and connectors. Turn on **Update existing records** to change sites and stations that already exist. Rows with a station ID need the `stations:write` permission as well as `sites:write`.
 
+The last column, **stationUsesUnits**, holds `true` or `false` for each station row: the station's **This station has multiple physical units** checkbox. On import, an empty cell leaves an existing station unchanged and a new station unchecked. A row is refused, and changes nothing of its station, when it sets `true` while **Enable Station Units** is off, sets `false` for a station that has units, or changes a model or serial number the station reported at its boot. The other rows still import.
+
 ## Site Detail
 
 Click any site in the list to open the detail page. The site detail page has the following tabs.

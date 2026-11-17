@@ -344,6 +344,12 @@ The tab also has:
 - **Reset retries** - number of reset command retries (default 3).
 - **Require approval for new stations** - when on, new stations need manual approval. When off, stations are auto-accepted.
 
+### Station
+
+- **Enable Station Units** - lets a station group its EVSEs into physical units, for example a master box and its extenders under one OCPP connection. Each station then has the **This station has multiple physical units** checkbox on its pages. The setting is off by default. While it is off, no station can use units and the checkbox is hidden. You can turn it off only while no station uses units. See [Units](https://www.evtivity.com/docs/csms/stations#units).
+
+![Station settings with Enable Station Units](https://www.evtivity.com/screenshots/csms/settings-station.png)
+
 ### Roaming
 
 OCPI roaming feature toggle.
@@ -409,7 +415,7 @@ Support cases feature toggle.
 
 Whether drivers manage their own RFID cards.
 
-- **Drivers Manage Their RFID Cards** - on (the default): drivers add, rename, deactivate, reactivate and remove their own RFID cards in the portal and the mobile app. Off: drivers only see their cards, with a note to contact you, also to block a lost card. You manage the cards on the [Tokens](https://www.evtivity.com/docs/csms/tokens) page. Existing cards keep working either way.
+- **Drivers Manage Their RFID Cards** - lets drivers add, rename, deactivate, reactivate and remove their own RFID cards in the portal and the mobile app. The setting is on by default. While it is off, drivers only see their cards, with a note to contact you, also to block a lost card, and you manage the cards on the [Tokens](https://www.evtivity.com/docs/csms/tokens) page. Existing cards keep working either way.
 
 ### Fleet
 

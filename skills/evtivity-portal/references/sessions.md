@@ -42,7 +42,7 @@ A banner card at the top links to a detailed monthly statement for the displayed
 Below the dashboard, your sessions for the selected month are listed with:
 
 - Status dot (green for active, gray for completed, red for failed, amber for pending)
-- Station name and location
+- The charging point on one line: site, station, unit, EVSE, and connector type
 - Estimated miles driven
 - Session duration
 - Total cost, followed by "incl. tax" when the session's tariff has tax
@@ -70,7 +70,7 @@ The session detail page shows:
 - **Energy delivered** - Total energy in kWh
 - **Total cost** - Final cost in the session currency. While the session is active, the row shows the estimated cost. Faulted and failed sessions show their final cost, and a faulted or failed session at no cost shows **Not Charged**. See Cost and tax below.
 - **CO₂ avoided** - Carbon savings in kg (when available)
-- **Station details** - Station ID, location, connector type
+- **Station details** - the charging point on one line (site, station, unit, EVSE, and connector type) and the site address
 - **Start and end timestamps**
 - **Report Issue button** - Opens a new support case pre-filled with the session details (see [Support Cases](https://www.evtivity.com/docs/portal/support-cases)), shown while the operator has Support turned on
 - **Fleet Billing** - For a session billed to your fleet: the fleet and the state (Not invoiced yet, Invoiced to the fleet, or Paid by the fleet). The fleet invoice goes to the fleet, not to you.

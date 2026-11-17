@@ -1,6 +1,6 @@
 # EVtivity API routes: Webhooks
 
-Generated from EVtivity CSMS v0.1.52-beta.7 (https://github.com/EVtivity/evtivity-csms, commit 06fed2db44db) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.52-beta.8 (https://github.com/EVtivity/evtivity-csms, commit 6c1595fa71ae) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no

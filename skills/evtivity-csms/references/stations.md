@@ -23,7 +23,8 @@ The list shows each station's connectors as icons. For a station with [units](#u
 5. Assign a site, vendor, and model.
 6. Set the security profile (No Auth through Mutual TLS).
 7. Add EVSEs and connectors with their power ratings and connector types.
-8. Click **Create**.
+8. For one OCPP station built from several charger boxes, such as a master with extenders, check **This station has multiple physical units** (see [Units](#units)). The checkbox shows only while **Enable Station Units** is on in [Settings](https://www.evtivity.com/docs/csms/settings).
+9. Click **Create**.
 
 Each new station gets an empty configuration template bound to it, also when the station comes from a site CSV import.
 
@@ -163,21 +164,27 @@ OCPP does not allow lowering the security profile of a connected station. Lower 
 
 Some charging hardware is one OCPP station spread over several physical charger boxes, for example a master box and its extenders under one Charge Point ID. Units group the EVSEs of such a station by box, so you and your drivers see each box as a charger. For example, the OCPP 1.6 demo station `EM4-MASTER-01` at the site Parkhaus Lindenhof has 8 units, **Box 1** to **Box 8**, with 2 AC EVSEs each. Units are optional: a station without units shows its EVSEs in one grid, and drivers see it as one charger. Each box is one charger with two ports, one EVSE each, and both ports can charge at the same time.
 
-A unit is a grouping in the CSMS only. The station keeps one OCPP connection, and sessions, OCPP commands, configuration, firmware updates, load management, QR codes and billing stay with the station and its EVSE numbers. When a station has units, the **Details** tab shows its vendor, model, serial number and firmware under **OCPP Endpoint**: they belong to the box that holds the OCPP connection.
+A unit is a grouping in the CSMS only. The station keeps one OCPP connection, and sessions, OCPP commands, configuration, firmware updates, load management, QR codes and billing stay with the station and its EVSE numbers.
+
+Units are chosen per station. Check **This station has multiple physical units** on the **Create Station** page, or later in the station's **Details** edit form, and save. While it is unchecked, the **EVSE & Connectors** tab shows no unit controls and the station looks as it always has. You can uncheck it only while the station has no units: delete its units first.
+
+For a master and extender system, name the master's unit so it is clear which box holds the OCPP connection, for example **Box 1 (Master)**.
+
+Units are available only while **Enable Station Units** is on in **Settings > Integrations & Features > Station**. It is off for a new install. While it is off, no station can use units: nobody can check the checkbox, create a unit or put an EVSE in a unit. The setting can be turned off only while no station uses units: uncheck **This station has multiple physical units** on every station first.
 
 ### Manage units
 
 Open the station's **EVSE & Connectors** tab. The tab header shows **Create Unit** before **Create EVSE**. With units, each unit is a card that holds the cards of its EVSEs and shows the unit's status and EVSE count. The EVSEs without a unit are in the **EVSEs Without a Unit** card, shown while there are any. A unit shows offline while its station is offline. You need `stations:write` to change units. Without it, **Create Unit** and the unit buttons are hidden.
 
-1. Click **Create Unit** in the tab header, enter a **Unit Name**, such as Box 1, and save. A name has 1 to 50 characters and is unique per station, whatever its case. A station holds at most 64 units. You can also enter the box's **Serial Number** (up to 64 characters) and **IP Address** (one IPv4 or IPv6 address, without a port). Both are optional and for your records: the unit card shows them, and drivers and roaming partners never see them.
+1. Click **Create Unit** in the tab header, enter a **Unit Name**, such as Box 1, and save. A name has 1 to 50 characters and is unique per station, whatever its case. A station holds at most 64 units. You can also enter the box's **Model** (up to 20 characters), **Serial Number** (up to 64 characters) and **IP Address** (one IPv4 or IPv6 address, without a port). These are optional and for your records: the unit card shows the model and serial number, and drivers and roaming partners never see them. You can also enter the box's **Latitude** and **Longitude** (decimal degrees, both or neither) when it stands apart from the station position. Drivers and roaming partners see that position for the box's EVSEs. A box without its own position uses the station position.
 2. Put each EVSE in its unit. Click **Assign EVSE** on the unit card and pick an EVSE. The list shows the EVSEs without a unit first, then the EVSEs of other units, each with its current unit. An EVSE belongs to one unit only, so an EVSE from another unit moves out of that unit. The EVSE card moves into the card of its unit.
-3. To change a unit's name, serial number or IP address, use the **Edit Unit** button on its card. An empty field clears the value. **Delete Unit** removes the unit. Deleting a unit asks for confirmation. Its EVSEs stay on the station without a unit, and drivers' favorites and watches of that unit are removed.
+3. To change a unit's name, model, serial number, IP address or position, use the **Edit Unit** button on its card. An empty field clears the value. **Delete Unit** removes the unit. Deleting a unit asks for confirmation. Its EVSEs stay on the station without a unit, and drivers' favorites and watches of that unit are removed.
 
 To take an EVSE out of a unit, click **Remove EVSE** on the unit card, pick the EVSE and save. The EVSE moves to the **EVSEs Without a Unit** card and stays on the station. The button is disabled while the unit has no EVSEs.
 
 On a station with units, the **Create EVSE** dialog has an optional **Unit** field, **No Unit** by default, that puts the new EVSE straight into the unit you pick.
 
-On a station with units, put every EVSE in a unit. The EVSEs without a unit show to drivers as one more charger named after the station, and a driver's favorite or watch of that charger covers the whole station. To avoid that, click **Assign EVSE** on a unit card for each EVSE in the **EVSEs Without a Unit** card. Each unit change is recorded in the station's **History** tab as **Unit changed**. The session details show a **Unit** row with the unit of the session's EVSE.
+On a station with units, put every EVSE in a unit. The EVSEs without a unit show to drivers as one more charger named after the station, and a driver's favorite or watch of that charger covers the whole station. To avoid that, click **Assign EVSE** on a unit card for each EVSE in the **EVSEs Without a Unit** card. Each unit change is recorded in the station's **History** tab as **Unit changed**. The session details show the unit in the session's charging point path, in the **Station** row.
 
 ![EVSE & Connectors tab with units](https://www.evtivity.com/screenshots/csms/station-connectors-units.png)
 
@@ -189,12 +196,12 @@ On a station with units, put every EVSE in a unit. The EVSEs without a unit show
 
 ### What drivers and partners see
 
-- In the [portal](https://www.evtivity.com/docs/portal/charging#search-for-a-station) and the [mobile app](https://www.evtivity.com/docs/mobile-app/guide/find-a-charger), each unit is its own charger in search, nearby, the station page, the location page, favorites and Station Watch. The EVSEs without a unit of a station with units form one more charger, named by the station. A unit without an EVSE in service does not show.
-- Roaming partners receive each EVSE's unit name as its physical reference (see [Roaming](https://www.evtivity.com/docs/csms/roaming#evse-identifiers)).
+- In the [portal](https://www.evtivity.com/docs/portal/charging#search-for-a-station) and the [mobile app](https://www.evtivity.com/docs/mobile-app/guide/find-a-charger), each unit is its own charger in search, nearby, the station page, the location page, favorites and Station Watch. The EVSEs without a unit of a station with units form one more charger, named by the station. A unit without an EVSE in service does not show. A box with its own position shows at that position, and the nearby list measures its distance from it.
+- Roaming partners receive each EVSE's unit name as its physical reference, and the unit position as the EVSE coordinates when the box has its own (see [Roaming](https://www.evtivity.com/docs/csms/roaming#evse-identifiers)).
 
 ### API
 
-`GET /v1/stations/:id/units` lists the units (`stations:read`). `POST /v1/stations/:id/units`, `PATCH /v1/stations/:id/units/:unitId` and `DELETE /v1/stations/:id/units/:unitId` create, rename or reorder, and delete a unit, and `PUT /v1/stations/:id/evses/:evseId/unit` moves an EVSE into a unit or out of it (`stations:write`). Requests name EVSEs by their OCPP EVSE number. A unit carries the optional `serialNumber` and `ipAddress`. An empty string or null clears one, and an invalid IP address answers 400 `VALIDATION_ERROR` with `field` `ipAddress`. The portal, the site layout and roaming partners never receive them.
+`GET /v1/stations/:id/units` lists the units (`stations:read`). `POST /v1/stations/:id/units`, `PATCH /v1/stations/:id/units/:unitId` and `DELETE /v1/stations/:id/units/:unitId` create, rename or reorder, and delete a unit, and `PUT /v1/stations/:id/evses/:evseId/unit` moves an EVSE into a unit or out of it (`stations:write`). Requests name EVSEs by their OCPP EVSE number. A unit carries the optional `serialNumber` and `ipAddress`. An empty string or null clears one, and an invalid IP address answers 400 `VALIDATION_ERROR` with `field` `ipAddress`. The portal, the site layout and roaming partners never receive them. A unit also carries the optional `model` (admin only, like the serial number) and `latitude` and `longitude` (decimal degrees, sent together; one without the other, or a value out of range, answers 400 `VALIDATION_ERROR` with the `field`). The station field `usesUnits` turns units on (`POST /v1/stations`, `PATCH /v1/stations/:id`). A unit create, or a move of an EVSE into a unit, on a station with it off answers 409 `STATION_UNITS_DISABLED`; turning it off while the station has a unit answers 409 `STATION_UNITS_IN_USE`. While the **Enable Station Units** setting (`stationUnits.enabled`) is off, turning `usesUnits` on, a unit create and a move of an EVSE into a unit answer 409 `STATION_UNITS_FEATURE_OFF`; turning the setting off while a station uses units answers 409 `STATION_UNITS_FEATURE_IN_USE`.
 
 ## Connector Types
 
@@ -221,6 +228,8 @@ The header shows the online badge, the station status badge, and the **Enable St
 ### Details
 
 Edit station metadata: name, vendor, model, site assignment, security profile, and password. The station's OCPP connection URL is displayed for configuration reference.
+
+After the station first boots, its model is the one it reports and cannot be edited here, and so is its serial number when the station reports one. A station that boots without a serial number keeps the field editable, so you can type it from the label. Before the first boot both are editable. The edit form says when the station reports these values. The API answers a change with 409 `STATION_REPORTED_FIELD_LOCKED`.
 
 When you move a station to another site, an active maintenance window at the old site releases it (the station is told it is Operative again unless you disabled it, and the maintenance message is cleared from its screen), and an active window at the new site applies to it at once. Sessions keep the site where they happened, so the revenue, metrics and reports of each site keep their history.
 

@@ -288,7 +288,7 @@ A credit note cancels the whole invoice and is emailed to the billing contacts (
 
 ### Monthly Run
 
-The monthly run invoices every fleet with **Automatic monthly invoice** turned on for the previous calendar month. From the **Monthly Fleet Invoice Day** (**Settings** > **Payment** > **General**, 1 to 28, default 1, in the system time zone) to the end of the month, it checks every hour and issues the invoice of each such fleet that has no invoice for that month yet. The invoice is the same as one from **Generate Invoice**, and it is emailed to the billing contacts. A month with nothing to bill issues nothing. A fleet that no longer charges on account still gets its unbilled sessions invoiced. Each month gets its own invoice, which bills only the sessions that ended in that month. If the run missed a month, for example because the worker was down for the whole window, it bills the oldest missed month first and the next month on a later run.
+The monthly run invoices every fleet with **Automatic monthly invoice** checked for the previous calendar month. From the **Monthly Fleet Invoice Day** (**Settings** > **Payment** > **General**, 1 to 28, default 1, in the system time zone) to the end of the month, it checks every hour and issues the invoice of each such fleet that has no invoice for that month yet. The invoice is the same as one from **Generate Invoice**, and it is emailed to the billing contacts. A month with nothing to bill issues nothing. A fleet that no longer charges on account still gets its unbilled sessions invoiced. Each month gets its own invoice, which bills only the sessions that ended in that month. If the run missed a month, for example because the worker was down for the whole window, it bills the oldest missed month first and the next month on a later run.
 
 The run never issues a second invoice for a month, and it does not bill a month whose invoice was credited. After a credit note, generate the corrected invoice on the **Billing** tab.
 
@@ -348,7 +348,7 @@ A session moves only while it is on no invoice, its driver is still a member of 
 
 #### Monthly Run for Members
 
-With **Automatic monthly invoice** on, the monthly run also issues the member invoices of the previous month, one for each driver with sessions to bill, and sends each to its driver. It follows the same rules as the fleet invoice: one invoice per driver and month, the oldest missed month first, and no new invoice for a month that was credited. A member invoice the run could not finish appears in the same `fleet.InvoiceRunFailed` notice, with the fleet and the driver.
+With **Automatic monthly invoice** checked, the monthly run also issues the member invoices of the previous month, one for each driver with sessions to bill, and sends each to its driver. It follows the same rules as the fleet invoice: one invoice per driver and month, the oldest missed month first, and no new invoice for a month that was credited. A member invoice the run could not finish appears in the same `fleet.InvoiceRunFailed` notice, with the fleet and the driver.
 
 ### Deleting a Fleet
 
