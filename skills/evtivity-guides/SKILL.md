@@ -199,6 +199,12 @@ For `SuspendedEV`: first look for a charging profile or load allocation below ab
 - Five site setups: a station with its own link, stations behind one router, a local proxy, a local controller with OCPP chargers, and a master with non-OCPP extenders. Only the last one, in its one-station form, shows many chargers as one station with many EVSEs.
 - For that form, station units group the EVSEs by physical charger so the portal, the app, the site layout and OCPI (`physical_reference`) name each charger. Sessions, commands and billing stay with the station. Setup: evtivity-csms (Stations, Units).
 
+## 15. Fleet managers (`references/fleet-manager-setup.md`)
+
+- A fleet manager is a CSMS user with the Fleet Manager role and Fleets access, limited to its fleets: their dashboard, the sessions billed to the fleet, fleet invoices and the fleet's RFID cards. Fleets must be on, and only an all-site user creates one.
+- Fleet RFID cards charge the fleet account, also when a member holds one, and only while the fleet bills on account; otherwise the station refuses them. A card can carry a monthly spending limit.
+- The guide goes from the first fleet RFID card to the first fleet invoice. Fleet details: evtivity-csms (Fleets, Users).
+
 ## References
 
 Generated from the website docs. Never edit them. The first line of each file is the live page URL: link it when you answer. Every page of this section is named once in the section headings above.
