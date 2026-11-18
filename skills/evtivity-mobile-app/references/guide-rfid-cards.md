@@ -36,6 +36,8 @@ When you deactivate a card, the app asks you to confirm. The toggle then settles
 
 A fleet you belong to can give you one of its RFID cards. The card shows in your list with "Managed by" and the fleet name. You charge with it like with your own cards, but you cannot rename it, turn it off, or remove it. Contact your fleet to change it.
 
+While your operator has fleet management turned off, a fleet RFID card shows no fleet name. Instead, a note says that stations refuse the card right now. You still cannot change the card. Contact your operator if you need to charge with it.
+
 ## When the operator manages your cards
 
 Your operator can choose to manage RFID cards for you. The RFID Cards screen then lists your cards with a note, and shows no **Add RFID Card**, rename or toggle. To add, change or remove a card, or to block a lost card, contact the operator.

@@ -38,6 +38,8 @@ Save to apply your changes.
 
 Tap **Invoices** to see your invoices and credit notes and share their PDFs. When your fleet invoices you for your sessions, add your billing address so it prints on your invoices. See [Payments](https://www.evtivity.com/docs/mobile-app/guide/payments#invoices).
 
+While your operator has fleet management turned off, the Billing Address row is hidden and member invoices name no fleet.
+
 ## Security
 
 ![Security screen](https://www.evtivity.com/screenshots/mobile/security.png)
@@ -57,6 +59,8 @@ Tap **Notifications** to choose which notifications you get on each channel: **E
 The app shows email and SMS only when the operator has set them up. A row with a lock is **Required by your operator** and is always sent on that channel. Account and security messages, such as password resets and sign-in codes, are always sent. See [How It Decides](https://www.evtivity.com/docs/csms/notifications#how-it-decides).
 
 These choices control delivery. The bell in the header always keeps an in-app copy. See [Support](https://www.evtivity.com/docs/mobile-app/guide/support) for the notification inbox.
+
+While your operator has fleet management turned off, the notifications about fleet RFID cards, member invoices, fleet billing and the fleet credit limit are not listed and are not sent.
 
 ## About
 

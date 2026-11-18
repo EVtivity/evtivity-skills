@@ -59,6 +59,8 @@ Tap a session to open the session detail page.
 3. A footer row shows totals for the month. Sessions your fleet pays on account show "Billed to" and the fleet name in the cost column and are left out of the total. Sessions billed in an earlier currency are left out of the total too, and a note below the table counts them.
 4. If carbon tracking is enabled, a CO₂ avoided column appears.
 
+While your operator has fleet management turned off, sessions show no fleet name and no Fleet Billing card. In the monthly statement, a session billed to your fleet shows "Billed on account" in the cost column.
+
 ## Session Detail Receipt
 
 Tap any session in the list to view the full receipt.

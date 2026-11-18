@@ -23,6 +23,8 @@ A session billed to your fleet also shows the fleet and its billing state: Not i
 
 ![Sessions list for the month](https://www.evtivity.com/screenshots/mobile/activity-sessions.png)
 
+While your operator has fleet management turned off, sessions show no fleet and no fleet billing state.
+
 ## Read your trends
 
 Above the list is a chart for the trailing six months. Use the toggle to switch what it measures:

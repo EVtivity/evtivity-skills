@@ -15,6 +15,8 @@ It shows two kinds of invoices:
 
 A fleet invoice addressed to the fleet itself never shows here. It goes to the fleet, not to you.
 
+While your operator has fleet management turned off, your member invoices still show here and you can still download them, but they name no fleet.
+
 ## Invoice List
 
 Each row shows:

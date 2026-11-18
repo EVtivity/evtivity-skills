@@ -70,6 +70,8 @@ When your fleet invoices your sessions to you and you have no billing address ye
 
 You pay the same amount either way. The choice changes only how prices are shown. The same choice applies in the mobile app, because it is saved on your account.
 
+While your operator has fleet management turned off, the Billing Address section is hidden.
+
 ## Security
 
 The Security section lets you change your password and manage MFA, passkeys and security keys, and recovery codes.
@@ -101,6 +103,8 @@ The portal shows the channels your operator has set up. When the operator has se
 A checkbox with a lock is **Required by your operator**. It stays checked, and the notification is always sent on that channel. Account and security messages, such as password resets and sign-in codes, are always sent and have no row. The operator decides which notifications exist and which are required. See [How It Decides](https://www.evtivity.com/docs/csms/notifications#how-it-decides).
 
 Language, timezone, theme, mode, and distance unit live under **Personal Info**, not here.
+
+While your operator has fleet management turned off, the notifications about fleet RFID cards, member invoices, fleet billing and the fleet credit limit are not listed and are not sent.
 
 ## Invoices
 

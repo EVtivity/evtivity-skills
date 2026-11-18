@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.52-beta.9 (https://github.com/EVtivity/evtivity-csms, commit 372d480324ba) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.52-beta.10 (https://github.com/EVtivity/evtivity-csms, commit b7d85e25cb62) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -431,6 +431,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `WEBHOOK_SIGNATURE_INVALID` | 400, 401 | Invalid signature |
 | `WEBHOOK_SIGNATURE_MISSING` | 400, 401 | Missing webhook signature or credentials |
 | `WEB_PAYMENTS_NOT_SUPPORTED` | 409 | The station does not support dynamic QR codes |
+| `networkError` |  | The server could not be reached. Check your connection and try again. |
 | `retry` |  | Try Again |
 | `serverDown` |  | Unable to Connect |
 | `serverDownDescription` |  | The server is not responding. Please check that the API service is running and try again. |

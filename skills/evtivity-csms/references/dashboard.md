@@ -160,18 +160,18 @@ The card needs the `sites:read` permission. Like the other charts, you can move 
 
 ## Fleets
 
-While **Enable Fleet** is on (see [Fleet](https://www.evtivity.com/docs/csms/settings#fleet)), every user with the `fleets:read` permission sees the fleet cards on the Live dashboard, after the station cards. The **Fleet** search at the top picks one fleet. Clear it to see every fleet you can see. The **Date Range** next to it applies to every fleet card and chart.
+While **Enable Fleet** is on (see [Fleet](https://www.evtivity.com/docs/csms/settings#fleet)), a [fleet user](https://www.evtivity.com/docs/csms/users#fleet-users) sees the fleet cards on its Live dashboard. The **Fleet** search at the top picks one of its fleets. Clear it to see all of them. The **Date Range** next to it applies to every fleet card and chart.
 
 | Card | Shows |
 | --- | --- |
-| Fleet Sessions | Sessions of the fleets started in the date range. |
+| Fleet Sessions | Sessions billed to the fleets that started in the date range. |
 | Fleet Energy | Energy delivered by those sessions. |
 | Fleet Cost | Cost of those sessions in the company currency. Needs `payments:read`. |
-| Credit Limit Used | For all fleets, the fleet closest to its credit limit: what it owes now (unbilled, invoiced and running sessions) as a share of its limit, with the fleet named under the value. With one fleet picked, that fleet's own share. Needs `payments:read`, and access to every site unless you are a fleet user. |
+| Credit Limit Used | For all fleets, the fleet closest to its credit limit: what it owes now (unbilled, invoiced and running sessions) as a share of its limit, with the fleet named under the value. With one fleet picked, that fleet's own share. Needs `payments:read`. |
 
-For a user restricted to some sites, the fleet cards count only the sessions at those sites. A [fleet user](https://www.evtivity.com/docs/csms/users#fleet-users) sees the sessions billed to its fleets, at every site.
+A fleet user sees the sessions billed to its fleets, at every site.
 
-Four fleet charts are part of the [customizable layout](#customize-the-live-dashboard): **Fleet Energy per Day**, **Fleet Sessions per Day**, **Fleet Cost per Day** (with `payments:read`) and **Latest Fleet Invoices** (the newest fleet invoices and credit notes, with `payments:read`, and access to every site unless you are a fleet user). They are hidden by default: show them with **Customize**. While **Enable Fleet** is off, no fleet card or chart shows.
+Other users with the `fleets:read` permission get no fleet cards and no fleet search. Four fleet charts are part of the [customizable layout](#customize-the-live-dashboard): **Fleet Energy per Day**, **Fleet Sessions per Day**, **Fleet Cost per Day** (with `payments:read`) and **Latest Fleet Invoices** (the newest fleet invoices and credit notes, with `payments:read` and access to every site). They are hidden by default: show them with **Customize**. For these users each chart covers every fleet and has its own date range, like the other charts, and a user restricted to some sites sees only the sessions at those sites. A fleet user sees the four charts by default, for the fleet and date range picked above the cards. While **Enable Fleet** is off, no fleet card or chart shows.
 
 ## Active Sessions
 

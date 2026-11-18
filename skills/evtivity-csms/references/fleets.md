@@ -117,7 +117,7 @@ A fleet without RFID cards shows how to start, with **Import CSV** and **Add RFI
 
 ### Fleet Managers
 
-The **Fleet Managers** tab lists the [fleet users](https://www.evtivity.com/docs/csms/users#fleet-users) assigned to the fleet, with their name, email, permissions, and last sign-in. Click a row to open the user. It shows to users with access to all sites and the `users:read` permission. With `users:write`, **Add Fleet Manager** opens **Create User** with the **Fleet Manager** role and the fleet already chosen.
+The **Fleet Managers** tab lists the [fleet users](https://www.evtivity.com/docs/csms/users#fleet-users) assigned to the fleet, with their name, email, permissions, and last sign-in. Click a row to open the user. It shows to users with access to all sites and the `users:read` permission. With `users:write`, **Add Fleet Manager** opens **Create User** with the **Fleet Manager** role and the fleet already chosen. It comes right after the **Drivers** tab and is hidden while **Enable Fleet** is off.
 
 Fleet managers see when and where the fleet's members charged. Inform your fleet members of this as your local privacy law requires.
 

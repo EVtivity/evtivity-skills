@@ -21,6 +21,17 @@ The Users page manages operator accounts that access the CSMS dashboard. Each us
 
 Roles provide default permission sets. After creating a user, you can customize their individual permissions.
 
+### Access by Role
+
+The role decides which access a user can have:
+
+| Role | Access | Permissions you can select |
+|------|--------|----------------------------|
+| Admin, Operator, Viewer, and custom roles | **All sites** or **Sites** | Every permission |
+| Fleet Manager | **Fleets** only | Only the seven fleet user permissions (see [Fleet Users](#fleet-users)) |
+
+Fleets access is only for the Fleet Manager role, and the Fleet Manager role takes no other access. The **Fleet Manager** role is offered only while **Enable Fleet** is on. A user who already has it keeps it.
+
 ## Create a User
 
 1. Navigate to **Users** in the sidebar.
@@ -38,7 +49,7 @@ Roles provide default permission sets. After creating a user, you can customize 
 
 ![Create user](https://www.evtivity.com/screenshots/csms/users-create.png)
 
-4. Set **Access** (see below): **All sites**, **Sites** with at least one site, or **Fleets** for a [fleet user](#fleet-users). With **Sites** and no site checked, **Create** shows "At least one site must be selected".
+4. Set **Access** (see below): **All sites**, **Sites** with at least one site, or **Fleets** for a [fleet user](#fleet-users). With **Sites** and no site checked, **Create** shows "At least one site must be selected". **Access** stays disabled until you pick a role, because the role decides which access the user can have.
 
 ![Site access required](https://www.evtivity.com/screenshots/csms/users-create-site-required.png)
 5. Click **Create**. The role's default permissions are copied to the new user. EVtivity emails the user an invitation with a link to set a password. The link expires after 24 hours.
@@ -227,7 +238,7 @@ A fleet user is a CSMS user who manages one or more fleets, for example the flee
 Only a user with access to all sites creates or edits fleet users, and only while **Enable Fleet** is on (see [Fleet](https://www.evtivity.com/docs/csms/settings#fleet)).
 
 1. Click **Create User** on the **Users** page, or open a user and click **Edit** on the **Details** tab.
-2. Choose the **Fleet Manager** role. This sets **Access** to **Fleets**.
+2. Choose the **Fleet Manager** role. This sets **Access** to **Fleets**. **Access** stays **Fleets** while the role is Fleet Manager. Choosing another role sets **Access** back to **Sites** and clears the fleets.
 3. Search for each fleet the user manages and add it to the list. Remove a fleet with its remove button.
 4. Click **Create** or **Save**.
 
