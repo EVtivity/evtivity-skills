@@ -51,6 +51,10 @@ Duplicate card numbers are rejected. Each card number can only be linked to one 
 
 When you tap a deactivated card on a station reader, the station sends an authorization request to the CSMS. The CSMS rejects the request because the card is inactive. The station displays an authorization failure and does not start charging.
 
+## Fleet RFID Cards
+
+A fleet you belong to can give you one of its RFID cards. The card shows in your list with "Managed by" and the fleet name. You charge with it like with your own cards, but you cannot rename it, turn it off, or remove it. Contact your fleet to change it.
+
 ## When the Operator Manages Your Cards
 
 Your operator can choose to manage RFID cards for you. The RFID Cards page then lists your cards with a note, and shows no **Add RFID Card**, rename or toggle. To add, change or remove a card, or to block a lost card, contact the operator.

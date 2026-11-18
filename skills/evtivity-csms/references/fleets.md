@@ -6,7 +6,7 @@ Organize drivers and stations into fleets for group management and pricing.
 
 ## Overview
 
-Fleets group drivers, stations, and vehicles under a single organizational entity. Use fleets to manage corporate charging programs, municipal vehicle fleets, or any scenario where a group of drivers shares pricing or station access.
+Fleets group drivers, stations, and vehicles under a single organizational entity. Use fleets to manage corporate charging programs, municipal vehicle fleets, or any scenario where a group of drivers shares pricing or station access. A fleet can also own RFID cards and have its own [fleet users](https://www.evtivity.com/docs/csms/users#fleet-users), who see only their fleets.
 
 ![Fleets list](https://www.evtivity.com/screenshots/csms/fleets-list.png)
 
@@ -27,9 +27,13 @@ Click any fleet in the list to open the detail page. The default Details view ed
 
 ### Sessions
 
-View all charging sessions from fleet drivers across all stations. Filterable by status and date range.
+View the charging sessions of the fleet's drivers and of its RFID cards across all stations. Filter the list by **Member**, by **RFID Card** (with the `fleetCards:read` permission) and by the start date with **From** and **To**. A member filter lists only sessions of that member of the fleet, and an RFID card filter only sessions of that fleet card.
+
+**Export CSV** (with the `sessions:read` permission) downloads the list with the filters on screen, newest first: session ID, start and end, status, site, station, unit, EVSE, connector, connector type, driver name, the label of a fleet RFID card, and energy in kWh. The cost and currency are included with the `payments:read` permission. Operators also get the RFID card value and the OCPP transaction ID; [fleet users](https://www.evtivity.com/docs/csms/users#fleet-users) never do. One export covers at most 366 days of start dates (without a date it covers the 366 days up to now) and at most 50,000 sessions.
 
 ![Fleet sessions](https://www.evtivity.com/screenshots/csms/fleet-sessions-tab.png)
+
+A member whose data was erased shows as **Erased Driver** in the session details and as "Erased driver" in the export (in your language), with no name or other personal data.
 
 ### Stations
 
@@ -74,6 +78,50 @@ Assign a pricing group to the fleet. Fleet-level pricing applies to all fleet dr
 Turn charge on account on or off for the fleet, choose who receives its invoices, and set its billing profile. See the Charge on Account section below.
 
 ![Fleet billing tab](https://www.evtivity.com/screenshots/csms/fleet-billing-tab.png)
+
+### RFID Cards
+
+The **RFID Cards** tab lists the RFID cards the fleet owns, with the card value, type, label, member, and status. It needs the `fleetCards:read` permission, and changes need `fleetCards:write`. Operators and the fleet's [fleet users](https://www.evtivity.com/docs/csms/users#fleet-users) use the same tab.
+
+- **Add RFID Card** - enter the card value and type, an optional label, and an optional member.
+- **Edit RFID Card** - change the label, give the card to an active member of the fleet or leave it with no member, and uncheck **Active** to turn the card off. Check **Active** again to turn it on.
+- **Deactivate** - operators only. Deactivates the card for good after a confirmation. The card stops working at every station, cannot be turned on again, and stays in the list as **Deactivated**.
+
+The status shows **Active**, **Turned Off**, or **Deactivated**. A fleet user cannot turn on a card that an operator turned off or deactivated. Such a card shows that an operator turned it off.
+
+Every session of a fleet RFID card charges on account to the card's fleet, whether a member holds the card or not. It never charges the member's saved credit card and never goes on a member invoice. A fleet RFID card charges only while its fleet bills on account; otherwise the station refuses it. While the fleet does not bill on account, the CSMS refuses to add or import an RFID card, or give one to a member and answers `FLEET_CARD_NOT_BILLABLE`. Taking a card back from its member still works. See also [RFID Cards No Member Holds](#rfid-cards-no-member-holds). The label belongs to the fleet and stays when the card moves to another member. The member gets a notice when a card is given to them or taken back.
+
+When a member leaves the fleet, is deactivated, or is erased, the fleet takes back the member's fleet RFID cards: they lose their member and are turned off. A fleet user can turn them on again.
+
+The card value and type never change on this tab. Operators move a card into, out of, or between fleets with the **Fleet** field on the Tokens pages (see [Fleet RFID Cards](https://www.evtivity.com/docs/csms/tokens#fleet-rfid-cards)).
+
+Drivers see a fleet card in the portal and the mobile app as managed by the fleet. They cannot rename it, turn it off, or remove it.
+
+**Import CSV** (with `fleetCards:write`) adds many cards at once. Click **Download Template** for the columns: `idToken`, `tokenType`, an optional `label`, and an optional `memberEmail` of an active member of the fleet. Only operators give imported cards to members by email: the template a fleet user downloads has no `memberEmail` column, and a fleet user's file that holds one is refused whole. A fleet user gives the cards to members on this tab after the import. A file holds at most 2,000 cards and 512 KB. Each row is checked like a single card; the result lists the cards added and each refused row with its line, field, and reason. A refused row adds nothing.
+
+Roaming partners get every fleet RFID card. A card a member holds is listed to them like the member's own RFID cards. A card no member holds is listed to them as not valid, so a card taken back from its member stops working at partner stations.
+
+**History** on a card's row lists the card's changes while it belonged to the fleet: added, given to a member or taken back, renamed, monthly limit changed, turned off and on, and deactivated, each with its date and who made it. A fleet user sees the names of the fleet's own fleet users; every other person shows as **Operator**. Card values, earlier values, and notes never show.
+
+A fleet without RFID cards shows how to start, with **Import CSV** and **Add RFID Card** in the empty list.
+
+#### Monthly Limit
+
+**Monthly Limit** in the add and edit dialogs sets the most a card may cost in one calendar month, in the company currency. Leave it empty for no limit. The **This Month** column shows what the card has spent this month, against its limit when it has one. The limit counts every session of the card, whoever charges with it: the member it is given to, or no member. A running session counts at the cost reserved for it.
+
+- A card that has spent its limit is refused at the station until the next month.
+- A session's cost ceiling is never more than what the card has left. An OCPP 2.1 station gets it as the cost limit of the transaction. An OCPP 1.6 session is stopped by the CSMS when its cost reaches it, and the station screen shows the **Card Monthly Limit Reached** message.
+- When the limit refuses a card given to a member, or stops its session, the member gets the notice "This RFID card reached its monthly spending limit" by email, SMS or push, once per card and month (again after the limit is changed and reached). A card with no member notifies nobody: only the station screen shows it. Drivers can turn the notice off with their other RFID card notifications.
+- The month starts at midnight in the company time zone.
+- A card moved out of its fleet loses its limit. Only a card of a fleet has one.
+
+### Fleet Managers
+
+The **Fleet Managers** tab lists the [fleet users](https://www.evtivity.com/docs/csms/users#fleet-users) assigned to the fleet, with their name, email, permissions, and last sign-in. Click a row to open the user. It shows to users with access to all sites and the `users:read` permission. With `users:write`, **Add Fleet Manager** opens **Create User** with the **Fleet Manager** role and the fleet already chosen.
+
+Fleet managers see when and where the fleet's members charged. Inform your fleet members of this as your local privacy law requires.
+
+A new fleet manager gets the fleet manager invitation email: what a fleet manager can do with sessions, invoices, and RFID cards, the fleets by name, and a link to set the password (valid 24 hours). **Resend Invite** on the user sends a new one.
 
 ### Bulk Reservations
 
@@ -350,6 +398,18 @@ A session moves only while it is on no invoice, its driver is still a member of 
 
 With **Automatic monthly invoice** checked, the monthly run also issues the member invoices of the previous month, one for each driver with sessions to bill, and sends each to its driver. It follows the same rules as the fleet invoice: one invoice per driver and month, the oldest missed month first, and no new invoice for a month that was credited. A member invoice the run could not finish appears in the same `fleet.InvoiceRunFailed` notice, with the fleet and the driver.
 
+### RFID Cards No Member Holds
+
+A fleet RFID card that no member holds charges on account to its fleet:
+
+- It works only while **Enable Fleet** and the fleet's charge on account are on. Otherwise stations refuse the card.
+- Its sessions count against the fleet's [credit limit](#credit-limit). Stations refuse the card when the limit is reached.
+- Its sessions are priced with the fleet's pricing group.
+- The fleet invoice lists its sessions under **Fleet RFID Cards**, without a driver.
+- It never charges from a prepaid balance, as an anonymous or guest session, or for free when its fleet cannot bill it. A card of a fleet holds no prepaid balance.
+- A session that is running when the fleet's charge on account is turned off finishes and is billed to the fleet.
+- At a [free vend](https://www.evtivity.com/docs/csms/sites#free-vend) site it charges free, like every RFID card.
+
 ### Deleting a Fleet
 
 **Delete** asks for confirmation. When the CSMS refuses the delete, the dialog shows why.
@@ -358,6 +418,12 @@ The CSMS refuses to delete a fleet with sessions billed to it and answers `FLEET
 
 The CSMS also refuses to delete a fleet that has bulk reservations, in any status and cancelled ones included, and answers `FLEET_HAS_RESERVATIONS`. They stay as the fleet's history.
 
+The CSMS also refuses to delete a fleet that still owns RFID cards and answers `FLEET_HAS_CARDS`. Move the cards out of the fleet on the Tokens pages, or delete them, first.
+
 ### Notifications
 
 Drivers receive `fleet.AccountBillingChanged` when their billing changes: when the fleet turns charge on account on or off, when it changes who receives the invoices, when they opt out or back in, and when they join or leave a fleet that bills on account. The session receipt of an account session names the fleet and says that no card was charged. For a session invoiced to the driver, it says that the session is invoiced to the driver monthly via the fleet.
+
+The fleet's fleet users with `payments:read` receive `fleet.ManagerCreditLimitWarning` and `fleet.ManagerCreditLimitReached` when the fleet nears or reaches its credit limit, and `fleet.ManagerInvoiceIssued` once for each new fleet invoice, with a link to it in the CSMS. Members receive `token.FleetCardAssigned` when a fleet RFID card is given to them and `token.FleetCardTakenBack` when it is taken back.
+
+A new fleet user, and a fleet user an operator sends **Resend Invite** to, receives `operator.FleetManagerInvite` instead of the operator account email. It is a security template: changing it needs the `settings.system:write` permission.

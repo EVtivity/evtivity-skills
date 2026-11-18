@@ -31,6 +31,8 @@ Go to [http://localhost:7100](http://localhost:7100) and log in:
 - **Email**: `admin@evtivity.local`
 - **Password**: `admin123`
 
+With demo data, a fleet manager of the demo fleet Northwind Logistics signs in with `fleet@evtivity.local` and `fleet123`.
+
 ## 3. Open the driver portal
 
 Go to [http://localhost:7101](http://localhost:7101) and register a new driver account, or log in with a seeded driver:

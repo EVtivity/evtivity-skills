@@ -36,7 +36,7 @@ Drivers who add an RFID card in the portal or the mobile app choose from ISO1444
 2. Click **Create Token**.
 3. Enter the **Token Value**. For an RFID card, this is the card UID.
 4. Choose the **Token Type**.
-5. Optionally enter a **Label**, at most 100 characters, such as "Pool RFID card, fleet 3". The driver sees the label in the portal and the app and can change it. A token moved to another driver loses its label.
+5. Optionally enter a **Label**, at most 100 characters, such as "Pool RFID card, fleet 3". The driver sees the label in the portal and the app and can change it. A token moved to another driver loses its label, except a fleet RFID card.
 6. Optionally select the **Driver** to assign the token to.
 7. Click **Create**.
 
@@ -66,7 +66,7 @@ The detail page has four tabs:
 | Inactive | Token is turned off without a recorded deactivation time and is rejected as Blocked |
 | Expired | Token is active but past its expiry and is rejected as Expired |
 
-Toggle a token between active and inactive from the detail page. Deactivated tokens are rejected by the OCPP authorize handler. For a deactivated token, the **Details** tab shows when it was deactivated, by whom (Operator, Driver or System), and the reason.
+Toggle a token between active and inactive from the detail page. Deactivated tokens are rejected by the OCPP authorize handler. For a deactivated token, the **Details** tab shows when it was deactivated, by whom (Operator, Driver, System or Fleet), and the reason.
 
 ### Expiry
 
@@ -83,6 +83,14 @@ When a driver is deactivated, the driver's tokens are deactivated. While the dri
 ### Driver Self-Service
 
 Under **Settings** > **Integrations & Features** > **RFID Cards**, turn off **Drivers Manage Their RFID Cards** to manage every driver card yourself. Drivers then see their cards in the portal and the mobile app but cannot add, rename, deactivate, reactivate or remove one. Deactivate a lost card for the driver on this page.
+
+## Fleet RFID Cards
+
+A token can belong to a fleet. Pick the **Fleet** when you create a token, or on the **Details** tab with **Edit**. The field shows while **Enable Fleet** is on and you can read fleets. The Tokens list and the token list of a driver show a **Fleet** column linked to the fleet.
+
+A fleet RFID card with a driver must be given to an active member of that fleet. Every session of a fleet card charges on account to the card's fleet, and only while that fleet bills on account; otherwise the station refuses the card. Setting a token's **Fleet**, and editing or deleting a fleet RFID card, needs the `fleetCards:write` permission as well as `drivers:write`. Without it the **Fleet** field is hidden, and a fleet card shows no **Edit** or **Delete**. The fleet manages its cards on its **RFID Cards** tab. See [RFID Cards](https://www.evtivity.com/docs/csms/fleets#rfid-cards).
+
+Drivers cannot change a fleet card. A fleet card keeps its label when it moves to another member.
 
 ## Delete a Token
 

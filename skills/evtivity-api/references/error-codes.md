@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.52-beta.8 (https://github.com/EVtivity/evtivity-csms, commit 6c1595fa71ae) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.52-beta.9 (https://github.com/EVtivity/evtivity-csms, commit 372d480324ba) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -121,9 +121,13 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `FLEET_BILLING_CONTACT_REQUIRED` | 400 | The fleet needs at least one billing contact for automatic invoicing and invoice emails. |
 | `FLEET_BILLING_OLD_PODS_CONNECTED` | 409 | A process of an older release is still connected. Finish the upgrade, then change the fleet billing. |
 | `FLEET_BILLING_VERSION_CHECK_STALE` | 409 | The worker's version check has not run recently, so the upgrade cannot be confirmed. Check that the worker is running, then change the fleet billing. |
+| `FLEET_CARD_DEACTIVATED` | 409 | This RFID card was deactivated and cannot be turned on again |
+| `FLEET_CARD_DRIVER_NOT_MEMBER` | 400 | The driver is not an active member of the fleet that owns this RFID card |
+| `FLEET_CARD_NOT_BILLABLE` | 409 | The fleet does not bill on account, so its RFID cards cannot charge. Turn on account billing for the fleet first |
 | `FLEET_CHARGING_DISABLED` | 400 | Fleet charging is turned off. Turn it on in Settings before you use departure planning. |
 | `FLEET_CREDIT_LIMIT_REACHED` | 402 | The credit limit of the fleet your sessions are billed to is reached. Contact your fleet manager. |
 | `FLEET_DISABLED` | 403 | Fleet is disabled |
+| `FLEET_HAS_CARDS` | 409 | This fleet still owns RFID cards. Remove them from the fleet first. |
 | `FLEET_HAS_OPEN_BILLING` | 409 | The fleet has sessions billed to its account and cannot be deleted. Turn off account billing instead. |
 | `FLEET_HAS_RESERVATIONS` | 409 | The fleet has fleet reservations and cannot be deleted. Reservations are kept as history. |
 | `FLEET_INVOICE_NOTHING_TO_BILL` | 409 | The fleet has no unbilled sessions with a cost to invoice for this period. |
@@ -132,6 +136,8 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `FLEET_RESERVATION_ALREADY_CANCELLED` | 400 | Fleet reservation is already cancelled |
 | `FLEET_RESERVATION_CREATE_FAILED` | 400 | Failed to create fleet reservation |
 | `FLEET_RESERVATION_NOT_FOUND` | 404 | Fleet reservation not found |
+| `FLEET_USER_NO_FLEETS` |  | No fleets are assigned to you. Contact your operator. |
+| `FLEET_USER_PERMISSION_NOT_ALLOWED` | 400 | A fleet user cannot hold this permission |
 | `FORBIDDEN` | 403 | Forbidden |
 | `FORBIDDEN_DRIVER_TOKEN` |  | Forbidden: driver token required |
 | `GUEST_CHARGING_DISABLED` |  | Guest charging is disabled |
@@ -142,6 +148,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `INTERNAL_ERROR` | 500 | Internal server error |
 | `INVALID_CIRCUIT` | 400 | Circuit not found in this site |
 | `INVALID_CREDENTIALS` | 401 | Invalid email or password |
+| `INVALID_FLEET_IDS` | 400 | One or more fleetIds do not exist |
 | `INVALID_OPERATION` | 400 | Cannot credit a credit CDR |
 | `INVALID_PANEL` | 400 | Panel not found in this site |
 | `INVALID_PARENT_PANEL` |  | Parent panel not found in this site |
@@ -398,6 +405,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `TOKEN_BLOCKED_BY_OPERATOR` | 403 | This card was deactivated by the operator. Contact the operator to reactivate it. |
 | `TOKEN_DUPLICATE` | 409 | Token already registered |
 | `TOKEN_IN_USE` | 409 | Token is currently in use by an active charging session |
+| `TOKEN_MANAGED_BY_FLEET` | 403 | This RFID card belongs to your fleet. Contact your fleet to change it. |
 | `TOKEN_NOT_FOUND` | 404 | Token not found |
 | `TOO_MANY_WATCHES` | 409 | You are watching too many stations |
 | `TOTP_NOT_CONFIGURED` | 400 | TOTP not set up |

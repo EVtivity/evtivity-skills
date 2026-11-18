@@ -794,6 +794,8 @@ Creating a key, or widening the permissions of a key, asks you to confirm first 
 
 API keys inherit the creating user's site access at request time. Revoking a key is permanent. API keys cannot use the account routes of the signed-in user (profile, password, MFA, notification preferences, and personal AI configuration). Deactivating or deleting a user revokes the user's API keys, and the user page shows them on its [Security tab](https://www.evtivity.com/docs/csms/users#security-tab).
 
+A [fleet user](https://www.evtivity.com/docs/csms/users#fleet-users) sees only this tab of Settings. It creates and revokes its own keys here, and each key carries its fleets and holds only the permissions a fleet user can have.
+
 ## Firmware Campaign
 
 **Permission:** `settings.firmware:read` / `settings.firmware:write`

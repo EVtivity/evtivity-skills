@@ -6,11 +6,12 @@ Roles, permissions, site access control, and API keys in EVtivity CSMS.
 
 ## Roles
 
-EVtivity has three built-in roles:
+EVtivity has four built-in roles:
 
-- **Admin** - Full access to all 66 permissions. Can manage users, settings, and billing.
+- **Admin** - Full access to all 82 permissions. Can manage users, settings, and billing.
 - **Operator** - A subset of permissions scoped to day-to-day operations. Cannot modify system settings or manage other admins.
 - **Viewer** - Read-only access.
+- **Fleet Manager** - The permissions of a fleet user: view fleets, sessions, and payments, manage fleet RFID cards, and manage its own API keys. See [Fleet Users](https://www.evtivity.com/docs/csms/users#fleet-users).
 
 ## Permission Model
 
@@ -23,9 +24,9 @@ sessions:read     - View session data
 sessions:write    - Stop sessions, export data
 ```
 
-The system has 66 total permissions across two categories:
+The system has 82 total permissions across two categories:
 
-- **22 page resources** - Stations, sessions, dashboard, tariffs, sites, drivers, reservations, support cases, reports, and more.
+- **30 page resources** - Stations, sessions, dashboard, tariffs, sites, drivers, reservations, support cases, reports, and more.
 - **11 settings tab resources** - System, notifications, payments, integrations, security, API keys, firmware, station configurations, and more.
 
 ## Per-User Permission Customization
@@ -47,6 +48,8 @@ A site-restricted user sees only the stations, sessions, reservations, payments,
 
 Company-wide features need all-site access: invoices, fleet billing and credit, payment provider settings and reconciliation, pricing changes, the notification log and settings, alert rules, station message templates, conformance runs, roaming partners and tariffs, access and worker logs, and creating sites. The dashboard hides their controls from a site-restricted user, and the API answers as if the item does not exist (404).
 
+A third access, **Fleets**, makes a fleet user. A fleet user sees only its assigned fleets and no site. Only a user with all-site access creates fleet users. See [Fleet Users](https://www.evtivity.com/docs/csms/users#fleet-users).
+
 A site-restricted user cannot grant all-site access or assign sites outside its own. It manages only users whose sites are all within its own sites, and it cannot see users with all-site access. See [Users](https://www.evtivity.com/docs/csms/users) for details.
 
 ## API Keys
@@ -56,6 +59,7 @@ Generate API keys from the Settings page. Each key:
 - Belongs to the user who created it.
 - Inherits that user's permissions by default.
 - Can be scoped to a subset of permissions (never more than the creator has).
+- Of a fleet user, reaches only that user's fleets.
 
 Use API keys for integrations, scripts, and external systems that need programmatic access.
 

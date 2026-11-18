@@ -6,7 +6,7 @@ Manage operator users with role-based access control, granular permissions, and 
 
 ## Overview
 
-The Users page manages operator accounts that access the CSMS dashboard. Each user has a role (admin, operator, or viewer), a set of granular permissions, and optional site-level access restrictions.
+The Users page manages operator accounts that access the CSMS dashboard. Each user has a role (admin, operator, viewer, or fleet manager), a set of granular permissions, and an access: every site, specific sites, or specific fleets.
 
 ![Users list](https://www.evtivity.com/screenshots/csms/users-list.png)
 
@@ -14,9 +14,10 @@ The Users page manages operator accounts that access the CSMS dashboard. Each us
 
 | Role | Default Access |
 |------|----------------|
-| Admin | All 78 permissions. Full access to every page and setting. |
+| Admin | All 82 permissions. Full access to every page and setting. |
 | Operator | Operational subset. No settings access, no user write permissions. |
 | Viewer | Read-only access. |
+| Fleet Manager | The permissions of a fleet user: view fleets, sessions, and payments, manage fleet RFID cards, and manage its own API keys. See [Fleet Users](#fleet-users). |
 
 Roles provide default permission sets. After creating a user, you can customize their individual permissions.
 
@@ -32,23 +33,23 @@ Roles provide default permission sets. After creating a user, you can customize 
 | Last Name | Required |
 | Email | Login email address (must be unique) |
 | Mobile | Phone number for SMS notifications (optional) |
-| Role | Admin, Operator, or Viewer |
+| Role | Admin, Operator, Viewer, or Fleet Manager |
 | Avatar | Optional. **Edit Avatar** opens the avatar editor. The avatar is saved right after the user is created. |
 
 ![Create user](https://www.evtivity.com/screenshots/csms/users-create.png)
 
-4. Configure **Site Access** (see below). Every user needs **All sites** or at least one site. **Create** shows "At least one site must be selected" otherwise.
+4. Set **Access** (see below): **All sites**, **Sites** with at least one site, or **Fleets** for a [fleet user](#fleet-users). With **Sites** and no site checked, **Create** shows "At least one site must be selected".
 
 ![Site access required](https://www.evtivity.com/screenshots/csms/users-create-site-required.png)
 5. Click **Create**. The role's default permissions are copied to the new user. EVtivity emails the user an invitation with a link to set a password. The link expires after 24 hours.
 
 ## Permissions
 
-EVtivity uses 78 granular permissions in `resource:action` format. Actions are either `read` or `write`. Write permission implies read for the same resource.
+EVtivity uses 82 granular permissions in `resource:action` format. Actions are either `read` or `write`. Write permission implies read for the same resource.
 
-### Page Permissions (56)
+### Page Permissions (60)
 
-28 resources with read and write:
+30 resources with read and write:
 
 | Resource | Controls Access To |
 |----------|--------------------|
@@ -60,6 +61,7 @@ EVtivity uses 78 granular permissions in `resource:action` format. Actions are e
 | sessions | Session list and detail |
 | drivers | Driver list, detail, and driver tokens |
 | fleets | Fleet management |
+| fleetCards | RFID cards a fleet owns |
 | reservations | Reservation management |
 | support | Support case management |
 | payments | Payments and invoices |
@@ -73,6 +75,7 @@ EVtivity uses 78 granular permissions in `resource:action` format. Actions are e
 | sustainability | Sustainability and carbon data |
 | notifications | Notification settings, history, and preferences |
 | logs | Access and worker logs |
+| securityEvents | Security events the stations report |
 | users | User management |
 | audit | Audit log |
 | maintenance | Maintenance windows |
@@ -136,14 +139,17 @@ Site access decides which sites a user can view and manage, along with everythin
 |------|----------|
 | All sites | User sees every site, including future ones, and every company-wide feature. |
 | Specific sites | User sees only its assigned sites. This user is site-restricted. |
+| Fleets | User sees only its assigned fleets and no site. This user is a fleet user. See [Fleet Users](#fleet-users). |
 
-Every user has **All sites** or at least one site. The create form and the user page refuse a user without site access.
+A user with **Sites** access needs at least one site. The create form and the user page refuse it without one.
 
 ### Configure Site Access
 
-1. On the user create or detail page, find the **Site Access** section.
-2. Turn on **All sites** for unrestricted access, or leave it off and select specific sites from the multi-select picker.
+1. On the user create or detail page, find the **Access** field.
+2. Choose **All sites** for unrestricted access, or **Sites** and check the sites the user may see.
 3. Save.
+
+The **Access** column of the Users list shows **All sites**, the number of sites, or the number of fleets of each user.
 
 ### What a Site-Restricted User Sees
 
@@ -207,9 +213,64 @@ A site-restricted user also has these limits:
 
 - It sees and manages only users whose sites are all within its own sites.
 - It cannot see or manage users with all-site access or users without a site.
-- It cannot grant all-site access. The **All sites** toggle is hidden.
+- It cannot grant all-site access. The **All sites** option is hidden.
+- It cannot see, create, or manage fleet users.
 - It can assign only its own sites. The site picker lists only those sites.
 - It cannot leave a user without a site. A new or edited user needs at least one site, and the form shows **At least one site must be selected**.
+
+## Fleet Users
+
+A fleet user is a CSMS user who manages one or more fleets, for example the fleet manager of a company whose drivers charge at your stations. It sees only its assigned fleets and no site, station, driver, or setting outside them.
+
+### Create a Fleet User
+
+Only a user with access to all sites creates or edits fleet users, and only while **Enable Fleet** is on (see [Fleet](https://www.evtivity.com/docs/csms/settings#fleet)).
+
+1. Click **Create User** on the **Users** page, or open a user and click **Edit** on the **Details** tab.
+2. Choose the **Fleet Manager** role. This sets **Access** to **Fleets**.
+3. Search for each fleet the user manages and add it to the list. Remove a fleet with its remove button.
+4. Click **Create** or **Save**.
+
+Creating a fleet user asks you to confirm it's you (your password or a second factor), because the **Fleet Manager** role can create API keys. The new user gets the fleet manager invitation email with a link to set the password; **Resend Invite** sends a new one. See [Set Up a Fleet Manager](https://www.evtivity.com/docs/guides/fleet-manager-setup).
+
+The **Fleet Manager** role holds every permission a fleet user can have:
+
+| Permission | Allows |
+|------------|--------|
+| `fleets:read` | View the assigned fleets |
+| `sessions:read` | View the sessions billed to the fleet |
+| `payments:read` | View session costs, fleet invoices, and the credit limit |
+| `fleetCards:read`, `fleetCards:write` | View and manage the fleet's RFID cards |
+| `settings.apiKeys:read`, `settings.apiKeys:write` | View, create, and revoke its own API keys |
+
+A fleet user cannot hold any other permission. The **Permissions** tab offers only these, and the CSMS refuses any other with `FLEET_USER_PERMISSION_NOT_ALLOWED`. Remove `payments:read` to hide costs and invoices from a fleet user.
+
+The **Users** list names each fleet user's fleets in the **Access** column. Filter it by **Access** to show only fleet users or only site users. A fleet's **Fleet Managers** tab lists its fleet users (see [Fleet Managers](https://www.evtivity.com/docs/csms/fleets#fleet-managers)).
+
+SSO never creates a fleet user: the **Fleet Manager** role is not offered as the default role of users SSO creates, and the CSMS refuses it there.
+
+### What a Fleet User Sees
+
+The sidebar shows only **Dashboard**, **Fleets** and **Settings**. A fleet user lands on the Dashboard, which shows only the [fleet cards and charts](https://www.evtivity.com/docs/csms/dashboard#fleets) of its fleets, with the fleet charts shown by default. The Fleets page lists the assigned fleets. On each fleet the user sees these tabs, all read-only except **RFID Cards**:
+
+- **Details** - the fleet name and description. The fleet cannot be edited or deleted.
+- **Sessions** - the sessions billed to the fleet account, at every site. Clicking a session shows its details, with the label of the fleet RFID card it used. Costs show only with `payments:read`.
+- **Vehicles** - the fleet's vehicles, without their VIN.
+- **Drivers** - the names of the fleet members, without contact details.
+- **Billing** - with `payments:read`, the preview of the next fleet invoice, the fleet invoices and their credit notes, and the credit limit. No billing setting can be changed.
+- **RFID Cards** - the fleet's RFID cards. See [RFID Cards](https://www.evtivity.com/docs/csms/fleets#rfid-cards).
+
+**Settings** shows only the **API Keys** tab.
+
+While **Enable Fleet** is off, a fleet user sees one page saying "Fleet management is turned off. Contact your operator." on every page except its profile, and the API answers it `FLEET_DISABLED`. Its pages come back once **Enable Fleet** is on again.
+
+A fleet user with no fleet left, because its fleet was deleted, its last fleet was removed, or it was created without one, sees one page saying "No fleets are assigned to you. Contact your operator." and keeps its profile and API keys. The API answers its fleet requests `FLEET_USER_NO_FLEETS`. Its pages come back once a fleet is assigned.
+
+Fleet users see when and where their fleet's members charged. Inform your fleet members of this as your local privacy law requires.
+
+### Fleet User API Keys
+
+A fleet user creates and revokes its own API keys under **Settings** > **API Keys**. Each key carries the fleet user's fleets and can hold only the permissions above, so a key reaches the same fleets and data as the fleet user and nothing more.
 
 ## API Keys
 

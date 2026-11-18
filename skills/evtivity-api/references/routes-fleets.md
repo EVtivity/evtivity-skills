@@ -1,6 +1,6 @@
 # EVtivity API routes: Fleets
 
-Generated from EVtivity CSMS v0.1.52-beta.8 (https://github.com/EVtivity/evtivity-csms, commit 6c1595fa71ae) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.52-beta.9 (https://github.com/EVtivity/evtivity-csms, commit 372d480324ba) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -29,11 +29,21 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/fleets/{id}/vehicles` | fleets:read | List vehicles in a fleet |
 | GET | `/v1/fleets/{id}/vehicles/available` | fleets:read | Search vehicles not in fleet |
 | GET | `/v1/fleets/{id}/sessions` | fleets:read | List charging sessions for a fleet |
+| GET | `/v1/fleets/{id}/sessions/export` | fleets:read | Export the charging sessions of a fleet as CSV |
+| GET | `/v1/fleets/{id}/sessions/{sessionId}` | fleets:read | Get a session of a fleet |
 | GET | `/v1/fleets/{id}/metrics` | fleets:read | Get fleet metrics |
 | GET | `/v1/fleets/{id}/energy-history` | fleets:read | Get fleet energy delivery history |
 | GET | `/v1/fleets/{id}/pricing-groups` | fleets:read | Get the pricing group for a fleet |
 | POST | `/v1/fleets/{id}/pricing-groups` | fleets:write | Add a pricing group to a fleet |
 | DELETE | `/v1/fleets/{id}/pricing-groups/{pricingGroupId}` | fleets:write | Remove a pricing group from a fleet |
+| GET | `/v1/fleets/{id}/cards` | fleets:read | List the RFID cards of a fleet |
+| POST | `/v1/fleets/{id}/cards` | fleets:read | Add an RFID card to a fleet |
+| GET | `/v1/fleets/{id}/cards/{tokenId}/history` | fleets:read | List the history of an RFID card of a fleet |
+| POST | `/v1/fleets/{id}/cards/import` | fleets:read | Import RFID cards to a fleet from a CSV file |
+| PATCH | `/v1/fleets/{id}/cards/{tokenId}` | fleets:read | Change an RFID card of a fleet |
+| DELETE | `/v1/fleets/{id}/cards/{tokenId}` | fleets:read | Deactivate an RFID card of a fleet |
+| GET | `/v1/fleets/{id}/managers` | fleets:read | List the fleet users of a fleet |
+| GET | `/v1/fleets/metrics-summary` | fleets:read | Get the fleet summary of the Dashboard |
 | GET | `/v1/fleets/{id}/departure-schedules` | fleets:read | List departure schedules of a fleet |
 | POST | `/v1/fleets/{id}/departure-schedules` | fleets:write | Create a departure schedule |
 | PATCH | `/v1/departure-schedules/{id}` | fleets:write | Update a departure schedule |
