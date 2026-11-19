@@ -173,6 +173,8 @@ A fleet user sees the sessions billed to its fleets, at every site.
 
 Other users with the `fleets:read` permission get no fleet cards and no fleet search. Four fleet charts are part of the [customizable layout](#customize-the-live-dashboard): **Fleet Energy per Day**, **Fleet Sessions per Day**, **Fleet Cost per Day** (with `payments:read`) and **Latest Fleet Invoices** (the newest fleet invoices and credit notes, with `payments:read` and access to every site). They are hidden by default: show them with **Customize**. For these users each chart covers every fleet and has its own date range, like the other charts, and a user restricted to some sites sees only the sessions at those sites. A fleet user sees the four charts by default, for the fleet and date range picked above the cards. While **Enable Fleet** is off, no fleet card or chart shows.
 
+A fleet user with `sessions:read` also sees the **Charging Sessions** card: the newest sessions billed to its fleets, 20 a page, for the fleet picked above the cards. Costs show only with `payments:read`. Click a session to see its details.
+
 ## Active Sessions
 
 Users with the sessions permission see the **Active Sessions** table with real-time updates.

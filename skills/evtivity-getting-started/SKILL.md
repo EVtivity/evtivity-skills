@@ -5,8 +5,8 @@ license: MIT
 compatibility: The setup script needs bash, git, curl, Docker with Docker Compose v2 and Node.js 24 or later with npm (the database seed runs on the host). Linux, macOS, or WSL on Windows.
 metadata:
   evtivity-version: "0.1.52"
-  evtivity-release: "v0.1.52-beta.10"
-  evtivity-commit: "b7d85e25cb62a60d6e244b8e8f4ae321123792f7"
+  evtivity-release: "v0.1.52-beta.11"
+  evtivity-commit: "cd012b53137c11a158294bac108753d3006dc55d"
   evtivity-docs-section: getting-started
 ---
 

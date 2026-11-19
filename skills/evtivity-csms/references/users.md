@@ -14,7 +14,7 @@ The Users page manages operator accounts that access the CSMS dashboard. Each us
 
 | Role | Default Access |
 |------|----------------|
-| Admin | All 82 permissions. Full access to every page and setting. |
+| Admin | All 84 permissions. Full access to every page and setting. |
 | Operator | Operational subset. No settings access, no user write permissions. |
 | Viewer | Read-only access. |
 | Fleet Manager | The permissions of a fleet user: view fleets, sessions, and payments, manage fleet RFID cards, and manage its own API keys. See [Fleet Users](#fleet-users). |
@@ -56,7 +56,7 @@ Fleets access is only for the Fleet Manager role, and the Fleet Manager role tak
 
 ## Permissions
 
-EVtivity uses 82 granular permissions in `resource:action` format. Actions are either `read` or `write`. Write permission implies read for the same resource.
+EVtivity uses 84 granular permissions in `resource:action` format. Actions are either `read` or `write`. Write permission implies read for the same resource.
 
 ### Page Permissions (60)
 
@@ -73,6 +73,7 @@ EVtivity uses 82 granular permissions in `resource:action` format. Actions are e
 | drivers | Driver list, detail, and driver tokens |
 | fleets | Fleet management |
 | fleetCards | RFID cards a fleet owns |
+| fleetBilling | Manage Fleet Billing Profile: a fleet user edits its fleet billing profile |
 | reservations | Reservation management |
 | support | Support case management |
 | payments | Payments and invoices |
@@ -252,9 +253,12 @@ The **Fleet Manager** role holds every permission a fleet user can have:
 | `sessions:read` | View the sessions billed to the fleet |
 | `payments:read` | View session costs, fleet invoices, and the credit limit |
 | `fleetCards:read`, `fleetCards:write` | View and manage the fleet's RFID cards |
+| `fleetBilling:write` | Manage Fleet Billing Profile: edit the fleet's invoice contacts, company name and address, VAT ID or tax number, and invoice language |
 | `settings.apiKeys:read`, `settings.apiKeys:write` | View, create, and revoke its own API keys |
 
 A fleet user cannot hold any other permission. The **Permissions** tab offers only these, and the CSMS refuses any other with `FLEET_USER_PERMISSION_NOT_ALLOWED`. Remove `payments:read` to hide costs and invoices from a fleet user.
+
+The **Fleet Manager** role starts with every permission above except `fleetBilling:write`. Grant it on the user's **Permissions** tab to let the fleet manager edit its fleet's billing profile.
 
 The **Users** list names each fleet user's fleets in the **Access** column. Filter it by **Access** to show only fleet users or only site users. A fleet's **Fleet Managers** tab lists its fleet users (see [Fleet Managers](https://www.evtivity.com/docs/csms/fleets#fleet-managers)).
 
@@ -268,10 +272,12 @@ The sidebar shows only **Dashboard**, **Fleets** and **Settings**. A fleet user 
 - **Sessions** - the sessions billed to the fleet account, at every site. Clicking a session shows its details, with the label of the fleet RFID card it used. Costs show only with `payments:read`.
 - **Vehicles** - the fleet's vehicles, without their VIN.
 - **Drivers** - the names of the fleet members, without contact details.
-- **Billing** - with `payments:read`, the preview of the next fleet invoice, the fleet invoices and their credit notes, and the credit limit. No billing setting can be changed.
+- **Billing** - with `payments:read`, the preview of the next fleet invoice, the fleet invoices and their credit notes, and the credit limit. No billing setting can be changed. The exception: with `fleetBilling:write`, the billing profile can be edited: the invoice contacts, company name and address, VAT ID or tax number, and invoice language.
 - **RFID Cards** - the fleet's RFID cards. See [RFID Cards](https://www.evtivity.com/docs/csms/fleets#rfid-cards).
 
-**Settings** shows only the **API Keys** tab.
+**Settings** shows only the **API Keys** tab. A fleet user has no AI assistant or AI support: its **Profile** shows no **Chatbot AI** or **Support AI** tab, and the API does not offer it the personal AI settings.
+
+Deleting a fleet signs its fleet users out. Each gets a row in its **History** naming the fleet it lost, and keeps its other fleets when it signs in again.
 
 While **Enable Fleet** is off, a fleet user sees one page saying "Fleet management is turned off. Contact your operator." on every page except its profile, and the API answers it `FLEET_DISABLED`. Its pages come back once **Enable Fleet** is on again.
 

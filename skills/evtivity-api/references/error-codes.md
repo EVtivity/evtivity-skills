@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.52-beta.10 (https://github.com/EVtivity/evtivity-csms, commit b7d85e25cb62) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.52-beta.11 (https://github.com/EVtivity/evtivity-csms, commit cd012b53137c) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 

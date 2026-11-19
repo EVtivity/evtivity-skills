@@ -1,6 +1,6 @@
 # EVtivity API routes: Fleets
 
-Generated from EVtivity CSMS v0.1.52-beta.10 (https://github.com/EVtivity/evtivity-csms, commit b7d85e25cb62) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.52-beta.11 (https://github.com/EVtivity/evtivity-csms, commit cd012b53137c) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -16,7 +16,7 @@ A `write` permission includes `read` for the same resource.
 | PATCH | `/v1/fleets/{id}` | fleets:write | Update a fleet |
 | DELETE | `/v1/fleets/{id}` | fleets:write | Delete a fleet |
 | PATCH | `/v1/fleets/{id}/billing` | fleets:write | Change charge on account and the invoice recipient of a fleet |
-| PATCH | `/v1/fleets/{id}/billing-profile` | fleets:write | Update the fleet billing profile |
+| PATCH | `/v1/fleets/{id}/billing-profile` | fleets:read | Update the fleet billing profile |
 | GET | `/v1/fleets/{id}/credit-limit` | fleets:read | Get a fleet's credit limit and exposure |
 | PATCH | `/v1/fleets/{id}/credit-limit` | fleets:write | Set a fleet's credit limit |
 | GET | `/v1/fleets/{id}/drivers` | fleets:read | List drivers in a fleet |
@@ -43,6 +43,7 @@ A `write` permission includes `read` for the same resource.
 | PATCH | `/v1/fleets/{id}/cards/{tokenId}` | fleets:read | Change an RFID card of a fleet |
 | DELETE | `/v1/fleets/{id}/cards/{tokenId}` | fleets:read | Deactivate an RFID card of a fleet |
 | GET | `/v1/fleets/{id}/managers` | fleets:read | List the fleet users of a fleet |
+| GET | `/v1/fleets/dashboard-sessions` | fleets:read | List the newest charging sessions of the fleets for the Dashboard |
 | GET | `/v1/fleets/metrics-summary` | fleets:read | Get the fleet summary of the Dashboard |
 | GET | `/v1/fleets/{id}/departure-schedules` | fleets:read | List departure schedules of a fleet |
 | POST | `/v1/fleets/{id}/departure-schedules` | fleets:write | Create a departure schedule |

@@ -38,6 +38,8 @@ In the portal you can also enter an optional **Label** when you add a card.
 
 Duplicate card numbers are rejected. Each card number can only be linked to one account. Adding a card you turned off earlier turns it back on.
 
+Card numbers match regardless of letter case: `04A1B2C3` and `04a1b2c3` are the same card, so a number that differs from a registered one only in letter case is rejected too.
+
 ## Managing Cards
 
 - **Toggle active/inactive** - turn a card's toggle off and confirm with **Deactivate** to disable it, or turn it on to reactivate it. When a card is deactivated, the station rejects authorization attempts with that card. You can reactivate a card you turned off at any time.

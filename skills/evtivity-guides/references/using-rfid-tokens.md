@@ -25,7 +25,7 @@ To find the real value:
 1. Make sure the target station is online in the dashboard (Stations &rarr; the station shows a green dot).
 2. Tap the card on the reader once. Because the card isn't registered yet, the station will get an `Invalid` response and refuse to start.
 3. Open the station detail page in the CSMS, switch to the **Authorize Log** tab (shown when your role can read drivers). Look for a recent `Authorize` attempt with a rejected outcome.
-4. Copy the `idToken` value from that event verbatim &mdash; same case, same length, no extra whitespace.
+4. Copy the `idToken` value from that event verbatim &mdash; same length (letter case does not matter: card ids match regardless of letter case), no extra whitespace.
 
 If you have multiple cards, tap each one in turn and record the values together. It's easier than coming back card by card.
 

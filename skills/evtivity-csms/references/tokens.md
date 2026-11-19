@@ -109,6 +109,8 @@ When a driver taps an RFID card or authenticates through the app:
 5. If not found locally, the CSMS checks OCPI external tokens from roaming partners.
 6. If the station's site has free vend enabled, any token is accepted regardless of lookup result.
 
+Card ids match regardless of letter case, as OCPP defines them: a station that sends `04a1b2c3` finds the token `04A1B2C3`. A vehicle id (VIN, EVCCID, MAC address) keeps its own form. When two stored tokens differ only in letter case, the one spelled exactly as the station sends it is used; a value that matches neither spelling exactly is refused. A new token whose value differs from a stored one only in letter case is refused as a duplicate.
+
 On OCPP 2.1, a token of type Local is accepted without a lookup, since the station created it. A token of type Central that the CSMS does not know is refused as Invalid, unless it is the id the CSMS sent that station to start a charge or hold a reservation: a station should never ask to authorize a Central token.
 
 Stations using a cached local authorization list may skip the Authorize message and go straight to StartTransaction (OCPP 1.6) or TransactionEvent (OCPP 2.1). The CSMS validates the token in those handlers too and writes the same `authorize_attempts` rows, so the forensic log captures the decision regardless of which path the station takes.

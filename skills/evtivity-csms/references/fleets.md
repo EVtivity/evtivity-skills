@@ -83,7 +83,7 @@ Turn charge on account on or off for the fleet, choose who receives its invoices
 
 The **RFID Cards** tab lists the RFID cards the fleet owns, with the card value, type, label, member, and status. It needs the `fleetCards:read` permission, and changes need `fleetCards:write`. Operators and the fleet's [fleet users](https://www.evtivity.com/docs/csms/users#fleet-users) use the same tab.
 
-- **Add RFID Card** - enter the card value and type, an optional label, and an optional member.
+- **Add RFID Card** - enter the card value and type, an optional label, and an optional member. A fleet user picks the type from two choices: **RFID card or key fob (most cards)**, the default, or **Other RFID card (ISO 15693)**. Operators pick from every card type, each with a short hint. A value that cannot be added answers a fleet user "This RFID card value cannot be added", whatever the reason.
 - **Edit RFID Card** - change the label, give the card to an active member of the fleet or leave it with no member, and uncheck **Active** to turn the card off. Check **Active** again to turn it on.
 - **Deactivate** - operators only. Deactivates the card for good after a confirmation. The card stops working at every station, cannot be turned on again, and stays in the list as **Deactivated**.
 
@@ -97,7 +97,7 @@ The card value and type never change on this tab. Operators move a card into, ou
 
 Drivers see a fleet card in the portal and the mobile app as managed by the fleet. They cannot rename it, turn it off, or remove it.
 
-**Import CSV** (with `fleetCards:write`) adds many cards at once. Click **Download Template** for the columns: `idToken`, `tokenType`, an optional `label`, and an optional `memberEmail` of an active member of the fleet. Only operators give imported cards to members by email: the template a fleet user downloads has no `memberEmail` column, and a fleet user's file that holds one is refused whole. A fleet user gives the cards to members on this tab after the import. A file holds at most 2,000 cards and 512 KB. Each row is checked like a single card; the result lists the cards added and each refused row with its line, field, and reason. A refused row adds nothing.
+**Import CSV** (with `fleetCards:write`) adds many cards at once. Click **Download Template** for the columns: `idToken`, `tokenType` (`ISO14443` when empty; a fleet user's file takes only `ISO14443` or `ISO15693`), an optional `label`, and an optional `memberEmail` of an active member of the fleet. Only operators give imported cards to members by email: the template a fleet user downloads has no `memberEmail` column, and a fleet user's file that holds one is refused whole. A fleet user gives the cards to members on this tab after the import. A file holds at most 2,000 cards and 512 KB. Each row is checked like a single card; the result lists the cards added and each refused row with its line, field, and reason. A refused row adds nothing.
 
 Roaming partners get every fleet RFID card. A card a member holds is listed to them like the member's own RFID cards. A card no member holds is listed to them as not valid, so a card taken back from its member stops working at partner stations.
 
@@ -117,7 +117,7 @@ A fleet without RFID cards shows how to start, with **Import CSV** and **Add RFI
 
 ### Fleet Managers
 
-The **Fleet Managers** tab lists the [fleet users](https://www.evtivity.com/docs/csms/users#fleet-users) assigned to the fleet, with their name, email, permissions, and last sign-in. Click a row to open the user. It shows to users with access to all sites and the `users:read` permission. With `users:write`, **Add Fleet Manager** opens **Create User** with the **Fleet Manager** role and the fleet already chosen. It comes right after the **Drivers** tab and is hidden while **Enable Fleet** is off.
+The **Fleet Managers** tab lists the [fleet users](https://www.evtivity.com/docs/csms/users#fleet-users) assigned to the fleet, with their name, email, and last sign-in. Click a row to open the user. It shows to users with access to all sites and the `users:read` permission. With `users:write`, **Add Fleet Manager** opens **Create User** with the **Fleet Manager** role and the fleet already chosen. It comes right after the **Drivers** tab and is hidden while **Enable Fleet** is off.
 
 Fleet managers see when and where the fleet's members charged. Inform your fleet members of this as your local privacy law requires.
 
@@ -214,6 +214,8 @@ The **Billing Profile** card on the **Billing** tab sets who the fleet invoice g
 ![Fleet billing profile](https://www.evtivity.com/screenshots/csms/fleet-billing-profile.png)
 
 Changing the profile needs the `fleets:write` permission. Every change is recorded in the fleet history with the fields that changed.
+
+A [fleet user](https://www.evtivity.com/docs/csms/users#fleet-users) with the **Manage Fleet Billing Profile** permission (`fleetBilling:write`) edits the billing contacts, the legal name and address, the VAT ID or tax ID, and the invoice language of its own fleets. The payment terms, the invoice date and automatic monthly invoicing stay with operators. The VAT ID is printed on the invoice: a new one applies to invoices issued after the change, and invoices already issued keep theirs. Every change of the VAT ID notifies the operators who manage fleet billing (users with access to every site who hold `payments:write` or `fleetBilling:write`), and every change shows in the fleet history under the name of the user who made it. Billing contacts are not verified before invoices are sent to them, whoever adds them.
 
 ### Which Fleet Bills a Driver
 

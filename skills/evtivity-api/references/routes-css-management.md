@@ -1,6 +1,6 @@
 # EVtivity API routes: CSS Management
 
-Generated from EVtivity CSMS v0.1.52-beta.10 (https://github.com/EVtivity/evtivity-csms, commit b7d85e25cb62) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.52-beta.11 (https://github.com/EVtivity/evtivity-csms, commit cd012b53137c) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no

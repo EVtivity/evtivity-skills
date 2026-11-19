@@ -40,6 +40,8 @@ After setting the password, the fleet manager signs in to the CSMS and lands on 
 
 ![Fleet manager Dashboard](https://www.evtivity.com/screenshots/csms/fleet-guide-dashboard.png)
 
+The **Charging Sessions** card lists the newest sessions billed to the fleet. Click one to see its details.
+
 ## 5. Manage RFID Cards
 
 On the fleet's **RFID Cards** tab, the fleet manager adds cards, gives them to members, renames them, turns them off and on, and sets their monthly limits. **History** on a card lists its changes. Only an operator deactivates a card for good.
@@ -61,6 +63,8 @@ The **Sessions** tab lists the sessions billed to the fleet at every site. Filte
 Fleet invoices show on the **Billing** tab once they are issued: each month by the monthly run when **Automatic monthly invoice** is on in the billing profile, or when an operator clicks **Generate Invoice**. The tab also shows the credit limit and the sessions not invoiced yet.
 
 ![Fleet Billing tab](https://www.evtivity.com/screenshots/csms/fleet-guide-billing.png)
+
+With the **Manage Fleet Billing Profile** permission (`fleetBilling:write`), which you grant on the user's **Permissions** tab, the fleet manager edits the fleet's billing profile on the same tab: invoice contacts, company name and address, VAT ID or tax number, and invoice language. You are notified when the VAT ID changes.
 
 Click an invoice to open it and click **Download** for its PDF.
 

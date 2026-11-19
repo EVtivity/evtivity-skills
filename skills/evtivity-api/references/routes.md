@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.52-beta.10 (https://github.com/EVtivity/evtivity-csms, commit b7d85e25cb62) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.52-beta.11 (https://github.com/EVtivity/evtivity-csms, commit cd012b53137c) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
@@ -24,7 +24,7 @@ A `write` permission includes `read` for the same resource.
 | OCPP 1.6 Commands | 27 | `references/routes-ocpp-1-6-commands.md` |
 | OCPP | 1 | `references/routes-ocpp.md` |
 | Transactions | 3 | `references/routes-transactions.md` |
-| Fleets | 53 | `references/routes-fleets.md` |
+| Fleets | 54 | `references/routes-fleets.md` |
 | Tokens | 12 | `references/routes-tokens.md` |
 | Dashboard | 22 | `references/routes-dashboard.md` |
 | Settings | 53 | `references/routes-settings.md` |
