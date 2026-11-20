@@ -98,6 +98,12 @@ The system places a pre-authorization hold on your card. The final charge is cap
 
 If the card is refused, the session does not start and the page shows the reason, for example "Your card was declined. Try a different card." Try another card.
 
+### Apple Pay and Google Pay
+
+With Stripe, the checkout shows Apple Pay and Google Pay buttons above the card form when your device and browser offer them and the operator registered the portal domain with Stripe (see [Stripe](https://www.evtivity.com/docs/integrations/stripe)). Enter your email first, then tap the button and confirm in the wallet sheet. The wallet places the same hold as a card.
+
+If the operator changed the payout setup of the site while the page was open, the page shows "The payment setup of this charger changed. The payment form was reloaded. Please pay again." No money is held. Pay again in the new form.
+
 ### Start Protection
 
 Every guest start, free or paid, is checked before the station is asked to start:

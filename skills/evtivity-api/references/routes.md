@@ -1,6 +1,6 @@
 # EVtivity API route catalog
 
-Generated from EVtivity CSMS v0.1.52-beta.11 (https://github.com/EVtivity/evtivity-csms, commit cd012b53137c) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.52-beta.12 (https://github.com/EVtivity/evtivity-csms, commit 4f5197cb6fa5) by `scripts/generate-api-reference.py`. Do not edit by hand.
 
 One file per API tag. Find a route without reading every file:
 `grep -n '<path or word>' references/routes-*.md`.
@@ -29,7 +29,7 @@ A `write` permission includes `read` for the same resource.
 | Dashboard | 22 | `references/routes-dashboard.md` |
 | Settings | 53 | `references/routes-settings.md` |
 | Documentation | 1 | `references/routes-documentation.md` |
-| Payments | 38 | `references/routes-payments.md` |
+| Payments | 40 | `references/routes-payments.md` |
 | Events | 1 | `references/routes-events.md` |
 | Load Management | 30 | `references/routes-load-management.md` |
 | Notifications | 15 | `references/routes-notifications.md` |

@@ -10,7 +10,7 @@ Stripe is the production card payment provider of EVtivity. This page walks thro
 
 1. In the Stripe Dashboard, open [API keys](https://dashboard.stripe.com/apikeys). Start in a sandbox or test mode.
 2. Copy the **Publishable key** (`pk_test_...`).
-3. Copy the **Secret key** (`sk_test_...`), or create a restricted key (`rk_test_...`). A restricted key needs write access to PaymentIntents, SetupIntents, Customers, PaymentMethods, Refunds, Ephemeral Keys, and Webhook Endpoints, read access to Balance, Transfers, and Application Fees, and, for Stripe Connect, write access to Accounts and Account Links.
+3. Copy the **Secret key** (`sk_test_...`), or create a restricted key (`rk_test_...`). A restricted key needs write access to PaymentIntents, SetupIntents, Customers, PaymentMethods, Refunds, Ephemeral Keys, and Webhook Endpoints, read access to Balance, Transfers, and Application Fees, and, for Stripe Connect, write access to Accounts and Account Links. For Apple Pay and Google Pay, it also needs read and write access to Payment Method Domains.
 4. In EVtivity, open Settings > Payment > Stripe and enter both keys in **Secret Key** and **Publishable Key**. Click **Save**.
 5. Click **Test Connection**. A success message confirms the secret key.
 6. Open Settings > Payment > General, select **Stripe** in **Provider for New Payments**, and click **Save**. Saving the keys does not select Stripe.
@@ -50,7 +50,7 @@ The URL must be public HTTPS. Stripe cannot reach `localhost` or a private netwo
 1. Save the Stripe keys first.
 2. Turn on Stripe Connect for your Stripe account ([Connect](https://dashboard.stripe.com/connect)). Stripe refuses the Connect endpoint without it, and EVtivity then creates neither endpoint. Without Connect, create the platform endpoint by hand instead.
 3. In Settings > Payment > Stripe, check the **Webhook Endpoint URL**. It shows the API URL of your deployment followed by `/v1/webhooks/payments/stripe`. Change the host if Stripe must reach the API through another address, such as a tunnel. The path must stay `/v1/webhooks/payments/stripe`, and the URL must start with `https://`.
-4. Click **Create webhook**. EVtivity creates both endpoints in Stripe and stores both signing secrets. The signing secret fields on the Stripe tab show them behind the eye icon.
+4. Click **Create Webhook**. EVtivity creates both endpoints in Stripe and stores both signing secrets. The signing secret fields on the Stripe tab show them behind the eye icon.
 5. The card lists the endpoints with their scope, URL, events, API version, and state.
 
 EVtivity manages only the endpoints at the URL you enter (same host and path). If EVtivity endpoints already exist at that URL, EVtivity asks before it replaces them. Replacing creates two new endpoints with new signing secrets, then deletes the old ones at that URL, so events keep arriving during the change. Several EVtivity deployments, such as a test and a staging deployment, can share one Stripe account: the endpoints of another deployment, at another URL, are listed under **Other EVtivity deployments** and are never changed. If your deployment moves to a new URL, delete its old endpoints in the Stripe Dashboard.
@@ -112,7 +112,7 @@ Stripe cannot send webhooks to `localhost`. The Stripe CLI forwards them instead
 
    The API log shows each event as verified. Triggered payment events do not match EVtivity payments, so they are acknowledged and ignored. Run real test sessions to exercise the payment handlers.
 
-To test the **Create webhook** button locally, expose the API through a public HTTPS tunnel, for example `cloudflared tunnel --url http://localhost:7102`, and enter the tunnel URL plus `/v1/webhooks/payments/stripe` as the webhook URL.
+To test the **Create Webhook** button locally, expose the API through a public HTTPS tunnel, for example `cloudflared tunnel --url http://localhost:7102`, and enter the tunnel URL plus `/v1/webhooks/payments/stripe` as the webhook URL.
 
 Pay with Stripe test cards, such as `4242 4242 4242 4242` with any future expiry date and any CVC. See [Stripe test cards](https://docs.stripe.com/testing).
 
@@ -194,6 +194,31 @@ Set the global fee in **Platform Fee %** on the General tab and a per-site fee i
 4. In the Stripe Dashboard, confirm that the payment went to the connected account and that the platform fee appears as an application fee.
 
 Stripe references: [Connect webhooks](https://docs.stripe.com/connect/webhooks), [Accounts v2](https://docs.stripe.com/connect/accounts-v2), [Stripe-hosted onboarding](https://docs.stripe.com/connect/hosted-onboarding), [Account capabilities](https://docs.stripe.com/connect/account-capabilities), [Destination charges](https://docs.stripe.com/connect/destination-charges).
+
+## 5. Apple Pay and Google Pay
+
+With Stripe, the guest checkout shows Apple Pay and Google Pay buttons above the card form, on devices and browsers that offer them. A wallet payment places the same pre-authorization hold as a card. Wallets work only with Stripe and only in the guest checkout.
+
+Stripe shows the buttons only on a domain registered in your Stripe account ([Register domains for payment methods](https://docs.stripe.com/payments/payment-methods/pmd-registration)). EVtivity registers the host name of `PORTAL_URL`, the address of the driver portal.
+
+1. Set `PORTAL_URL` to the public `https` address of the driver portal. Stripe cannot verify an `http` address, `localhost`, an IP address, or a name without a dot.
+2. Save the Stripe keys.
+3. In Settings > Payment > Stripe, find the **Apple Pay and Google Pay** card. It shows the portal domain.
+4. Click **Register Domain**. EVtivity registers the domain in your Stripe account and shows the status of Apple Pay and Google Pay. Stripe checks the domain in the background, so a wallet can show **Inactive** at first, with Stripe's reason.
+5. Click **Check Again** to have Stripe check the domain again. A disabled registration is turned back on.
+
+Register the domain in test mode and in live mode: Stripe asks for a registration in each ([Express Checkout Element](https://docs.stripe.com/elements/express-checkout-element)). With Stripe Connect, EVtivity registers the domain on your platform account only. Payments to a site host's payout account are destination charges, which use the platform's registration.
+
+A restricted key needs **Payment Method Domains** set to Read to show the status and to Write to register the domain ([Restricted API keys](https://docs.stripe.com/keys/restricted-api-keys)).
+
+| Answer | Cause | Fix |
+|---|---|---|
+| 400 `VALIDATION_ERROR` | `PORTAL_URL` is not a public `https` address | Set `PORTAL_URL` to the public portal address |
+| 400 `PAYMENT_PROVIDER_NOT_CONFIGURED` | No Stripe keys stored | Save the keys |
+| 400 `PAYMENT_PROVIDER_PERMISSION_MISSING` | The restricted key cannot read or write Payment Method Domains | Grant Payment Method Domains read and write access |
+| 400 `PAYMENT_PROVIDER_CONNECTION_FAILED` | Stripe refused the request. The message is Stripe's. | Fix the cause Stripe names |
+
+If you serve the portal behind your own Content Security Policy, allow the Stripe.js origins Stripe lists ([Content Security Policy](https://docs.stripe.com/security/guide#content-security-policy)). The EVtivity portal image and the Helm chart already allow them.
 
 ## Payment Details
 

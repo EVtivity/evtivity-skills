@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.52-beta.11 (https://github.com/EVtivity/evtivity-csms, commit cd012b53137c) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.52-beta.12 (https://github.com/EVtivity/evtivity-csms, commit 4f5197cb6fa5) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -253,6 +253,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `PAYMENT_PROVIDER_PERMISSION_MISSING` | 400 | The payment provider credential lacks a required permission |
 | `PAYMENT_PROVIDER_UPGRADE_PENDING` | 409 | A process older than v0.1.38 is still connected. Finish the upgrade, then select Adyen. |
 | `PAYMENT_RECORD_NOT_RECOVERABLE` | 409 | Payment record is not in a recoverable state |
+| `PAYMENT_SETUP_CHANGED` | 409 | The payment setup of this charger changed. The payment form was reloaded. Please pay again. |
 | `PAYMENT_TERMINAL_BUSY` | 409 | The payment terminal already has a payment in progress |
 | `PAYMENT_TERMINAL_DEVICE_TAKEN` | 409 | This device is already registered as a payment terminal |
 | `PAYMENT_TERMINAL_EVSE_TAKEN` | 409 | Another active payment terminal is paired to this connector |

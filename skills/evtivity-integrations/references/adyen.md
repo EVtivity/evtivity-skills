@@ -25,7 +25,7 @@ EVtivity talks to the Adyen Checkout API v72 for payments and the Adyen Manageme
 3. Under **Server settings** > **Authentication**, generate an **API key** and copy it. Adyen shows it only once.
 4. Click **Save changes**.
 
-The webhook role is optional when you create the webhook by hand. Without it, **Create webhook** answers 400 `PAYMENT_PROVIDER_PERMISSION_MISSING`.
+The webhook role is optional when you create the webhook by hand. Without it, **Create Webhook** answers 400 `PAYMENT_PROVIDER_PERMISSION_MISSING`.
 
 ## 3. Client Key and Allowed Origins
 
@@ -52,9 +52,9 @@ Open Settings > Payment > Adyen and fill in the fields:
 | **Live Region** | `adyen.liveRegion` | Shown when live. `eu` (default), `us`, `au`, `nea`, or `in`, the region of your live account |
 | **Client Key** | `adyen.clientKey` | Client key from step 3 |
 | **API Key** | `adyen.apiKeyEnc` | API key from step 2. Stored encrypted. The field shows the stored key behind the eye icon. |
-| **HMAC Key** | `adyen.hmacKeyEnc` | Hex HMAC key of the webhook. Stored encrypted. Filled in for you by **Create webhook**. |
-| **Webhook Username** | `adyen.webhookUsername` | Basic auth username of the webhook. Filled in for you by **Create webhook**. |
-| **Webhook Password** | `adyen.webhookPasswordEnc` | Basic auth password of the webhook. Stored encrypted. Filled in for you by **Create webhook**. |
+| **HMAC Key** | `adyen.hmacKeyEnc` | Hex HMAC key of the webhook. Stored encrypted. Filled in for you by **Create Webhook**. |
+| **Webhook Username** | `adyen.webhookUsername` | Basic auth username of the webhook. Filled in for you by **Create Webhook**. |
+| **Webhook Password** | `adyen.webhookPasswordEnc` | Basic auth password of the webhook. Stored encrypted. Filled in for you by **Create Webhook**. |
 | **Authorization Adjustment** | `adyen.authorisationAdjustment` | Off by default. Raises the hold to the final cost instead of charging a second payment. Turn it on only after Adyen enables authorisation adjustment for your merchant category. See [Costs Above the Hold](#costs-above-the-hold). |
 
 The secret fields show the stored value, hidden until you click the eye icon. Edit a field to replace the value, or empty it to remove the value when you save. Click **Save**, then **Test connection**. The test calls Adyen Checkout with your API key and lists the roles of the credential. A warning appears when the webhook role is missing.
@@ -77,7 +77,7 @@ The URL must be public HTTPS with a host name that resolves on the internet. Ady
 
 1. Save the API key and merchant account, and make sure the credential has the webhook role (**Test connection** shows it).
 2. In Settings > Payment > Adyen, check the **Webhook URL**. It shows the API URL of your deployment followed by `/v1/webhooks/payments/adyen`. Change the host if Adyen must reach the API through another address, such as a tunnel. The path must stay `/v1/webhooks/payments/adyen`, and the URL must start with `https://`.
-3. Click **Create webhook**. EVtivity:
+3. Click **Create Webhook**. EVtivity:
    1. creates a standard webhook on the merchant account, switched off, with JSON format, TLS 1.3, a new Basic auth username and password, and the 13 event codes below
    2. asks Adyen for a new HMAC key
    3. stores the username, password, and HMAC key
@@ -158,16 +158,16 @@ Adyen cannot reach `localhost`. Expose the local API through a public HTTPS tunn
    ```
 
 2. Copy the `https://<random>.trycloudflare.com` address it prints.
-3. In Settings > Payment > Adyen, set the **Webhook URL** to `https://<random>.trycloudflare.com/v1/webhooks/payments/adyen` and click **Create webhook**. The test event result appears in the card.
+3. In Settings > Payment > Adyen, set the **Webhook URL** to `https://<random>.trycloudflare.com/v1/webhooks/payments/adyen` and click **Create Webhook**. The test event result appears in the card.
 
-A quick tunnel gets a new address each time it starts. Click **Create webhook** again after each restart. EVtivity creates a webhook for the new address and leaves the old one, which then appears under **Other EVtivity deployments**. Delete it in the Customer Area. Use a named Cloudflare tunnel for a stable address.
+A quick tunnel gets a new address each time it starts. Click **Create Webhook** again after each restart. EVtivity creates a webhook for the new address and leaves the old one, which then appears under **Other EVtivity deployments**. Delete it in the Customer Area. Use a named Cloudflare tunnel for a stable address.
 
 ## 8. Going Live
 
 1. Repeat steps 1 to 3 in your live Customer Area: a live merchant account, an API credential with the same roles, and a client key with the live origins.
 2. In Settings > Payment > Adyen, set **Environment** to `live`, and enter the **Live URL Prefix** and **Live Region**.
 3. Enter the live API key and client key, click **Save** and **Test connection**.
-4. Click **Create webhook** to create the live webhook. Live and test webhooks are separate.
+4. Click **Create Webhook** to create the live webhook. Live and test webhooks are separate.
 5. Leave **Authorization Adjustment** off unless Adyen has enabled authorisation adjustment for your live merchant category code.
 
 ## 9. Select Adyen

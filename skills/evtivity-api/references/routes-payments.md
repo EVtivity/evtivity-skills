@@ -1,6 +1,6 @@
 # EVtivity API routes: Payments
 
-Generated from EVtivity CSMS v0.1.52-beta.11 (https://github.com/EVtivity/evtivity-csms, commit cd012b53137c) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.52-beta.12 (https://github.com/EVtivity/evtivity-csms, commit 4f5197cb6fa5) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -18,6 +18,8 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/settings/stripe/test` | settings.payment:write | Test Stripe API connection |
 | GET | `/v1/settings/stripe/webhook` | settings.payment:read | Get the Stripe webhook setup |
 | POST | `/v1/settings/stripe/webhook` | settings.payment:write | Create the Stripe webhooks |
+| GET | `/v1/settings/stripe/payment-method-domain` | settings.payment:read | Get the Stripe payment method domain of the portal |
+| POST | `/v1/settings/stripe/payment-method-domain` | settings.payment:write | Register the portal domain with Stripe |
 | GET | `/v1/sites/payment-configs` | payments:read | List all site payment configurations |
 | GET | `/v1/drivers/{id}/payment-methods` | payments:read | List payment methods for a driver |
 | POST | `/v1/drivers/{id}/payment-methods` | payments:write | Save a payment method for a driver |

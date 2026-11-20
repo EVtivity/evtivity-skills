@@ -274,7 +274,7 @@ Global Stripe configuration. Step-by-step setup: [Stripe](https://www.evtivity.c
 The **Webhooks** card creates and lists the two Stripe endpoints:
 
 - **Webhook Endpoint URL** - the URL Stripe sends events to, ending in `/v1/webhooks/payments/stripe`. It starts as the API URL of your deployment. Edit the host to use a tunnel. The URL must use `https`.
-- **Create webhook** button - creates the platform and Connect endpoints in Stripe at the Webhook Endpoint URL with their events and API version `2026-09-30.endive`, and stores both signing secrets. If EVtivity endpoints already exist at that URL, a dialog asks before replacing them, because Stripe issues new signing secrets. The **Endpoints** table lists the endpoints at that URL with their scope, URL, events, API version, and state. **Other EVtivity deployments** lists the EVtivity endpoints of other deployments that share the Stripe account. EVtivity never changes them.
+- **Create Webhook** button - creates the platform and Connect endpoints in Stripe at the Webhook Endpoint URL with their events and API version `2026-09-30.endive`, and stores both signing secrets. If EVtivity endpoints already exist at that URL, a dialog asks before replacing them, because Stripe issues new signing secrets. The **Endpoints** table lists the endpoints at that URL with their scope, URL, events, API version, and state. **Other EVtivity deployments** lists the EVtivity endpoints of other deployments that share the Stripe account. EVtivity never changes them.
 - **Manual setup** - the events of each endpoint, the API version, and the `stripe listen` command for local tests, for when you create the endpoints in Stripe yourself.
 
 ### Adyen
@@ -290,7 +290,7 @@ Adyen configuration. Adyen cannot be selected on the General tab while services 
 - **Webhook Username** - Basic auth username of the webhook.
 - **Authorization Adjustment** - raises the hold to the final cost instead of charging a second payment. Off by default. Turn it on only after Adyen enables it for your merchant category. See [Costs Above the Hold](https://www.evtivity.com/docs/integrations/adyen#costs-above-the-hold).
 - **Test connection** button - checks the API key with Adyen Checkout and lists the roles of the API credential, with a warning when the webhook role is missing.
-- **Webhook** card - **Webhook URL**, ending in `/v1/webhooks/payments/adyen`, and **Create webhook**. Creates or, after a confirmation, updates the webhook at that URL in Adyen, stores its username, password, and HMAC key, switches it on, and shows the result of a test event Adyen sends. **Other EVtivity deployments** lists the EVtivity webhooks of other deployments that share the merchant account. EVtivity never changes them.
+- **Webhook** card - **Webhook URL**, ending in `/v1/webhooks/payments/adyen`, and **Create Webhook**. Creates or, after a confirmation, updates the webhook at that URL in Adyen, stores its username, password, and HMAC key, switches it on, and shows the result of a test event Adyen sends. **Other EVtivity deployments** lists the EVtivity webhooks of other deployments that share the merchant account. EVtivity never changes them.
 
 ### Site Configurations
 
