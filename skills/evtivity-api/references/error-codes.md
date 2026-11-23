@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.52-beta.12 (https://github.com/EVtivity/evtivity-csms, commit 4f5197cb6fa5) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.52-beta.13 (https://github.com/EVtivity/evtivity-csms, commit b90755057e2e) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -229,7 +229,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `OCPP_COMMAND_FAILED` | 502 | OCPP command failed |
 | `OCPP_VERSION_MISMATCH` | 400 | The command is for a different OCPP version than the station uses |
 | `OCTT_RUN_NOT_FOUND` | 404 | Conformance run not found |
-| `OVERSUBSCRIPTION_EXCEEDED` | 400 | Total connected capacity (... kW) exceeds panel effective capacity (... kW) |
+| `OVERSUBSCRIPTION_EXCEEDED` | 400 | Total connected capacity ({{connectedKw}} kW) exceeds panel effective capacity ({{allowedKw}} kW) |
 | `PANEL_NOT_FOUND` | 404 | Panel not found |
 | `PARTNER_ALREADY_CONNECTED` | 409 | Partner is already connected |
 | `PARTNER_NOT_CONNECTED` | 400 | Partner must be connected to sync |
