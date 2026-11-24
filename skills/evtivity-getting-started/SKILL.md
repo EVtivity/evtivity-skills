@@ -113,4 +113,5 @@ Generated from the website docs. Never edit them. The first line of each file is
 - `references/introduction.md`: what EVtivity is, features, architecture, tech stack, license.
 - `references/quick-start.md`: Docker-only start, demo accounts, service URLs, profiles, demo data, simulator, LAN access.
 - `references/installation.md`: native development with hot reload, `npm run dev:*`, dev tools, database commands.
+- `references/demo-data.md`: what `SEED_DEMO` and the Helm `seedDemo` values create (accounts, sites and stations, supply per region, layout and feature demos) and how a rerun treats it.
 - `references/project-structure.md`: packages, ports, what the worker does, key directories.
