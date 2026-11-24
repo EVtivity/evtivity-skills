@@ -48,6 +48,12 @@ The Personal Info page holds your profile and display settings.
    - **Show prices** (**Operator default**, **Including tax (gross)**, or **Excluding tax (net)**)
 3. Tap **Save** to apply changes. All fields persist in one request, and the language bundle reloads in place if you switched it.
 
+![Theme field on Personal Info](https://www.evtivity.com/screenshots/portal/account-personal-theme.png)
+
+![Portal home in the Soft theme](https://www.evtivity.com/screenshots/portal/home-theme-soft.png)
+
+![Portal home in the High Contrast theme](https://www.evtivity.com/screenshots/portal/home-theme-high-contrast.png)
+
 When your account has a second factor, a new phone number needs a proof first: a code of your method or one of your passkeys. When you sign in with SMS codes, also tap **Send Code to New Number** and enter the code from the text message under **Code Sent to the New Number**. The number is saved only once confirmed. The mobile app cannot change the number of such an account and tells you to use the portal.
 
 ### Billing Address

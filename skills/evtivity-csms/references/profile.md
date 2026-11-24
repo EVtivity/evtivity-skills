@@ -49,6 +49,8 @@ The **Appearance** tab holds the **Appearance** card with two fields. A change a
 - **Theme** - **Default**, **Soft** or **High Contrast**. A description under the field explains the theme you picked. The **Theme** item in the user menu of the sidebar picks it too.
 - **Mode** - **Light** or **Dark**. The **Mode** item in the user menu of the sidebar switches it too.
 
+![Appearance tab of the profile](https://www.evtivity.com/screenshots/csms/profile-appearance.png)
+
 ### Themes
 
 A theme sets the look of the app. Every CSMS user and every driver picks one for their own account.
@@ -56,6 +58,10 @@ A theme sets the look of the app. Every CSMS user and every driver picks one for
 - **Default** - the standard look.
 - **Soft** - rounder corners, lighter borders and softer shadows.
 - **High Contrast** - plain black and white surfaces, strong borders and heavier text. Body text meets the WCAG AAA contrast level in light and dark mode.
+
+![Dashboard in the Soft theme](https://www.evtivity.com/screenshots/csms/dashboard-theme-soft.png)
+
+![Dashboard in the High Contrast theme](https://www.evtivity.com/screenshots/csms/dashboard-theme-high-contrast.png)
 
 Mode is separate from the theme: each theme comes in **Light** and **Dark**. Your theme and mode are saved on your account, so they follow you to every browser and device and apply as the page loads. Operators cannot create or edit themes. Drivers set theirs in the [driver portal](https://www.evtivity.com/docs/portal/account#personal-info) and the [mobile app](https://www.evtivity.com/docs/mobile-app/guide/account-and-settings#personal-info).
 

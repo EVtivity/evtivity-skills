@@ -212,6 +212,8 @@ The API answers 204. The reading replaces the stored one. A reading reported ear
 7. Add the site's transformers and link them to their panels (see [Transformers](#transformers)).
 8. Add batteries and solar arrays and their connection points (see [Energy Storage and Solar](#energy-storage-and-solar)).
 
+![Add Station dialog of a circuit](https://www.evtivity.com/screenshots/csms/site-load-management-assign-station.png)
+
 ### Step 2: Enable Load Management
 
 1. In the Load Management tab, toggle **Enable Load Management**.

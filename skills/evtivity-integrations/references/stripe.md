@@ -201,6 +201,8 @@ With Stripe, the guest checkout shows Apple Pay and Google Pay buttons above the
 
 Stripe shows the buttons only on a domain registered in your Stripe account ([Register domains for payment methods](https://docs.stripe.com/payments/payment-methods/pmd-registration)). EVtivity registers the host name of `PORTAL_URL`, the address of the driver portal.
 
+![Webhooks card and Apple Pay and Google Pay card on the Stripe tab](https://www.evtivity.com/screenshots/csms/settings-payment-stripe.png)
+
 1. Set `PORTAL_URL` to the public `https` address of the driver portal. Stripe cannot verify an `http` address, `localhost`, an IP address, or a name without a dot.
 2. Save the Stripe keys.
 3. In Settings > Payment > Stripe, find the **Apple Pay and Google Pay** card. It shows the portal domain.
