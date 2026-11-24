@@ -235,6 +235,36 @@ The API answers 204. The reading replaces the stored one. A reading reported ear
 
 When the minimums of all sessions do not fit in a circuit or panel, the lowest priority sessions stop (limit 0) until the rest fit. The others never drop below their minimum.
 
+## Balancing Mode
+
+Each station row has a **Balancing** select:
+
+- **Station Balances Its EVSEs** (default): load management sends one limit for the whole station, which the station shares between its EVSEs.
+- **EVtivity Balances Each EVSE**: load management also sends each charging EVSE its own limit, a `TxProfile` for the transaction (stack level 1, the transaction ID, OCPP 1.6: on the connector). The station limit stays the ceiling of all of them.
+
+An AC session with a tariff current limit gets its own EVSE limit in either mode. An AC EVSE never gets less than 6 A per phase: when its share is lower, the session with the lowest priority, then the one that started later, is paused at 0 A and resumes as soon as 6 A frees up. A DC session gets a share in kW and is never paused.
+
+A station that refuses an EVSE limit falls back to one station limit and shows **EVSE limits refused**. Choose the balancing mode again to send EVSE limits again.
+
+## Tariff Current Limits
+
+A tariff can carry a **Max Current (A)** per phase (6 to 500 A, AC only). See [Pricing](https://www.evtivity.com/docs/csms/pricing). At a site with load management on, every AC session on that tariff is held to that current per phase. The limit is taken when the session or its tariff segment starts, so editing the tariff does not change a running session. When split billing moves a session to another tariff, the new tariff's limit applies.
+
+A tariff with a current limit lists the sites where load management is off, because the limit does not apply there.
+
+## Station Unit Budgets
+
+On a station with [units](https://www.evtivity.com/docs/csms/stations#units) (a master box with extenders, for example), each unit row under the station has a budget: the most that box draws, shared by its charging EVSEs.
+
+- **Current per Phase (AC)**: 6 to 1000 A, on 1 or 3 phases (the circuit's phases by default).
+- **Power (DC)**: up to 5000 kW.
+
+A unit whose EVSEs mix AC and DC takes no budget. An EVSE of the other kind cannot be moved into a unit with a budget (`UNIT_LOAD_BUDGET_EVSE_KIND_MISMATCH`).
+
+A station limited per EVSE (**EVtivity Balances Each EVSE**, or a session with a tariff current limit) holds the EVSEs of each box within its budget. A station limited as a whole gets one limit only, so a budget there only lowers the station demand: the station still shares its limit between its EVSEs.
+
+Unit budgets also count in the oversubscription check of a circuit: a unit counts at the lower of its EVSE ratings and its budget.
+
 ## Allocation Algorithm
 
 The algorithm runs bottom-up through the hierarchy:
@@ -244,6 +274,10 @@ The algorithm runs bottom-up through the hierarchy:
 3. **Final output**: Per-station power limits, never below zero.
 
 A station that goes offline during a session keeps charging at the last limit it received, so that power stays reserved for it until it reconnects.
+
+### Per-Phase Split
+
+A station limited per EVSE that is alone on a three-phase circuit, with AC sessions on different phases (a single-phase car on L1 and another on L2, for example), splits its limit over the phases by what its sessions ask for, instead of spreading it evenly. Each phase stays within its circuit, panel and transformer limits, and the station limit is sent at its highest phase. A balanced station, a station limited as a whole and a station that shares its circuit keep the even spread.
 
 ### Station Local Generation
 
@@ -267,7 +301,19 @@ The limit is in watts. A station that reports support for amps only (OCPP 2.1 `S
 
 When you turn load management off, or a station leaves its circuit or the site, its limit is removed from the station.
 
-Changed allocations are logged in the Allocations list. The list keeps entries for 90 days by default (**Load Management Allocations** in **Settings > Data Retention**). See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention).
+Every limit sent is logged in the allocation log (below). The Allocations list shows the allocation changes.
+
+## Allocation Log and Export
+
+Every limit load management sends is logged: the station or EVSE, the unit, the limit in kW (and in A when sent in A), what set it (for example circuit limit, tariff current limit, unit budget, paused below 6 A) and the station's reply (accepted, rejected, not sent, or no reply after 2 minutes). Session IDs show only with `sessions:read`, tariff names only with `pricing:read`.
+
+**Export CSV** on the Allocation Chart downloads the log of the selected range (at most 31 days). The log keeps entries for 90 days by default (**Load Allocation Log** in **Settings > Data Retention**). See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention). A station limited per EVSE with 16 EVSEs writes up to 17 entries per send, about 5,000 a day.
+
+## Allocation Chart
+
+The **Allocation Chart** shows the limits sent over the last 6 hours, 24 hours or 7 days: one step line per station limit and per EVSE limited on its own, with the site limit as a dashed line. The tooltip names the limit, what set it and the reply. With `sessions:read` the sessions and tariffs of the range are listed below the chart, each linked to its session.
+
+![Allocation chart](https://www.evtivity.com/screenshots/csms/load-management-chart.png)
 
 ## View Allocation Status
 
@@ -278,6 +324,7 @@ The Load Management tab displays:
 - **Energy Storage and Solar**: Each battery and solar array with its supply state, last reading and credit.
 - **Station rows**: Under each circuit, each station with its status, session, power draw against its allocated limit, priority, minimum power and limit unit.
 - **Allocations**: Timestamped log of allocation changes.
+- **Allocation Chart**: The limits sent over time, the sessions and tariffs, and the CSV export.
 
 Data refreshes every 5 seconds automatically.
 
@@ -292,6 +339,7 @@ Load management sends a `ChargingStationMaxProfile` with its own profile ID (100
 | Feature | OCPP Purpose |
 |---------|-------------|
 | Load Management | `ChargingStationMaxProfile`, stack level 1, and stack level 2 while a battery or solar reading raises the limit |
+| Per-EVSE limits | `TxProfile` of the transaction, stack level 1 |
 | Smart Charging | `ChargingStationMaxProfile` or `TxDefaultProfile` |
 
 A station applies the lowest limit across purposes, so a `TxDefaultProfile` template still caps sessions below the load management limit. Within the same purpose the highest stack level wins: on a load-managed station, the load management limit replaces a `ChargingStationMaxProfile` template at stack level 0.

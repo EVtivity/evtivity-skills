@@ -62,6 +62,8 @@ When the price can change during the session, a note says so: "The price can cha
 
 A tariff shows as free when all its prices are zero, whatever its tax rate.
 
+When your tariff limits the charging current and the charger is an AC charger the operator manages with load management, the price shows the limit too, for example "Max 16 A per phase". Your session then charges at no more than that current.
+
 When a station has AC and DC EVSEs with different prices, the pricing section shows the AC and DC prices side by side. On a station whose EVSEs are all AC or all DC, it shows that price. Each kind lists its energy, time, session fee and idle fee. The station shows as free only when charging is free at both kinds, and the payment method follows the EVSE you pick.
 
 ### EVSE Grid

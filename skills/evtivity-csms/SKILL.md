@@ -176,6 +176,7 @@ Confirm: the group Schedule tab, and the station Pricing tab or `GET /v1/station
 
 - Smart charging: Settings > Smart Charging > Create. Pick a purpose, Absolute or Recurring, stack level, periods and a target filter. Check **Matching Stations**, then **Push to Stations**.
 - Load management: Site > Load Mgmt. Add panels and circuits, assign stations to circuits, add unmanaged loads. Toggle **Enable Load Management**, pick Equal Share or Priority Based (1 to 10, default 5). Stations without a circuit are not managed.
+- Per EVSE: each station row's **Balancing** select (Station Balances Its EVSEs, or EVtivity Balances Each EVSE). A tariff's **Max Current (A)** holds AC sessions per phase at load-managed sites. A station with units gets a budget per unit row (AC A per phase or DC kW). The **Allocation Chart** shows every limit sent, what set it and the station reply, with **Export CSV** (31 days at most).
 
 Confirm: push history per station (Accepted, Rejected, Failed), the Load Mgmt power bar and allocation history, Station > Charging Profiles > View Composite Schedule.
 

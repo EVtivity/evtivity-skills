@@ -68,6 +68,7 @@ Uploading a new image replaces the current one.
 - **Prices in the driver portal** - **Including tax (gross)** or **Excluding tax (net)** (`company.priceDisplay`, default net). See Price display below.
 - **Tariff prices are entered** - **Excluding tax (net)** or **Including tax (gross)** (`company.taxBasis`, default net). See Tax calculation method below.
 - **Timezone** - the company timezone (`system.timezone`, default America/New_York). Dashboard days, invoices and reports use it, and new drivers start with it unless one is set when they are created. Existing drivers keep theirs.
+- **Week Start** - the first day of a week in report periods, **Monday** (the default) or **Sunday** (`company.weekStart`). It applies to the Previous Week and Week to Date periods of reports only. See [Reports](https://www.evtivity.com/docs/csms/reports#report-period).
 - **Driver Language** and **Driver Distance Unit** - the language (`system.driverLanguage`, default English) and distance unit (`system.distanceUnit`, miles or kilometers, default miles) a new driver starts with when none is set at creation, together with the system timezone (`system.timezone`). They apply to drivers created in the CSMS, through the API and by portal or app registration. Existing drivers keep their own.
 - **Contact Email** - general contact email for the company.
 - **Support Email** - displayed in support communications.

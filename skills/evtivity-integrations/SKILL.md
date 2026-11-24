@@ -44,6 +44,7 @@ export EVTIVITY_TOKEN=<API key>                  # see evtivity-api, keep it out
 | Support case or reservation fee refund | `POST /v1/support-cases/{id}/refund`, `POST /v1/reservations/{id}/fee-payments/{paymentId}/refund` | `support:write`, `payments:write` |
 | Company currency, tax basis, price display | `PUT /v1/settings/{key}` | `settings.system:write` |
 | Load management | `GET`, `PUT /v1/sites/{id}/load-management` | `loadManagement:read`, `loadManagement:write` |
+| Load allocation log | `GET /v1/sites/{id}/load-management/allocations` (`/export` for CSV, `/series`, `/sessions`) | `loadManagement:read` (`sessions:read` for session IDs) |
 
 ## Workflow
 
