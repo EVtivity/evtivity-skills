@@ -4,8 +4,8 @@ description: "Use the EVtivity driver portal web app and its API: driver registr
 license: MIT
 metadata:
   evtivity-version: "0.1.52"
-  evtivity-release: "v0.1.52-beta.13"
-  evtivity-commit: "b90755057e2ee4176bb8aec8cea1fafb55d86fd0"
+  evtivity-release: "v0.1.52-beta.14"
+  evtivity-commit: "11043d938bc04df0842cad4abf5063a4f3373a8f"
   evtivity-docs-section: portal
 ---
 
