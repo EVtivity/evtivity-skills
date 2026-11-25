@@ -65,6 +65,10 @@ Where a price is shown before the EVSE is known, a station whose EVSEs are all A
 - A station shows as free only when charging is free at every kind. The payment method is asked for, or not, by the EVSE the driver picks.
 - The idle station screens show the AC and DC prices side by side too, as "AC: ... | DC: ...". Their tax note shows only when both kinds have the same tax rate.
 
+### Max Current
+
+The optional **Max Current (A)** of a tariff (6 to 500 A per phase, at most one decimal) limits every AC session on the tariff to that current per phase at sites with load management on. A DC tariff takes none (`TARIFF_CURRENT_LIMIT_DC`); a tariff for both kinds applies it to AC sessions only. The drivers see the limit next to the price on a load-managed AC charger. See [Tariff Current Limits](https://www.evtivity.com/docs/csms/load-management#tariff-current-limits).
+
 ## Default Tariff
 
 A pricing group with active tariffs needs exactly one active default tariff, and the default has no restrictions. It applies whenever no tariff with restrictions matches, so every time of day and every amount of energy has a price.

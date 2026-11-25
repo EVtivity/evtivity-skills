@@ -14,9 +14,37 @@ Reports require admin-level access.
 
 ## Report Types
 
-The **Generate** tab builds a report as CSV, PDF, or Excel (XLSX) for a date range and an optional site or station. The **Generated Reports** tab lists past runs, and the **Schedules** tab sends a report by email daily, weekly, or monthly. The **History** tab lists schedule changes and the reports generated, downloaded, and deleted, with who did it. Report types: Revenue, Utilization, Energy, Station Health, Sessions, Sustainability, Driver Activity, and NEVI Compliance.
+The **Generate** tab builds a report as CSV, PDF, or Excel (XLSX) for a report period or a date range and an optional site or station. The **Generated Reports** tab lists past runs, and the **Schedules** tab sends a report by email daily, weekly, or monthly. The **History** tab lists schedule changes and the reports generated, downloaded, and deleted, with who did it. Report types: Revenue, Utilization, Energy, Station Health, Sessions, Sustainability, Driver Activity, and NEVI Compliance.
 
 ![Reports History tab](https://www.evtivity.com/screenshots/csms/reports-history-tab.png)
+
+### Report Period
+
+The **Generate** tab and the schedule form have a **Report Period** select. **Custom** (the default) uses the dates you enter, or all time without dates. Every other period sets the dates itself, so the date inputs hide:
+
+| Period | Covers |
+|--------|--------|
+| Previous Day | Yesterday |
+| Previous Week | The full week before the current one |
+| Previous Month | The calendar month before the current one |
+| Previous Quarter | The calendar quarter before the current one |
+| Previous Year | January 1 to December 31 of last year |
+| Week to Date | The start of this week to today |
+| Month to Date | The first of this month to today |
+| Year to Date | January 1 of this year to today |
+| Last 7 Days | The 7 whole days before today, today left out |
+| Last 30 Days | The 30 whole days before today, today left out |
+| Custom | The dates you enter |
+
+- The period is resolved to days in the company timezone (Settings > Company Info > Timezone). A week starts on the day set in Settings > Company Info > Week Start (Monday by default).
+- **Week to Date**, **Month to Date** and **Year to Date** end today when you run a report by hand (the Generate tab or Run Now). A scheduled run covers whole days only and ends them yesterday: it covers the period that holds yesterday, so a scheduled **Month to Date** run on the first of a month covers the whole month before.
+- A schedule resolves its period at the time the run was due, so a run that starts late or is retried covers the same days as an on-time run. Run Now and the Generate tab resolve it when you click.
+- A schedule of the monthly frequency on day 1 with **Previous Month** sends last month's report on the first of every month.
+- The report shows the covered days in its **Period** line, and the file name carries them: `energy-report-2026-11-01-to-2026-11-30.csv`. A report with only a start or end day is named `<report>-from-<day>` or `<report>-until-<day>`.
+- The scheduled email names the period in each recipient's language, such as Previous month followed by its first and last day, in a **Period** row and in the subject.
+- NEVI Compliance reports keep their quarter and year and take only **Custom**.
+- Schedules created before this setting existed are **Custom** and keep their dates.
+- The API takes the period as `reportPeriod` on report generation and on schedules. It refuses fixed dates together with any period other than Custom.
 
 ### Money columns
 

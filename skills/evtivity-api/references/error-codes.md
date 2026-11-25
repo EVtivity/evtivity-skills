@@ -1,6 +1,6 @@
 # EVtivity API error codes
 
-Generated from EVtivity CSMS v0.1.52 (https://github.com/EVtivity/evtivity-csms, commit b7b6e0271b63) by `scripts/generate-api-reference.py`: the English
+Generated from EVtivity CSMS v0.1.53-beta.1 (https://github.com/EVtivity/evtivity-csms, commit 6efb28ce1cc4) by `scripts/generate-api-reference.py`: the English
 messages of the CSMS and the statuses in its OpenAPI spec. Do not edit by hand.
 Catalog with localized messages: https://www.evtivity.com/api-reference/error-codes
 
@@ -170,6 +170,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `INVOICE_NO_DRIVER` | 400 | This invoice has no driver to send to |
 | `INVOICE_NO_DRIVER_EMAIL` | 400 | The driver of this invoice has no email address |
 | `INVOICE_NO_SESSIONS` | 400 | No uninvoiced sessions in the selected date range |
+| `LOAD_ALLOCATION_RANGE_TOO_LONG` | 400 | The time range is longer than 31 days |
 | `LOAD_NOT_FOUND` | 404 | Load not found |
 | `LOCAL_CA_EXISTS` | 409 | A local contract CA already exists |
 | `LOCAL_CA_NOT_CONFIGURED` | 409 | Create the local contract CA first |
@@ -395,6 +396,7 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `SUPPORT_CASE_CHANGED` | 409 | The case status changed since you opened it. Reload the case and try again. |
 | `SUPPORT_CASE_NOT_FOUND` | 404 | Support case not found |
 | `SUPPORT_DISABLED` |  | Support is disabled |
+| `TARIFF_CURRENT_LIMIT_DC` | 400 | A current limit cannot be set on a DC tariff |
 | `TARIFF_DEFAULT_REQUIRED` | 409 | A pricing group with tariffs needs one active default tariff without restrictions |
 | `TARIFF_IN_USE` | 409 | Tariff is referenced by charging sessions and cannot be deleted |
 | `TARIFF_NOT_FOUND` | 404 | Tariff not found |
@@ -413,6 +415,9 @@ Match on `code`, never on the message. HTTP lists the statuses the spec document
 | `TRANSACTION_NOT_FOUND` | 404 | Transaction not found |
 | `TRANSFORMER_NOT_FOUND` | 404 | Transformer not found |
 | `UNAUTHORIZED` | 401 | Unauthorized |
+| `UNIT_LOAD_BUDGET_EVSE_KIND_MISMATCH` | 409 | The EVSE's charging kind does not match the load budget of the unit |
+| `UNIT_LOAD_BUDGET_KIND_MISMATCH` | 400 | The budget kind does not match the EVSEs of the unit |
+| `UNIT_LOAD_BUDGET_MIXED_UNIT` | 400 | The unit holds AC and DC EVSEs, so it takes no budget |
 | `UNKNOWN_ACTION` | 404 | Unknown OCPP action |
 | `UNSUPPORTED_MEDIA_TYPE` |  | Unsupported content type |
 | `USER_NOT_FOUND` | 400, 404 | User not found |

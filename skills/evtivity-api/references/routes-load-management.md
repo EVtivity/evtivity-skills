@@ -1,6 +1,6 @@
 # EVtivity API routes: Load Management
 
-Generated from EVtivity CSMS v0.1.52 (https://github.com/EVtivity/evtivity-csms, commit b7b6e0271b63) by `scripts/generate-api-reference.py`. Do not edit by hand.
+Generated from EVtivity CSMS v0.1.53-beta.1 (https://github.com/EVtivity/evtivity-csms, commit 6efb28ce1cc4) by `scripts/generate-api-reference.py`. Do not edit by hand.
 Index of all tags: `references/routes.md`.
 
 Permission column: the RBAC permission an operator JWT or API key needs. `public` needs no
@@ -15,8 +15,13 @@ A `write` permission includes `read` for the same resource.
 | GET | `/v1/sites/{id}/charging-plan` | loadManagement:read | Get the depot charging plan of a site |
 | POST | `/v1/sites/{id}/charging-plan/recalculate` | loadManagement:write | Recalculate the depot charging plan of a site |
 | PATCH | `/v1/sites/{id}/stations/{stationId}/load-priority` | loadManagement:write | Update load priority for a station |
+| PATCH | `/v1/sites/{id}/stations/{stationId}/load-balancing-mode` | loadManagement:write | Choose how load management limits a station: one station limit, or per EVSE |
 | PATCH | `/v1/sites/{id}/stations/{stationId}/load-min-power` | loadManagement:write | Update the minimum power of a station under load management |
 | GET | `/v1/sites/{id}/load-management/history` | loadManagement:read | Get load allocation history for a site |
+| GET | `/v1/sites/{id}/load-management/allocations` | loadManagement:read | List the load allocation log of a site |
+| GET | `/v1/sites/{id}/load-management/allocations/export` | loadManagement:read | Export the load allocation log of a site as CSV |
+| GET | `/v1/sites/{id}/load-management/allocations/series` | loadManagement:read | Get the allocation chart series of a site |
+| GET | `/v1/sites/{id}/load-management/allocations/sessions` | loadManagement:read | Get the session and tariff timeline of the allocation chart |
 | GET | `/v1/sites/{siteId}/panels` | loadManagement:read | List panels for a site |
 | POST | `/v1/sites/{siteId}/panels` | loadManagement:write | Create a panel |
 | GET | `/v1/sites/{siteId}/panels/{panelId}` | loadManagement:read | Get panel detail |
@@ -26,6 +31,9 @@ A `write` permission includes `read` for the same resource.
 | POST | `/v1/sites/{siteId}/transformers` | loadManagement:write | Create a transformer |
 | PATCH | `/v1/sites/{siteId}/transformers/{transformerId}` | loadManagement:write | Update a transformer |
 | DELETE | `/v1/sites/{siteId}/transformers/{transformerId}` | loadManagement:write | Delete a transformer |
+| GET | `/v1/sites/{id}/stations/{stationId}/unit-budgets` | loadManagement:read | List the Station Unit budgets of a station |
+| PUT | `/v1/sites/{id}/stations/{stationId}/units/{unitId}/load-budget` | loadManagement:write | Set the budget of a Station Unit |
+| DELETE | `/v1/sites/{id}/stations/{stationId}/units/{unitId}/load-budget` | loadManagement:write | Remove the budget of a Station Unit |
 | GET | `/v1/sites/{siteId}/energy-assets` | loadManagement:read | List the batteries and solar arrays of a site |
 | POST | `/v1/sites/{siteId}/energy-assets` | loadManagement:write | Create a battery or solar array |
 | PATCH | `/v1/sites/{siteId}/energy-assets/{assetId}` | loadManagement:write | Update a battery or solar array |

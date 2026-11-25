@@ -68,6 +68,7 @@
     "deployment/minikube"
   ],
   "evtivity-getting-started": [
+    "getting-started/demo-data",
     "getting-started/installation",
     "getting-started/introduction",
     "getting-started/project-structure",

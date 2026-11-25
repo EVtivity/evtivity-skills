@@ -166,6 +166,8 @@ Some charging hardware is one OCPP station spread over several physical charger 
 
 A unit is a grouping in the CSMS only. The station keeps one OCPP connection, and sessions, OCPP commands, configuration, firmware updates, load management, QR codes and billing stay with the station and its EVSE numbers.
 
+Load management can still hold each unit to its own budget: see [Station Unit Budgets](https://www.evtivity.com/docs/csms/load-management#station-unit-budgets).
+
 Units are chosen per station. Check **This station has multiple physical units** on the **Create Station** page, or later in the station's **Details** edit form, and save. While it is unchecked, the **EVSE & Connectors** tab shows no unit controls and the station looks as it always has. You can uncheck it only while the station has no units: delete its units first.
 
 For a master and extender system, name the master's unit so it is clear which box holds the OCPP connection, for example **Box 1 (Master)**.

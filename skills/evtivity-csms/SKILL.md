@@ -3,9 +3,9 @@ name: evtivity-csms
 description: "Operate the EVtivity operator dashboard: sites, stations, sessions, drivers, RFID tokens, fleets, pricing groups and tariffs, reservations, smart charging, load management, roaming, reports, users, roles, settings. Use for daily operator tasks in the dashboard. Not for payment provider setup (evtivity-integrations) or scripts (evtivity-api)."
 license: MIT
 metadata:
-  evtivity-version: "0.1.52"
-  evtivity-release: "v0.1.52"
-  evtivity-commit: "b7b6e0271b6372a80321489bfab5aca945e65533"
+  evtivity-version: "0.1.53"
+  evtivity-release: "v0.1.53-beta.1"
+  evtivity-commit: "6efb28ce1cc4332b618e2554dd8e6445c02e095d"
   evtivity-docs-section: csms
 ---
 

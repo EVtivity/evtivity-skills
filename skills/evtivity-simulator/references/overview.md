@@ -87,6 +87,10 @@ A typical end-to-end session emerges as: an early tick picks `plugIn` → some l
 
 Use chaos mode for load testing and demos.
 
+#### Fleet Sessions
+
+About 1 in 8 chaos sessions at a public station start with a card of a fleet that bills on account: a fleet RFID card, or a card of a fleet member who has not opted out. The demo fleets then get new sessions every day, and their dashboard and Sessions tab stay current. The session goes through the normal Authorize and transaction messages, so account billing, the cost ceiling and the credit limit apply as for a real card. Chaos never uses an inactive, revoked, expired or prepaid card, a card of an inactive or erased driver, or a card its fleet cannot bill, and it uses none while Fleets is off. Depot stations keep their own fleet's vehicles, and free vend sites get no fleet sessions. When the CSMS refuses a fleet card, for example at the fleet credit limit, chaos leaves that card alone for 15 minutes, twice as long after each refusal in a row, up to 4 hours. Chaos never drives conformance (OCTT) stations.
+
 > **Warning:**
 >
 > Chaos mode and a large number of simulated stations need large database storage. Every OCPP message is a row in `ocpp_message_logs`, heartbeats included, and every meter reading is a row in `meter_values`. Every enabled simulated station stays connected and sends heartbeats, also in standby mode. On a test network of about 2,000 simulated stations the database reached 90 GB: 57 GB in `ocpp_message_logs` and 32 GB in `meter_values`. See [Data Retention](https://www.evtivity.com/docs/configuration/data-retention) to plan storage and lower the retention.
