@@ -112,5 +112,6 @@ Generated from the website docs. Never edit them. The first line of each file is
 
 - `references/introduction.md`: what EVtivity is, features, architecture, tech stack, license.
 - `references/quick-start.md`: Docker-only start, demo accounts, service URLs, profiles, demo data, simulator, LAN access.
+- `references/demo-data.md`: what the optional demo data set creates, how to turn it on, how a rerun treats it.
 - `references/installation.md`: native development with hot reload, `npm run dev:*`, dev tools, database commands.
 - `references/project-structure.md`: packages, ports, what the worker does, key directories.
